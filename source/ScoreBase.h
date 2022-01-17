@@ -30,10 +30,23 @@ namespace Gyro {
        */
       ScoreBase(int score);
       /**
+       * @brief コンストラクタ
+       * @param score スコアポイント
+       */
+      ScoreBase(float score);
+      /**
        * @brief スコアの加算処理
        * @param value 値
        */
       void Add(float value);
+      /**
+       * @brief  対象スコアとの比較
+       * @param  score 比較対象
+       * @return true:対象以上 false:対象未満
+       */
+      inline bool IsBig(const ScoreBase score) const {
+        return score._point <= _point;
+      }
       /**
        * @brief  スコアポイントの取得(整数値)
        * @return 整数値にキャストしたスコアポイント

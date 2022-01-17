@@ -17,6 +17,9 @@ namespace Gyro {
       _point = static_cast<float>(score);
     }
 
+    ScoreBase::ScoreBase(float score) : _point(score) {
+    }
+
     void ScoreBase::Add(float value) {
       _point += value;
     }

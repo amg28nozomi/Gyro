@@ -22,11 +22,13 @@
     <ClCompile Include="source\ApplicationMain.cpp" />
     <ClCompile Include="source\ModeGame.cpp" />
     <ClCompile Include="source\ScoreBase.cpp" />
+    <ClCompile Include="source\ScoreServer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\ApplicationMain.h" />
     <ClInclude Include="source\ModeGame.h" />
     <ClInclude Include="source\ScoreBase.h" />
+    <ClInclude Include="source\ScoreServer.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
