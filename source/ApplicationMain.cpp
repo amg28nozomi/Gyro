@@ -33,12 +33,7 @@ namespace Gyro {
       auto flag = ApplicationBase::Input();
       // “ü—Íó‘Ô‚ÌŽæ“¾
       auto state = _input->GetJoypadState();
-
-      if (1 < state.GetKey()) {
-        return true;
-      }
-
-      // ƒQ[ƒ€I—¹
+      // ƒQ[ƒ€‚ðI—¹‚·‚é‚©‚Ì”»’è
       if (state.GetKey() & PAD_INPUT_1) {
         _state = State::Quit;
         return true;
