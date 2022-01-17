@@ -15,7 +15,7 @@ namespace {
   constexpr auto MagnificationThird = 2.0f;
   constexpr auto MagnificationFinal = 2.5f;  // 最大倍率
   // スコア倍率が適応されるコンボ数(デフォルト)
-  constexpr auto ComboFirst = 0;
+  constexpr auto ComboFirst = 1;
   constexpr auto ComboSecond = 50;
   constexpr auto ComboThird = 100;
   constexpr auto ComboFinal = 175;
@@ -55,6 +55,14 @@ namespace Gyro {
       return true;
     }
 
+    float ScoreSystem::GetComboScore(const int light, const int heavy, const int excite, const int combo) const {
+      // 各種スコアデータの算出
+      auto lightScore = light * _scores.at(LightAttack);
+      auto heavyScore = heavy * _scores.at(HeavyAttack);
+      auto exciteScore = excite * _scores.at(ExciteTrick);
+      return (lightScore + heavyScore + exciteScore) * Bonus(combo);
+    }
+
     void ScoreSystem::SetScores() {
       using ScoresMap = std::unordered_map<std::string, float>;
       // 基礎スコアテーブルの作成
@@ -67,8 +75,17 @@ namespace Gyro {
       _scores = std::move(scores);
     }
 
-    const float ScoreSystem::Bonus(std::string_view key) const {
-      return _scores.at(key.data());
+    const float ScoreSystem::Bonus(const int combo) const {
+      auto value = 0.0f; // コンボ倍率
+      for (auto bonus : _bonusTable) {
+        // スコアボーナスの取得
+        auto [comboRate, score] = bonus.GetScoreBonus();
+        // 標準を上回った場合
+        if (comboRate <= score) {
+          value = score;
+        }
+      }
+      return value;
     }
     
     const float ScoreSystem::BasicScore(std::string_view key) const {

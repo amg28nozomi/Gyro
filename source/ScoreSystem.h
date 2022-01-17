@@ -37,6 +37,15 @@ namespace Gyro {
        * @return true
        */
       bool Init(std::vector<ScoreBonus> table = std::vector<ScoreBonus>());
+      /**
+       * @brief  コンボスコアの算出
+       * @param  light  弱攻撃ヒットのヒット数
+       * @param  heavy  強攻撃ヒットのヒット数
+       * @param  excite エキサイトトリックのヒット数
+       * @param  combo  コンボ数
+       * @return コンボスコア
+       */
+      float GetComboScore(const int light, const int heavy, const int excite, const int combo) const;
     private:
       //!< スコア倍率テーブル(first:倍率が適応されるコンボ数 second:スコア倍率)
       std::vector<ScoreBonus> _bonusTable{};
@@ -48,10 +57,10 @@ namespace Gyro {
       void SetScores();
       /**
        * @brief  指定したコンボ倍率の取得
-       * @param  key 数値
+       * @param  combo コンボ数
        * @return コンボ倍率
        */
-      const float Bonus(std::string_view key) const;
+      const float Bonus(const int combo) const;
       /**
        * @brief  指定した基礎スコアの取得
        * @param  key 基礎スコアに紐づけられた文字列
