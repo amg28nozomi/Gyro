@@ -8,6 +8,7 @@
 #include "ApplicationMain.h"
 #include "appframe.h"
 #include <DxLib.h>
+#include "ModeGame.h"
 
 namespace Gyro {
   namespace Application {
@@ -26,6 +27,9 @@ namespace Gyro {
       if (!ApplicationBase::Init()) {
         return false; // ‰Šú‰»Ž¸”s
       }
+      // ƒ‚[ƒhƒQ[ƒ€‚Ì“o˜^
+      _modeServer->AddMode("Game", std::make_shared<Mode::ModeGame>(*this));
+      _modeServer->TransionToMode("Game");
       return true;
     }
 

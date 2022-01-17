@@ -19,15 +19,27 @@
     <Filter Include="ヘッダー ファイル\Application">
       <UniqueIdentifier>{85fecbe9-66b6-43e7-9947-f0e896936592}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Mode">
+      <UniqueIdentifier>{51ba210e-3416-41f5-bf89-abe9dbc13a30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Mode">
+      <UniqueIdentifier>{4d1bb407-2add-4696-aabb-dca839e6480b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\ApplicationMain.cpp">
       <Filter>ソース ファイル\Application</Filter>
     </ClCompile>
+    <ClCompile Include="source\ModeGame.cpp">
+      <Filter>ソース ファイル\Mode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\ApplicationMain.h">
       <Filter>ヘッダー ファイル\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ModeGame.h">
+      <Filter>ヘッダー ファイル\Mode</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
