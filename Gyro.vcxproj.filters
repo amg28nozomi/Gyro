@@ -25,6 +25,12 @@
     <Filter Include="ヘッダー ファイル\Mode">
       <UniqueIdentifier>{4d1bb407-2add-4696-aabb-dca839e6480b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Score">
+      <UniqueIdentifier>{9a2b84b9-b1d5-4111-b0c9-c95182dd0f59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Score">
+      <UniqueIdentifier>{b2eb4cde-cf0b-4cfd-8249-7fd667665cb6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\ApplicationMain.cpp">
@@ -33,6 +39,9 @@
     <ClCompile Include="source\ModeGame.cpp">
       <Filter>ソース ファイル\Mode</Filter>
     </ClCompile>
+    <ClCompile Include="source\ScoreBase.cpp">
+      <Filter>ソース ファイル\Score</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\ApplicationMain.h">
@@ -40,6 +49,9 @@
     </ClInclude>
     <ClInclude Include="source\ModeGame.h">
       <Filter>ヘッダー ファイル\Mode</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ScoreBase.h">
+      <Filter>ヘッダー ファイル\Score</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
