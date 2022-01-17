@@ -45,6 +45,12 @@
     <ClCompile Include="source\ScoreServer.cpp">
       <Filter>ソース ファイル\Score</Filter>
     </ClCompile>
+    <ClCompile Include="source\ScoreSystem.cpp">
+      <Filter>ソース ファイル\Score</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ScoreBonus.cpp">
+      <Filter>ソース ファイル\Score</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\ApplicationMain.h">
@@ -57,6 +63,12 @@
       <Filter>ヘッダー ファイル\Score</Filter>
     </ClInclude>
     <ClInclude Include="source\ScoreServer.h">
+      <Filter>ヘッダー ファイル\Score</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ScoreSystem.h">
+      <Filter>ヘッダー ファイル\Score</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ScoreBonus.h">
       <Filter>ヘッダー ファイル\Score</Filter>
     </ClInclude>
   </ItemGroup>

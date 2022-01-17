@@ -51,13 +51,6 @@ namespace Gyro {
        */
       bool EraceScore(std::string_view key);
     private:
-      /**
-       * @brief  ゲームスコア同士の比較処理
-       * @param  left  ゲームスコア
-       * @param  right ゲームスコア
-       * @return 
-       */
-      bool ScoreCheck(const ScoreBase left, const ScoreBase right) const;
     };
   } // namespace Score
 } // namespace Gyro
