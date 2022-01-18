@@ -31,6 +31,12 @@
     <Filter Include="ヘッダー ファイル\Score">
       <UniqueIdentifier>{b2eb4cde-cf0b-4cfd-8249-7fd667665cb6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Object">
+      <UniqueIdentifier>{9e1ce7c4-e4d7-4d5f-9afd-940ba74a941a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Object">
+      <UniqueIdentifier>{9cc7ae8e-3db1-4639-b930-e78ef0cdf180}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\ApplicationMain.cpp">
@@ -51,6 +57,9 @@
     <ClCompile Include="source\ScoreBonus.cpp">
       <Filter>ソース ファイル\Score</Filter>
     </ClCompile>
+    <ClCompile Include="source\ObjectBase.cpp">
+      <Filter>ソース ファイル\Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\ApplicationMain.h">
@@ -70,6 +79,9 @@
     </ClInclude>
     <ClInclude Include="source\ScoreBonus.h">
       <Filter>ヘッダー ファイル\Score</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ObjectBase.h">
+      <Filter>ヘッダー ファイル\Object</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

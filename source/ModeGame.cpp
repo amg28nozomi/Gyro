@@ -29,6 +29,8 @@ namespace Gyro {
     }
 
     bool ModeGame::Init() {
+      // グラビティベースの生成
+      _gravity = std::make_shared<AppFrame::Math::GravityBase>();
       // 使用するデータの読み込みを記述する
       return true;
     }

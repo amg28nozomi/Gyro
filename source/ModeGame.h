@@ -63,7 +63,16 @@ namespace Gyro {
        * @return 
        */
       bool Draw() const override;
+      /**
+       * @brief  グラビティベースの取得
+       * @return グラビティベースの参照
+       */
+      inline AppFrame::Math::GravityBase& GetGravity() {
+        return *_gravity;
+      }
     private:
+      //!< グラビティベース
+      std::shared_ptr<AppFrame::Math::GravityBase> _gravity{nullptr};
     };
   } // namespace Mode
 } // namespace Gyro
