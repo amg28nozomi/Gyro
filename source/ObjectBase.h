@@ -6,15 +6,7 @@
  * @date   January 2022
  *********************************************************************/
 #pragma once
-
-namespace AppFrame {
-  namespace Math {
-    /**
-     * @brief 前方宣言
-     */
-    class Vector4;
-  }
-}
+#include "appframe.h"
 
 /**
  * @brief ゲームベース
