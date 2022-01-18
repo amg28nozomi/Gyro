@@ -12,7 +12,9 @@
  */
 namespace Gyro {
   // 前方宣言
-  class ApplicationMain;
+  namespace Application {
+    class ApplicationMain;
+  }
   /**
    * @brief モードベース
    */
@@ -27,7 +29,7 @@ namespace Gyro {
        * @brief コンストラクタ
        * @param app アプリケーションの参照
        */
-      ModeGame(AppFrame::Application::ApplicationBase& app);
+      ModeGame(Application::ApplicationMain& app);
       /**
        * @brief デストラクタ
        */
@@ -64,15 +66,13 @@ namespace Gyro {
        */
       bool Draw() const override;
       /**
-       * @brief  グラビティベースの取得
-       * @return グラビティベースの参照
+       * @brief  アプリケーションメインの取得
+       * @return アプリケーションメインの参照を返す
        */
-      inline AppFrame::Math::GravityBase& GetGravity() {
-        return *_gravity;
-      }
+      Application::ApplicationMain& GetAppMain();
     private:
-      //!< グラビティベース
-      std::shared_ptr<AppFrame::Math::GravityBase> _gravity{nullptr};
+      //!< アプリケーションメインの参照
+      Application::ApplicationMain& _appMain;
     };
   } // namespace Mode
 } // namespace Gyro

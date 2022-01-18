@@ -11,11 +11,10 @@
 namespace Gyro {
   namespace Mode {
 
-    ModeGame::ModeGame(AppFrame::Application::ApplicationBase& app) : ModeBase(app) {
+    ModeGame::ModeGame(Application::ApplicationMain& app) : ModeBase(*app.GetInstance()), _appMain(app) {
     }
 
     ModeGame::~ModeGame() {
-
     }
 
     bool ModeGame::Enter() {
@@ -29,8 +28,6 @@ namespace Gyro {
     }
 
     bool ModeGame::Init() {
-      // グラビティベースの生成
-      _gravity = std::make_shared<AppFrame::Math::GravityBase>();
       // 使用するデータの読み込みを記述する
       return true;
     }
@@ -52,6 +49,10 @@ namespace Gyro {
 
     bool ModeGame::Draw() const {
       return true;
+    }
+
+    Application::ApplicationMain& ModeGame::GetAppMain() {
+      return _appMain;
     }
   } // namespace Mode
 } // namespace Gyro
