@@ -47,6 +47,14 @@ namespace Gyro {
        * @return true:読み取り成功 false:読み取り失敗
        */
       bool LoadModel(std::string_view fileName);
+      /**
+       * @brief  指定したモデルハンドルの取得
+       * @param  key モデル情報に紐づけられた文字列
+       * @param  no モデル番号
+       * @return keyが有効な場合はモデルハンドルを返す
+       *         有効ではない場合は-1を返す
+       */
+      const int GetModelHandle(std::string_view key, const int no);
     private:
       Application::ApplicationMain& _app; //!< アプリケーションメインの参照
       //!< モーションデータをファイル名(文字列)で管理する連想配列

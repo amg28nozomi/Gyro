@@ -2,6 +2,7 @@
 #include <DxLib.h>
 #include "ApplicationMain.h"
 
+
 namespace Gyro {
   namespace Model {
 
@@ -62,6 +63,14 @@ namespace Gyro {
         _animations.emplace(animName, no);
       }
       return true;
+    }
+
+    const int ModelServer::GetModelHandle(std::string_view key, const int no) {
+      // “o˜^‚³‚ê‚Ä‚¢‚éê‡‚Í”»’è‚ğs‚¤
+      if (_registry.contains(key.data())) {
+        auto handles = _registry.at(key.data());
+      }
+      return;
     }
 
     bool ModelServer::PathExist(std::filesystem::path path) {
