@@ -37,6 +37,12 @@
     <Filter Include="ヘッダー ファイル\Object">
       <UniqueIdentifier>{9cc7ae8e-3db1-4639-b930-e78ef0cdf180}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Model">
+      <UniqueIdentifier>{bb6db7b9-ed44-4bd3-9377-61c58fc949a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Model">
+      <UniqueIdentifier>{1ea92aef-8f01-44e0-867f-1e28927b4740}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\ApplicationMain.cpp">
@@ -60,6 +66,9 @@
     <ClCompile Include="source\ObjectBase.cpp">
       <Filter>ソース ファイル\Object</Filter>
     </ClCompile>
+    <ClCompile Include="source\ModelServer.cpp">
+      <Filter>ソース ファイル\Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\ApplicationMain.h">
@@ -82,6 +91,9 @@
     </ClInclude>
     <ClInclude Include="source\ObjectBase.h">
       <Filter>ヘッダー ファイル\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ModelServer.h">
+      <Filter>ヘッダー ファイル\Model</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
