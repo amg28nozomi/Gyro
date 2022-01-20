@@ -37,6 +37,12 @@
     <Filter Include="ヘッダー ファイル\Object">
       <UniqueIdentifier>{9cc7ae8e-3db1-4639-b930-e78ef0cdf180}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Utility">
+      <UniqueIdentifier>{2da0621c-a024-47dc-8938-66430bc456c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Utility">
+      <UniqueIdentifier>{51563eb1-c42b-46a5-91e9-415ae64f90f7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\ApplicationMain.cpp">
@@ -60,6 +66,9 @@
     <ClCompile Include="source\ObjectBase.cpp">
       <Filter>ソース ファイル\Object</Filter>
     </ClCompile>
+    <ClCompile Include="source\UtilityDX.cpp">
+      <Filter>ソース ファイル\Application</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\ApplicationMain.h">
@@ -82,6 +91,9 @@
     </ClInclude>
     <ClInclude Include="source\ObjectBase.h">
       <Filter>ヘッダー ファイル\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="source\UtilityDX.h">
+      <Filter>ヘッダー ファイル\Application</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
