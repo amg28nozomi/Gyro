@@ -6,8 +6,8 @@
  * @date   January 2022
  *********************************************************************/
 #include "CollisionCylinder.h"
-#include <appframe.h>
 #include <DxLib.h>
+#include <appframe.h>
 
 namespace Gyro {
 
@@ -41,7 +41,7 @@ namespace Gyro {
       VECTOR sVector(start.GetX(), start.GetY(), start.GetZ());
       VECTOR eVector(end.GetX(), end.GetY(), end.GetZ());
       // î•ñ‚ğŒ³‚É•`‰æ‚ğs‚¤
-      DrawCapsule3D();
+      // DrawCapsule3D();
 #endif
     }
   } // namespace Object
