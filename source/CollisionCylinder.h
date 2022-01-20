@@ -8,9 +8,7 @@
 #pragma once
 #include "CollisionBase.h"
 
-namespace AppMath = AppFrame::Math;
 #ifdef _DEBUG
-namespace AppData = AppFrame::Data;
 namespace AppFrame::Data {
   class Color;
 }
@@ -29,6 +27,8 @@ namespace Gyro {
    * @brief Object
    */
   namespace Object {
+
+    namespace AppMath = AppFrame::Math;
     /**
      * @class CollisionCylinder
      * @brief 円柱の当たり判定
@@ -91,13 +91,20 @@ namespace Gyro {
       void SetColor(AppData::Color color) {
         _color = color;
       }
+      /**
+       * @brief 描画フラグの切り替え
+       */
+      void ChengeDrawFlag(bool flag) {
+        _debug = flag;
+      }
 #endif
     private:
       AppMath::Vector4 _position; //!< 座標
-      AppMath::Line _line; //!< 円柱の線分
+      AppMath::Line _line; //!< 円柱の線分(2d)
       float _radius;       //!< 円の半径
 #ifdef _DEBUG
       AppData::Color _color; //!< カプセル描画用カラーコード
+      bool _debug{false}; //!< Debug描画判定フラグ
 #endif
     };
   } // namespace Object

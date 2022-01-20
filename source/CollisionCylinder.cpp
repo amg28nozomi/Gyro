@@ -8,6 +8,7 @@
 #include "CollisionCylinder.h"
 #include <DxLib.h>
 #include <appframe.h>
+#include "UtilityDX.h"
 
 namespace Gyro {
 
@@ -31,17 +32,21 @@ namespace Gyro {
     void CollisionCylinder::Process(AppMath::Vector4 pos) {
       // 座標を更新する
       _position = pos;
+      // 円の座標を更新する
+
     }
 
     void CollisionCylinder::Draw() {
 #ifdef _DEBUG
-      
+      // ベクトルの取得
       auto [start, end] = _line.GetVector();
       // 始点・終点
-      VECTOR sVector(start.GetX(), start.GetY(), start.GetZ());
-      VECTOR eVector(end.GetX(), end.GetY(), end.GetZ());
-      // 情報を元に描画を行う
-      // DrawCapsule3D();
+      auto sVector = UtilityDX::ToVECTOR(start);
+      auto eVector = UtilityDX::ToVECTOR(end);
+      // 情報を元にスフィアの描画を行う
+      DrawCapsule3D(sVector, eVector, _radius * 2, 10, 0, 0, TRUE);
+      // 直線を描画する
+      DrawLine3D(sVector, eVector, _color.GetColorCode());
 #endif
     }
   } // namespace Object
