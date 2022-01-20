@@ -78,6 +78,9 @@
     <ClCompile Include="source\CollisionSphere.cpp">
       <Filter>ソース ファイル\Object</Filter>
     </ClCompile>
+    <ClCompile Include="source\Player.cpp">
+      <Filter>ヘッダー ファイル\Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\ApplicationMain.h">
@@ -104,8 +107,17 @@
     <ClInclude Include="source\UtilityDX.h">
       <Filter>ヘッダー ファイル\Application</Filter>
     </ClInclude>
+    <ClInclude Include="source\CollisionSphere.h">
+      <Filter>ヘッダー ファイル\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="source\CollisionCylinder.h">
+      <Filter>ヘッダー ファイル\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="source\CollisionBase.h">
+      <Filter>ヘッダー ファイル\Object</Filter>
+    </ClInclude>
     <ClInclude Include="source\Player.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ソース ファイル\Object</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

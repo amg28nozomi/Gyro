@@ -6,6 +6,8 @@
  * @date   January 2022
  *********************************************************************/
 #pragma once
+#include <utility>
+#include <appframe.h>
 #include "CollisionBase.h"
 
 #ifdef _DEBUG

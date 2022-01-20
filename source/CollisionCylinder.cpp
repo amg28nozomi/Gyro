@@ -7,7 +7,6 @@
  *********************************************************************/
 #include "CollisionCylinder.h"
 #include <DxLib.h>
-#include <appframe.h>
 #include "UtilityDX.h"
 
 namespace Gyro {
