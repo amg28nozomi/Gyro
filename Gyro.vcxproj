@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\ApplicationMain.cpp" />
+    <ClCompile Include="source\CollisionBase.cpp" />
     <ClCompile Include="source\ModeGame.cpp" />
     <ClCompile Include="source\ObjectBase.cpp" />
     <ClCompile Include="source\ScoreBase.cpp" />
@@ -29,6 +30,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\ApplicationMain.h" />
+    <ClInclude Include="source\CollisionBase.h" />
     <ClInclude Include="source\ModeGame.h" />
     <ClInclude Include="source\ObjectBase.h" />
     <ClInclude Include="source\ScoreBase.h" />
