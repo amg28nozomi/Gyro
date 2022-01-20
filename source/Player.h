@@ -23,7 +23,7 @@ namespace Gyro {
          * @brief オブジェクトベースのサブクラス
          */
         class Player : public Object::ObjectBase {
-
+            public:
             /**
              * @enum class
              */
@@ -38,6 +38,7 @@ namespace Gyro {
              * @brief コンストラクタ
              */
             Player(Application::ApplicationMain& app);
+            //Player();
             /**
              * @brief  初期化処理
              * @return true
@@ -54,6 +55,8 @@ namespace Gyro {
              */
             bool Draw() const override;
         protected:
+            int _handleMap;
+            int _frameMapCollision;
             int _handleModel;       //!< モデルハンドル
             int _handleSkySphere;   //!< スカイスフィアハンドル
             int _attachIndex;       //!< アニメーションのアタッチ

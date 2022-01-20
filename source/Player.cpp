@@ -7,30 +7,38 @@
  *********************************************************************/
 #include "Player.h"
 #include "ApplicationMain.h"
+#define	PI	(3.1415926535897932386f)
+#define	DEG2RAD(x)			( ((x) / 180.0f ) * PI )
 
 namespace Gyro {
     namespace Player {
 
-        Player::Player(Application::ApplicationMain& app) : Object::ObjectBase(app) {
-            Init();
-        }
-
-        bool Player::Init() {
-            // 初期化
-            _handleModel = MV1LoadModel("res/sera.mv1"); // プレイヤー
+        Player::Player(Application::ApplicationMain& app) : Object::ObjectBase(app){
+            _handleModel = MV1LoadModel("res/SDChar.mv1"); // プレイヤー
             _handleSkySphere = MV1LoadModel("res/skysphere.mv1"); // スカイスフィア
+            _handleMap = MV1LoadModel("res/Ground.mv1");
+            _frameMapCollision = MV1SearchFrame(_handleMap, "ground_navmesh");
             _attachIndex = -1;
             _totalTime = 0.0f;
             _playTime = 0.0f;
             _position = VGet(0.0f, 0.0f, 0.0f);
             _dir = VGet(0.0f, 0.0f, 0.0f);
             _state = STATE::IDLE;
-
             // カメラ
             _cam._pos = VGet(0, 90.0f, -300.0f);
             _cam._target = VGet(0, 80.0f, 0);
             _cam._clipNear = 2.0f;
             _cam._clipFar = 10000.0f;
+        }
+
+        bool Player::Init() {
+            // 初期化
+
+            //// カメラ
+            //_cam._pos = VGet(0, 90.0f, -300.0f);
+            //_cam._target = VGet(0, 80.0f, 0);
+            //_cam._clipNear = 2.0f;
+            //_cam._clipFar = 10000.0f;
 
             return true;
         }
@@ -73,19 +81,33 @@ namespace Gyro {
                 length = mvSpeed;
             }
 
-            // vをrad分回転させる
-            v.x = cos(rad + camrad) * length;
-            v.z = sin(rad + camrad) * length;
+            // 移動前の位置を保存
+            VECTOR oldvPos = _position;
+            VECTOR oldv = v;
+
+            // コリジョン判定で引っかかった時に、escapeTbl[]順に角度を変えて回避を試みる
+            float escapeTbl[] = {
+                0, -10, 10, -20, 20, -30, 30, -40, 40, -50, 50, -60, 60, -70, 70, -80, 80,
+            };
+            for (int i = 0; i < sizeof(escapeTbl) / sizeof(escapeTbl[0]); i++) {
+                // escapeTbl[i]の分だけ移動量v回転
+                float escape_rad = DEG2RAD(escapeTbl[i]);
+                v.x = cos(rad + camrad + escape_rad) * length;
+                v.z = sin(rad + camrad + escape_rad) * length;
+
+                // vの分移動
+                _position = VAdd(_position, v);
+            }
 
             // 移動量をそのままキャラの向きにする
             if (VSize(v) > 0.f) {		// 移動していない時は無視するため
                 _dir = v;
                 _state = STATE::WALK;
-                MV1AttachAnim(_handleModel, MV1GetAnimIndex(_handleModel, "Walk"), -1, false);
+                MV1AttachAnim(_handleModel, MV1GetAnimIndex(_handleModel, "run"), -1, false);
             }
             else {
                 _state = STATE::IDLE;
-                MV1AttachAnim(_handleModel, MV1GetAnimIndex(_handleModel, "Wait"), -1, false);
+                MV1AttachAnim(_handleModel, MV1GetAnimIndex(_handleModel, "idle"), -1, false);
             }
 
             { // カメラの操作を行う(右スティック)
@@ -135,11 +157,12 @@ namespace Gyro {
             MV1SetAttachAnimTime(_handleModel, _attachIndex, _playTime);
             // 位置
             MV1SetPosition(_handleModel, _position);
-            MV1SetPosition(_handleSkySphere, _position);
+           // MV1SetPosition(_handleSkySphere, _position);
             // 向きからY軸回転を算出
             VECTOR vRot = { 0,0,0 };
             vRot.y = atan2(_dir.x * -1, _dir.z * -1);		// モデルが標準でどちらを向いているかで式が変わる(これは-zを向いている場合)
             MV1SetRotationXYZ(_handleModel, vRot);
+
             /*switch (_state) {
             case STATE::IDLE:
                 MV1AttachAnim(_handleModel, MV1GetAnimIndex(_handleModel, "Wait"), -1, false);
@@ -170,9 +193,14 @@ namespace Gyro {
 
             // スカイスフィアの描画
             MV1DrawModel(_handleSkySphere);
+            MV1DrawModel(_handleMap);
+
+            // カメラ設定更新
+            SetCameraPositionAndTarget_UpVecY(_cam._pos, _cam._target);
+            SetCameraNearFar(_cam._clipNear, _cam._clipFar);
 
             // ライト設定
-            SetUseLighting(TRUE);
+            //SetUseLighting(TRUE);
 
             return true;
         }

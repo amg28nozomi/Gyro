@@ -7,11 +7,18 @@
  *********************************************************************/
 #include "ModeGame.h"
 #include "ApplicationMain.h"
+#include "Player.h"
+#include "PrimitiveBase.h"
+#include "PrimitivePlane.h"
+
+namespace {
+    constexpr auto TEXTURE = _T("res/Groundplants1_D.jpg");
+}
 
 namespace Gyro {
   namespace Mode {
 
-    ModeGame::ModeGame(Application::ApplicationMain& app) : ModeBase(*app.GetInstance()), _appMain(app) {
+    ModeGame::ModeGame(Application::ApplicationMain& app) : ModeBase(*app.GetInstance()), _appMain(app), _player(app) {
     }
 
     ModeGame::~ModeGame() {
@@ -29,6 +36,10 @@ namespace Gyro {
 
     bool ModeGame::Init() {
       // 使用するデータの読み込みを記述する
+        _player.Init();
+        _plane.Initialize(45000.0, 150);
+        _plane.Load(TEXTURE);
+        _plane.Create();
       return true;
     }
 
@@ -44,10 +55,19 @@ namespace Gyro {
     }
 
     bool ModeGame::Process() {
+        _player.Process();
+        _plane.Process();
+        _plane.Render();
       return true;
     }
 
     bool ModeGame::Draw() const {
+        _player.Draw();
+
+        // 並行光源を 1 つ追加する
+        VECTOR light_dir = VGet(-1.0f, -1.0f, -1.0f);
+        auto light_handle = CreateDirLightHandle(light_dir);
+
       return true;
     }
 

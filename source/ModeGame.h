@@ -7,6 +7,9 @@
  *********************************************************************/
 #pragma once
 #include "appframe.h"
+#include "Player.h"
+#include "PrimitiveBase.h"
+#include "PrimitivePlane.h"
 /**
  * @brief ゲームベース
  */
@@ -73,6 +76,8 @@ namespace Gyro {
     private:
       //!< アプリケーションメインの参照
       Application::ApplicationMain& _appMain;
+      Player::Player _player;
+      Primitive::Plane _plane;
     };
   } // namespace Mode
 } // namespace Gyro
