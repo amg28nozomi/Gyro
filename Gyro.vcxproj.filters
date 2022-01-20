@@ -69,8 +69,14 @@
     <ClCompile Include="source\UtilityDX.cpp">
       <Filter>ソース ファイル\Application</Filter>
     </ClCompile>
-    <ClCompile Include="source\Player.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="source\CollisionBase.cpp">
+      <Filter>ソース ファイル\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="source\CollisionCylinder.cpp">
+      <Filter>ソース ファイル\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="source\CollisionSphere.cpp">
+      <Filter>ソース ファイル\Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
