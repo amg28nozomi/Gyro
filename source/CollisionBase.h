@@ -42,4 +42,3 @@ namespace Gyro {
     };
   } // namespace Object
 } // namespace Gyro
-
