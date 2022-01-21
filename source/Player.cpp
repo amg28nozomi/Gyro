@@ -17,12 +17,12 @@ namespace Gyro {
             _handleModel = MV1LoadModel("res/SDChar.mv1"); // プレイヤー
             _handleSkySphere = MV1LoadModel("res/skysphere.mv1"); // スカイスフィア
             _handleMap = MV1LoadModel("res/Ground.mv1");
-            _frameMapCollision = MV1SearchFrame(_handleMap, "ground_navmesh");
+            //_frameMapCollision = MV1SearchFrame(_handleMap, "ground_navmesh");
             _attachIndex = -1;
             _totalTime = 0.0f;
             _playTime = 0.0f;
             _position = VGet(0.0f, 0.0f, 0.0f);
-            _dir = VGet(0.0f, 0.0f, 0.0f);
+            _dir = VGet(0.0f, 0.0f, 1.0f);
             _state = STATE::IDLE;
             // カメラ
             _cam._pos = VGet(0, 90.0f, -300.0f);
@@ -68,7 +68,7 @@ namespace Gyro {
 
             // 移動方向を決める
             VECTOR v = { 0,0,0 };
-            float mvSpeed = 6.f;
+            float mvSpeed = 3.f;
 
             // アナログ左スティック用
             float length = sqrt(lx * lx + ly * ly);
@@ -81,51 +81,45 @@ namespace Gyro {
                 length = mvSpeed;
             }
 
-            // 移動前の位置を保存
-            VECTOR oldvPos = _position;
-            VECTOR oldv = v;
+            v.x = cos(rad + camrad) * length;
+            v.z = sin(rad + camrad) * length;
 
-            // コリジョン判定で引っかかった時に、escapeTbl[]順に角度を変えて回避を試みる
-            float escapeTbl[] = {
-                0, -10, 10, -20, 20, -30, 30, -40, 40, -50, 50, -60, 60, -70, 70, -80, 80,
-            };
-            for (int i = 0; i < sizeof(escapeTbl) / sizeof(escapeTbl[0]); i++) {
-                // escapeTbl[i]の分だけ移動量v回転
-                float escape_rad = DEG2RAD(escapeTbl[i]);
-                v.x = cos(rad + camrad + escape_rad) * length;
-                v.z = sin(rad + camrad + escape_rad) * length;
-
-                // vの分移動
-                _position = VAdd(_position, v);
-            }
+            // vの分移動
+            _position = VAdd(_position, v);
+            _cam._pos = VAdd(_cam._pos, v);
+            _cam._target = VAdd(_cam._target, v);
 
             // 移動量をそのままキャラの向きにする
             if (VSize(v) > 0.f) {		// 移動していない時は無視するため
                 _dir = v;
                 _state = STATE::WALK;
-                MV1AttachAnim(_handleModel, MV1GetAnimIndex(_handleModel, "run"), -1, false);
+                //MV1AttachAnim(_handleModel, MV1GetAnimIndex(_handleModel, "run"), -1, false);
             }
             else {
                 _state = STATE::IDLE;
-                MV1AttachAnim(_handleModel, MV1GetAnimIndex(_handleModel, "idle"), -1, false);
+                //MV1AttachAnim(_handleModel, MV1GetAnimIndex(_handleModel, "idle"), -1, false);
+            }
+
+            if (key & PAD_INPUT_2) {
+                _state = STATE::ATTACK;
             }
 
             { // カメラの操作を行う(右スティック)
                 // Y軸回転
                 float sx = _cam._pos.x - _cam._target.x;
                 float sz = _cam._pos.z - _cam._target.z;
-                float rad = atan2(sz, sx);
+                float rady = atan2(sz, sx);
                 float length = sqrt(sz * sz + sx * sx);
-                if (rx > analogMin) { rad -= 0.05f; }
-                if (rx < -analogMin) { rad += 0.05f; }
-                _cam._pos.x = _cam._target.x + cos(rad) * length;
-                _cam._pos.z = _cam._target.z + sin(rad) * length;
+                if (rx > analogMin) { rady -= 0.05f; }
+                if (rx < -analogMin) { rady += 0.05f; }
+                _cam._pos.x = _cam._target.x + cos(rady) * length;
+                _cam._pos.z = _cam._target.z + sin(rady) * length;
             }
 
             // ステータスが変わっていないか？
             if (oldState == _state) {
                 // 再生時間を進める
-                _playTime += 0.5f;
+                _playTime += 0.8f;
             }
             else {
                 // アニメーションがアタッチされていたら、デタッチする
@@ -136,14 +130,18 @@ namespace Gyro {
                 // ステータスに合わせてアニメーションのアタッチ
                 switch (_state) {
                 case STATE::IDLE:
-                    _attachIndex = MV1AttachAnim(_handleModel, MV1GetAnimIndex(_handleModel, "Wait"), -1, FALSE);
+                    _attachIndex = MV1AttachAnim(_handleModel, MV1GetAnimIndex(_handleModel, "MO_SDChar_idle"), -1, FALSE);
                     break;
                 case STATE::WALK:
-                    _attachIndex = MV1AttachAnim(_handleModel, MV1GetAnimIndex(_handleModel, "Run"), -1, FALSE);
+                    _attachIndex = MV1AttachAnim(_handleModel, MV1GetAnimIndex(_handleModel, "MO_SDChar_run"), -1, FALSE);
+                    break;
+                case STATE::ATTACK:
+                    _attachIndex = MV1AttachAnim(_handleModel, MV1GetAnimIndex(_handleModel, "MO_SDChar_attack"), -1, FALSE);
                     break;
                 }
                 // アタッチしたアニメーションの総再生時間を取得する
                 _totalTime = MV1GetAttachAnimTotalTime(_handleModel, _attachIndex);
+                
                 // 再生時間を初期化
                 _playTime = 0.0f;
             }
@@ -152,16 +150,6 @@ namespace Gyro {
             if (_playTime >= _totalTime) {
                 _playTime = 0.0f;
             }
-
-            // 再生時間をセットする
-            MV1SetAttachAnimTime(_handleModel, _attachIndex, _playTime);
-            // 位置
-            MV1SetPosition(_handleModel, _position);
-           // MV1SetPosition(_handleSkySphere, _position);
-            // 向きからY軸回転を算出
-            VECTOR vRot = { 0,0,0 };
-            vRot.y = atan2(_dir.x * -1, _dir.z * -1);		// モデルが標準でどちらを向いているかで式が変わる(これは-zを向いている場合)
-            MV1SetRotationXYZ(_handleModel, vRot);
 
             /*switch (_state) {
             case STATE::IDLE:
@@ -188,12 +176,24 @@ namespace Gyro {
 
         bool Player::Draw() const {
 
+            // 再生時間をセットする
+            MV1SetAttachAnimTime(_handleModel, _attachIndex, _playTime);
+            // 位置
+            MV1SetPosition(_handleModel, _position);
+            // MV1SetPosition(_handleSkySphere, _position);
+            // 向きからY軸回転を算出
+            VECTOR vRot = { 0,0,0 };
+            vRot.y = atan2(_dir.x * -1, _dir.z * -1);		// モデルが標準でどちらを向いているかで式が変わる(これは-zを向いている場合)
+            MV1SetRotationXYZ(_handleModel, vRot);
             // プレイヤーの描画
             MV1DrawModel(_handleModel);
 
             // スカイスフィアの描画
             MV1DrawModel(_handleSkySphere);
-            MV1DrawModel(_handleMap);
+            //MV1DrawModel(_handleMap);
+            MV1DrawMesh(_handleMap, 0);
+            MV1DrawMesh(_handleMap, 1);
+            MV1DrawMesh(_handleMap, 2);
 
             // カメラ設定更新
             SetCameraPositionAndTarget_UpVecY(_cam._pos, _cam._target);

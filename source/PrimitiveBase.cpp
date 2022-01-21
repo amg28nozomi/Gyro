@@ -47,27 +47,27 @@ namespace Gyro {
         }
 
         void PrimitiveBase::Process() {
-            _vertexNum = static_cast<int>(_vertex->size());
+            /*_vertexNum = static_cast<int>(_vertex->size());
             _indexNum = static_cast<int>(_index->size());
-            _polygonNum = _indexNum / 3;
+            _polygonNum = _indexNum / 3;*/
         }
 
         bool PrimitiveBase::Render() {
-            /*auto vertexNum = static_cast<int>(_vertex->size());
-            auto indexNum = static_cast<int>(_index->size());*/
+            auto vertexNum = static_cast<int>(_vertex->size());
+            auto indexNum = static_cast<int>(_index->size());
 
             // ƒ|ƒŠƒSƒ“‚ª‚P‚Â‚à–³‚¯‚ê‚Î•`‰æ‚µ‚È‚¢
-            /*if (3 > _vertexNum || 3 > _indexNum) {
+            if (3 > _vertexNum || 3 > _indexNum) {
                 return false;
-            }*/
+            }
 
-            //auto _polygonNum = _indexNum / 3;
+            auto _polygonNum = _indexNum / 3;
             auto useHandle = (_handle == -1) ? DX_NONE_GRAPH : _handle;
 
             //SetTransformToWorld(&_posture); // Žp¨§Œä—p‚Ì‚½‚ßŒ»ÝƒRƒƒ“ƒgƒAƒEƒg
 
             DrawPolygonIndexed3D(_vertex->data(), _vertexNum, _index->data(), _polygonNum, useHandle, FALSE);
-            //SetTransformToWorld(&Identity);
+            SetTransformToWorld(&Identity);
 
             return true;
         }

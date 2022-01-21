@@ -65,8 +65,8 @@ namespace Gyro {
         _player.Draw();
 
         // •ÀsŒõŒ¹‚ğ 1 ‚Â’Ç‰Á‚·‚é
-        VECTOR light_dir = VGet(-1.0f, -1.0f, -1.0f);
-        auto light_handle = CreateDirLightHandle(light_dir);
+        VECTOR light_dir = VGet(0.0f, 1.0f, 0.0f);
+        auto light_handle = ChangeLightTypeDir(light_dir);
 
       return true;
     }
