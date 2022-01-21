@@ -73,10 +73,6 @@ namespace Gyro {
 
         protected:
             int _handle;        //!< 画像ハンドル
-            int _vertexNum;     //!< 頂点の数
-            int _indexNum;      //!< 要素の数
-            int _polygonNum;    //!< ポリゴンの数
-
 
             std::shared_ptr<std::vector<VERTEX3D>> _vertex;         //!< 頂点
             std::shared_ptr<std::vector<unsigned short>> _index;    //!< 要素
