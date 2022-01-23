@@ -85,6 +85,35 @@ namespace Gyro {
        * @brief カメラの設定
        */
       void SetCamera();
+      /**
+       * @brief  移動量の算出
+       * @param  stick 入力値
+       * @return 移動量
+       */
+      float Speed(const AppFrame::Math::Vector4 stick) const;
+      /**
+       * @brief カメラの更新
+       * @param stick 
+       */
+      void CameraUpdate(const AppFrame::Math::Vector4 stick);
+      /**
+       * @brief 向きの設定
+       * @param move 移動量
+       */
+      void SetRotation(const AppFrame::Math::Vector4 move);
+      /**
+       * @brief アニメーション処理
+       */
+      void Animation();
+      /**
+       * @brief 指定したアニメーションインデックスの取得
+       * @param key アニメーションに紐づけられた文字列
+       */
+      int AnimaIndex(std::string_view key) const;
+      /**
+       * @brief アニメーションのアタッチ
+       */
+      bool AttachAnima(std::string_view key);
     };
   }
     /**

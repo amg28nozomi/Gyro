@@ -12,6 +12,11 @@
 
 namespace {
   constexpr auto NoAnimation = -1; //!< アニメーションはアタッチされていない
+  constexpr auto InputMin = 0.3f;  //!< 入力を受け付ける最低値
+  constexpr auto InputMax = 32767.0f;
+
+  constexpr auto MoveSpeed = 6.0f; //!< デフォルトの移動量
+  constexpr auto MoveZero = 0.0f;
 }
 
 namespace Gyro {
@@ -29,12 +34,43 @@ namespace Gyro {
     }
 
     bool Player::Process() {
-      // 
+      // 名前空間の省略
+      namespace App = AppFrame::Application;
+      namespace AppMath = AppFrame::Math;
+      // 入力状態の取得
+      auto input = _app.GetOperation().GetXBoxState();
+      auto [lX, lY] = input.GetStick(false); // 左スティック
+      auto [rX, rY] = input.GetStick(true);  // 右スティック
+      auto [leftTrigger, rightTrigger] = input.GetTrigger(); // トリガーボタン
+      // 実際に使用する移動量(2次元ベクトル)
+      auto stickLeft = AppMath::Vector4(lX / InputMax, lY / InputMax);
+      auto stickRight = AppMath::Vector4(rX / InputMax, rY / InputMax);
+      // 必要情報の算出
+      AppMath::Vector4 move; // 移動量
+      // カメラ向きの算出
+      auto sX = _cam._pos.x - _cam._target.x;
+      auto sZ = _cam._pos.z - _cam._target.z;
+      auto camrad = atan2(sZ, sX);
+      // スピードの算出
+      auto speed = Speed(stickLeft);
+
+      auto oldPosition = _position; // 前フレーム座標
+
+    }
+
+    bool Player::Draw() const {
+      // プレイヤーの描画
+      MV1DrawModel(_model);
+      // スカイスフィアの描画
+      MV1DrawModel(_handleSkySphere);
+      MV1DrawModel(_handleMap);
+      // カメラ設定更新
+      SetCameraPositionAndTarget_UpVecY(_cam._pos, _cam._target);
+      SetCameraNearFar(_cam._clipNear, _cam._clipFar);
     }
 
     void Player::Input() {
-      // 入力状態の取得
-      auto input = _app.GetOperation().GetJoypadState();
+      
     }
 
     void Player::LoadResource() {
@@ -65,6 +101,64 @@ namespace Gyro {
       _animaIndex = NoAnimation;
       _animaTime = 0.0f;
       _totalTime = 0.0f;
+    }
+
+    float Player::Speed(const AppFrame::Math::Vector4 stick) const {
+      // 移動量はあるか
+      auto length = stick.Length2D();
+      auto rad = atan2(stick.GetX(), stick.GetY());
+      // 入力具合が少ない場合は移動量を0にする
+      if (length < InputMin) {
+        return MoveZero;
+      }
+      return MoveSpeed;
+    }
+
+    void Player::CameraUpdate(const AppFrame::Math::Vector4 stick) {
+      float sx = _cam._pos.x - _cam._target.x;
+      float sz = _cam._pos.z - _cam._target.z;
+      float rad = atan2(sz, sx);
+      float length = sqrt(sz * sz + sx * sx);
+      if (stick.GetX() > InputMin) { rad -= 0.05f; }
+      if (stick.GetX() < -InputMin) { rad += 0.05f; }
+      _cam._pos.x = _cam._target.x + cos(rad) * length;
+      _cam._pos.z = _cam._target.z + sin(rad) * length;
+    }
+
+    void Player::SetRotation(const AppFrame::Math::Vector4 move) {
+      // 移動量がないある場合は向きを変更する
+      if (move.Length()) {
+        _rotation = move;
+      }
+    }
+
+    void Player::Animation() {
+      // アニメーション処理
+      MV1SetAttachAnimTime(_model, _animaIndex, _animaTime);
+      _animaTime += 0.5f; // 再生時間を進める
+      // アニメーションが終了したかの判定
+      if (_totalTime <= _animaTime) {
+        // アニメーションを切り替える
+      }
+    }
+
+    int Player::AnimaIndex(std::string_view key) const {
+      return MV1GetAnimIndex(_model, key.data());
+    }
+
+    bool Player::AttachAnima(std::string_view key) {
+      // アニメーション番号の取得
+      auto index = AnimaIndex(key);
+      // 取得に成功したかの判定
+      if (index == -1) {
+#ifdef _DEBUG
+        throw ("アニメーション番号の取得に失敗しました\n");
+#endif
+        return false;
+      }
+      // アニメーションをアタッチ
+      MV1AttachAnim(_model, index, -1, false);
+      return true;
     }
 
   } // namespace Player
