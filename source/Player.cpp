@@ -53,19 +53,21 @@ namespace Gyro {
       // 移動量はあるか
       auto length = stickLeft.Length2D();
       auto rad = atan2(stickLeft.GetX(), stickLeft.GetY());
-      float speed; // 移動量
-      // 入力具合が少ない場合は移動量を0にする
-      if (length < InputMin) {
-        speed = MoveZero;
+
+      float mx, my;
+      if (lX == 0) {
+        mx = 0.0f;
       }
-      else speed = MoveSpeed;
+      else mx = (stickLeft.GetX() / InputMax) * 10.0f;
+      if (lY == 0) {
+        my = 0.0f;
+      }
+      else my = (stickLeft.GetY() / InputMax) * 10.0f;
+
       auto oldPosition = _position; // 前フレーム座標
       // 移動量を算出する
-      auto num = rad + camrad;
       AppMath::Vector4 move;
-      if (speed) {
-        move = AppMath::Vector4(cos(num) * length, 0.0f, sin(num) * length);
-      }
+      move = AppMath::Vector4(mx, 0.0f, my);
       CameraUpdate(stickRight);
       // 座標を更新する
       _position.Add(move);
@@ -74,7 +76,8 @@ namespace Gyro {
       SetRotation(move);
       Animation(oldState);
       // 座標の設定
-      MV1SetPosition(_model, UtilityDX::ToVECTOR(_position));
+      VECTOR p(_position.GetX(), _position.GetY(), _position.GetZ());
+      MV1SetPosition(_model, p);
       return true;
     }
 
@@ -223,6 +226,8 @@ namespace Gyro {
       // 座標を出力する
       auto[x, y, z] = _position.GetVector3();
       DrawFormatString(0, 0, 255, "x:%f  y:%f, z:%f", x, y, z);
+      auto [lx, ly] = _app.GetOperation().GetXBoxState().GetStick(false);
+      DrawFormatString(0, 20, 255, "lx:%f  ly:%f", lx, ly);
     }
 #endif
 
