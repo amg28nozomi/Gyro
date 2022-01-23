@@ -10,10 +10,77 @@
 #define	PI	(3.1415926535897932386f)
 #define	DEG2RAD(x)			( ((x) / 180.0f ) * PI )
 
+namespace {
+  constexpr auto NoAnimation = -1; //!< アニメーションはアタッチされていない
+}
+
 namespace Gyro {
+  namespace Player {
+
+    Player::Player(Application::ApplicationMain& app) : ObjectBase(app) {
+      LoadResource(); // リソースの読み取り
+      Init();
+    }
+
+    bool Player::Init() {
+      SetCamera(); // カメラの設定
+      SetState();  // パラメータの設定
+      return true;
+    }
+
+    bool Player::Process() {
+      // 
+    }
+
+    void Player::Input() {
+      // 入力状態の取得
+      auto input = _app.GetOperation().GetJoypadState();
+    }
+
+    void Player::LoadResource() {
+      // 各種リソースの読み取り処理
+      _model = MV1LoadModel("res/SDChar.mv1"); // プレイヤー
+      _handleSkySphere = MV1LoadModel("res/skysphere.mv1"); // スカイスフィア
+      _handleMap = MV1LoadModel("res/Ground.mv1");
+      _frameMapCollision = MV1SearchFrame(_handleMap, "ground_navmesh");
+    }
+
+    void Player::SetCamera() {
+      // カメラの初期化
+      _cam._pos = VGet(0, 90.0f, -300.0f);
+      _cam._target = VGet(0, 80.0f, 0);
+      _cam._clipNear = 2.0f;
+      _cam._clipFar = 10000.0f;
+    }
+
+    void Player::SetState() {
+      // 状態の設定
+      _id = ObjectId::Player;
+      _state = ObjectState::Active;
+      // 座標・向きの設定
+      namespace AppMath = AppFrame::Math;
+      _position = AppMath::Vector4();
+      _rotation = AppMath::Vector4();
+      // アニメーションの初期化
+      _animaIndex = NoAnimation;
+      _animaTime = 0.0f;
+      _totalTime = 0.0f;
+    }
+
+  } // namespace Player
     namespace Player {
 
-        Player::Player(Application::ApplicationMain& app) : Object::ObjectBase(app){
+      Player::Player(Application::ApplicationMain& app) : ObjectBase(app) {
+        // 各種
+        _handleModel = MV1LoadModel("res/SDChar.mv1"); // プレイヤー
+        _handleSkySphere = MV1LoadModel("res/skysphere.mv1"); // スカイスフィア
+        _handleMap = MV1LoadModel("res/Ground.mv1");
+        _frameMapCollision = MV1SearchFrame(_handleMap, "ground_navmesh");
+      }
+
+
+        Player::Player(Application::ApplicationMain& app) : Object::ObjectBase(app) {
+          
             _handleModel = MV1LoadModel("res/SDChar.mv1"); // プレイヤー
             _handleSkySphere = MV1LoadModel("res/skysphere.mv1"); // スカイスフィア
             _handleMap = MV1LoadModel("res/Ground.mv1");
