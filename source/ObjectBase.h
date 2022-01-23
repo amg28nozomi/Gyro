@@ -85,7 +85,7 @@ namespace Gyro {
       AppFrame::Math::Vector4 _rotation;  //!< 回転行列
       bool _gravity; //!< 重力処理を行うか(true:重力処理を行う false:重力処理を行わない)
       float _mass;   //!< 質量
-      float _gravityScale; //!< 重力スケール
+      //float _gravityScale; //!< 重力スケール
       /**
        * @brief オブジェクトに対する重力処理
        */

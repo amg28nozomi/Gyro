@@ -14,6 +14,8 @@ namespace Gyro {
   namespace Object {
 
     ObjectBase::ObjectBase(Application::ApplicationMain& app) : _app(app) {
+      _gravity = false;
+      _mass = 0.0f;
     }
 
     bool ObjectBase::Init() {
@@ -36,7 +38,7 @@ namespace Gyro {
     void ObjectBase::Gravity() {
       using Gravitys = AppFrame::Math::GravityBase;
       // 重力スケールの更新
-      _gravityScale = Gravitys::GravityScale(_gravityScale, _mass);
+      // _gravityScale = Gravitys::GravityScale(_gravityScale, _mass);
       // 床に接触しているか判定を行う
 
       // 接触している場合は押し出し処理を実行
