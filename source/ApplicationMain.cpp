@@ -36,12 +36,12 @@ namespace Gyro {
     bool ApplicationMain::Input() {
       auto flag = ApplicationBase::Input();
       // 入力状態の取得
-      auto state = _input->GetJoypadState();
-      // ゲームを終了するかの判定
-      if (state.GetKey() & PAD_INPUT_1) {
-        _state = State::Quit;
-        return true;
-      }
+      //auto state = _input->GetJoypadState();
+      //// ゲームを終了するかの判定
+      //if (state.GetKey() & PAD_INPUT_1) {
+      //  _state = State::Quit;
+      //  return true;
+      //}
       return flag;
     }
 

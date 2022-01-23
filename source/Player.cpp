@@ -7,6 +7,7 @@
  *********************************************************************/
 #include "Player.h"
 #include "ApplicationMain.h"
+#include "UtilityDX.h"
 #define	PI	(3.1415926535897932386f)
 #define	DEG2RAD(x)			( ((x) / 180.0f ) * PI )
 
@@ -45,17 +46,35 @@ namespace Gyro {
       // 実際に使用する移動量(2次元ベクトル)
       auto stickLeft = AppMath::Vector4(lX / InputMax, lY / InputMax);
       auto stickRight = AppMath::Vector4(rX / InputMax, rY / InputMax);
-      // 必要情報の算出
-      AppMath::Vector4 move; // 移動量
       // カメラ向きの算出
       auto sX = _cam._pos.x - _cam._target.x;
       auto sZ = _cam._pos.z - _cam._target.z;
       auto camrad = atan2(sZ, sX);
-      // スピードの算出
-      auto speed = Speed(stickLeft);
-
+      // 移動量はあるか
+      auto length = stickLeft.Length2D();
+      auto rad = atan2(stickLeft.GetX(), stickLeft.GetY());
+      float speed; // 移動量
+      // 入力具合が少ない場合は移動量を0にする
+      if (length < InputMin) {
+        speed = MoveZero;
+      }
+      else speed = MoveSpeed;
       auto oldPosition = _position; // 前フレーム座標
-
+      // 移動量を算出する
+      auto num = rad + camrad;
+      AppMath::Vector4 move;
+      if (speed) {
+        move = AppMath::Vector4(cos(num) * length, 0.0f, sin(num) * length);
+      }
+      // 座標を更新する
+      _position.Add(move);
+      auto oldState = _playerState;
+      // 状態の更新
+      SetRotation(move);
+      Animation(oldState);
+      // 座標の設定
+      MV1SetPosition(_model, UtilityDX::ToVECTOR(_position));
+      return true;
     }
 
     bool Player::Draw() const {
@@ -67,6 +86,10 @@ namespace Gyro {
       // カメラ設定更新
       SetCameraPositionAndTarget_UpVecY(_cam._pos, _cam._target);
       SetCameraNearFar(_cam._clipNear, _cam._clipFar);
+#ifdef _DEBUG
+      DebugString(); // Debug情報の出力を行う
+#endif
+      return true;
     }
 
     void Player::Input() {
@@ -129,17 +152,29 @@ namespace Gyro {
       // 移動量がないある場合は向きを変更する
       if (move.Length()) {
         _rotation = move;
+        _playerState = PlayerState::Walk;
       }
+      _playerState = PlayerState::Idle;
     }
 
-    void Player::Animation() {
+    void Player::Animation(PlayerState old) {
       // アニメーション処理
       MV1SetAttachAnimTime(_model, _animaIndex, _animaTime);
-      _animaTime += 0.5f; // 再生時間を進める
-      // アニメーションが終了したかの判定
-      if (_totalTime <= _animaTime) {
-        // アニメーションを切り替える
+      // 前フレームと異なる場合の処理
+      if (_playerState == old) {
+        _animaTime += 0.5f; // 再生時間を進める
+        // アニメーションが終了したかの判定
+        if (_totalTime <= _animaTime) {
+          // アニメーションを切り替える
+          AttachAnima(GetAnimaKey());
+        }
+        return;
       }
+      // 現在のアニメーションを破棄
+      MV1DetachAnim(_model, _animaIndex);
+      _animaIndex = -1;
+      // アニメーションを切り替える
+      AttachAnima(GetAnimaKey());
     }
 
     int Player::AnimaIndex(std::string_view key) const {
@@ -148,223 +183,250 @@ namespace Gyro {
 
     bool Player::AttachAnima(std::string_view key) {
       // アニメーション番号の取得
-      auto index = AnimaIndex(key);
+      _animaIndex = AnimaIndex(key);
       // 取得に成功したかの判定
-      if (index == -1) {
+      if (_animaIndex == -1) {
 #ifdef _DEBUG
         throw ("アニメーション番号の取得に失敗しました\n");
 #endif
         return false;
       }
       // アニメーションをアタッチ
-      MV1AttachAnim(_model, index, -1, false);
+      MV1AttachAnim(_model, _animaIndex, -1, false);
+      // 総再生時間を更新
+      _totalTime = MV1GetAnimTotalTime(_model, _animaIndex);
+      _animaTime = 0.0f; // 再生時間を0にする
       return true;
     }
 
-  } // namespace Player
-    namespace Player {
-
-      Player::Player(Application::ApplicationMain& app) : ObjectBase(app) {
-        // 各種
-        _handleModel = MV1LoadModel("res/SDChar.mv1"); // プレイヤー
-        _handleSkySphere = MV1LoadModel("res/skysphere.mv1"); // スカイスフィア
-        _handleMap = MV1LoadModel("res/Ground.mv1");
-        _frameMapCollision = MV1SearchFrame(_handleMap, "ground_navmesh");
+    std::string_view Player::GetAnimaKey() const {
+      // 状態に応じたキーを返す
+      switch (_playerState) {
+      case PlayerState::Idle:
+        return "idle";
+      case PlayerState::Run:
+        return "run";
+      case PlayerState::Walk:
+        return "Walk";
+      case PlayerState::Jump:
+        return "Jump";
+      case PlayerState::Attack:
+        return "Attack";
+      default:
+        return "";
       }
+    }
+
+#ifdef _DEBUG
+    void Player::DebugString() const {
+      // 座標を出力する
+      auto[x, y, z] = _position.GetVector3();
+      DrawFormatString(0, 0, 0, "x:%f  y:%f, z:%f", x, y, z);
+    }
+#endif
+
+  } // namespace Player
+    //namespace Player {
+
+    //  Player::Player(Application::ApplicationMain& app) : ObjectBase(app) {
+    //    // 各種
+    //    _handleModel = MV1LoadModel("res/SDChar.mv1"); // プレイヤー
+    //    _handleSkySphere = MV1LoadModel("res/skysphere.mv1"); // スカイスフィア
+    //    _handleMap = MV1LoadModel("res/Ground.mv1");
+    //    _frameMapCollision = MV1SearchFrame(_handleMap, "ground_navmesh");
+    //  }
 
 
-        Player::Player(Application::ApplicationMain& app) : Object::ObjectBase(app) {
-          
-            _handleModel = MV1LoadModel("res/SDChar.mv1"); // プレイヤー
-            _handleSkySphere = MV1LoadModel("res/skysphere.mv1"); // スカイスフィア
-            _handleMap = MV1LoadModel("res/Ground.mv1");
-            _frameMapCollision = MV1SearchFrame(_handleMap, "ground_navmesh");
-            _attachIndex = -1;
-            _totalTime = 0.0f;
-            _playTime = 0.0f;
-            _position = VGet(0.0f, 0.0f, 0.0f);
-            _dir = VGet(0.0f, 0.0f, 0.0f);
-            _state = STATE::IDLE;
-            // カメラ
-            _cam._pos = VGet(0, 90.0f, -300.0f);
-            _cam._target = VGet(0, 80.0f, 0);
-            _cam._clipNear = 2.0f;
-            _cam._clipFar = 10000.0f;
-        }
+    //    Player::Player(Application::ApplicationMain& app) : Object::ObjectBase(app) {
+    //      
+    //        _handleModel = MV1LoadModel("res/SDChar.mv1"); // プレイヤー
+    //        _handleSkySphere = MV1LoadModel("res/skysphere.mv1"); // スカイスフィア
+    //        _handleMap = MV1LoadModel("res/Ground.mv1");
+    //        _frameMapCollision = MV1SearchFrame(_handleMap, "ground_navmesh");
+    //        _attachIndex = -1;
+    //        _totalTime = 0.0f;
+    //        _playTime = 0.0f;
+    //        _position = VGet(0.0f, 0.0f, 0.0f);
+    //        _dir = VGet(0.0f, 0.0f, 0.0f);
+    //        _state = STATE::IDLE;
+    //        // カメラ
+    //        _cam._pos = VGet(0, 90.0f, -300.0f);
+    //        _cam._target = VGet(0, 80.0f, 0);
+    //        _cam._clipNear = 2.0f;
+    //        _cam._clipFar = 10000.0f;
+    //    }
 
-        bool Player::Init() {
-            // 初期化
+    //    bool Player::Init() {
+    //        // 初期化
 
-            //// カメラ
-            //_cam._pos = VGet(0, 90.0f, -300.0f);
-            //_cam._target = VGet(0, 80.0f, 0);
-            //_cam._clipNear = 2.0f;
-            //_cam._clipFar = 10000.0f;
+    //        //// カメラ
+    //        //_cam._pos = VGet(0, 90.0f, -300.0f);
+    //        //_cam._target = VGet(0, 80.0f, 0);
+    //        //_cam._clipNear = 2.0f;
+    //        //_cam._clipFar = 10000.0f;
 
-            return true;
-        }
+    //        return true;
+    //    }
 
-        bool Player::Process() {
-            auto joypad = _app.GetOperation().GetJoypadState();
-            auto key = joypad.GetKey();
-            auto trigger = joypad.GetTriggerKey();
-            auto [stickX, stickY] = joypad.GetAnalogStick();
+    //    bool Player::Process() {
+    //        auto joypad = _app.GetOperation().GetJoypadState();
+    //        auto key = joypad.GetKey();
+    //        auto trigger = joypad.GetTriggerKey();
+    //        auto [stickX, stickY] = joypad.GetAnalogStick();
 
-            STATE oldState = _state;
+    //        STATE oldState = _state;
 
-            DINPUT_JOYSTATE di;
-            GetJoypadDirectInputState(DX_INPUT_PAD1, &di);
-            float lx, ly, rx, ry;	// 左右アナログスティックの座標
-            float analogMin = 0.3f;	// アナログ閾値
-            // Logicoolパッドの場合
-            lx = (float)di.X / 1000.f; ly = (float)di.Y / 1000.f;
-            rx = (float)di.Z / 1000.f; ry = (float)di.Rz / 1000.f;
+    //        DINPUT_JOYSTATE di;
+    //        GetJoypadDirectInputState(DX_INPUT_PAD1, &di);
+    //        float lx, ly, rx, ry;	// 左右アナログスティックの座標
+    //        float analogMin = 0.3f;	// アナログ閾値
+    //        // Logicoolパッドの場合
+    //        lx = (float)di.X / 1000.f; ly = (float)di.Y / 1000.f;
+    //        rx = (float)di.Z / 1000.f; ry = (float)di.Rz / 1000.f;
 
-            // キャラ移動(カメラ設定に合わせて)
+    //        // キャラ移動(カメラ設定に合わせて)
 
-            // カメラの向いている角度を取得
-            float sx = _cam._pos.x - _cam._target.x;
-            float sz = _cam._pos.z - _cam._target.z;
-            float camrad = atan2(sz, sx);
+    //        // カメラの向いている角度を取得
+    //        float sx = _cam._pos.x - _cam._target.x;
+    //        float sz = _cam._pos.z - _cam._target.z;
+    //        float camrad = atan2(sz, sx);
 
-            // 移動方向を決める
-            VECTOR v = { 0,0,0 };
-            float mvSpeed = 6.f;
+    //        // 移動方向を決める
+    //        VECTOR v = { 0,0,0 };
+    //        float mvSpeed = 6.f;
 
-            // アナログ左スティック用
-            float length = sqrt(lx * lx + ly * ly);
-            float rad = atan2(lx, ly);
-            if (length < analogMin) {
-                // 入力が小さかったら動かなかったことにする
-                length = 0.f;
-            }
-            else {
-                length = mvSpeed;
-            }
+    //        // アナログ左スティック用
+    //        float length = sqrt(lx * lx + ly * ly);
+    //        float rad = atan2(lx, ly);
+    //        if (length < analogMin) {
+    //            // 入力が小さかったら動かなかったことにする
+    //            length = 0.f;
+    //        }
+    //        else {
+    //            length = mvSpeed;
+    //        }
 
-            // 移動前の位置を保存
-            VECTOR oldvPos = _position;
-            VECTOR oldv = v;
+    //        // 移動前の位置を保存
+    //        VECTOR oldvPos = _position;
+    //        VECTOR oldv = v;
 
-            // コリジョン判定で引っかかった時に、escapeTbl[]順に角度を変えて回避を試みる
-            float escapeTbl[] = {
-                0, -10, 10, -20, 20, -30, 30, -40, 40, -50, 50, -60, 60, -70, 70, -80, 80,
-            };
-            for (int i = 0; i < sizeof(escapeTbl) / sizeof(escapeTbl[0]); i++) {
-                // escapeTbl[i]の分だけ移動量v回転
-                float escape_rad = DEG2RAD(escapeTbl[i]);
-                v.x = cos(rad + camrad + escape_rad) * length;
-                v.z = sin(rad + camrad + escape_rad) * length;
+    //        // コリジョン判定で引っかかった時に、escapeTbl[]順に角度を変えて回避を試みる
+    //        float escapeTbl[] = {
+    //            0, -10, 10, -20, 20, -30, 30, -40, 40, -50, 50, -60, 60, -70, 70, -80, 80,
+    //        };
+    //        for (int i = 0; i < sizeof(escapeTbl) / sizeof(escapeTbl[0]); i++) {
+    //            // escapeTbl[i]の分だけ移動量v回転
+    //            float escape_rad = DEG2RAD(escapeTbl[i]);
+    //            v.x = cos(rad + camrad + escape_rad) * length;
+    //            v.z = sin(rad + camrad + escape_rad) * length;
 
-                // vの分移動
-                _position = VAdd(_position, v);
-            }
+    //            // vの分移動
+    //            _position = VAdd(_position, v);
+    //        }
 
-            // 移動量をそのままキャラの向きにする
-            if (VSize(v) > 0.f) {		// 移動していない時は無視するため
-                _dir = v;
-                _state = STATE::WALK;
-                MV1AttachAnim(_handleModel, MV1GetAnimIndex(_handleModel, "run"), -1, false);
-            }
-            else {
-                _state = STATE::IDLE;
-                MV1AttachAnim(_handleModel, MV1GetAnimIndex(_handleModel, "idle"), -1, false);
-            }
+    //        // 移動量をそのままキャラの向きにする
+    //        if (VSize(v) > 0.f) {		// 移動していない時は無視するため
+    //            _dir = v;
+    //            _state = STATE::WALK;
+    //            MV1AttachAnim(_handleModel, MV1GetAnimIndex(_handleModel, "run"), -1, false);
+    //        }
+    //        else {
+    //            _state = STATE::IDLE;
+    //            MV1AttachAnim(_handleModel, MV1GetAnimIndex(_handleModel, "idle"), -1, false);
+    //        }
 
-            { // カメラの操作を行う(右スティック)
-                // Y軸回転
-                float sx = _cam._pos.x - _cam._target.x;
-                float sz = _cam._pos.z - _cam._target.z;
-                float rad = atan2(sz, sx);
-                float length = sqrt(sz * sz + sx * sx);
-                if (rx > analogMin) { rad -= 0.05f; }
-                if (rx < -analogMin) { rad += 0.05f; }
-                _cam._pos.x = _cam._target.x + cos(rad) * length;
-                _cam._pos.z = _cam._target.z + sin(rad) * length;
-            }
+    //        { // カメラの操作を行う(右スティック)
+    //            // Y軸回転
+    //            float sx = _cam._pos.x - _cam._target.x;
+    //            float sz = _cam._pos.z - _cam._target.z;
+    //            float rad = atan2(sz, sx);
+    //            float length = sqrt(sz * sz + sx * sx);
+    //            if (rx > analogMin) { rad -= 0.05f; }
+    //            if (rx < -analogMin) { rad += 0.05f; }
+    //            _cam._pos.x = _cam._target.x + cos(rad) * length;
+    //            _cam._pos.z = _cam._target.z + sin(rad) * length;
+    //        }
 
-            // ステータスが変わっていないか？
-            if (oldState == _state) {
-                // 再生時間を進める
-                _playTime += 0.5f;
-            }
-            else {
-                // アニメーションがアタッチされていたら、デタッチする
-                if (_attachIndex != -1) {
-                    MV1DetachAnim(_handleModel, _attachIndex);
-                    _attachIndex = -1;
-                }
-                // ステータスに合わせてアニメーションのアタッチ
-                switch (_state) {
-                case STATE::IDLE:
-                    _attachIndex = MV1AttachAnim(_handleModel, MV1GetAnimIndex(_handleModel, "Wait"), -1, FALSE);
-                    break;
-                case STATE::WALK:
-                    _attachIndex = MV1AttachAnim(_handleModel, MV1GetAnimIndex(_handleModel, "Run"), -1, FALSE);
-                    break;
-                }
-                // アタッチしたアニメーションの総再生時間を取得する
-                _totalTime = MV1GetAttachAnimTotalTime(_handleModel, _attachIndex);
-                // 再生時間を初期化
-                _playTime = 0.0f;
-            }
+    //        // ステータスが変わっていないか？
+    //        if (oldState == _state) {
+    //            // 再生時間を進める
+    //            _playTime += 0.5f;
+    //        }
+    //        else {
+    //            // アニメーションがアタッチされていたら、デタッチする
+    //            if (_attachIndex != -1) {
+    //                MV1DetachAnim(_handleModel, _attachIndex);
+    //                _attachIndex = -1;
+    //            }
+    //            // ステータスに合わせてアニメーションのアタッチ
+    //            switch (_state) {
+    //            case STATE::IDLE:
+    //                _attachIndex = MV1AttachAnim(_handleModel, MV1GetAnimIndex(_handleModel, "Wait"), -1, FALSE);
+    //                break;
+    //            case STATE::WALK:
+    //                _attachIndex = MV1AttachAnim(_handleModel, MV1GetAnimIndex(_handleModel, "Run"), -1, FALSE);
+    //                break;
+    //            }
+    //            // アタッチしたアニメーションの総再生時間を取得する
+    //            _totalTime = MV1GetAttachAnimTotalTime(_handleModel, _attachIndex);
+    //            // 再生時間を初期化
+    //            _playTime = 0.0f;
+    //        }
 
-            // 再生時間がアニメーションの総再生時間に達したら再生時間を０に戻す
-            if (_playTime >= _totalTime) {
-                _playTime = 0.0f;
-            }
+    //        // 再生時間がアニメーションの総再生時間に達したら再生時間を０に戻す
+    //        if (_playTime >= _totalTime) {
+    //            _playTime = 0.0f;
+    //        }
 
-            // 再生時間をセットする
-            MV1SetAttachAnimTime(_handleModel, _attachIndex, _playTime);
-            // 位置
-            MV1SetPosition(_handleModel, _position);
-           // MV1SetPosition(_handleSkySphere, _position);
-            // 向きからY軸回転を算出
-            VECTOR vRot = { 0,0,0 };
-            vRot.y = atan2(_dir.x * -1, _dir.z * -1);		// モデルが標準でどちらを向いているかで式が変わる(これは-zを向いている場合)
-            MV1SetRotationXYZ(_handleModel, vRot);
+    //        // 再生時間をセットする
+    //        MV1SetAttachAnimTime(_handleModel, _attachIndex, _playTime);
+    //        // 位置
+    //        MV1SetPosition(_handleModel, _position);
+    //       // MV1SetPosition(_handleSkySphere, _position);
+    //        // 向きからY軸回転を算出
+    //        VECTOR vRot = { 0,0,0 };
+    //        vRot.y = atan2(_dir.x * -1, _dir.z * -1);		// モデルが標準でどちらを向いているかで式が変わる(これは-zを向いている場合)
+    //        MV1SetRotationXYZ(_handleModel, vRot);
 
-            /*switch (_state) {
-            case STATE::IDLE:
-                MV1AttachAnim(_handleModel, MV1GetAnimIndex(_handleModel, "Wait"), -1, false);
-                break;
-            case STATE::WALK:
-                MV1AttachAnim(_handleModel, MV1GetAnimIndex(_handleModel, "Walk"), -1, false);
-                break;
-            case STATE::RUN:
-                MV1AttachAnim(_handleModel, MV1GetAnimIndex(_handleModel, "Run"), -1, false);
-                break;
-            case STATE::ATTACK:
-                MV1AttachAnim(_handleModel, MV1GetAnimIndex(_handleModel, "Kick1"), -1, false);
-                break;
-            case STATE::JUMP:
-                MV1AttachAnim(_handleModel, MV1GetAnimIndex(_handleModel, "Jump1"), -1, false);
-                break;
-            default:
-                break;
-            }*/
+    //        /*switch (_state) {
+    //        case STATE::IDLE:
+    //            MV1AttachAnim(_handleModel, MV1GetAnimIndex(_handleModel, "Wait"), -1, false);
+    //            break;
+    //        case STATE::WALK:
+    //            MV1AttachAnim(_handleModel, MV1GetAnimIndex(_handleModel, "Walk"), -1, false);
+    //            break;
+    //        case STATE::RUN:
+    //            MV1AttachAnim(_handleModel, MV1GetAnimIndex(_handleModel, "Run"), -1, false);
+    //            break;
+    //        case STATE::ATTACK:
+    //            MV1AttachAnim(_handleModel, MV1GetAnimIndex(_handleModel, "Kick1"), -1, false);
+    //            break;
+    //        case STATE::JUMP:
+    //            MV1AttachAnim(_handleModel, MV1GetAnimIndex(_handleModel, "Jump1"), -1, false);
+    //            break;
+    //        default:
+    //            break;
+    //        }*/
 
-            return true;
-        }
+    //        return true;
+    //    }
 
-        bool Player::Draw() const {
+    //    bool Player::Draw() const {
 
-            // プレイヤーの描画
-            MV1DrawModel(_handleModel);
+    //        // プレイヤーの描画
+    //        MV1DrawModel(_handleModel);
 
-            // スカイスフィアの描画
-            MV1DrawModel(_handleSkySphere);
-            MV1DrawModel(_handleMap);
+    //        // スカイスフィアの描画
+    //        MV1DrawModel(_handleSkySphere);
+    //        MV1DrawModel(_handleMap);
 
-            // カメラ設定更新
-            SetCameraPositionAndTarget_UpVecY(_cam._pos, _cam._target);
-            SetCameraNearFar(_cam._clipNear, _cam._clipFar);
+    //        // カメラ設定更新
+    //        SetCameraPositionAndTarget_UpVecY(_cam._pos, _cam._target);
+    //        SetCameraNearFar(_cam._clipNear, _cam._clipFar);
 
-            // ライト設定
-            //SetUseLighting(TRUE);
+    //        // ライト設定
+    //        //SetUseLighting(TRUE);
 
-            return true;
-        }
+    //        return true;
+    //    }
     }// namespace Player
-}// namespace Gryo
-

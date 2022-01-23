@@ -40,6 +40,16 @@ namespace Gyro {
     class Player : public Object::ObjectBase {
     public:
       /**
+       * @brief 自機の状態を表す列挙型クラス
+       */
+      enum class PlayerState {
+        Idle,   //!< 待機
+        Walk,   //!< 歩き
+        Run,    //!< 移動
+        Attack, //!< 攻撃
+        Jump    //!< ジャンプ
+      };
+      /**
        * @brief コンストラクタ
        * @param app アプリケーションの参照
        */
@@ -66,6 +76,7 @@ namespace Gyro {
       float _animaTime;    //!< アニメーションの再生時間
       Camera::Camera _cam; //!< カメラの実体
 
+      PlayerState _playerState{PlayerState::Idle}; //!< 自機状態
       int _handleMap;
       int _frameMapCollision;
       int _handleSkySphere;   //!< スカイスフィアハンドル
@@ -103,8 +114,9 @@ namespace Gyro {
       void SetRotation(const AppFrame::Math::Vector4 move);
       /**
        * @brief アニメーション処理
+       * @param old 前フレームの状態
        */
-      void Animation();
+      void Animation(PlayerState old);
       /**
        * @brief 指定したアニメーションインデックスの取得
        * @param key アニメーションに紐づけられた文字列
@@ -114,6 +126,16 @@ namespace Gyro {
        * @brief アニメーションのアタッチ
        */
       bool AttachAnima(std::string_view key);
+      /**
+       * @brief 現在の状態に応じたアニメキーを返す
+       */
+      std::string_view GetAnimaKey() const;
+#ifdef _DEBUG
+      /**
+       * @brief Debug専用描画
+       */
+      void DebugString() const;
+#endif
     };
   }
     /**
