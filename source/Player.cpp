@@ -66,6 +66,7 @@ namespace Gyro {
       if (speed) {
         move = AppMath::Vector4(cos(num) * length, 0.0f, sin(num) * length);
       }
+      CameraUpdate(stickRight);
       // 座標を更新する
       _position.Add(move);
       auto oldState = _playerState;
@@ -149,7 +150,7 @@ namespace Gyro {
     }
 
     void Player::SetRotation(const AppFrame::Math::Vector4 move) {
-      // 移動量がないある場合は向きを変更する
+      // 移動量がある場合は向きを変更する
       if (move.Length()) {
         _rotation = move;
         _playerState = PlayerState::Walk;
@@ -221,7 +222,7 @@ namespace Gyro {
     void Player::DebugString() const {
       // 座標を出力する
       auto[x, y, z] = _position.GetVector3();
-      DrawFormatString(0, 0, 0, "x:%f  y:%f, z:%f", x, y, z);
+      DrawFormatString(0, 0, 255, "x:%f  y:%f, z:%f", x, y, z);
     }
 #endif
 

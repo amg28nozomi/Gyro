@@ -55,9 +55,10 @@ namespace Gyro {
     }
 
     bool ModeGame::Process() {
-        _player.Process();
-        _plane.Process();
-        _plane.Render();
+      Input(_app.GetOperation());
+      _player.Process();
+      _plane.Process();
+      _plane.Render();
       return true;
     }
 
