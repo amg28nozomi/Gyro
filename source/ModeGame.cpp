@@ -45,10 +45,10 @@ namespace Gyro {
 
     bool ModeGame::Input(AppFrame::Application::InputOperation& input) {
       // 入力状態の取得
-      auto device = input.GetJoypadState();
-      // Aキーが入力された場合
-      if (device.GetKey() ^ PAD_INPUT_10) {
-        // アプリケーションの終了要請を行う
+      auto device = input.GetXBoxState();
+      namespace App = AppFrame::Application;
+      // STARTボタンが押された場合、アプリケーションを終了する
+      if (device.GetButton(XINPUT_BUTTON_START, App::InputTrigger)) {
         _app.RequestTerminate();
       }
       return true;
