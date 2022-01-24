@@ -139,6 +139,11 @@ namespace Gyro {
        * @brief 現在の状態に応じたアニメキーを返す
        */
       std::string_view GetAnimaKey() const;
+      /**
+       * @brief  ワールド座標行列の取得
+       * @return 
+       */
+      AppMath::Matrix44 WorldMatrix();
 #ifdef _DEBUG
       /**
        * @brief Debug専用描画

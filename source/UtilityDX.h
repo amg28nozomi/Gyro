@@ -31,5 +31,11 @@ namespace Gyro {
      * @return Vector4クラス
      */
     static AppFrame::Math::Vector4 ToVector(VECTOR& vector);
+    /**
+     * @brief  Matrix44クラスの値をMATRIX構造体に変換する
+     * @param  matrix 変換対象
+     * @return MATRIX構造体
+     */
+    //static MATRIX ToMATRIX(AppFrame::Math::Matrix44& matrix);
   };
 }

@@ -13,10 +13,10 @@
 
 namespace {
   constexpr auto NoAnimation = -1; //!< アニメーションはアタッチされていない
-  constexpr auto InputMin = 2000.0f;  //!< 入力を受け付ける最低値
+  constexpr auto InputMin = 0.3f;  //!< 入力を受け付ける最低値
   constexpr auto InputMax = 32767.0f;
 
-  constexpr auto MoveSpeed = 2.0f; //!< デフォルトの移動量
+  constexpr auto MoveSpeed = 6.0f; //!< デフォルトの移動量
   constexpr auto MoveZero = 0.0f;
 }
 
@@ -43,23 +43,37 @@ namespace Gyro {
       auto [lX, lY] = input.GetStick(false); // 左スティック
       auto [rX, rY] = input.GetStick(true);  // 右スティック
       auto [leftTrigger, rightTrigger] = input.GetTrigger(); // トリガーボタン
+      // 実際に使用する移動量(2次元ベクトル)
+      auto stickLeft = AppMath::Vector4(lX / InputMax, lY / InputMax);
+      auto stickRight = AppMath::Vector4(rX / InputMax, rY / InputMax);
       // カメラ向きの算出
       auto sX = _cam._pos.x - _cam._target.x;
       auto sZ = _cam._pos.z - _cam._target.z;
       auto camrad = atan2(sZ, sX);
-      // 実際に使用する移動量(2次元ベクトル)
-      auto stickLeft = AppMath::Vector4(lX , lY);
-      auto stickRight = AppMath::Vector4(rX, rY);
-      Move(stickLeft);
+      // 移動量はあるか
+      auto length = stickLeft.Length2D();
+      auto rad = atan2(stickLeft.GetX(), stickLeft.GetY());
+
+      float mx, my;
+      if (lX == 0) {
+        mx = 0.0f;
+      }
+      else mx = (stickLeft.GetX() / InputMax) * 10.0f;
+      if (lY == 0) {
+        my = 0.0f;
+      }
+      else my = (stickLeft.GetY() / InputMax) * 10.0f;
 
       auto oldPosition = _position; // 前フレーム座標
       // 移動量を算出する
-      //AppMath::Vector4 move;
-      //move = AppMath::Vector4(mx, 0.0f, my);
+      AppMath::Vector4 move;
+      move = AppMath::Vector4(mx, 0.0f, my);
       CameraUpdate(stickRight);
+      // 座標を更新する
+      _position.Add(move);
       auto oldState = _playerState;
       // 状態の更新
-      SetRotation(_move);
+      SetRotation(move);
       Animation(oldState);
       // 座標の設定
       VECTOR p(_position.GetX(), _position.GetY(), _position.GetZ());
@@ -84,20 +98,6 @@ namespace Gyro {
 
     void Player::Input() {
       
-    }
-
-    void Player::Move(AppMath::Vector4 move) {
-      _move.Fill(0.0f); // 初期化
-      // 入力を受け付けるか
-      if (move.Length2D() < InputMin) {
-        return;
-      }
-      // 平行移動
-      auto x = (move.GetX() / 30000) * MoveSpeed;
-      auto z = (move.GetY() / 30000) * MoveSpeed;
-      _move = AppMath::Vector4(x, 0.0f, z);
-      _position.Add(_move); //!< 移動量に加算する
-      return;
     }
 
     void Player::LoadResource() {
@@ -147,7 +147,7 @@ namespace Gyro {
       float rad = atan2(sz, sx);
       float length = sqrt(sz * sz + sx * sx);
       if (stick.GetX() > InputMin) { rad -= 0.05f; }
-      else if (stick.GetX() < -InputMin) { rad += 0.05f; }
+      if (stick.GetX() < -InputMin) { rad += 0.05f; }
       _cam._pos.x = _cam._target.x + cos(rad) * length;
       _cam._pos.z = _cam._target.z + sin(rad) * length;
     }
@@ -221,15 +221,22 @@ namespace Gyro {
       }
     }
 
+    AppMath::Matrix44 Player::WorldMatrix() {
+      // ワールド座標行列への変換
+      AppMath::Matrix44 world = AppMath::Matrix44::Identyty();
+      // スケーリング
+      auto sm = AppMath::Matrix44::Scaling(0.0f, 0.5f, 1.0f);
+      // 回転
+      // 平行移動
+    }
+
 #ifdef _DEBUG
     void Player::DebugString() const {
       // 座標を出力する
       auto[x, y, z] = _position.GetVector3();
       DrawFormatString(0, 0, 255, "x:%f  y:%f, z:%f", x, y, z);
       auto [lx, ly] = _app.GetOperation().GetXBoxState().GetStick(false);
-      DrawFormatString(0, 20, 255, "lx:%d  ly:%d", lx, ly);
-      auto [rx, ry] = _app.GetOperation().GetXBoxState().GetStick(true);
-      DrawFormatString(0, 40, 255, "lx:%d  ly:%d", rx, ry);
+      DrawFormatString(0, 20, 255, "lx:%f  ly:%f", lx, ly);
     }
 #endif
 
