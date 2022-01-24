@@ -108,9 +108,13 @@ namespace Gyro {
        */
       float Speed(const AppFrame::Math::Vector4 stick) const;
       /**
+       * @brief 回転処理
+       */
+      void Rotation(const float mvoe);
+      /**
        * @brief  移動量の算出
        */
-      void Move(AppMath::Vector4 move);
+      void Move(AppMath::Vector4& vector);
       /**
        * @brief カメラの更新
        * @param stick 
@@ -139,6 +143,10 @@ namespace Gyro {
        * @brief 現在の状態に応じたアニメキーを返す
        */
       std::string_view GetAnimaKey() const;
+      /**
+       * @brief ワールド座標行列の更新
+       */
+      bool WorldMatrixUpdate() override;
 #ifdef _DEBUG
       /**
        * @brief Debug専用描画

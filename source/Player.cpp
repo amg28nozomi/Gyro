@@ -1,8 +1,9 @@
 /*****************************************************************//**
  * @file   Player.cpp
- * @brief  オブジェクトベースのサブクラスの定義
+ * @brief  オブジェクトベースのサブクラス
+ *         自機の処理を行う
  *
- * @author 土橋峡介
+ * @author 鈴木希海
  * @date   January 2022
  *********************************************************************/
 #include "Player.h"
@@ -38,6 +39,7 @@ namespace Gyro {
       // 名前空間の省略
       namespace App = AppFrame::Application;
       namespace AppMath = AppFrame::Math;
+      _rotation = AppMath::Vector4(); // 初期化
       // 入力状態の取得
       auto input = _app.GetOperation().GetXBoxState();
       auto [lX, lY] = input.GetStick(false); // 左スティック
@@ -50,6 +52,13 @@ namespace Gyro {
       // 実際に使用する移動量(2次元ベクトル)
       auto stickLeft = AppMath::Vector4(lX , lY);
       auto stickRight = AppMath::Vector4(rX, rY);
+
+      auto rotateY = (stickLeft.GetY() / 30000.0f) * 1.0f;
+      if (std::sqrt(rotateY * rotateY) < 1000.0f) { 
+        // 入力が少ない場合はゼロにする
+        rotateY = 0.0f; 
+      }
+      Rotation(rotateY);
       Move(stickLeft);
 
       auto oldPosition = _position; // 前フレーム座標
@@ -61,9 +70,10 @@ namespace Gyro {
       // 状態の更新
       SetRotation(_move);
       Animation(oldState);
-      // 座標の設定
-      VECTOR p(_position.GetX(), _position.GetY(), _position.GetZ());
-      MV1SetPosition(_model, p);
+      // ワールド座標の更新
+      WorldMatrixUpdate();
+      // ワールド座標をセットする
+      MV1SetMatrix(_model, UtilityDX::ToMATRIX(_world));
       return true;
     }
 
@@ -86,15 +96,23 @@ namespace Gyro {
       
     }
 
-    void Player::Move(AppMath::Vector4 move) {
-      _move.Fill(0.0f); // 初期化
+    void Player::Rotation(const float move) {
+      namespace AppMath = AppFrame::Math;
+      // y軸入力がある場合は向きを更新する
+      if (move) {
+        // y軸回転を行う
+        _rotation.AddY((AppMath::Utility::_pi / AppMath::Utility::_degrees180) * move);
+      }
+    }
+
+    void Player::Move(AppMath::Vector4& vector) {
       // 入力を受け付けるか
-      if (move.Length2D() < InputMin) {
+      if (vector.Length2D() < InputMin) {
         return;
       }
       // 平行移動
-      auto x = (move.GetX() / 30000) * MoveSpeed;
-      auto z = (move.GetY() / 30000) * MoveSpeed;
+      auto x = (vector.GetX() / 30000) * MoveSpeed;
+      auto z = (vector.GetY() / 30000) * MoveSpeed;
       _move = AppMath::Vector4(x, 0.0f, z);
       _position.Add(_move); //!< 移動量に加算する
       return;
@@ -232,6 +250,10 @@ namespace Gyro {
       DrawFormatString(0, 40, 255, "lx:%d  ly:%d", rx, ry);
     }
 #endif
+
+    bool Player::WorldMatrixUpdate() {
+      return ObjectBase::WorldMatrixUpdate();
+    }
 
   } // namespace Player
     //namespace Player {
