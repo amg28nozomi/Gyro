@@ -43,6 +43,18 @@
     <Filter Include="ヘッダー ファイル\Utility">
       <UniqueIdentifier>{51563eb1-c42b-46a5-91e9-415ae64f90f7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\ModelAnim">
+      <UniqueIdentifier>{31d9f7da-f792-4fc4-a84a-d28fccf2674c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\ModelAnim">
+      <UniqueIdentifier>{19d899ce-78e5-46e3-ae90-413fb29a37b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Enemy">
+      <UniqueIdentifier>{fd7e038f-525a-4c70-83d7-c51489c88fa4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Enemy">
+      <UniqueIdentifier>{e1696e89-7a5d-4f05-906e-8164078c2bc4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\ApplicationMain.cpp">
@@ -87,6 +99,18 @@
     <ClCompile Include="source\Player.cpp">
       <Filter>ソース ファイル\Object</Filter>
     </ClCompile>
+    <ClCompile Include="source\Enemy\EnemyBase.cpp">
+      <Filter>ソース ファイル\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Enemy\EnemyWheel.cpp">
+      <Filter>ソース ファイル\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ModelAnim\ModelAnimComponent.cpp">
+      <Filter>ソース ファイル\ModelAnim</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ModelAnim\ModelAnimInfo.cpp">
+      <Filter>ソース ファイル\ModelAnim</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\ApplicationMain.h">
@@ -130,6 +154,18 @@
     </ClInclude>
     <ClInclude Include="source\Player.h">
       <Filter>ヘッダー ファイル\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Enemy\EnemyBase.h">
+      <Filter>ヘッダー ファイル\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Enemy\EnemyWheel.h">
+      <Filter>ヘッダー ファイル\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ModelAnim\ModelAnimComponent.h">
+      <Filter>ヘッダー ファイル\ModelAnim</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ModelAnim\ModelAnimInfo.h">
+      <Filter>ヘッダー ファイル\ModelAnim</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

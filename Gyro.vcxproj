@@ -23,7 +23,11 @@
     <ClCompile Include="source\CollisionBase.cpp" />
     <ClCompile Include="source\CollisionCylinder.cpp" />
     <ClCompile Include="source\CollisionSphere.cpp" />
+    <ClCompile Include="source\Enemy\EnemyBase.cpp" />
+    <ClCompile Include="source\Enemy\EnemyWheel.cpp" />
     <ClCompile Include="source\ModeGame.cpp" />
+    <ClCompile Include="source\ModelAnim\ModelAnimComponent.cpp" />
+    <ClCompile Include="source\ModelAnim\ModelAnimInfo.cpp" />
     <ClCompile Include="source\ObjectBase.cpp" />
     <ClCompile Include="source\Player.cpp" />
     <ClCompile Include="source\PrimitiveBase.cpp" />
@@ -39,7 +43,11 @@
     <ClInclude Include="source\CollisionBase.h" />
     <ClInclude Include="source\CollisionCylinder.h" />
     <ClInclude Include="source\CollisionSphere.h" />
+    <ClInclude Include="source\Enemy\EnemyBase.h" />
+    <ClInclude Include="source\Enemy\EnemyWheel.h" />
     <ClInclude Include="source\ModeGame.h" />
+    <ClInclude Include="source\ModelAnim\ModelAnimComponent.h" />
+    <ClInclude Include="source\ModelAnim\ModelAnimInfo.h" />
     <ClInclude Include="source\ObjectBase.h" />
     <ClInclude Include="source\Player.h" />
     <ClInclude Include="source\PrimitiveBase.h" />
