@@ -16,6 +16,10 @@ namespace Gyro {
     ObjectBase::ObjectBase(Application::ApplicationMain& app) : _app(app) {
       _gravity = false;
       _mass = 0.0f;
+      _position;
+      _rotation;
+      _scale = AppFrame::Math::Vector4(1.0f, 1.0f, 1.0f);
+      _world = AppFrame::Math::Matrix44::Identity();
     }
 
     bool ObjectBase::Init() {
@@ -33,6 +37,16 @@ namespace Gyro {
     bool ObjectBase::Draw() const {
       // ƒ‚ƒfƒ‹‚Ì•`‰æ‚ğs‚¤
       return true;
+    }
+
+    bool ObjectBase::WorldMatrixUpdate() {
+      namespace AppMath = AppFrame::Math;
+      // ƒ[ƒ‹ƒhÀ•W•ÏŠ·
+      _world.MulScaling(_scale);        // Šg‘åk¬
+      _world.RotateZ(_rotation.GetZ()); // z²‰ñ“]
+      _world.RotateY(_rotation.GetY()); // y²‰ñ“]
+      _world.RotateX(_rotation.GetX()); // x²‰ñ“]
+      _world.MulTranslate(_position);   // •½sˆÚ“®
     }
 
     void ObjectBase::Gravity() {

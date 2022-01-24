@@ -88,8 +88,10 @@ namespace Gyro {
       Application::ApplicationMain& _app; //!< アプリケーションの参照
       ObjectId _id{ObjectId::Object}; //!< オブジェクトの識別番号
       ObjectState _state{ObjectState::Active}; //!< 状態
-      AppFrame::Math::Vector4 _position;  //!< 座標行列
-      AppFrame::Math::Vector4 _rotation;  //!< 回転行列
+      AppFrame::Math::Matrix44 _world;    //!< ワールド座標行列
+      AppFrame::Math::Vector4 _position;  //!< 座標
+      AppFrame::Math::Vector4 _rotation;  //!< 向き
+      AppFrame::Math::Vector4 _scale;     //!< 拡大率
       bool _gravity; //!< 重力処理を行うか(true:重力処理を行う false:重力処理を行わない)
       float _mass;   //!< 質量
       //float _gravityScale; //!< 重力スケール
@@ -97,6 +99,11 @@ namespace Gyro {
        * @brief オブジェクトに対する重力処理
        */
       virtual void Gravity();
+      /**
+       * @brief  ワールド座標変換
+       * @return 
+       */
+      virtual bool WorldMatrixUpdate();
     };
   } // namespace Object
 } // namespace Gyro

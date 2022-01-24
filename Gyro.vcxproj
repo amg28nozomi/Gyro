@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\ApplicationMain.cpp" />
+    <ClCompile Include="source\CameraBase.cpp" />
     <ClCompile Include="source\CollisionBase.cpp" />
     <ClCompile Include="source\CollisionCylinder.cpp" />
     <ClCompile Include="source\CollisionSphere.cpp" />
@@ -41,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\ApplicationMain.h" />
+    <ClInclude Include="source\CameraBase.h" />
     <ClInclude Include="source\CollisionBase.h" />
     <ClInclude Include="source\CollisionCylinder.h" />
     <ClInclude Include="source\CollisionSphere.h" />
