@@ -64,11 +64,6 @@ namespace Gyro {
        */
       virtual bool Draw() const;
       /**
-       * @brief ワールド座標の更新
-       * @return 
-       */
-      virtual bool WorldMatrixUpdate();
-      /**
        * @brief  識別番号の取得
        * @return 識別番号
        */
@@ -104,6 +99,11 @@ namespace Gyro {
        * @brief オブジェクトに対する重力処理
        */
       virtual void Gravity();
+      /**
+       * @brief ワールド座標の更新
+       * @return
+       */
+      virtual bool WorldMatrixUpdate();
     };
   } // namespace Object
 } // namespace Gyro

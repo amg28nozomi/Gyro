@@ -221,13 +221,8 @@ namespace Gyro {
       }
     }
 
-    AppMath::Matrix44 Player::WorldMatrix() {
-      // ワールド座標行列への変換
-      AppMath::Matrix44 world = AppMath::Matrix44::Identyty();
-      // スケーリング
-      auto sm = AppMath::Matrix44::Scaling(0.0f, 0.5f, 1.0f);
-      // 回転
-      // 平行移動
+    bool Player::WorldMatrixUpdate() {
+      return ObjectBase::WorldMatrixUpdate();
     }
 
 #ifdef _DEBUG

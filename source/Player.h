@@ -140,10 +140,10 @@ namespace Gyro {
        */
       std::string_view GetAnimaKey() const;
       /**
-       * @brief  ワールド座標行列の取得
-       * @return 
+       * @briefs
+       *
        */
-      AppMath::Matrix44 WorldMatrix();
+      bool WorldMatrixUpdate() override;
 #ifdef _DEBUG
       /**
        * @brief Debug専用描画
