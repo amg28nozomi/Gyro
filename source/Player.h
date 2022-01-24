@@ -10,6 +10,8 @@
 #include "ObjectBase.h"
 //#include "camera.h"
 
+namespace AppFrame::Math{}
+
 /**
  * @brief ゲームベース
  */
@@ -33,6 +35,7 @@ namespace Gyro {
    * @brief プレイヤーベース
    */
   namespace Player {
+    namespace AppMath = AppFrame::Math;
     /**
      * @class Player
      * @brief オブジェクトベースのサブクラス
@@ -70,6 +73,8 @@ namespace Gyro {
        */
       bool Draw() const override;
     private:
+      AppFrame::Math::Vector4 _move{}; //!< 移動量
+
       int _model;          //!< モデルハンドル
       int _animaIndex;     //!< アタッチされているアニメ番号
       float _totalTime;    //!< アニメーションの総再生時間
@@ -102,6 +107,10 @@ namespace Gyro {
        * @return 移動量
        */
       float Speed(const AppFrame::Math::Vector4 stick) const;
+      /**
+       * @brief  移動量の算出
+       */
+      void Move(AppMath::Vector4 move);
       /**
        * @brief カメラの更新
        * @param stick 
