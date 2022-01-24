@@ -77,6 +77,13 @@ namespace Gyro {
       ObjectState GetState() const {
         return _state;
       }
+      /**
+       * @brief  死亡状態かの判定
+       * @return true:死亡状態 false:死んでいない
+       */
+      virtual bool IsDead() const {
+        return _state == ObjectState::Dead;
+      }
     protected:
       Application::ApplicationMain& _app; //!< アプリケーションの参照
       ObjectId _id{ObjectId::Object}; //!< オブジェクトの識別番号

@@ -8,6 +8,7 @@
 #include "ApplicationMain.h"
 #include "appframe.h"
 #include <DxLib.h>
+#include "ObjectServer.h"
 #include "ModeGame.h"
 
 namespace Gyro {
@@ -27,6 +28,9 @@ namespace Gyro {
       if (!ApplicationBase::Init()) {
         return false; // 初期化失敗
       }
+      // オブジェクトサーバの生成
+      _objectServer = std::make_unique<Object::ObjectServer>();
+      _objectServer->Init();
       // モードゲームの登録
       _modeServer->AddMode("Game", std::make_shared<Mode::ModeGame>(*this));
       _modeServer->TransionToMode("Game");

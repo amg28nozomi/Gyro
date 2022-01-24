@@ -6,10 +6,12 @@
  * @date   January 2022
  *********************************************************************/
 #include "ModeGame.h"
+#include <memory>
 #include "ApplicationMain.h"
 #include "Player.h"
 #include "PrimitiveBase.h"
 #include "PrimitivePlane.h"
+#include "ObjectServer.h"
 
 namespace {
     constexpr auto TEXTURE = _T("res/Groundplants1_D.jpg");
@@ -18,28 +20,29 @@ namespace {
 namespace Gyro {
   namespace Mode {
 
-    ModeGame::ModeGame(Application::ApplicationMain& app) : ModeBase(*app.GetInstance()), _appMain(app), _player(app) {
+    ModeGame::ModeGame(Application::ApplicationMain& app) : ModeBase(*app.GetInstance()), _appMain(app) {
     }
 
     ModeGame::~ModeGame() {
     }
 
     bool ModeGame::Enter() {
-      // オブジェクトの生成を行う
+      // オブジェクトを生成
+      _appMain.GetObjectServer().Register(std::move(std::make_shared<Player::Player>(_appMain)));
       return true;
     }
 
     bool ModeGame::Exit() {
-      // 生成したオブジェクトの後始末を行う
+      // 生成したオブジェクトを取り除く
+      _appMain.GetObjectServer().Release();
       return true;
     }
 
     bool ModeGame::Init() {
       // 使用するデータの読み込みを記述する
-        _player.Init();
-        _plane.Initialize(45000.0, 150);
-        _plane.Load(TEXTURE);
-        _plane.Create();
+      _plane.Initialize(45000.0, 150);
+      _plane.Load(TEXTURE);
+      _plane.Create();
       return true;
     }
 
@@ -55,19 +58,21 @@ namespace Gyro {
     }
 
     bool ModeGame::Process() {
+      // 入力処理
       Input(_app.GetOperation());
-      _player.Process();
+      // オブジェクトサーバの更新処理実行
+      _appMain.GetObjectServer().Process();
       _plane.Process();
       _plane.Render();
       return true;
     }
 
     bool ModeGame::Draw() const {
-        _player.Draw();
-
-        // 並行光源を 1 つ追加する
-        VECTOR light_dir = VGet(-1.0f, -1.0f, -1.0f);
-        auto light_handle = CreateDirLightHandle(light_dir);
+      // 描画処理呼び出し
+      _appMain.GetObjectServer().Draw();
+      // 並行光源を 1 つ追加する
+      VECTOR light_dir = VGet(-1.0f, -1.0f, -1.0f);
+      auto light_handle = CreateDirLightHandle(light_dir);
 
       return true;
     }

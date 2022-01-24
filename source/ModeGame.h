@@ -76,7 +76,6 @@ namespace Gyro {
     private:
       //!< アプリケーションメインの参照
       Application::ApplicationMain& _appMain;
-      Player::Player _player;
       Primitive::Plane _plane;
     };
   } // namespace Mode
