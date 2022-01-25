@@ -39,7 +39,7 @@ namespace Gyro {
       // 名前空間の省略
       namespace App = AppFrame::Application;
       namespace AppMath = AppFrame::Math;
-      _rotation = AppMath::Vector4(); // 初期化
+      // _rotation = AppMath::Vector4(); // 初期化
       // 入力状態の取得
       auto input = _app.GetOperation().GetXBoxState();
       auto [lX, lY] = input.GetStick(false); // 左スティック
@@ -54,10 +54,6 @@ namespace Gyro {
       auto stickRight = AppMath::Vector4(rX, rY);
 
       auto rotateY = (stickLeft.GetY() / 30000.0f) * 1.0f;
-      if (std::sqrt(rotateY * rotateY) < 1000.0f) { 
-        // 入力が少ない場合はゼロにする
-        rotateY = 0.0f; 
-      }
       Rotation(rotateY);
       Move(stickLeft);
 
@@ -100,16 +96,13 @@ namespace Gyro {
       namespace AppMath = AppFrame::Math;
       // y軸入力がある場合は向きを更新する
       if (move) {
-        // y軸回転を行う
-        _rotation.AddY((AppMath::Utility::_pi / AppMath::Utility::_degrees180) * move);
+        _rotation.AddY((AppMath::Utility::_pi / AppMath::Utility::_degrees180) * 3.0f);
       }
     }
 
     void Player::Move(AppMath::Vector4& vector) {
-      // 入力を受け付けるか
-      if (vector.Length2D() < InputMin) {
-        return;
-      }
+      // ローカル座標を初期化
+      _position = AppMath::Vector4();
       // 平行移動
       auto x = (vector.GetX() / 30000) * MoveSpeed;
       auto z = (vector.GetY() / 30000) * MoveSpeed;
