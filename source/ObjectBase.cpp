@@ -42,12 +42,11 @@ namespace Gyro {
     bool ObjectBase::WorldMatrixUpdate() {
       namespace AppMath = AppFrame::Math;
       // ƒ[ƒ‹ƒhÀ•W•ÏŠ·
-      _world = AppMath::Matrix44::Scaling(_scale.GetX(), _scale.GetY(), _scale.GetZ());
-      //_world.RotateZ(_rotation.GetZ()); // z²‰ñ“]
-      //_world.RotateX(_rotation.GetX()); // x²‰ñ“]
-      //_world.RotateY(_rotation.GetY()); // y²‰ñ“]
+      _world.MulScaling(_scale);        // Šg‘åk¬
+      _world.RotateZ(_rotation.GetZ()); // z²‰ñ“]
+      _world.RotateY(_rotation.GetY()); // y²‰ñ“]
+      _world.RotateX(_rotation.GetX()); // x²‰ñ“]
       _world.MulTranslate(_position);   // •½sˆÚ“®
-
       return true;
     }
 

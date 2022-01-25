@@ -17,11 +17,9 @@ namespace Gyro {
     }
 
     void CameraBase::Init() {
-
     }
 
     void CameraBase::Process() {
-
     }
   } // namespace Application
 } // namespace Gyro
