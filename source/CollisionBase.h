@@ -9,6 +9,7 @@
 
 namespace AppFrame::Math {
   class Vector4;
+  class Matrix44;
 }
  /**
  * @brief ゲームベース
@@ -69,6 +70,14 @@ namespace Gyro {
       //!< コリジョンタイプ
       CollisionType _type{CollisionType::Null};
       ObjectBase& _owner;  //!< 所有者の参照
+      AppMath::Vector4 _position; //!< ローカル座標
+      AppMath::Vector4 _rotation; //!< 向き
+      AppMath::Vector4 _scale;    //!< 拡大率
+      /**
+       * @brief  ワールド座標行列の取得
+       * @return ワールド座標行列
+       */
+      AppMath::Matrix44 WorldMatrix() const;
     };
 
     template <class Collision>
