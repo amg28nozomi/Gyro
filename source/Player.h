@@ -8,7 +8,7 @@
  *********************************************************************/
 #pragma once
 #include "ObjectBase.h"
-//#include "camera.h"
+#include "Camera.h"
 
 namespace AppFrame::Math{}
 
@@ -24,12 +24,12 @@ namespace Gyro {
      * @class Camera
      * @brief カメラクラス
      */
-    class Camera {
+    /*class Camera {
     public:
       VECTOR _pos;
       VECTOR _target;
       float _clipNear, _clipFar;
-    };
+    };*/
   } // namespace Camera
   /**
    * @brief プレイヤーベース

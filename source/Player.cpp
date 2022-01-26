@@ -23,7 +23,7 @@ namespace {
 namespace Gyro {
   namespace Player {
 
-    Player::Player(Application::ApplicationMain& app) : ObjectBase(app) {
+    Player::Player(Application::ApplicationMain& app) : ObjectBase(app), _cam(app) {
       LoadResource(); // リソースの読み取り
       Init();
     }
@@ -44,9 +44,9 @@ namespace Gyro {
       auto [rX, rY] = input.GetStick(true);  // 右スティック
       auto [leftTrigger, rightTrigger] = input.GetTrigger(); // トリガーボタン
       // カメラ向きの算出
-      auto sX = _cam._pos.x - _cam._target.x;
+      /*auto sX = _cam._pos.x - _cam._target.x;
       auto sZ = _cam._pos.z - _cam._target.z;
-      auto camrad = atan2(sZ, sX);
+      auto camrad = atan2(sZ, sX);*/
       // 実際に使用する移動量(2次元ベクトル)
       auto stickLeft = AppMath::Vector4(lX , lY);
       auto stickRight = AppMath::Vector4(rX, rY);
@@ -56,7 +56,9 @@ namespace Gyro {
       // 移動量を算出する
       //AppMath::Vector4 move;
       //move = AppMath::Vector4(mx, 0.0f, my);
-      CameraUpdate(stickRight);
+      //CameraUpdate(stickRight);
+      // カメラの更新
+      _cam.Process(stickRight, _position, _move);
       auto oldState = _playerState;
       // 状態の更新
       SetRotation(_move);
@@ -64,20 +66,24 @@ namespace Gyro {
       // 座標の設定
       VECTOR p(_position.GetX(), _position.GetY(), _position.GetZ());
       MV1SetPosition(_model, p);
+      // スカイスフィアの座標
+      MV1SetPosition(_handleSkySphere, p);
+      // ステージの座標
+      MV1SetPosition(_handleMap, VGet(0, -1500, 0));
       return true;
     }
 
     bool Player::Draw() const {
       // プレイヤーの描画
+      MV1SetScale(_model, VGet(10, 10, 10));
       MV1DrawModel(_model);
       // スカイスフィアの描画
       MV1DrawModel(_handleSkySphere);
-      MV1DrawModel(_handleMap);
-      // カメラ設定更新
-      SetCameraPositionAndTarget_UpVecY(_cam._pos, _cam._target);
-      SetCameraNearFar(_cam._clipNear, _cam._clipFar);
+      MV1DrawMesh(_handleMap, 0);
 #ifdef _DEBUG
       DebugString(); // Debug情報の出力を行う
+      // カメラ情報の描画
+      _cam.Draw(_position, _move);
 #endif
       return true;
     }
@@ -102,18 +108,15 @@ namespace Gyro {
 
     void Player::LoadResource() {
       // 各種リソースの読み取り処理
-      _model = MV1LoadModel("res/SDChar.mv1"); // プレイヤー
-      _handleSkySphere = MV1LoadModel("res/skysphere.mv1"); // スカイスフィア
-      _handleMap = MV1LoadModel("res/Ground.mv1");
-      _frameMapCollision = MV1SearchFrame(_handleMap, "ground_navmesh");
+      _model = MV1LoadModel("res/Player/Gyro_multimotion.mv1"); // プレイヤー
+      _handleSkySphere = MV1LoadModel("res/SkySphere/skysphere.mv1"); // スカイスフィア
+      _handleMap = MV1LoadModel("res/Stage/houseGEO.mv1");
+      //_frameMapCollision = MV1SearchFrame(_handleMap, "ground_navmesh");
     }
 
     void Player::SetCamera() {
       // カメラの初期化
-      _cam._pos = VGet(0, 90.0f, -300.0f);
-      _cam._target = VGet(0, 80.0f, 0);
-      _cam._clipNear = 2.0f;
-      _cam._clipFar = 10000.0f;
+      _cam.Init();
     }
 
     void Player::SetState() {
@@ -142,14 +145,7 @@ namespace Gyro {
     }
 
     void Player::CameraUpdate(const AppFrame::Math::Vector4 stick) {
-      float sx = _cam._pos.x - _cam._target.x;
-      float sz = _cam._pos.z - _cam._target.z;
-      float rad = atan2(sz, sx);
-      float length = sqrt(sz * sz + sx * sx);
-      if (stick.GetX() > InputMin) { rad -= 0.05f; }
-      else if (stick.GetX() < -InputMin) { rad += 0.05f; }
-      _cam._pos.x = _cam._target.x + cos(rad) * length;
-      _cam._pos.z = _cam._target.z + sin(rad) * length;
+      
     }
 
     void Player::SetRotation(const AppFrame::Math::Vector4 move) {

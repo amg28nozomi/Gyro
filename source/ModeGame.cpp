@@ -71,7 +71,7 @@ namespace Gyro {
       // •`‰æˆ—ŒÄ‚Ño‚µ
       _appMain.GetObjectServer().Draw();
       // •ÀsŒõŒ¹‚ğ 1 ‚Â’Ç‰Á‚·‚é
-      VECTOR light_dir = VGet(-1.0f, -1.0f, -1.0f);
+      VECTOR light_dir = VGet(0.0f, 1.0f, 0.0f);
       auto light_handle = CreateDirLightHandle(light_dir);
 
       return true;
