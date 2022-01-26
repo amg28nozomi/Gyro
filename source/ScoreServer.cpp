@@ -12,6 +12,9 @@ namespace Gyro {
   namespace Score {
 
     ScoreServer::ScoreServer() : AppFrame::Server::ServerTemplateUnordered<std::string, ScoreBase>() {
+#ifdef _DEBUG
+      SetServerName("ScoreServer"); // ÉTÅ[ÉoñºÇÃê›íË
+#endif
     }
 
     bool ScoreServer::Release() {

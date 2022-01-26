@@ -114,6 +114,9 @@
     <ClCompile Include="source\ObjectServer.cpp">
       <Filter>ソース ファイル\Object</Filter>
     </ClCompile>
+    <ClCompile Include="source\CollisionComponent.cpp">
+      <Filter>ソース ファイル\Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\ApplicationMain.h">
@@ -171,6 +174,9 @@
       <Filter>ヘッダー ファイル\ModelAnim</Filter>
     </ClInclude>
     <ClInclude Include="source\ObjectServer.h">
+      <Filter>ヘッダー ファイル\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="source\CollisionComponent.h">
       <Filter>ヘッダー ファイル\Object</Filter>
     </ClInclude>
   </ItemGroup>
