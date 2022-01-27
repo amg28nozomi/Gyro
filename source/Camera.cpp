@@ -19,7 +19,7 @@ namespace {
 namespace Gyro {
     namespace Camera {
 
-        Camera::Camera(Application::ApplicationMain& app) : ObjectBase(app) {
+        Camera::Camera() {
             Init();
         }
 
