@@ -9,6 +9,7 @@
 #include <memory>
 #include "ApplicationMain.h"
 #include "Player.h"
+#include "Enemy/EnemyWheel.h"
 #include "PrimitiveBase.h"
 #include "PrimitivePlane.h"
 #include "ObjectServer.h"
@@ -29,6 +30,7 @@ namespace Gyro {
     bool ModeGame::Enter() {
       // オブジェクトを生成
       _appMain.GetObjectServer().Register(std::move(std::make_shared<Player::Player>(_appMain)));
+      _appMain.GetObjectServer().Register(std::move(std::make_shared<Enemy::EnemyWheel>(_appMain)));
       return true;
     }
 

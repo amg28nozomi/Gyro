@@ -33,8 +33,8 @@ namespace Gyro {
             float sz = _position.GetZ() - positoin.GetZ();
             float radian = atan2(sz, sx);
             float length = sqrt(sz * sz + sx * sx);
-            if (stick.GetX() > InputMin) { radian -= 0.05f; }
-            if (stick.GetX() < -InputMin) { radian += 0.05f; }
+            if (stick.GetX() > InputMin) { radian -= 0.1f; }
+            if (stick.GetX() < -InputMin) { radian += 0.1f; }
             // x,z位置
             auto x = positoin.GetX() + move.GetX() + cos(radian) * length;
             _position.SetX(x);
@@ -42,11 +42,11 @@ namespace Gyro {
             _position.SetZ(z);
             // y位置
             if (stick.GetY() > InputMin) {
-                auto py = _position.GetY() - 1.0f;
+                auto py = _position.GetY() - 4.0f;
                 _position.SetY(py);
             }
             if (stick.GetY() < -InputMin) {
-                auto my = _position.GetY() + 1.0f;
+                auto my = _position.GetY() + 4.0f;
                 _position.SetY(my);
             }
             // 座標の設定
@@ -79,7 +79,7 @@ namespace Gyro {
         void Camera::SetState() {
             // カメラの初期化
             namespace AppMath = AppFrame::Math;
-            _position = AppMath::Vector4(0.0f, 120.0f, -400.0f, 1.0f);
+            _position = AppMath::Vector4(0.0f, 120.0f, -500.0f, 1.0f);
             _target = AppMath::Vector4(0.0f, 80.0f, 0.0f, 1.0f);
             SetCameraNearFar(Near, Far);
         }
