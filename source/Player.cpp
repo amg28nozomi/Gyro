@@ -194,7 +194,7 @@ namespace Gyro {
       // アニメーションをアタッチ
       MV1AttachAnim(_model, _animaIndex, -1, false);
       // 総再生時間を更新
-      _totalTime = MV1GetAnimTotalTime(_model, _animaIndex);
+      _totalTime = MV1GetAttachAnimTotalTime(_model, _animaIndex);
       _animaTime = 0.0f; // 再生時間を0にする
       return true;
     }
