@@ -62,6 +62,11 @@ namespace Gyro {
       auto oldState = _playerState;
       // 状態の更新
       SetRotation(_move);
+      //if (input.GetButton(XINPUT_BUTTON_Y, false)) {
+      //    _playerState = PlayerState::Attack1;
+      //}else {
+      //    //_playerState = PlayerState::Idle;
+      //}
       Animation(oldState);
       // 座標の設定
       VECTOR p(_position.GetX(), _position.GetY(), _position.GetZ());
@@ -108,7 +113,7 @@ namespace Gyro {
 
     void Player::LoadResource() {
       // 各種リソースの読み取り処理
-      _model = MV1LoadModel("res/Player/Gyro_multimotion.mv1"); // プレイヤー
+      _model = MV1LoadModel("res/Player/Gyro multibag.mv1"); // プレイヤー
       _handleSkySphere = MV1LoadModel("res/SkySphere/skysphere.mv1"); // スカイスフィア
       _handleMap = MV1LoadModel("res/Stage/houseGEO.mv1");
       //_frameMapCollision = MV1SearchFrame(_handleMap, "ground_navmesh");
@@ -192,9 +197,9 @@ namespace Gyro {
         return false;
       }
       // アニメーションをアタッチ
-      MV1AttachAnim(_model, _animaIndex, -1, false);
+      auto a = MV1AttachAnim(_model, _animaIndex, -1, false);
       // 総再生時間を更新
-      _totalTime = MV1GetAttachAnimTotalTime(_model, _animaIndex);
+      _totalTime = MV1GetAttachAnimTotalTime(_model, a);
       _animaTime = 0.0f; // 再生時間を0にする
       return true;
     }
@@ -203,15 +208,19 @@ namespace Gyro {
       // 状態に応じたキーを返す
       switch (_playerState) {
       case PlayerState::Idle:
-        return "idle";
+        return "GyroIdle";
       case PlayerState::Run:
-        return "run";
+        return "GyroDash";
       case PlayerState::Walk:
-        return "Walk";
+        return "GyroWalk";
       case PlayerState::Jump:
-        return "Jump";
-      case PlayerState::Attack:
-        return "Attack";
+        return "GyroJUp";
+      case PlayerState::Attack1:
+        return "GyroLaw1";
+      case PlayerState::Attack2:
+        return "GyroLaw2";
+      case PlayerState::Attack3:
+        return "GyroLaw3";
       default:
         return "";
       }

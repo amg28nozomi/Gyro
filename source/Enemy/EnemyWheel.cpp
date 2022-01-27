@@ -20,10 +20,10 @@ namespace Gyro {
 
         bool EnemyWheel::Init() {
             // モデル読み込み
-            _mHandle = MV1LoadModel("res/Enemy/enemy1endobjnomi.mv1");
+            _mHandle = MV1LoadModel("res/Enemy/Enemy_multimotion.mv1");
             MV1SetScale(_mHandle, VGet(1.0f, 1.0f, 1.0f));
             // アニメーションアタッチ
-            _modelAnim.SetMainAttach(_mHandle, 14, 1.0f, true);
+            _modelAnim.SetMainAttach(_mHandle, 1, 1.0f, true);
             // 初期化
             MV1SetScale(_mHandle, VGet(2,2,2));
             SetEnemyPos(VGet(100, 0, 100));
@@ -52,16 +52,16 @@ namespace Gyro {
             if (oldEnemyState != _enemyState) {
                 switch (_enemyState) {
                 case EnemyState::WAIT:
-                    _modelAnim.SetBlendAttach(14, 10.0f, 1.0f, true);
+                    _modelAnim.SetBlendAttach(1, 10.0f, 1.0f, true);
                     break;
                 case EnemyState::WALK:
-                    _modelAnim.SetBlendAttach(7, 10.0f, 1.0f, true);
+                    _modelAnim.SetBlendAttach(2, 10.0f, 1.0f, true);
                     break;
                 case EnemyState::ATTACK:
                     _modelAnim.SetBlendAttach(0, 10.0f, 1.0f, false);
                     break;
                 case EnemyState::DEAD:
-                    _modelAnim.SetBlendAttach(1, 10.0f, 1.0f, false);
+                    //_modelAnim.SetBlendAttach(1, 10.0f, 1.0f, false);
                     break;
                 default:
                     break;

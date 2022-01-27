@@ -32,11 +32,13 @@ namespace Gyro {
        * @brief 自機の状態を表す列挙型クラス
        */
       enum class PlayerState {
-        Idle,   //!< 待機
-        Walk,   //!< 歩き
-        Run,    //!< 移動
-        Attack, //!< 攻撃
-        Jump    //!< ジャンプ
+        Idle,       //!< 待機
+        Walk,       //!< 歩き
+        Run,        //!< 移動
+        Attack1,    //!< 攻撃1
+        Attack2,    //!< 攻撃2
+        Attack3,    //!< 攻撃3
+        Jump        //!< ジャンプ
       };
       /**
        * @brief コンストラクタ
