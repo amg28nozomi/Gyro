@@ -20,11 +20,13 @@ namespace Gyro {
 
         bool EnemyWheel::Init() {
             // モデル読み込み
-            _mHandle = MV1LoadModel("res/Spider_3.mv1");
+            _mHandle = MV1LoadModel("res/Enemy/enemy1endobjnomi.mv1");
             MV1SetScale(_mHandle, VGet(1.0f, 1.0f, 1.0f));
             // アニメーションアタッチ
             _modelAnim.SetMainAttach(_mHandle, 14, 1.0f, true);
             // 初期化
+            MV1SetScale(_mHandle, VGet(2,2,2));
+            SetEnemyPos(VGet(100, 0, 100));
             _enemyDir = VGet(0, 0, 1);
             _enemyMoveSpeed = 5.0f;
             return true;
