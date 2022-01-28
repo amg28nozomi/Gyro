@@ -23,7 +23,7 @@ namespace {
 namespace Gyro {
   namespace Player {
 
-    Player::Player(Application::ApplicationMain& app) : ObjectBase(app), _cam(app) {
+    Player::Player(Application::ApplicationMain& app) : ObjectBase(app) {
       LoadResource(); // リソースの読み取り
       Init();
     }
@@ -35,94 +35,105 @@ namespace Gyro {
     }
 
     bool Player::Process() {
-      // 名前空間の省略
-      namespace App = AppFrame::Application;
-      namespace AppMath = AppFrame::Math;
-      // 入力状態の取得
-      auto input = _app.GetOperation().GetXBoxState();
-      auto [lX, lY] = input.GetStick(false); // 左スティック
-      auto [rX, rY] = input.GetStick(true);  // 右スティック
-      auto [leftTrigger, rightTrigger] = input.GetTrigger(); // トリガーボタン
-      // カメラ向きの算出
-      /*auto sX = _cam._pos.x - _cam._target.x;
-      auto sZ = _cam._pos.z - _cam._target.z;
-      auto camrad = atan2(sZ, sX);*/
-      // 実際に使用する移動量(2次元ベクトル)
-      auto stickLeft = AppMath::Vector4(lX , lY);
-      auto stickRight = AppMath::Vector4(rX, rY);
-      Move(stickLeft);
+        // 名前空間の省略
+        namespace App = AppFrame::Application;
+        namespace AppMath = AppFrame::Math;
+        // 入力状態の取得
+        auto input = _app.GetOperation().GetXBoxState();
+        auto [lX, lY] = input.GetStick(false); // 左スティック
+        auto [rX, rY] = input.GetStick(true);  // 右スティック
+        auto [leftTrigger, rightTrigger] = input.GetTrigger(); // トリガーボタン
+        // カメラ向きの算出
+        /*auto  sX = _app.GetCamera().CamPosGetX() - _app.GetCamera().CamTarGetX();
+        auto  sZ = _app.GetCamera().CamPosGetZ() - _app.GetCamera().CamTarGetZ();
+        auto camrad = atan2(sZ, sX);*/
+        /*auto sX = _cam._pos.x - _cam._target.x;
+        auto sZ = _cam._pos.z - _cam._target.z;
+        auto camrad = atan2(sZ, sX);*/
 
-      auto oldPosition = _position; // 前フレーム座標
-      // 移動量を算出する
-      //AppMath::Vector4 move;
-      //move = AppMath::Vector4(mx, 0.0f, my);
-      //CameraUpdate(stickRight);
-      // カメラの更新
-      _cam.Process(stickRight, _position, _move);
-      auto oldState = _playerState;
-      // 状態の更新
-      SetRotation(_move);
-      //if (input.GetButton(XINPUT_BUTTON_Y, false)) {
-      //    _playerState = PlayerState::Attack1;
-      //}else {
-      //    //_playerState = PlayerState::Idle;
-      //}
-      Animation(oldState);
-      // 座標の設定
-      VECTOR p(_position.GetX(), _position.GetY(), _position.GetZ());
-      MV1SetPosition(_model, p);
-      // スカイスフィアの座標
-      MV1SetPosition(_handleSkySphere, p);
-      // ステージの座標
-      MV1SetPosition(_handleMap, VGet(0, -1500, 0));
-      return true;
+        // 実際に使用する移動量(2次元ベクトル)
+        auto stickLeft = AppMath::Vector4(lX, lY);
+        auto stickRight = AppMath::Vector4(rX, rY);
+        Move(stickLeft);
+
+        auto oldPosition = _position; // 前フレーム座標
+        // 移動量を算出する
+        //AppMath::Vector4 move;
+        //move = AppMath::Vector4(mx, 0.0f, my);
+        //CameraUpdate(stickRight);
+        // カメラの更新
+        _app.GetCamera().Process(stickRight, _position, _move);
+        auto oldState = _playerState;
+        // 状態の更新
+        SetRotation(_move);
+        //if (input.GetButton(XINPUT_BUTTON_Y, false)) {
+        //    _playerState = PlayerState::Attack1;
+        //}else {
+        //    //_playerState = PlayerState::Idle;
+        //}
+        Animation(oldState);
+        // 座標の設定
+        VECTOR p(_position.GetX(), _position.GetY(), _position.GetZ());
+        MV1SetPosition(_model, p);
+        // スカイスフィアの座標
+        MV1SetPosition(_handleSkySphere, p);
+        // ステージの座標
+        MV1SetPosition(_handleMap, VGet(0, -1500, 0));
+        return true;
     }
 
     bool Player::Draw() const {
-      // プレイヤーの描画
-      MV1SetScale(_model, VGet(10, 10, 10));
-      MV1DrawModel(_model);
-      // スカイスフィアの描画
-      MV1DrawModel(_handleSkySphere);
-      MV1DrawMesh(_handleMap, 0);
+        // プレイヤーの描画
+        MV1SetScale(_model, VGet(10, 10, 10));
+        MV1DrawModel(_model);
+        // スカイスフィアの描画
+        MV1DrawModel(_handleSkySphere);
+        MV1DrawMesh(_handleMap, 0);
 #ifdef _DEBUG
-      DebugString(); // Debug情報の出力を行う
-      // カメラ情報の描画
-      _cam.Draw(_position, _move);
+        DebugString(); // Debug情報の出力を行う
+        // カメラ情報の描画
+        _app.GetCamera().Draw(_position, _move);
 #endif
-      return true;
+        return true;
     }
 
     void Player::Input() {
-      
+
     }
 
     void Player::Move(AppMath::Vector4 move) {
-      _move.Fill(0.0f); // 初期化
-      // 入力を受け付けるか
-      if (move.Length2D() < InputMin) {
+        _move.Fill(0.0f); // 初期化
+        // 入力を受け付けるか
+        if (move.Length2D() < InputMin) {
+            return;
+        }
+        // カメラ向きの算出
+        //auto  sX = _app.GetCamera().CamPosGetX() - _app.GetCamera().CamTarGetX();
+        //auto  sZ = _app.GetCamera().CamPosGetZ() - _app.GetCamera().CamTarGetZ();
+        //auto camrad = atan2(sZ, sX);
+        //auto rad = atan2(move.GetX(), move.GetZ());
+        //// 平行移動
+        //auto x = cos(rad + camrad) * MoveSpeed;
+        //auto z = sin(rad + camrad) * MoveSpeed;
+        auto x = (move.GetX() / 30000) * MoveSpeed;
+        auto z = (move.GetY() / 30000) * MoveSpeed;
+        _move = AppMath::Vector4(x, 0.0f, z);
+        _position.Add(_move); //!< 移動量に加算する
         return;
-      }
-      // 平行移動
-      auto x = (move.GetX() / 30000) * MoveSpeed;
-      auto z = (move.GetY() / 30000) * MoveSpeed;
-      _move = AppMath::Vector4(x, 0.0f, z);
-      _position.Add(_move); //!< 移動量に加算する
-      return;
     }
 
     void Player::LoadResource() {
-      // 各種リソースの読み取り処理
-      _model = MV1LoadModel("res/Player/Gyro multibag.mv1"); // プレイヤー
-      _handleSkySphere = MV1LoadModel("res/SkySphere/skysphere.mv1"); // スカイスフィア
-      _handleMap = MV1LoadModel("res/Stage/houseGEO.mv1");
-      //_frameMapCollision = MV1SearchFrame(_handleMap, "ground_navmesh");
+        // 各種リソースの読み取り処理
+        _model = MV1LoadModel("res/Player/Gyro multibag.mv1"); // プレイヤー
+        _handleSkySphere = MV1LoadModel("res/SkySphere/skysphere.mv1"); // スカイスフィア
+        _handleMap = MV1LoadModel("res/Stage/houseGEO.mv1");
+        //_frameMapCollision = MV1SearchFrame(_handleMap, "ground_navmesh");
     }
 
     void Player::SetCamera() {
-      // カメラの初期化
-      _cam.Init();
+
     }
+
 
     void Player::SetState() {
       // 状態の設定

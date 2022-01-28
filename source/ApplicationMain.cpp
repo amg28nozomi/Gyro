@@ -31,6 +31,9 @@ namespace Gyro {
       // オブジェクトサーバの生成
       _objectServer = std::make_unique<Object::ObjectServer>();
       _objectServer->Init();
+      // カメラの生成
+      _camera = std::make_unique<Camera::Camera>();
+      _camera->Init();
       // モードゲームの登録
       _modeServer->AddMode("Game", std::make_shared<Mode::ModeGame>(*this));
       _modeServer->TransionToMode("Game");

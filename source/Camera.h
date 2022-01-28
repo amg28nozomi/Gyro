@@ -23,7 +23,7 @@ namespace Gyro {
          * @class Camera
          * @brief カメラクラス
          */
-        class Camera : public Object::ObjectBase {
+        class Camera {
         public:
             /**
              * @brief カメラの状態を表す列挙型クラス
@@ -35,7 +35,7 @@ namespace Gyro {
             /**
              * @brief コンストラクタ
              */
-            Camera(Application::ApplicationMain& app);
+            Camera();
             /**
              * @brief デストラクタ
              */
@@ -59,7 +59,20 @@ namespace Gyro {
              */
             bool Draw(const AppFrame::Math::Vector4 positoin, const AppFrame::Math::Vector4 move) const;
 #endif // DEBUG
+            float CamPosGetX() {
+                return _position.GetX();
+            }
+            float CamPosGetZ() {
+                return _position.GetZ();
+            }
+            float CamTarGetX() {
+                return _target.GetX();
+            }
+            float CamTarGetZ() {
+                return _target.GetZ();
+            }
         private:
+            AppFrame::Math::Vector4 _position{};    //!< カメラの座標
             AppFrame::Math::Vector4 _target{};  //!< カメラの注視点(見ている座標)
             CameraState _cameraState{ CameraState::Normal }; //!< カメラ状態
 

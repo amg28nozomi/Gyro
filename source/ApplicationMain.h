@@ -7,6 +7,7 @@
  *********************************************************************/
 #pragma once
 #include "appframe.h"
+#include "Camera.h"
 /**
  * @brief ゲームスペース
  */
@@ -55,9 +56,18 @@ namespace Gyro {
       Object::ObjectServer& GetObjectServer() {
         return *_objectServer;
       }
+      /**
+       * @brief  カメラの取得
+       * @return カメラの参照
+       */
+      Camera::Camera& GetCamera() {
+          return *_camera;
+      }
     private:
       //!< オブジェクトサーバ
-      std::unique_ptr<Object::ObjectServer> _objectServer{nullptr};
+      std::unique_ptr<Object::ObjectServer> _objectServer{ nullptr };
+      //!< カメラ
+      std::unique_ptr<Camera::Camera> _camera{ nullptr };
       /**
        * @brief  更新処理
        * @return
