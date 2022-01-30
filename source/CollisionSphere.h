@@ -42,14 +42,20 @@ namespace Gyro {
        * @return 
        */
       bool IsHit() override;
-    private:
-      float _radius{0.0f}; //!< ‰~‚Ì”¼Œa
       /**
        * @brief  ‹…‚Æ‹…‚ÌÕ“Ë”»’è
        * @param  sphere ƒ^[ƒQƒbƒg
-       * @return 
+       * @return true:Õ“Ë false:Õ“Ë‚µ‚Ä‚¢‚È‚¢
        */
       bool IntersectSphere(const CollisionSphere& sphere);
+      /**
+       * @brief  ‹…‚Æ“_‚Ì“–‚½‚è”»’è
+       * @param  point “_‚ÌÀ•W
+       * @return true:Õ“Ë false:Õ“Ë‚µ‚Ä‚¢‚È‚¢
+       */
+      bool IntersectPoint(const AppMath::Vector4& point);
+    private:
+      float _radius{0.0f}; //!< ‰~‚Ì”¼Œa
     };
 
   } // namespace Object

@@ -29,6 +29,8 @@ namespace Gyro {
       auto old = _position;
       // 移動座標
       auto newPosition = _position + vector;
+      // 中心座標に移動量を加算する
+      _position.Add(vector);
     }
 
 #ifdef _DEBUG
@@ -51,6 +53,13 @@ namespace Gyro {
       auto distSq = AppMath::Vector4::LengthSquared(_position - sphere._position);
       auto sumRadius = _radius + sphere._radius;
       return distSq <= (sumRadius * sumRadius);
+    }
+
+    bool CollisionSphere::IntersectPoint(const AppMath::Vector4& point) {
+      // 球と点の衝突判定
+      auto l = AppMath::Vector4::LengthSquared(_position - point);
+      auto radius2 = _radius * _radius;
+      return l <= radius2;
     }
   } // namespace Object
 } // namespace Gyro
