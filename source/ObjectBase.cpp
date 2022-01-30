@@ -55,5 +55,11 @@ namespace Gyro {
       world.MulTranslate(_position);   // •½sˆÚ“®
       return world; // s—ñ‚ğ•Ô‚·
     }
+
+#ifdef _DEBUG
+    bool ObjectBase::DebugDraw() const {
+      return _app.GetDebugFlag();
+    }
+#endif
   } // namespace Object
 } // namespace Gyro

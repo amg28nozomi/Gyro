@@ -102,9 +102,7 @@ namespace Gyro {
       MV1DrawModel(_handleSkySphere);
       MV1DrawModel(_handleMap);
 #ifdef _DEBUG
-      DebugString(); // Debug情報の出力を行う
-      // カメラ情報の描画
-      _app.GetCamera().Draw(_position, _move);
+      DebugDraw(); // デバッグ描画
 #endif
         return true;
     }
@@ -287,6 +285,17 @@ namespace Gyro {
 //    }
 
 #ifdef _DEBUG
+
+    bool Player::DebugDraw() const {
+      // フラグが立っている場合のみ描画を行う
+      if (!ObjectBase::DebugDraw()) {
+        return false; // 出力を行わない
+      }
+      DebugString(); // 座標情報の出力
+      _app.GetCamera().Draw(_position, _move); // カメラ情報の出力処理
+      return true;
+    }
+
     void Player::DebugString() const {
       // 座標を出力する
       auto[x, y, z] = _position.GetVector3();

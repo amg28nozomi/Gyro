@@ -54,12 +54,12 @@ namespace Gyro {
       namespace App = AppFrame::Application;
       // STARTボタンが押された場合、アプリケーションを終了する
       if (device.GetButton(XINPUT_BUTTON_START, App::InputTrigger)) {
-        _app.RequestTerminate();
+        _appMain.RequestTerminate();
       }
 #ifdef _DEBUG
       // デバッグ時限定:左スティックが押された場合、デバッグフラグを切り替える
       if (device.GetButton(XINPUT_BUTTON_RIGHT_THUMB, App::InputTrigger)) {
-        _app.ChangeDebugFlag();
+        _app.ChengeDebugFlag(); // デバッグフラグの切り替え
       }
 #endif
       return true;

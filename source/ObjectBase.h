@@ -125,6 +125,13 @@ namespace Gyro {
        * @return ワールド座標行列
        */
       AppMath::Matrix44 WorldMatrix();
+#ifdef _DEBUG
+      /**
+       * @brief デバッグ専用の出力処理
+       *        アプリケーションのデバッグフラグがtrueの場合のみ処理を行う
+       */
+      virtual bool DebugDraw() const;
+#endif
     };
   } // namespace Object
 } // namespace Gyro

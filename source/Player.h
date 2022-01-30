@@ -130,6 +130,8 @@ namespace Gyro {
        */
       std::string_view GetAnimaKey() const;
 #ifdef _DEBUG
+      bool DebugDraw() const override;
+
       /**
        * @brief Debugê—p•`‰æ
        */
