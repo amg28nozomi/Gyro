@@ -8,12 +8,13 @@
 #include "CollisionCylinder.h"
 #include <DxLib.h>
 #include "UtilityDX.h"
+#include "ObjectBase.h"
 
 namespace Gyro {
 
   namespace Object {
 
-    CollisionCylinder::CollisionCylinder() : _position(), _radius(), _line() {
+    CollisionCylinder::CollisionCylinder(ObjectBase& owner) : _owner(owner), _position(), _radius(), _line() {
 #ifdef _DEBUG
       _color = AppData::Color();
 #endif

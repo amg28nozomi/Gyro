@@ -40,7 +40,7 @@ namespace Gyro {
       /**
        * @brief 空のコンストラクタ
        */
-      CollisionCylinder();
+      CollisionCylinder(ObjectBase& owner);
       /**
        * @brief コンストラクタ
        * @param pos 座標
