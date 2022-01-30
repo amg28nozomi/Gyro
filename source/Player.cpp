@@ -121,18 +121,15 @@ namespace Gyro {
         auto z = (move.GetY() / 30000) * MoveSpeed; // y軸の移動量
         _move = AppMath::Vector4(x, 0.0f, z);
         _position.Add(_move); //!< 移動量に加算する
-        
-        auto angle = std::atan2(move.GetX() * -1, move.GetY() * -1);
-        
-        _rotation.SetY(angle);
-        // カメラ向きの算出
-        //auto  sX = _app.GetCamera().CamPosGetX() - _app.GetCamera().CamTarGetX();
-        //auto  sZ = _app.GetCamera().CamPosGetZ() - _app.GetCamera().CamTarGetZ();
-        //auto camrad = atan2(sZ, sX);
-        //auto rad = atan2(move.GetX(), move.GetZ());
-        //// 平行移動
-        //auto x = cos(rad + camrad) * MoveSpeed;
-        //auto z = sin(rad + camrad) * MoveSpeed;
+        // auto angle = std::atan2(move.GetX() * -1, move.GetY() * -1);
+        // 前方ベクトル
+        AppMath::Vector4 l{ move.GetX(), move.GetY() };
+        l.Normalize(); // 単位ベクトル化
+        auto angle = std::atan2(l.GetY(), l.GetX());
+        angle = AppMath::Utility::RadianToDegree(angle);
+        // auto length = std::sqrt(x * x + z * z);
+        // auto angle = AppMath::Utility::DegreeToRadian(length);
+        _rotation.SetY(AppMath::Utility::DegreeToRadian(angle));
         return;
     }
 

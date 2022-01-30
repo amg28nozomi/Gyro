@@ -49,6 +49,7 @@ namespace Gyro {
       using Matrix = AppMath::Matrix44;
       auto world = Matrix::Identity(); // ’PˆÊs—ñ‚Ìæ“¾
       world.MulScaling(_scale);        // Šgk
+      using Utility = AppMath::Utility;
       world.RotateZ(_rotation.GetZ()); // z²‰ñ“]
       world.RotateY(_rotation.GetY()); // y²‰ñ“]
       world.RotateX(_rotation.GetX()); // x²‰ñ“]
