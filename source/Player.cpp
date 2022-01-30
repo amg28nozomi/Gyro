@@ -72,13 +72,16 @@ namespace Gyro {
         //    //_playerState = PlayerState::Idle;
         //}
         Animation(oldState);
-        // 座標の設定
-        VECTOR p(_position.GetX(), _position.GetY(), _position.GetZ());
+        // 座標情報をVECTOR構造体に変換
+        auto vPosition = UtilityDX::ToVECTOR(_position);
         // ワールド座標の設定
         MV1SetMatrix(_model, UtilityDX::ToMATRIX(WorldMatrix()));
-        // MV1SetPosition(_model, UtilityDX::ToVECTOR(_position));
+        // MV1SetPosition(_model, vPosition);
+        auto rotationY = AppMath::Vector4(0.0f, _rotation.GetY(), 0.0f);
+        // モデルの向きを設定する
+        // MV1SetRotationXYZ(_model, UtilityDX::ToVECTOR(rotationY));
         // スカイスフィアの座標
-        MV1SetPosition(_handleSkySphere, UtilityDX::ToVECTOR(_position));
+        MV1SetPosition(_handleSkySphere, vPosition);
         // ステージの座標
         MV1SetPosition(_handleMap, VGet(0, -1500, 0));
         return true;
@@ -104,11 +107,19 @@ namespace Gyro {
     }
 
     void Player::Move(AppMath::Vector4 move) {
-        _move.Fill(0.0f); // 初期化
-        // 入力を受け付けるか
-        if (move.Length2D() < InputMin) {
+        _move.Fill(0.0f); // 移動量初期化
+        // 移動量が0の場合は入力を受け付けない
+        if (move.LengthSquared() == 0.0f) {
             return;
         }
+        auto x = (move.GetX() / 30000) * MoveSpeed; // x軸の移動量
+        auto z = (move.GetY() / 30000) * MoveSpeed; // y軸の移動量
+        _move = AppMath::Vector4(x, 0.0f, z);
+        _position.Add(_move); //!< 移動量に加算する
+        
+        auto angle = std::atan2(move.GetX() * -1, move.GetY() * -1);
+        
+        _rotation.SetY(angle);
         // カメラ向きの算出
         //auto  sX = _app.GetCamera().CamPosGetX() - _app.GetCamera().CamTarGetX();
         //auto  sZ = _app.GetCamera().CamPosGetZ() - _app.GetCamera().CamTarGetZ();
@@ -117,10 +128,6 @@ namespace Gyro {
         //// 平行移動
         //auto x = cos(rad + camrad) * MoveSpeed;
         //auto z = sin(rad + camrad) * MoveSpeed;
-        auto x = (move.GetX() / 30000) * MoveSpeed;
-        auto z = (move.GetY() / 30000) * MoveSpeed;
-        _move = AppMath::Vector4(x, 0.0f, z);
-        _position.Add(_move); //!< 移動量に加算する
         return;
     }
 
@@ -145,7 +152,7 @@ namespace Gyro {
       namespace AppMath = AppFrame::Math;
       _position = AppMath::Vector4();
       _rotation = AppMath::Vector4();
-      _scale = { 1.0f, 1.0f, 1.0f };
+      _scale = { 10.0f, 10.0f, 10.0f };
       // アニメーションの初期化
       _animaIndex = NoAnimation;
       _animaTime = 0.0f;
@@ -169,8 +176,12 @@ namespace Gyro {
 
     void Player::SetRotation(const AppFrame::Math::Vector4 move) {
       // 移動量がある場合は向きを変更する
-      if (move.Length()) {
-        _rotation = move;
+      if (move.LengthSquared()) {
+        using Utility = AppFrame::Math::Utility;
+        // 入力情報のフィルタリングを行う
+        //auto n = move.Normalize();
+        //auto angle = std::atan2(n.GetX(), n.GetY()) - Utility::_pi / 2;
+        //_rotation.SetY(angle);
         _playerState = PlayerState::Walk;
       }
       _playerState = PlayerState::Idle;
