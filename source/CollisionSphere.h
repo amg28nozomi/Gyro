@@ -19,7 +19,7 @@ namespace Gyro {
     class CollisionSphere : public CollisionBase {
     public:
       /**
-       * @brief 空のコンストラクタ
+       * @brief コンストラクタ
        * @param owner  所有者の参照
        * @param center 中心座標
        * @param radius 円の半径
@@ -29,7 +29,10 @@ namespace Gyro {
        * @brief 当たり判定の更新処理
        */
       void Process() override;
-
+      /**
+       * @brief 更新処理
+       * @param vector 移動量
+       */
       void Process(AppMath::Vector4 vector) override;
 #ifdef _DEBUG
       void Draw() override;

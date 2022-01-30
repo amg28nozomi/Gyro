@@ -21,6 +21,7 @@ namespace Gyro {
    * @brief オブジェクトベース
    */
   namespace Object {
+    namespace AppMath = AppFrame::Math;
     /**
      * @class ObjectBase
      * @brief オブジェクトのスーパークラス
@@ -109,8 +110,8 @@ namespace Gyro {
       Application::ApplicationMain& _app; //!< アプリケーションの参照
       ObjectId _id{ObjectId::Object}; //!< オブジェクトの識別番号
       ObjectState _state{ObjectState::Active}; //!< 状態
-      AppFrame::Math::Vector4 _position;  //!< 座標行列
-      AppFrame::Math::Vector4 _rotation;  //!< 回転行列
+      AppFrame::Math::Vector4 _position;       //!< 座標行列
+      AppFrame::Math::Vector4 _rotation;       //!< 回転行列
       AppFrame::Math::Vector4 _scale{0, 0, 0}; //!< 拡大率
       bool _gravity; //!< 重力処理を行うか(true:重力処理を行う false:重力処理を行わない)
       float _mass;   //!< 質量
@@ -119,6 +120,11 @@ namespace Gyro {
        * @brief オブジェクトに対する重力処理
        */
       virtual void Gravity();
+      /**
+       * @brief  ワールド座標行列の取得
+       * @return ワールド座標行列
+       */
+      AppMath::Matrix44 WorldMatrix();
     };
   } // namespace Object
 } // namespace Gyro

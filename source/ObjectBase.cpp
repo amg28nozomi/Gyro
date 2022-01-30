@@ -44,5 +44,16 @@ namespace Gyro {
       // ÚG‚µ‚Ä‚¢‚éê‡‚Í‰Ÿ‚µo‚µˆ—‚ğÀs
       // _gravityScale‚ğ0.0f‚Å‰Šú‰»
     }
+
+    AppMath::Matrix44 ObjectBase::WorldMatrix() {
+      using Matrix = AppMath::Matrix44;
+      auto world = Matrix::Identity(); // ’PˆÊs—ñ‚Ìæ“¾
+      world.MulScaling(_scale);        // Šgk
+      world.RotateZ(_rotation.GetZ()); // z²‰ñ“]
+      world.RotateY(_rotation.GetY()); // y²‰ñ“]
+      world.RotateX(_rotation.GetX()); // x²‰ñ“]
+      world.MulTranslate(_position);   // •½sˆÚ“®
+      return world; // s—ñ‚ğ•Ô‚·
+    }
   } // namespace Object
 } // namespace Gyro

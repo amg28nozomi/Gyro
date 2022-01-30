@@ -84,9 +84,6 @@
     <ClCompile Include="source\CollisionBase.cpp">
       <Filter>ソース ファイル\Object</Filter>
     </ClCompile>
-    <ClCompile Include="source\CollisionCylinder.cpp">
-      <Filter>ソース ファイル\Object</Filter>
-    </ClCompile>
     <ClCompile Include="source\CollisionSphere.cpp">
       <Filter>ソース ファイル\Object</Filter>
     </ClCompile>
@@ -144,9 +141,6 @@
       <Filter>ヘッダー ファイル\Application</Filter>
     </ClInclude>
     <ClInclude Include="source\CollisionSphere.h">
-      <Filter>ヘッダー ファイル\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="source\CollisionCylinder.h">
       <Filter>ヘッダー ファイル\Object</Filter>
     </ClInclude>
     <ClInclude Include="source\CollisionBase.h">
