@@ -6,10 +6,8 @@
  * @date   January 2022
  *********************************************************************/
 #pragma once
+#include "appframe.h"
 
-namespace AppFrame::Math {
-  class Vector4;
-}
  /**
  * @brief ゲームベース
  */
@@ -85,7 +83,7 @@ namespace Gyro {
       //!< 所有者の参照
       ObjectBase& _owner;
       //!< ローカル座標
-      AppMath::Vector4 _position{};
+      AppMath::Vector4 _position;
       //!< 衝突判定フラグ(true:有効 false:非有効)
       bool _hit{true};
 #ifdef _DEBUG

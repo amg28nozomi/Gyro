@@ -6,7 +6,6 @@
  * @date   January 2022
  *********************************************************************/
 #include "CollisionSphere.h"
-#include <appframe.h>
 #include "ObjectBase.h"
 #include "UtilityDX.h"
 

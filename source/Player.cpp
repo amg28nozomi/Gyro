@@ -74,10 +74,11 @@ namespace Gyro {
         Animation(oldState);
         // 座標の設定
         VECTOR p(_position.GetX(), _position.GetY(), _position.GetZ());
-        auto matrix = UtilityDX::
-        MV1SetPosition(_model, UtilityDX::ToVECTOR(_position));
+        // ワールド座標の設定
+        MV1SetMatrix(_model, UtilityDX::ToMATRIX(WorldMatrix()));
+        // MV1SetPosition(_model, UtilityDX::ToVECTOR(_position));
         // スカイスフィアの座標
-        MV1SetPosition(_handleSkySphere, p);
+        MV1SetPosition(_handleSkySphere, UtilityDX::ToVECTOR(_position));
         // ステージの座標
         MV1SetPosition(_handleMap, VGet(0, -1500, 0));
         return true;
@@ -144,6 +145,7 @@ namespace Gyro {
       namespace AppMath = AppFrame::Math;
       _position = AppMath::Vector4();
       _rotation = AppMath::Vector4();
+      _scale = { 1.0f, 1.0f, 1.0f };
       // アニメーションの初期化
       _animaIndex = NoAnimation;
       _animaTime = 0.0f;

@@ -1,11 +1,11 @@
 #include "CollisionBase.h"
-#include <appframe.h>
 #include "ObjectBase.h"
 
 namespace Gyro {
   namespace Object {
 
     CollisionBase::CollisionBase(ObjectBase& owner) : _owner(owner) {
+      _position = AppMath::Vector4();
     }
 
     void CollisionBase::Process() {

@@ -10,6 +10,7 @@
 
 namespace AppFrame::Math {
   class Vector4;
+  class Matrix44;
 }
 
 namespace Gyro {
