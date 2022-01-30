@@ -74,8 +74,9 @@ namespace Gyro {
         Animation(oldState);
         // 座標情報をVECTOR構造体に変換
         auto vPosition = UtilityDX::ToVECTOR(_position);
+        auto world = WorldMatrix();
         // ワールド座標の設定
-        MV1SetMatrix(_model, UtilityDX::ToMATRIX(WorldMatrix()));
+        MV1SetMatrix(_model, UtilityDX::ToMATRIX(world));
         // MV1SetPosition(_model, vPosition);
         auto rotationY = AppMath::Vector4(0.0f, _rotation.GetY(), 0.0f);
         // モデルの向きを設定する
@@ -88,16 +89,17 @@ namespace Gyro {
     }
 
     bool Player::Draw() const {
-        // プレイヤーの描画
-        MV1SetScale(_model, VGet(10, 10, 10));
-        MV1DrawModel(_model);
-        // スカイスフィアの描画
-        MV1DrawModel(_handleSkySphere);
-        MV1DrawMesh(_handleMap, 0);
+      // プレイヤーの描画
+      auto scale = _scale;
+      MV1SetScale(_model, UtilityDX::ToVECTOR(scale));
+      MV1DrawModel(_model);
+      // スカイスフィアの描画
+      MV1DrawModel(_handleSkySphere);
+      MV1DrawMesh(_handleMap, 0);
 #ifdef _DEBUG
-        DebugString(); // Debug情報の出力を行う
-        // カメラ情報の描画
-        _app.GetCamera().Draw(_position, _move);
+      DebugString(); // Debug情報の出力を行う
+      // カメラ情報の描画
+      _app.GetCamera().Draw(_position, _move);
 #endif
         return true;
     }
