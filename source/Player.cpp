@@ -69,14 +69,25 @@ namespace Gyro {
         _app.GetCamera().Process(stickRight, _position, _move);
         auto oldState = _playerState;
         // 状態の更新
-        SetRotation(_move);
-        //if (input.GetButton(XINPUT_BUTTON_Y, false)) {
-        //    _playerState = PlayerState::Attack1;
-        //}else {
-        //    //_playerState = PlayerState::Idle;
-        //}
+        if (input.GetButton(XINPUT_BUTTON_Y, false)) {
+            _playerState = PlayerState::Attack1;
+            AttackFlug = true;
+            _cnt = 0;
+        }else if (AttackFlug == true && input.GetButton(XINPUT_BUTTON_A, false)) {
+            _playerState = PlayerState::Attack2;
+            _cnt = 0;
+        }else if (AttackFlug == true && input.GetButton(XINPUT_BUTTON_X, false)) {
+            _playerState = PlayerState::Attack3;
+            _cnt = 0;
+        }else if (AttackFlug == false) {
+            SetRotation(_move);
+        }
+        if (_cnt > 160) {
+            AttackFlug = false;
+        }
         Animation(oldState);
         _modelAnim.Process();
+        _cnt++;
         // 座標情報をVECTOR構造体に変換
         auto vPosition = UtilityDX::ToVECTOR(_position);
         auto world = WorldMatrix();
@@ -190,7 +201,9 @@ namespace Gyro {
         //_rotation.SetY(angle);
         _playerState = PlayerState::Walk;
       }
-      _playerState = PlayerState::Idle;
+      else {
+          _playerState = PlayerState::Idle;
+      }
     }
 
     void Player::Animation(PlayerState old) {
@@ -207,10 +220,10 @@ namespace Gyro {
                 _modelAnim.SetBlendAttach(Run, 10.0f, 1.0f, true);
                 break;
             case PlayerState::Attack1:
-                _modelAnim.SetBlendAttach(GroundLightAttack1, 10.0f, 1.0f, false);
+                _modelAnim.SetBlendAttach(GroundLightAttack1, 10.0f, 1.3f, false);
                 break;
             case PlayerState::Attack2:
-                _modelAnim.SetBlendAttach(GroundLightAttack2, 10.0f, 1.0f, false);
+                _modelAnim.SetBlendAttach(GroundLightAttack2, 10.0f, 1.3f, false);
                 break;
             case PlayerState::Attack3:
                 _modelAnim.SetBlendAttach(GroundLightAttack3, 10.0f, 1.0f, false);
