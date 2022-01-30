@@ -18,6 +18,9 @@ namespace Gyro {
     }
 
     void CollisionSphere::Process() {
+#ifdef _DEBUG
+      _collision = false;
+#endif
       // 更新処理を行う
       auto old = _position;
       // 所有者の座標を取得
@@ -25,10 +28,15 @@ namespace Gyro {
     }
 
     void CollisionSphere::Process(AppMath::Vector4 vector) {
+#ifdef _DEBUG
+      _collision = false; // 衝突フラグを初期化
+#endif
       // 前フレーム座標
       auto old = _position;
       // 移動座標
       auto newPosition = _position + vector;
+      // 中心座標に移動量を加算する
+      _position.Add(vector);
     }
 
 #ifdef _DEBUG
@@ -36,8 +44,8 @@ namespace Gyro {
       // デバッグフラグが立っている場合のみ描画を行う
       if (!_debug) { return; }
       using AppColor = AppFrame::Data::Color;
-      // 球を描画する
-      DrawSphere3D(UtilityDX::ToVECTOR(_position), _radius, 10, AppColor::GetColor(0, 0, 0), 0, FALSE);
+      // 球を描画する(衝突している場合は球を塗り潰す)
+      DrawSphere3D(UtilityDX::ToVECTOR(_position), _radius, 10, AppColor::GetColor(0, 0, 0), 0, _collision);
     }
 #endif
 
@@ -50,7 +58,24 @@ namespace Gyro {
       // 球と球の衝突判定
       auto distSq = AppMath::Vector4::LengthSquared(_position - sphere._position);
       auto sumRadius = _radius + sphere._radius;
+#ifndef _DEBUG
       return distSq <= (sumRadius * sumRadius);
+#else
+      _collision = distSq <= (sumRadius * sumRadius);
+      return _collision;
+#endif
+    }
+
+    bool CollisionSphere::IntersectPoint(const AppMath::Vector4& point) {
+      // 球と点の衝突判定
+      auto l = AppMath::Vector4::LengthSquared(_position - point);
+      auto radius2 = _radius * _radius;
+#ifndef _DEBUG
+      return l <= radius2;
+#else
+      _collision = l <= radius2;
+      return _collision;
+#endif
     }
   } // namespace Object
 } // namespace Gyro

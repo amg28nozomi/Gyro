@@ -52,10 +52,11 @@ namespace Gyro {
        */
       virtual void Draw();
       /**
-       * @brief デバッグ情報の切り替え
+       * @brief デバッグ出力フラグを切り替える
+       * @param flag true:描画を行う false:描画を行わない
        */
-      inline void ChangeDebugFlag() {
-        _debug = !_debug;
+      static inline void SetDebugFlag(const bool flag) {
+        _debug = flag;
       }
 #endif
       /**
@@ -87,8 +88,10 @@ namespace Gyro {
       //!< 衝突判定フラグ(true:有効 false:非有効)
       bool _hit{true};
 #ifdef _DEBUG
-      //!< デバッグ情報フラグ
-      bool _debug{false};
+      //!< デバッグ描画フラグ
+      static inline bool _debug{false};
+      //!< 衝突判定
+      bool _collision{false}; //!< 衝突判定
 #endif
     };
   } // namespace Object

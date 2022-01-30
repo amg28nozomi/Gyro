@@ -31,9 +31,9 @@ namespace Gyro {
       void Process() override;
       /**
        * @brief 更新処理
-       * @param vector 移動量
+       * @param move 移動量
        */
-      void Process(AppMath::Vector4 vector) override;
+      void Process(AppMath::Vector4 move) override;
 #ifdef _DEBUG
       void Draw() override;
 #endif
@@ -42,14 +42,20 @@ namespace Gyro {
        * @return 
        */
       bool IsHit() override;
-    private:
-      float _radius{0.0f}; //!< 円の半径
       /**
        * @brief  球と球の衝突判定
        * @param  sphere ターゲット
-       * @return 
+       * @return true:衝突 false:衝突していない
        */
       bool IntersectSphere(const CollisionSphere& sphere);
+      /**
+       * @brief  球と点の当たり判定
+       * @param  point 点の座標
+       * @return true:衝突 false:衝突していない
+       */
+      bool IntersectPoint(const AppMath::Vector4& point);
+    private:
+      float _radius{0.0f}; //!< 円の半径
     };
 
   } // namespace Object
