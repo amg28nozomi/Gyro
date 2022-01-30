@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "ApplicationMain.h"
 #include "UtilityDX.h"
+#include "CollisionSphere.h"
 #define	PI	(3.1415926535897932386f)
 #define	DEG2RAD(x)			( ((x) / 180.0f ) * PI )
 
@@ -66,6 +67,8 @@ namespace Gyro {
         auto oldState = _playerState;
         // 状態の更新
         SetRotation(_move);
+
+        _sphere->Process(_move); // 移動量を加算する
         //if (input.GetButton(XINPUT_BUTTON_Y, false)) {
         //    _playerState = PlayerState::Attack1;
         //}else {
@@ -78,7 +81,6 @@ namespace Gyro {
         // ワールド座標の設定
         MV1SetMatrix(_model, UtilityDX::ToMATRIX(world));
         // MV1SetPosition(_model, vPosition);
-        auto rotationY = AppMath::Vector4(0.0f, _rotation.GetY(), 0.0f);
         // モデルの向きを設定する
         // MV1SetRotationXYZ(_model, UtilityDX::ToVECTOR(rotationY));
         // スカイスフィアの座標
@@ -93,6 +95,9 @@ namespace Gyro {
       auto scale = _scale;
       MV1SetScale(_model, UtilityDX::ToVECTOR(scale));
       MV1DrawModel(_model);
+#ifdef _DEBUG
+      _sphere->Draw(); // 当たり判定の描画を行う
+#endif
       // スカイスフィアの描画
       MV1DrawModel(_handleSkySphere);
       MV1DrawMesh(_handleMap, 0);
@@ -159,6 +164,12 @@ namespace Gyro {
       _animaIndex = NoAnimation;
       _animaTime = 0.0f;
       _totalTime = 0.0f;
+      // 衝突判定の設定
+      AppMath::Vector4 center = { _position.GetX(), _position.GetY() + 100.0f, _position.GetX() };
+      _sphere = std::make_unique<Object::CollisionSphere>(*this, center, 50.0f);
+#ifdef _DEBUG
+      _sphere->ChangeDebugFlag(); // 当たり判定の描画を行う
+#endif
     }
 
     float Player::Speed(const AppFrame::Math::Vector4 stick) const {

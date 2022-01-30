@@ -9,6 +9,7 @@
 #pragma once
 #include "ObjectBase.h"
 #include "Camera.h"
+#include "CollisionSphere.h"
 //#include "ModelAnim/ModelAnimComponent.h"
 
 namespace AppFrame::Math{}
@@ -17,6 +18,10 @@ namespace AppFrame::Math{}
  * @brief ゲームベース
  */
 namespace Gyro {
+
+  namespace Object {
+    class CollisionSphere;
+  } // namespace Object
   /**
    * @brief プレイヤーベース
    */
@@ -69,8 +74,7 @@ namespace Gyro {
       float _animaTime;    //!< アニメーションの再生時間
       Camera::Camera _cam; //!< カメラの実体
       //ModelAnim::ModelAnimComponent _modelAnim; //!< animcomponentの実態
-
-
+      std::unique_ptr<Object::CollisionSphere> _sphere{nullptr}; //!< 球の衝突判定
       PlayerState _playerState{PlayerState::Idle}; //!< 自機状態
       int _handleMap;
       int _frameMapCollision;

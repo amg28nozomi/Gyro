@@ -18,6 +18,9 @@ namespace Gyro {
     }
 
     void CollisionSphere::Process() {
+#ifdef _DEBUG
+      _collision = false;
+#endif
       // 更新処理を行う
       auto old = _position;
       // 所有者の座標を取得
@@ -25,6 +28,9 @@ namespace Gyro {
     }
 
     void CollisionSphere::Process(AppMath::Vector4 vector) {
+#ifdef _DEBUG
+      _collision = false;
+#endif
       // 前フレーム座標
       auto old = _position;
       // 移動座標
@@ -38,8 +44,8 @@ namespace Gyro {
       // デバッグフラグが立っている場合のみ描画を行う
       if (!_debug) { return; }
       using AppColor = AppFrame::Data::Color;
-      // 球を描画する
-      DrawSphere3D(UtilityDX::ToVECTOR(_position), _radius, 10, AppColor::GetColor(0, 0, 0), 0, FALSE);
+      // 球を描画する(衝突している場合は球を塗り潰す)
+      DrawSphere3D(UtilityDX::ToVECTOR(_position), _radius, 10, AppColor::GetColor(0, 0, 0), 0, _collision);
     }
 #endif
 
