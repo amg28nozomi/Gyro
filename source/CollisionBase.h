@@ -27,6 +27,14 @@ namespace Gyro {
     class CollisionBase {
     public:
       /**
+       * @brief 当たり判定の種類を表す列挙型クラス
+       */
+      enum class CollisionType {
+        None,   // 該当なし
+        Line,   // 線分
+        Sphere, // 球
+      };
+      /**
        * @brief 当たり判定の基底クラス
        * @param owner 所有者の参照
        */
@@ -36,9 +44,22 @@ namespace Gyro {
        */
       virtual void Process();
       /**
+       * @brief 当たり判定の更新
+       * @param vector 
+       */
+      virtual void Process(AppMath::Vector4 vector);
+#ifdef _DEBUG
+      /**
        * @brief 当たり判定の描画
        */
       virtual void Draw();
+      /**
+       * @brief デバッグ情報の切り替え
+       */
+      inline void ChangeDebugFlag() {
+        _debug = !_debug;
+      }
+#endif
       /**
        * @brief  衝突判定
        * @return true:衝突有り false:衝突なし
@@ -51,10 +72,26 @@ namespace Gyro {
       void SetHitFlag(const bool flag) {
         _hit = flag;
       }
+      /**
+       * @brief  コリジョンタイプの取得
+       * @return コリジョンタイプを返す
+       */
+      CollisionType GetType() const {
+        return _type;
+      }
     protected:
-      ObjectBase& _owner; //!< 所有者の参照
-      AppMath::Vector4 _position{}; //!< ローカル座標
-      bool _hit{true}; //!< 衝突判定フラグ(true:有効 false:非有効)
+      //!< コリジョンの種類
+      CollisionType _type{CollisionType::None};
+      //!< 所有者の参照
+      ObjectBase& _owner;
+      //!< ローカル座標
+      AppMath::Vector4 _position{};
+      //!< 衝突判定フラグ(true:有効 false:非有効)
+      bool _hit{true};
+#ifdef _DEBUG
+      //!< デバッグ情報フラグ
+      bool _debug{false};
+#endif
     };
   } // namespace Object
 } // namespace Gyro

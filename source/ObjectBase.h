@@ -84,12 +84,34 @@ namespace Gyro {
       virtual bool IsDead() const {
         return _state == ObjectState::Dead;
       }
+      /**
+       * @brief  ローカル座標の取得
+       * @return ローカル座標
+       */
+      AppMath::Vector4 GetPosition() const {
+        return _position;
+      }
+      /**
+       * @brief  
+       * @return 
+       */
+      AppMath::Vector4 GetRotation() const {
+        return _rotation;
+      }
+      /**
+       * @brief  拡大率の取得
+       * @return 
+       */
+      AppMath::Vector4 GetScale() const {
+        return _scale;
+      }
     protected:
       Application::ApplicationMain& _app; //!< アプリケーションの参照
       ObjectId _id{ObjectId::Object}; //!< オブジェクトの識別番号
       ObjectState _state{ObjectState::Active}; //!< 状態
       AppFrame::Math::Vector4 _position;  //!< 座標行列
       AppFrame::Math::Vector4 _rotation;  //!< 回転行列
+      AppFrame::Math::Vector4 _scale{0, 0, 0}; //!< 拡大率
       bool _gravity; //!< 重力処理を行うか(true:重力処理を行う false:重力処理を行わない)
       float _mass;   //!< 質量
       //float _gravityScale; //!< 重力スケール

@@ -10,10 +10,6 @@
 #include "CollisionBase.h"
 #include <Dxlib.h>
 
-namespace AppFrame::Math {
-  class Vector4;
-}
-
 namespace Gyro {
   namespace Object {
     /**
@@ -24,8 +20,33 @@ namespace Gyro {
     public:
       /**
        * @brief 空のコンストラクタ
+       * @param owner  所有者の参照
+       * @param center 中心座標
+       * @param radius 円の半径
        */
-      CollisionSphere();
+      CollisionSphere(ObjectBase& owner, AppMath::Vector4 center, float radius);
+      /**
+       * @brief 当たり判定の更新処理
+       */
+      void Process() override;
+
+      void Process(AppMath::Vector4 vector) override;
+#ifdef _DEBUG
+      void Draw() override;
+#endif
+      /**
+       * @brief  衝突判定
+       * @return 
+       */
+      bool IsHit() override;
+    private:
+      float _radius{0.0f}; //!< 円の半径
+      /**
+       * @brief  球と球の衝突判定
+       * @param  sphere ターゲット
+       * @return 
+       */
+      bool IntersectSphere(const CollisionSphere& sphere);
     };
 
   } // namespace Object
