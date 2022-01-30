@@ -24,6 +24,7 @@
     <ClCompile Include="source\CollisionBase.cpp" />
     <ClCompile Include="source\CollisionCylinder.cpp" />
     <ClCompile Include="source\CollisionSphere.cpp" />
+    <ClCompile Include="source\ComboState.cpp" />
     <ClCompile Include="source\Enemy\EnemyBase.cpp" />
     <ClCompile Include="source\Enemy\EnemyWheel.cpp" />
     <ClCompile Include="source\InputCheck.cpp" />
@@ -47,6 +48,7 @@
     <ClInclude Include="source\CollisionBase.h" />
     <ClInclude Include="source\CollisionCylinder.h" />
     <ClInclude Include="source\CollisionSphere.h" />
+    <ClInclude Include="source\ComboState.h" />
     <ClInclude Include="source\Enemy\EnemyBase.h" />
     <ClInclude Include="source\Enemy\EnemyWheel.h" />
     <ClInclude Include="source\InputCheck.h" />

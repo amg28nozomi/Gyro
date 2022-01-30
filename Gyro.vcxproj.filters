@@ -55,6 +55,12 @@
     <Filter Include="ソース ファイル\Enemy">
       <UniqueIdentifier>{e1696e89-7a5d-4f05-906e-8164078c2bc4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Player">
+      <UniqueIdentifier>{8e11a586-9ed0-40c9-b2a2-05e2ee954906}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Player">
+      <UniqueIdentifier>{8be9efd3-166b-44f2-a1ed-f985a7c2d587}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\ApplicationMain.cpp">
@@ -120,6 +126,9 @@
     <ClCompile Include="source\InputCheck.cpp">
       <Filter>ソース ファイル\Application</Filter>
     </ClCompile>
+    <ClCompile Include="source\ComboState.cpp">
+      <Filter>ソース ファイル\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\ApplicationMain.h">
@@ -184,6 +193,9 @@
     </ClInclude>
     <ClInclude Include="source\InputCheck.h">
       <Filter>ヘッダー ファイル\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ComboState.h">
+      <Filter>ヘッダー ファイル\Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
