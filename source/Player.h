@@ -9,7 +9,7 @@
 #pragma once
 #include "ObjectBase.h"
 #include "Camera.h"
-//#include "ModelAnim/ModelAnimComponent.h"
+#include "ModelAnim/ModelAnimComponent.h"
 
 namespace AppFrame::Math{}
 
@@ -68,7 +68,7 @@ namespace Gyro {
       float _totalTime;    //!< アニメーションの総再生時間
       float _animaTime;    //!< アニメーションの再生時間
       Camera::Camera _cam; //!< カメラの実体
-      //ModelAnim::ModelAnimComponent _modelAnim; //!< animcomponentの実態
+      ModelAnim::ModelAnimComponent _modelAnim; //!< AnimComponentの実態
 
 
       PlayerState _playerState{PlayerState::Idle}; //!< 自機状態
