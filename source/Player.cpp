@@ -18,6 +18,19 @@ namespace {
 
   constexpr auto MoveSpeed = 2.0f; //!< デフォルトの移動量
   constexpr auto MoveZero = 0.0f;
+  // プレイヤーのアニメーション番号(まだ増える)
+  constexpr auto Walk = 17;                     //!< 歩き
+  constexpr auto Run = 1;                       //!< 走り
+  constexpr auto Idle = 5;                      //!< アイドル
+  constexpr auto JumpUp = 12;                   //!< ジャンプアップ
+  constexpr auto JumpDown = 6;                  //!< ジャンプダウン(落下中)
+  constexpr auto JumpLanding = 6;               //!< ジャンプランド(着地)
+  constexpr auto GroundLightAttack1 = 13;       //!< 地上弱攻撃1
+  constexpr auto GroundLightAttack2 = 14;       //!< 地上弱攻撃2
+  constexpr auto GroundLightAttack3 = 15;       //!< 地上弱攻撃3
+  constexpr auto GroundLightAttackEX = 16;      //!< 地上EX攻撃(弱の〆)
+  constexpr auto AirLightAttack1 = 10;          //!< 空中弱攻撃1
+  constexpr auto AirLightAttack2 = 11;          //!< 空中弱攻撃2
 }
 
 namespace Gyro {
@@ -185,25 +198,25 @@ namespace Gyro {
         if (old != _playerState) {
             switch (_playerState) {
             case PlayerState::Idle:
-                _modelAnim.SetBlendAttach(5, 10.0f, 1.0f, true);
+                _modelAnim.SetBlendAttach(Idle, 10.0f, 1.0f, true);
                 break;
             case PlayerState::Walk:
-                _modelAnim.SetBlendAttach(17, 10.0f, 1.0f, true);
+                _modelAnim.SetBlendAttach(Walk, 10.0f, 1.0f, true);
                 break;
             case PlayerState::Run:
-                _modelAnim.SetBlendAttach(1, 10.0f, 1.0f, true);
+                _modelAnim.SetBlendAttach(Run, 10.0f, 1.0f, true);
                 break;
             case PlayerState::Attack1:
-                _modelAnim.SetBlendAttach(13, 10.0f, 1.0f, false);
+                _modelAnim.SetBlendAttach(GroundLightAttack1, 10.0f, 1.0f, false);
                 break;
             case PlayerState::Attack2:
-                _modelAnim.SetBlendAttach(14, 10.0f, 1.0f, false);
+                _modelAnim.SetBlendAttach(GroundLightAttack2, 10.0f, 1.0f, false);
                 break;
             case PlayerState::Attack3:
-                _modelAnim.SetBlendAttach(15, 10.0f, 1.0f, false);
+                _modelAnim.SetBlendAttach(GroundLightAttack3, 10.0f, 1.0f, false);
                 break;
             case PlayerState::Jump:
-                _modelAnim.SetBlendAttach(12, 10.0f, 1.0f, false);
+                _modelAnim.SetBlendAttach(JumpUp, 10.0f, 1.0f, false);
                 break;
             default:
                 break;
