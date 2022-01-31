@@ -16,7 +16,7 @@ namespace {
   constexpr auto InputMin = 2000.0f;  //!< 入力を受け付ける最低値
   constexpr auto InputMax = 32767.0f;
 
-  constexpr auto MoveSpeed = 2.0f; //!< デフォルトの移動量
+  constexpr auto MoveSpeed = 5.0f; //!< デフォルトの移動量
   constexpr auto MoveZero = 0.0f;
   // プレイヤーのアニメーション番号(まだ増える)
   constexpr auto Walk = 17;                     //!< 歩き
@@ -115,7 +115,7 @@ namespace Gyro {
         _move.Fill(0.0f); // 移動量初期化
         // 移動量が0の場合は入力を受け付けない
         if (move.LengthSquared() == 0.0f) {
-            return;
+            return; // 
         }
         auto x = (move.GetX() / 30000) * MoveSpeed; // x軸の移動量
         auto z = (move.GetY() / 30000) * MoveSpeed; // y軸の移動量
@@ -124,12 +124,15 @@ namespace Gyro {
         // auto angle = std::atan2(move.GetX() * -1, move.GetY() * -1);
         // 前方ベクトル
         AppMath::Vector4 l{ move.GetX(), move.GetY() };
+        auto length = l.Length(); // 長さ
         l.Normalize(); // 単位ベクトル化
         auto angle = std::atan2(l.GetY(), l.GetX());
-        angle = AppMath::Utility::RadianToDegree(angle);
+        // _rotation.AddY(angle);
+        // x座標
+        // angle = AppMath::Utility::RadianToDegree(angle);
         // auto length = std::sqrt(x * x + z * z);
         // auto angle = AppMath::Utility::DegreeToRadian(length);
-        _rotation.SetY(AppMath::Utility::DegreeToRadian(angle));
+        _rotation.SetY(angle);
         return;
     }
 
