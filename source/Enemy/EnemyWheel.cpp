@@ -6,6 +6,8 @@
  * @date    January 2022
  *********************************************************************/
 #include "EnemyWheel.h"
+#include "../CollisionSphere.h"
+#include "../UtilityDX.h"
 
 namespace Gyro {
     namespace Enemy {
@@ -27,6 +29,10 @@ namespace Gyro {
             // èâä˙âª
             MV1SetScale(_mHandle, VGet(2,2,2));
             SetEnemyPos(VGet(100, 0, 100));
+            _position = UtilityDX::ToVector(_enemyPos);
+            auto center = UtilityDX::ToVector(_enemyPos);
+            center.AddY(100.0f);
+            _sphere = std::make_unique<Object::CollisionSphere>(*this, center, 50.0f);
             _enemyDir = VGet(0, 0, 1);
             _enemyMoveSpeed = 5.0f;
             return true;
@@ -38,6 +44,7 @@ namespace Gyro {
             VECTOR forword = VSub(target, _enemyPos);
             forword = VNorm(forword);
             VECTOR move = VScale(forword, _enemyMoveSpeed);
+            // _sphere->Process();
 
             if (CheckHitKey(KEY_INPUT_A)) {
                 _enemyState = EnemyState::WALK;

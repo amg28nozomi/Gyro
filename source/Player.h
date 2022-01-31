@@ -13,7 +13,6 @@
 #include "CollisionSphere.h"
 
 namespace AppFrame::Math{}
-
 /**
  * @brief ゲームベース
  */
@@ -70,9 +69,7 @@ namespace Gyro {
       float _animaTime;    //!< アニメーションの再生時間
       Camera::Camera _cam; //!< カメラの実体
       ModelAnim::ModelAnimComponent _modelAnim; //!< AnimComponentの実態
-
-      std::unique_ptr<Object::CollisionSphere> _sphere; //!< コリジョン
-
+      std::unique_ptr<Object::CollisionSphere> _sphere; //!< 当たり判定コリジョン(球)
       PlayerState _playerState{PlayerState::Idle}; //!< 自機状態
       int _handleMap;
       int _frameMapCollision;
@@ -139,6 +136,17 @@ namespace Gyro {
        */
       void DebugString() const;
 #endif
+      // 進捗報告用
+      void Hit();
+      /**
+       * @brief ジャンプ処理
+       */
+      void Jump();
+
+      float _jumpPower{0.0f}; // ジャンプ力
+      float _jumpInterval{0.0f}; // ジャンプインターバル
+      float _g{0.0f}; // 重力
+      bool _jump; //!< ジャンプフラグ
     };
   }
     //} // namespace Player

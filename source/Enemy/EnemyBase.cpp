@@ -6,6 +6,7 @@
  * @date    January 2022
  *********************************************************************/
 #include "EnemyBase.h"
+#include "../ApplicationMain.h"
 
 namespace Gyro {
     namespace Enemy {
@@ -25,6 +26,7 @@ namespace Gyro {
             _enemyPos = VGet(0, 0, 0);
             _enemyDir = VGet(0, 0, 0);
             _enemyTarget = VGet(0, 0, 0);
+            _id = ObjectId::Enemy;
             _enemyState = EnemyState::WAIT;
             return true;
         }
@@ -42,6 +44,11 @@ namespace Gyro {
             MV1SetRotationXYZ(_mHandle, vRot);
             // •`‰æ
             MV1DrawModel(_mHandle);
+#ifdef _DEBUG
+            if (_app.GetDebugFlag()) {
+              _sphere->Draw();
+            }
+#endif
             return true;
         }
     } // namespace Enemy

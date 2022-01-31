@@ -52,6 +52,8 @@ namespace Gyro {
        * @return true:“o˜^¬Œ÷ false:“o˜^¸”s
        */
       bool Register(std::shared_ptr<ObjectBase> object);
+
+      std::vector<std::shared_ptr<ObjectBase>> GetObjects();
     private:
       bool _play{false}; //!< ƒIƒuƒWƒFƒNƒgƒT[ƒo‚ğ‰ñ‚µ‚Ä‚¢‚é‚©‚Ìƒtƒ‰ƒO
       std::vector<std::shared_ptr<ObjectBase>> _addObject; //!< “o˜^—\–ñ—p

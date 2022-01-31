@@ -8,6 +8,7 @@
 #pragma once
 #include "../ObjectBase.h"
 #include "../ModelAnim/ModelAnimComponent.h"
+#include "../CollisionSphere.h"
 
  /** çÏïiópñºëOãÛä‘ */
 namespace Gyro {
@@ -54,6 +55,9 @@ namespace Gyro {
                 _enemyTarget = vTarget;
             }
 
+            Object::CollisionSphere& GetCollision() {
+              return *_sphere;
+            }
         protected:
             /**
              * @enum class  EnemyState
@@ -71,6 +75,7 @@ namespace Gyro {
             VECTOR _enemyPos;       //!< ìGà íu
             VECTOR _enemyDir;       //!< ìGå¸Ç´
             VECTOR _enemyTarget;    //!< ìGà⁄ìÆêÊ
+            std::unique_ptr<Object::CollisionSphere> _sphere{nullptr}; //!< ãÖÇÃìñÇΩÇËîªíË
 
             EnemyState _enemyState; //!< ìGÇÃèÛë‘ï€éùïœêî
             ModelAnim::ModelAnimComponent _modelAnim;

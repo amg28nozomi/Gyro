@@ -116,5 +116,9 @@ namespace Gyro {
       _addObject.emplace_back(std::move(object));
       return true; // 予約成功
     }
+
+    std::vector<std::shared_ptr<ObjectBase>> ObjectServer::GetObjects() {
+      return _registry; // データベースを叩きつける
+    }
   } // namespace Object
 } // namespace Gyro

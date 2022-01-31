@@ -8,6 +8,8 @@
 #include "Player.h"
 #include "ApplicationMain.h"
 #include "UtilityDX.h"
+#include "ObjectServer.h"
+#include "Enemy/EnemyBase.h"
 #define	PI	(3.1415926535897932386f)
 #define	DEG2RAD(x)			( ((x) / 180.0f ) * PI )
 
@@ -31,6 +33,9 @@ namespace {
   constexpr auto GroundLightAttackEX = 16;      //!< 地上EX攻撃(弱の〆)
   constexpr auto AirLightAttack1 = 10;          //!< 空中弱攻撃1
   constexpr auto AirLightAttack2 = 11;          //!< 空中弱攻撃2
+  // ジャンプフラグ
+  constexpr auto JumpPowe = 3.0f;
+  constexpr auto JumpMax = 300.0f;
 }
 
 namespace Gyro {
@@ -85,6 +90,7 @@ namespace Gyro {
         MV1SetMatrix(_model, UtilityDX::ToMATRIX(world));
         // MV1SetPosition(_model, vPosition);
         auto rotationY = AppMath::Vector4(0.0f, _rotation.GetY(), 0.0f);
+        Hit();
         // モデルの向きを設定する
         // MV1SetRotationXYZ(_model, UtilityDX::ToVECTOR(rotationY));
         // スカイスフィアの座標
@@ -321,5 +327,25 @@ namespace Gyro {
     }
 #endif
 
+    void Player::Hit() {
+      // 
+      auto objects = _app.GetObjectServer().GetObjects(); // オブジェクトのコピー
+      // 衝突判定を行う6
+      for (auto obj : objects) {
+        if (obj->GetId() != ObjectId::Enemy) continue;
+        // 球と球の衝突判定
+        if (_sphere->IntersectSphere(std::dynamic_pointer_cast<Enemy::EnemyBase>(obj)->GetCollision())) {
+          int i = 0;
+        }
+      }
+    }
+
+    void Player::Jump() {
+      if (_jumpInterval != 0.0f) {
+        return; // インターバルがない場合は処理を行わない
+      }
+      _jump = true; // ジャンプフラグを起動
+      _jumpInterval;
+    }
   } // namespace Player
 }// namespace Gyro
