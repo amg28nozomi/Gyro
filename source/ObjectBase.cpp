@@ -23,7 +23,7 @@ namespace Gyro {
     }
 
     bool ObjectBase::Process() {
-      // 重力処理を行うかの判定
+      // 重力影響フラグがtrueの場合重力処理を行う
       if (_gravity) {
         Gravity(); // 重力処理実行
       }
@@ -36,13 +36,27 @@ namespace Gyro {
     }
 
     void ObjectBase::Gravity() {
-      using Gravitys = AppFrame::Math::GravityBase;
-      // 重力スケールの更新
-      // _gravityScale = Gravitys::GravityScale(_gravityScale, _mass);
-      // 床に接触しているか判定を行う
+      GravityScale(); // グラビティスケールの更新
+      // 地形との衝突判定
+      if (IsStand()) {
+        GravityReset(); // 重力スケールの初期化
+      }
+    }
 
-      // 接触している場合は押し出し処理を実行
-      // _gravityScaleを0.0fで初期化
+    void ObjectBase::GravityScale() {
+      // デフォルトの重力加速度を重力スケールに加算する
+      using Gravity = AppFrame::Math::GravityBase;
+      _gravityScale += Gravity::Acceleration();
+    }
+
+    bool ObjectBase::IsStand() {
+      return true;
+    }
+
+    void ObjectBase::GravityReset() {
+      // 重力スケールを初期化する
+      _gravity = 0.0f;
+      // 線分とステージの押し出し処理を行う
     }
 
     AppMath::Matrix44 ObjectBase::WorldMatrix() {

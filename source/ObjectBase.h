@@ -113,13 +113,28 @@ namespace Gyro {
       AppFrame::Math::Vector4 _position;       //!< 座標行列
       AppFrame::Math::Vector4 _rotation;       //!< 回転行列
       AppFrame::Math::Vector4 _scale{0, 0, 0}; //!< 拡大率
-      bool _gravity; //!< 重力処理を行うか(true:重力処理を行う false:重力処理を行わない)
-      float _mass;   //!< 質量
-      //float _gravityScale; //!< 重力スケール
+      bool _stand{false};   //!< 立ちフラグ(true:床に立っている false:床と接触していない)
+      bool _gravity{false}; //!< 重力処理を行うか(true:重力処理を行う false:重力処理を行わない)
+      float _mass{0.0f};    //!< 質量
+      float _gravityScale{0.0f}; //!< 重力スケール
       /**
        * @brief オブジェクトに対する重力処理
        */
       virtual void Gravity();
+      /**
+       * @brief  重力スケールの更新
+       */
+      virtual void GravityScale();
+      /**
+       * @brief  床との衝突判定
+       *         派生クラスで重力処理を行う場合は必ず再定義を行うこと
+       * @return true:衝突している false:衝突していない
+       */
+      virtual bool IsStand();
+      /**
+       * @brief  重力処理のリセット
+       */
+      virtual void GravityReset();
       /**
        * @brief  ワールド座標行列の取得
        * @return ワールド座標行列

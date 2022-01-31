@@ -13,7 +13,7 @@ namespace Gyro {
 
     ObjectServer::ObjectServer() : ServerTemplateVector<std::shared_ptr<ObjectBase>>() {
 #ifdef _DEBUG
-      _name = "ObjectServer";
+      SetServerName("ObjectServer");
 #endif
       // 各種コンテナを解放する
       ServerTemplateVector<std::shared_ptr<ObjectBase>>::_registry.clear();
