@@ -22,6 +22,7 @@
     <ClCompile Include="source\ApplicationMain.cpp" />
     <ClCompile Include="source\Camera.cpp" />
     <ClCompile Include="source\CollisionBase.cpp" />
+    <ClCompile Include="source\CollisionCapsule.cpp" />
     <ClCompile Include="source\CollisionSphere.cpp" />
     <ClCompile Include="source\Enemy\EnemyBase.cpp" />
     <ClCompile Include="source\Enemy\EnemyWheel.cpp" />
@@ -43,6 +44,7 @@
     <ClInclude Include="source\ApplicationMain.h" />
     <ClInclude Include="source\Camera.h" />
     <ClInclude Include="source\CollisionBase.h" />
+    <ClInclude Include="source\CollisionCapsule.h" />
     <ClInclude Include="source\CollisionSphere.h" />
     <ClInclude Include="source\Enemy\EnemyBase.h" />
     <ClInclude Include="source\Enemy\EnemyWheel.h" />

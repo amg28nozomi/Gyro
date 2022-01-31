@@ -1,0 +1,66 @@
+/*****************************************************************//**
+ * @file   CollisionCapsule.h
+ * @brief  コリジョンベースのサブクラス
+ *         カプセルの衝突判定処理クラス
+ * 
+ * @author 鈴木希海
+ * @date   January 2022
+ *********************************************************************/
+#pragma once
+#include "CollisionBase.h"
+/**
+ * @brief ゲームベース
+ */
+namespace Gyro {
+  /**
+   * @brief オブジェクトベース
+   */
+  namespace Object {
+    class CollisionSphere;
+    /**
+     * @class CollisionCapsule
+     * @brief カプセルの衝突判定処理クラス
+     */
+    class CollisionCapsule : public CollisionBase {
+    public:
+      /**
+       * @brief コンストラクタ
+       * @param owner 所有者の参照
+       * @param center 中心座標
+       * @param line   線分の長さ
+       * @param radius 半径
+       */
+      CollisionCapsule(ObjectBase& owner, AppMath::Vector4 center, float line, float radius);
+      /**
+       * @brief 当たり判定の更新処理
+       */
+      void Process(AppMath::Vector4 move) override;
+#ifdef _DEBUG
+      /**
+       * @brief 描画処理
+       */
+      void Draw() override;
+#endif
+      /**
+       * @brief  カプセルと線分の衝突判定
+       * @param  line 衝突判定を行う線分の参照
+       * @return true:衝突 false:衝突していない
+       */
+      bool IntersectLine(const AppMath::Line& line);
+      /**
+       * @brief  カプセルと球の衝突判定
+       * @param  sphere 衝突判定を行う球コリジョン
+       * @return true:衝突 false:衝突していない
+       */
+      bool IntersectSphere(const CollisionSphere& sphere);
+    private:
+      float _length; //!< 線分の長さ
+      float _radius; //!< 半径
+      /**
+       * @brief  線分の取得
+       * @return 線分を返す
+       */
+      AppMath::Line Line() const;
+    };
+  } // namespace Object
+} // namespace Gyro

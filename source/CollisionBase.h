@@ -6,7 +6,7 @@
  * @date   January 2022
  *********************************************************************/
 #pragma once
-#include "appframe.h"
+#include <appframe.h>
 
  /**
  * @brief ゲームベース
@@ -31,6 +31,7 @@ namespace Gyro {
         None,   // 該当なし
         Line,   // 線分
         Sphere, // 球
+        Capsule // カプセル
       };
       /**
        * @brief 当たり判定の基底クラス
