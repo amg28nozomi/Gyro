@@ -80,6 +80,7 @@ namespace Gyro {
         // 座標情報をVECTOR構造体に変換
         auto vPosition = UtilityDX::ToVECTOR(_position);
         auto world = WorldMatrix();
+        _sphere->Process(_move); // 移動量を加算
         // ワールド座標の設定
         MV1SetMatrix(_model, UtilityDX::ToMATRIX(world));
         // MV1SetPosition(_model, vPosition);
@@ -121,18 +122,25 @@ namespace Gyro {
         auto z = (move.GetY() / 30000) * MoveSpeed; // y軸の移動量
         _move = AppMath::Vector4(x, 0.0f, z);
         _position.Add(_move); //!< 移動量に加算する
-        // auto angle = std::atan2(move.GetX() * -1, move.GetY() * -1);
-        // 前方ベクトル
+
+        auto mx = move.GetX() / 30000.0f; // x倒し具合
+        auto my = move.GetY() / 30000.0f; // y倒し具合
+        auto i = std::acos(mx);
+        // auto angle = std::atan2(std::sqrt(mx * mx), std::sqrt(my * my));
+        // 移動量
         AppMath::Vector4 l{ move.GetX(), move.GetY() };
-        auto length = l.Length(); // 長さ
-        l.Normalize(); // 単位ベクトル化
-        auto angle = std::atan2(l.GetY(), l.GetX());
+        // auto s = std::acos(x / l.Length2D());
+        // auto length = l.Length(); // 長さ
+        // l.Normalize(); // 単位ベクトル化
+        // angle = AppMath::Utility::RadianToDegree(angle);// std::atan2(l.GetY(), l.GetX());
+
+
         // _rotation.AddY(angle);
         // x座標
-        // angle = AppMath::Utility::RadianToDegree(angle);
+        // auto angle = AppMath::Utility::RadianToDegree(l.Length());
         // auto length = std::sqrt(x * x + z * z);
         // auto angle = AppMath::Utility::DegreeToRadian(length);
-        _rotation.SetY(angle);
+        // _rotation.SetY(l.Length2D());
         return;
     }
 
@@ -157,6 +165,9 @@ namespace Gyro {
       _position = AppMath::Vector4();
       _rotation = AppMath::Vector4();
       _scale = { 10.0f, 10.0f, 10.0f };
+      auto m = _position;
+      m.AddY(100.0f);
+      _sphere = std::make_unique<Object::CollisionSphere>(*this, m, 100.0f);
       // アニメーションの初期化
       _animaIndex = NoAnimation;
       _animaTime = 0.0f;
@@ -188,7 +199,9 @@ namespace Gyro {
         //_rotation.SetY(angle);
         _playerState = PlayerState::Walk;
       }
-      _playerState = PlayerState::Idle;
+      else {
+        _playerState = PlayerState::Idle;
+      }
     }
 
     void Player::Animation(PlayerState old) {
@@ -293,6 +306,7 @@ namespace Gyro {
       }
       DebugString(); // 座標情報の出力
       _app.GetCamera().Draw(_position, _move); // カメラ情報の出力処理
+      _sphere->Draw();
       return true;
     }
 

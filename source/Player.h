@@ -10,6 +10,7 @@
 #include "ObjectBase.h"
 #include "Camera.h"
 #include "ModelAnim/ModelAnimComponent.h"
+#include "CollisionSphere.h"
 
 namespace AppFrame::Math{}
 
@@ -70,6 +71,7 @@ namespace Gyro {
       Camera::Camera _cam; //!< カメラの実体
       ModelAnim::ModelAnimComponent _modelAnim; //!< AnimComponentの実態
 
+      std::unique_ptr<Object::CollisionSphere> _sphere; //!< コリジョン
 
       PlayerState _playerState{PlayerState::Idle}; //!< 自機状態
       int _handleMap;

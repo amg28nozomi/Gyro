@@ -42,7 +42,6 @@ namespace Gyro {
 #ifdef _DEBUG
     void CollisionSphere::Draw() {
       // デバッグフラグが立っている場合のみ描画を行う
-      if (!_debug) { return; }
       using AppColor = AppFrame::Data::Color;
       // 球を描画する(衝突している場合は球を塗り潰す)
       DrawSphere3D(UtilityDX::ToVECTOR(_position), _radius, 10, AppColor::GetColor(0, 0, 0), 0, _collision);
