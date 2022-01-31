@@ -53,6 +53,12 @@ namespace Gyro {
        * @return true:衝突 false:衝突していない
        */
       bool IntersectSphere(const CollisionSphere& sphere);
+      /**
+       * @brief  カプセルとカプセルの衝突判定
+       * @param  capsule 衝突判定を行うカプセルコリジョン
+       * @return true:衝突 false:衝突していない
+       */
+      bool IntersectCapsule(const CollisionCapsule& capsule);
     private:
       float _length; //!< 線分の長さ
       float _radius; //!< 半径

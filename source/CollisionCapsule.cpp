@@ -47,6 +47,11 @@ namespace Gyro {
 
     }
 
+    bool CollisionCapsule::IntersectCapsule(const CollisionCapsule& capsule) {
+      // カプセルとカプセルの衝突判定
+
+    }
+
     AppMath::Line CollisionCapsule::Line() const {
       auto line = _length / 2;
       // 生成した線分を返す
