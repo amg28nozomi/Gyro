@@ -110,8 +110,9 @@ namespace Gyro {
       Application::ApplicationMain& _app; //!< アプリケーションの参照
       ObjectId _id{ObjectId::Object}; //!< オブジェクトの識別番号
       ObjectState _state{ObjectState::Active}; //!< 状態
-      AppFrame::Math::Vector4 _position;       //!< 座標行列
-      AppFrame::Math::Vector4 _rotation;       //!< 回転行列
+      AppFrame::Math::Matrix44 _world;         //!< ワールド座標
+      AppFrame::Math::Vector4 _position;       //!< ローカル座標
+      AppFrame::Math::Vector4 _rotation;       //!< 向き
       AppFrame::Math::Vector4 _scale{0, 0, 0}; //!< 拡大率
       bool _stand{false};   //!< 立ちフラグ(true:床に立っている false:床と接触していない)
       bool _gravity{false}; //!< 重力処理を行うか(true:重力処理を行う false:重力処理を行わない)
@@ -136,10 +137,9 @@ namespace Gyro {
        */
       virtual void GravityReset();
       /**
-       * @brief  ワールド座標行列の取得
-       * @return ワールド座標行列
+       * @brief  ワールド座標の更新
        */
-      AppMath::Matrix44 WorldMatrix();
+      void WorldMatrix();
 #ifdef _DEBUG
       /**
        * @brief デバッグ専用の出力処理

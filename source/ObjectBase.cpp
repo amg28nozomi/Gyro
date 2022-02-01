@@ -6,7 +6,7 @@
  * @date   January 2022
  *********************************************************************/
 #include "ObjectBase.h"
-#include "appframe.h"
+#include <appframe.h>
 #include "ApplicationMain.h"
 #include "ModeGame.h"
 
@@ -16,6 +16,7 @@ namespace Gyro {
     ObjectBase::ObjectBase(Application::ApplicationMain& app) : _app(app) {
       _gravity = false;
       _mass = 0.0f;
+      _world = AppMath::Matrix44::Identity();
     }
 
     bool ObjectBase::Init() {
@@ -59,16 +60,9 @@ namespace Gyro {
       // 線分とステージの押し出し処理を行う
     }
 
-    AppMath::Matrix44 ObjectBase::WorldMatrix() {
-      using Matrix = AppMath::Matrix44;
-      auto world = Matrix::Identity(); // 単位行列の取得
-      world.MulScaling(_scale);        // 拡縮
-      using Utility = AppMath::Utility;
-      world.RotateZ(_rotation.GetZ()); // z軸回転
-      world.RotateY(_rotation.GetY()); // y軸回転
-      world.RotateX(_rotation.GetX()); // x軸回転
-      world.MulTranslate(_position);   // 平行移動
-      return world; // 行列を返す
+    void ObjectBase::WorldMatrix() {
+      // ワールド座標変換を行う
+      _world = AppMath::Utility::ToWorldMatrix(_position, _rotation, _scale);
     }
 
 #ifdef _DEBUG

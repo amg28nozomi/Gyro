@@ -84,26 +84,25 @@ namespace Gyro {
         _modelAnim.Process();
         // 座標情報をVECTOR構造体に変換
         auto vPosition = UtilityDX::ToVECTOR(_position);
-        auto world = WorldMatrix();
-        _sphere->Process(_move); // 移動量を加算
+        WorldMatrix(); // ワールド座標の更新
+        _sphere->Process(_move); // 移動量の加算
         // ワールド座標の設定
-        MV1SetMatrix(_model, UtilityDX::ToMATRIX(world));
-        // MV1SetPosition(_model, vPosition);
-        auto rotationY = AppMath::Vector4(0.0f, _rotation.GetY(), 0.0f);
+        MV1SetMatrix(_model, UtilityDX::ToMATRIX(_world));
         Hit();
         // モデルの向きを設定する
         // MV1SetRotationXYZ(_model, UtilityDX::ToVECTOR(rotationY));
         // スカイスフィアの座標
-        MV1SetPosition(_handleSkySphere, vPosition);
+        auto skypos = AppMath::Utility::ToWorldMatrix(_position, AppMath::Vector4(0, 0, 0), AppMath::Vector4(1.0f, 1.0f, 1.0f));
+        MV1SetMatrix(_handleSkySphere, UtilityDX::ToMATRIX(skypos));
+        // MV1SetPosition(_handleSkySphere, UtilityDX::ToVECTOR(_position));
+        auto stage = AppMath::Utility::ToWorldMatrix(AppMath::Vector4(0, -1500.0f, 0), AppMath::Vector4(0, 0, 0), AppMath::Vector4(1.0f, 1.0f, 1.0f));
         // ステージの座標
-        MV1SetPosition(_handleMap, VGet(0, -1500, 0));
+        MV1SetMatrix(_handleMap, UtilityDX::ToMATRIX(stage));
         return true;
     }
 
     bool Player::Draw() const {
       // プレイヤーの描画
-      auto scale = _scale;
-      MV1SetScale(_model, UtilityDX::ToVECTOR(scale));
       MV1DrawModel(_model);
       // スカイスフィアの描画
       MV1DrawModel(_handleSkySphere);
@@ -120,33 +119,21 @@ namespace Gyro {
 
     void Player::Move(AppMath::Vector4 move) {
         _move.Fill(0.0f); // 移動量初期化
-        // 移動量が0の場合は入力を受け付けない
+        // 移動量がない場合は処理を行わない
         if (move.LengthSquared() == 0.0f) {
-            return; // 
+            return;
         }
         auto x = (move.GetX() / 30000) * MoveSpeed; // x軸の移動量
         auto z = (move.GetY() / 30000) * MoveSpeed; // y軸の移動量
-        _move = AppMath::Vector4(x, 0.0f, z);
-        _position.Add(_move); //!< 移動量に加算する
-
-        auto mx = move.GetX() / 30000.0f; // x倒し具合
-        auto my = move.GetY() / 30000.0f; // y倒し具合
-        auto i = std::acos(mx);
-        // auto angle = std::atan2(std::sqrt(mx * mx), std::sqrt(my * my));
-        // 移動量
-        AppMath::Vector4 l{ move.GetX(), move.GetY() };
-        // auto s = std::acos(x / l.Length2D());
-        // auto length = l.Length(); // 長さ
-        // l.Normalize(); // 単位ベクトル化
-        // angle = AppMath::Utility::RadianToDegree(angle);// std::atan2(l.GetY(), l.GetX());
-
-
-        // _rotation.AddY(angle);
-        // x座標
-        // auto angle = AppMath::Utility::RadianToDegree(l.Length());
-        // auto length = std::sqrt(x * x + z * z);
-        // auto angle = AppMath::Utility::DegreeToRadian(length);
-        // _rotation.SetY(l.Length2D());
+        _move.Set(x, _gravityScale, z); // 移動量を設定
+        _position.Add(_move); // ローカル座標に更新する
+        // ラジアンの算出
+        auto radian = std::atan2(move.GetX() / 30000, move.GetY() / 30000);
+        if (radian < -1.0f) {
+          
+        }
+        using AppUtility = AppMath::Utility;
+        _rotation.SetY(AppUtility::RadianToDegree(radian)); // 回転量をセットする
         return;
     }
 

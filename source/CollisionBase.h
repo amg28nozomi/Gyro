@@ -89,10 +89,12 @@ namespace Gyro {
       //!< 衝突判定フラグ(true:有効 false:非有効)
       bool _hit{true};
 #ifdef _DEBUG
+      //!< 当たり判定の描画で使用するカラーコード
+      int _color{0};
       //!< デバッグ描画フラグ
       static inline bool _debug{false};
-      //!< 衝突判定
-      bool _collision{false}; //!< 衝突判定
+      //!< 衝突判定フラグ
+      bool _collision{false};
 #endif
     };
   } // namespace Object

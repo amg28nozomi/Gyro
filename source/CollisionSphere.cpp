@@ -15,6 +15,10 @@ namespace Gyro {
     CollisionSphere::CollisionSphere(ObjectBase& owner, AppMath::Vector4 center, float radius) : CollisionBase(owner), _radius(radius) {
       _position = center;
       _type = CollisionType::Sphere; // コリジョンタイプを球に設定
+#ifdef _DEBUG
+      using Color = AppFrame::Data::Color;
+      _color = Color::GetColor(0, 0, 0); // カラーコードの取得
+#endif
     }
 
     void CollisionSphere::Process() {

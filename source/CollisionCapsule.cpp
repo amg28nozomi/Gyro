@@ -32,24 +32,24 @@ namespace Gyro {
     void CollisionCapsule::Draw() {
       // 線分の取得(先端・終端)
       auto [start, end] = Line().GetVector();
-      // 球を描画する
+      // 指定座標にカプセルを描画する
       DrawCapsule3D(UtilityDX::ToVECTOR(start), UtilityDX::ToVECTOR(end), _radius, 10, 0, 0, false);
     }
 #endif
 
     bool CollisionCapsule::IntersectLine(const AppMath::Line& line) {
       // カプセルと線分の衝突判定
-
+      return true;
     }
 
     bool CollisionCapsule::IntersectSphere(const CollisionSphere& sphere) {
       // カプセルと球の衝突判定
-
+      return true;
     }
 
     bool CollisionCapsule::IntersectCapsule(const CollisionCapsule& capsule) {
-      // カプセルとカプセルの衝突判定
-
+      // カプセルを
+      return true;
     }
 
     AppMath::Line CollisionCapsule::Line() const {

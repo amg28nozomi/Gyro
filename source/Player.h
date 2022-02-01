@@ -136,7 +136,9 @@ namespace Gyro {
        */
       void DebugString() const;
 #endif
-      // 進捗報告用
+      /**
+       * @brief 衝突判定処理
+       */
       void Hit();
       /**
        * @brief ジャンプ処理
@@ -145,7 +147,6 @@ namespace Gyro {
 
       float _jumpPower{0.0f}; // ジャンプ力
       float _jumpInterval{0.0f}; // ジャンプインターバル
-      float _g{0.0f}; // 重力
       bool _jump; //!< ジャンプフラグ
     };
   }

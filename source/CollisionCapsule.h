@@ -16,7 +16,7 @@ namespace Gyro {
    * @brief オブジェクトベース
    */
   namespace Object {
-    class CollisionSphere;
+    class CollisionSphere; //!< 前方宣言
     /**
      * @class CollisionCapsule
      * @brief カプセルの衝突判定処理クラス
@@ -37,7 +37,7 @@ namespace Gyro {
       void Process(AppMath::Vector4 move) override;
 #ifdef _DEBUG
       /**
-       * @brief 描画処理
+       * @brief 当たり判定の描画処理
        */
       void Draw() override;
 #endif
