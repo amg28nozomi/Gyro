@@ -62,28 +62,20 @@ namespace Gyro {
         auto [lX, lY] = input.GetStick(false); // 左スティック
         auto [rX, rY] = input.GetStick(true);  // 右スティック
         auto [leftTrigger, rightTrigger] = input.GetTrigger(); // トリガーボタン
-
         // 実際に使用する移動量(2次元ベクトル)
-        auto stickLeft = AppMath::Vector4(lX, lY);
         auto stickRight = AppMath::Vector4(rX, rY);
-        Move(stickLeft);
-
-        auto oldPosition = _position; // 前フレーム座標
-        
+        // 移動量の算出
+        _position = Move(AppMath::Vector4(lX, lY));
+        // 前フレーム座標
+        auto oldPosition = _position;   
         // カメラの更新
         _app.GetCamera().Process(stickRight, _position, _move);
+        // 前フレームの状態を保持
         auto oldState = _playerState;
         // 状態の更新
         SetRotation(_move);
-        //if (input.GetButton(XINPUT_BUTTON_Y, false)) {
-        //    _playerState = PlayerState::Attack1;
-        //}else {
-        //    //_playerState = PlayerState::Idle;
-        //}
-        Animation(oldState);
-        _modelAnim.Process();
-        // 座標情報をVECTOR構造体に変換
-        auto vPosition = UtilityDX::ToVECTOR(_position);
+        Animation(oldState);  // アニメーションの設定
+        _modelAnim.Process(); // アニメーションの再生
         WorldMatrix(); // ワールド座標の更新
         _sphere->Process(_move); // 移動量の加算
         // ワールド座標の設定
@@ -117,24 +109,24 @@ namespace Gyro {
 
     }
 
-    void Player::Move(AppMath::Vector4 move) {
-        _move.Fill(0.0f); // 移動量初期化
+    AppMath::Vector4 Player::Move(AppMath::Vector4 move) {
+        _move.Zero(); // 移動量初期化
         // 移動量がない場合は処理を行わない
         if (move.LengthSquared() == 0.0f) {
-            return;
+            return _position; // 前フレームの位置を返す
         }
         auto x = (move.GetX() / 30000) * MoveSpeed; // x軸の移動量
         auto z = (move.GetY() / 30000) * MoveSpeed; // y軸の移動量
         _move.Set(x, _gravityScale, z); // 移動量を設定
-        _position.Add(_move); // ローカル座標に更新する
-        // ラジアンの算出
-        auto radian = std::atan2(move.GetX() / 30000, move.GetY() / 30000);
-        if (radian < -1.0f) {
-          
-        }
-        using AppUtility = AppMath::Utility;
-        _rotation.SetY(AppUtility::RadianToDegree(radian)); // 回転量をセットする
-        return;
+        // ラジアンを生成(y軸は反転させる)
+        auto radian = std::atan2(move.GetX(), -move.GetY());
+#ifndef _DEBUG
+        _rotation.SetY(radian); // y軸の回転量をセットする
+#else
+        // デグリー値をセットする(デバッグ用)
+        _rotation.SetY(AppMath::Utility::RadianToDegree(radian));
+#endif
+        return _position + _move;
     }
 
     void Player::LoadResource() {
@@ -186,10 +178,6 @@ namespace Gyro {
       // 移動量がある場合は向きを変更する
       if (move.LengthSquared()) {
         using Utility = AppFrame::Math::Utility;
-        // 入力情報のフィルタリングを行う
-        //auto n = move.Normalize();
-        //auto angle = std::atan2(n.GetX(), n.GetY()) - Utility::_pi / 2;
-        //_rotation.SetY(angle);
         _playerState = PlayerState::Walk;
       }
       else {
@@ -198,32 +186,32 @@ namespace Gyro {
     }
 
     void Player::Animation(PlayerState old) {
-        // 自機の状態に合わせてアニメーション変化
+        // 自機の状態に合わせてアニメーション状態を切り替える
         if (old != _playerState) {
             switch (_playerState) {
             case PlayerState::Idle:
                 _modelAnim.SetBlendAttach(Idle, 10.0f, 1.0f, true);
-                break;
+                return;
             case PlayerState::Walk:
                 _modelAnim.SetBlendAttach(Walk, 10.0f, 1.0f, true);
-                break;
+                return;
             case PlayerState::Run:
                 _modelAnim.SetBlendAttach(Run, 10.0f, 1.0f, true);
-                break;
+                return;
             case PlayerState::Attack1:
                 _modelAnim.SetBlendAttach(GroundLightAttack1, 10.0f, 1.0f, false);
-                break;
+                return;
             case PlayerState::Attack2:
                 _modelAnim.SetBlendAttach(GroundLightAttack2, 10.0f, 1.0f, false);
-                break;
+                return;
             case PlayerState::Attack3:
                 _modelAnim.SetBlendAttach(GroundLightAttack3, 10.0f, 1.0f, false);
-                break;
+                return;
             case PlayerState::Jump:
                 _modelAnim.SetBlendAttach(JumpUp, 10.0f, 1.0f, false);
-                break;
+                return;
             default:
-                break;
+              return;
             }
         }
 
@@ -299,7 +287,7 @@ namespace Gyro {
       }
       DebugString(); // 座標情報の出力
       _app.GetCamera().Draw(_position, _move); // カメラ情報の出力処理
-      _sphere->Draw();
+      _sphere->Draw(); // 当たり判定の描画
       return true;
     }
 
@@ -315,24 +303,24 @@ namespace Gyro {
 #endif
 
     void Player::Hit() {
-      // 
       auto objects = _app.GetObjectServer().GetObjects(); // オブジェクトのコピー
       // 衝突判定を行う6
       for (auto obj : objects) {
+        // 敵の場合のみ処理を行う
         if (obj->GetId() != ObjectId::Enemy) continue;
         // 球と球の衝突判定
-        if (_sphere->IntersectSphere(std::dynamic_pointer_cast<Enemy::EnemyBase>(obj)->GetCollision())) {
-          int i = 0;
-        }
+        _sphere->IntersectSphere(std::dynamic_pointer_cast<Enemy::EnemyBase>(obj)->GetCollision());
       }
     }
 
     void Player::Jump() {
+      // ジャンプのインターバル中か
       if (_jumpInterval != 0.0f) {
         return; // インターバルがない場合は処理を行わない
       }
       _jump = true; // ジャンプフラグを起動
-      _jumpInterval;
+      _jumpInterval = 300.0f; // インターバルを設定
+
     }
   } // namespace Player
 }// namespace Gyro

@@ -99,7 +99,7 @@ namespace Gyro {
       /**
        * @brief  移動量の算出
        */
-      void Move(AppMath::Vector4 move);
+      AppMath::Vector4 Move(AppMath::Vector4 move);
       /**
        * @brief カメラの更新
        * @param stick 

@@ -61,8 +61,14 @@ namespace Gyro {
     }
 
     void ObjectBase::WorldMatrix() {
+      using Utility = AppMath::Utility;
       // ワールド座標変換を行う
-      _world = AppMath::Utility::ToWorldMatrix(_position, _rotation, _scale);
+#ifndef _DEBUG
+      _world = Utility::ToWorldMatrix(_position, _rotation, _scale);
+#else
+      _world = Utility::ToWorldMatrix(_position, _rotation, _scale, AppMath::Degree);
+#endif
+      
     }
 
 #ifdef _DEBUG
