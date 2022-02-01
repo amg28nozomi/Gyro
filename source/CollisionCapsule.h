@@ -46,7 +46,7 @@ namespace Gyro {
        * @param  line 衝突判定を行う線分の参照
        * @return true:衝突 false:衝突していない
        */
-      bool IntersectLine(const AppMath::Line& line);
+      bool IntersectLine(const AppMath::LineSegment& line);
       /**
        * @brief  カプセルと球の衝突判定
        * @param  sphere 衝突判定を行う球コリジョン
@@ -66,7 +66,7 @@ namespace Gyro {
        * @brief  線分の取得
        * @return 線分を返す
        */
-      AppMath::Line Line() const;
+      AppMath::LineSegment Line() const;
     };
   } // namespace Object
 } // namespace Gyro

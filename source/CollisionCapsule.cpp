@@ -37,7 +37,7 @@ namespace Gyro {
     }
 #endif
 
-    bool CollisionCapsule::IntersectLine(const AppMath::Line& line) {
+    bool CollisionCapsule::IntersectLine(const AppMath::LineSegment& line) {
       // ƒJƒvƒZƒ‹‚Æü•ª‚ÌÕ“Ë”»’è
       return true;
     }
@@ -52,10 +52,10 @@ namespace Gyro {
       return true;
     }
 
-    AppMath::Line CollisionCapsule::Line() const {
+    AppMath::LineSegment CollisionCapsule::Line() const {
       auto line = _length / 2;
       // ¶¬‚µ‚½ü•ª‚ğ•Ô‚·
-      return AppMath::Line(_position.AddVectorY(line), _position.AddVectorY(-line));
+      return AppMath::LineSegment(_position.AddVectorY(line), _position.AddVectorY(-line));
     }
   } // namespace Object
 } // namespace Gyro
