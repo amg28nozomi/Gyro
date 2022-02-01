@@ -29,7 +29,7 @@ namespace Gyro {
        */
       enum class CollisionType {
         None,   // ŠY“–‚È‚µ
-        Line,   // ü•ª
+        LineSegment,   // ü•ª
         Sphere, // ‹…
         Capsule // ƒJƒvƒZƒ‹
       };

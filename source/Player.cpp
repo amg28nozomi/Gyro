@@ -64,7 +64,7 @@ namespace Gyro {
         auto [leftTrigger, rightTrigger] = input.GetTrigger(); // トリガーボタン
         // 実際に使用する移動量(2次元ベクトル)
         auto stickRight = AppMath::Vector4(rX, rY);
-        // 移動量の算出
+        // 
         _position = Move(AppMath::Vector4(lX, lY));
         // 前フレーム座標
         auto oldPosition = _position;   
@@ -78,9 +78,9 @@ namespace Gyro {
         _modelAnim.Process(); // アニメーションの再生
         WorldMatrix(); // ワールド座標の更新
         _sphere->Process(_move); // 移動量の加算
+        Hit();
         // ワールド座標の設定
         MV1SetMatrix(_model, UtilityDX::ToMATRIX(_world));
-        Hit();
         // モデルの向きを設定する
         // MV1SetRotationXYZ(_model, UtilityDX::ToVECTOR(rotationY));
         // スカイスフィアの座標
@@ -230,7 +230,12 @@ namespace Gyro {
       auto [lx, ly] = _app.GetOperation().GetXBoxState().GetStick(false);
       DrawFormatString(0, 20, 255, "lx:%d  ly:%d", lx, ly);
       auto [rx, ry] = _app.GetOperation().GetXBoxState().GetStick(true);
-      DrawFormatString(0, 40, 255, "lx:%d  ly:%d", rx, ry);
+      DrawFormatString(300, 20, 255, "lx:%d  ly:%d", rx, ry);
+      // 回転情報の出力
+      auto [rX, rY, rZ] = _rotation.GetVector3();
+      DrawFormatString(0, 40, 255, "rotationX:%f  rotationY:%f rotationZ:%f", rX, rY, rZ);
+      auto [moveX, moveY, moveZ] = _move.GetVector3();
+      DrawFormatString(0, 60, 255, "moveX:%f  moveY:%f moveZ:%f", moveX, moveY, moveZ);
     }
 #endif
 
@@ -241,7 +246,10 @@ namespace Gyro {
         // 敵の場合のみ処理を行う
         if (obj->GetId() != ObjectId::Enemy) continue;
         // 球と球の衝突判定
-        _sphere->IntersectSphere(std::dynamic_pointer_cast<Enemy::EnemyBase>(obj)->GetCollision());
+        if (_sphere->IntersectSphere(std::dynamic_pointer_cast<Enemy::EnemyBase>(obj)->GetCollision())) {
+          // 衝突した場合は押し出し処理を行う
+
+        }
       }
     }
 

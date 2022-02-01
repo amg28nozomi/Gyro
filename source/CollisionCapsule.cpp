@@ -31,13 +31,13 @@ namespace Gyro {
 #ifdef _DEBUG
     void CollisionCapsule::Draw() {
       // 線分の取得(先端・終端)
-      auto [start, end] = Line().GetVector();
+      auto [start, end] = LineSegment().GetVector();
       // 指定座標にカプセルを描画する
       DrawCapsule3D(UtilityDX::ToVECTOR(start), UtilityDX::ToVECTOR(end), _radius, 10, 0, 0, false);
     }
 #endif
 
-    bool CollisionCapsule::IntersectLine(const AppMath::Line& line) {
+    bool CollisionCapsule::IntersectLine(const AppMath::LineSegment& line) {
       // カプセルと線分の衝突判定
       return true;
     }
@@ -48,14 +48,16 @@ namespace Gyro {
     }
 
     bool CollisionCapsule::IntersectCapsule(const CollisionCapsule& capsule) {
-      // カプセルを
-      return true;
+      return false;
+      //float distSq = LineSegment().MinDistSq(capsule.LineSegment());
+      //auto sumRadius = _radius + capsule._radius;
+      //return distSq <= (sumRadius * sumRadius);
     }
 
-    AppMath::Line CollisionCapsule::Line() const {
+    AppMath::LineSegment CollisionCapsule::LineSegment() const {
       auto line = _length / 2;
       // 生成した線分を返す
-      return AppMath::Line(_position.AddVectorY(line), _position.AddVectorY(-line));
+      return AppMath::LineSegment(_position.AddVectorY(line), _position.AddVectorY(-line));
     }
   } // namespace Object
 } // namespace Gyro
