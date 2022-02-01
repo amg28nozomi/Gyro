@@ -112,7 +112,7 @@ namespace Gyro {
       ObjectState _state{ObjectState::Active}; //!< 状態
       AppFrame::Math::Matrix44 _world;         //!< ワールド座標
       AppFrame::Math::Vector4 _position;       //!< ローカル座標
-      AppFrame::Math::Vector4 _rotation;       //!< 向き
+      AppFrame::Math::Vector4 _rotation;       //!< 回転(Debug:デグリー Release:ラジアン)
       AppFrame::Math::Vector4 _scale{0, 0, 0}; //!< 拡大率
       bool _stand{false};   //!< 立ちフラグ(true:床に立っている false:床と接触していない)
       bool _gravity{false}; //!< 重力処理を行うか(true:重力処理を行う false:重力処理を行わない)

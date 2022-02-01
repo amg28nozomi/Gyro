@@ -111,9 +111,10 @@ namespace Gyro {
 
     AppMath::Vector4 Player::Move(AppMath::Vector4 move) {
         _move.Zero(); // 移動量初期化
-        // 移動量がない場合は処理を行わない
+        // 移動量はあるか
         if (move.LengthSquared() == 0.0f) {
-            return _position; // 前フレームの位置を返す
+          // 現在座標に重力スケールを加算した値を返す
+          return _position.AddVectorY(_gravityScale);
         }
         auto x = (move.GetX() / 30000) * MoveSpeed; // x軸の移動量
         auto z = (move.GetY() / 30000) * MoveSpeed; // y軸の移動量
@@ -157,17 +158,6 @@ namespace Gyro {
       _animaIndex = NoAnimation;
       _animaTime = 0.0f;
       _totalTime = 0.0f;
-    }
-
-    float Player::Speed(const AppFrame::Math::Vector4 stick) const {
-      // 移動量はあるか
-      auto length = stick.Length2D();
-      auto rad = atan2(stick.GetX(), stick.GetY());
-      // 入力具合が少ない場合は移動量を0にする
-      if (length < InputMin) {
-        return MoveZero;
-      }
-      return MoveSpeed;
     }
 
     void Player::CameraUpdate(const AppFrame::Math::Vector4 stick) {
@@ -214,72 +204,14 @@ namespace Gyro {
               return;
             }
         }
-
-      //// アニメーション処理
-      //MV1SetAttachAnimTime(_model, _animaIndex, _animaTime);
-      //// 前フレームと異なる場合の処理
-      //if (_playerState == old) {
-      //  _animaTime += 0.5f; // 再生時間を進める
-      //  // アニメーションが終了したかの判定
-      //  if (_totalTime <= _animaTime) {
-      //    // アニメーションを切り替える
-      //    AttachAnima(GetAnimaKey());
-      //  }
-      //  return;
-      //}
-      //// 現在のアニメーションを破棄
-      //MV1DetachAnim(_model, _animaIndex);
-      //_animaIndex = -1;
-      //// アニメーションを切り替える
-      //AttachAnima(GetAnimaKey());
     }
 
-    /*int Player::AnimaIndex(std::string_view key) const {
-      return MV1GetAnimIndex(_model, key.data());
-    }*/
-
-//    bool Player::AttachAnima(std::string_view key) {
-//      // アニメーション番号の取得
-//      _animaIndex = AnimaIndex(key);
-//      // 取得に成功したかの判定
-//      if (_animaIndex == -1) {
-//#ifdef _DEBUG
-//        throw ("アニメーション番号の取得に失敗しました\n");
-//#endif
-//        return false;
-//      }
-//      // アニメーションをアタッチ
-//      auto a = MV1AttachAnim(_model, _animaIndex, -1, false);
-//      // 総再生時間を更新
-//      _totalTime = MV1GetAttachAnimTotalTime(_model, a);
-//      _animaTime = 0.0f; // 再生時間を0にする
-//      return true;
-//    }
-//
-//    std::string_view Player::GetAnimaKey() const {
-//      // 状態に応じたキーを返す
-//      switch (_playerState) {
-//      case PlayerState::Idle:
-//        return "GyroIdle";
-//      case PlayerState::Run:
-//        return "GyroDash";
-//      case PlayerState::Walk:
-//        return "GyroWalk";
-//      case PlayerState::Jump:
-//        return "GyroJUp";
-//      case PlayerState::Attack1:
-//        return "GyroLaw1";
-//      case PlayerState::Attack2:
-//        return "GyroLaw2";
-//      case PlayerState::Attack3:
-//        return "GyroLaw3";
-//      default:
-//        return "";
-//      }
-//    }
+    bool Player::IsStand() {
+      // 地形と接触してるか(上下)
+      return true;
+    }
 
 #ifdef _DEBUG
-
     bool Player::DebugDraw() const {
       // フラグが立っている場合のみ描画を行う
       if (!ObjectBase::DebugDraw()) {
@@ -304,7 +236,7 @@ namespace Gyro {
 
     void Player::Hit() {
       auto objects = _app.GetObjectServer().GetObjects(); // オブジェクトのコピー
-      // 衝突判定を行う6
+      // 衝突判定を行う
       for (auto obj : objects) {
         // 敵の場合のみ処理を行う
         if (obj->GetId() != ObjectId::Enemy) continue;

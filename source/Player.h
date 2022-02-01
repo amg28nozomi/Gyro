@@ -67,7 +67,6 @@ namespace Gyro {
       int _animaIndex;     //!< アタッチされているアニメ番号
       float _totalTime;    //!< アニメーションの総再生時間
       float _animaTime;    //!< アニメーションの再生時間
-      Camera::Camera _cam; //!< カメラの実体
       ModelAnim::ModelAnimComponent _modelAnim; //!< AnimComponentの実態
       std::unique_ptr<Object::CollisionSphere> _sphere; //!< 当たり判定コリジョン(球)
       PlayerState _playerState{PlayerState::Idle}; //!< 自機状態
@@ -90,12 +89,6 @@ namespace Gyro {
        * @brief カメラの設定
        */
       void SetCamera();
-      /**
-       * @brief  移動量の算出
-       * @param  stick 入力値
-       * @return 移動量
-       */
-      float Speed(const AppFrame::Math::Vector4 stick) const;
       /**
        * @brief  移動量の算出
        */
@@ -136,6 +129,12 @@ namespace Gyro {
        */
       void DebugString() const;
 #endif
+      /**
+       * @brief  地形との衝突判定
+       * @return true:衝突 false:衝突していない
+       */
+      bool IsStand() override;
+
       /**
        * @brief 衝突判定処理
        */
