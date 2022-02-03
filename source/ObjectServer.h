@@ -63,6 +63,11 @@ namespace Gyro {
        * @return 自機ポインタの参照
        */
       std::shared_ptr<Player::Player>& GetPlayer();
+      /**
+       * @brief  自機のトランスフォームを取得する
+       * @return true:取得成功 false:取得失敗
+       */
+      bool GetPlayerTransForm(AppMath::Vector4& position, AppMath::Vector4& rotation);
     private:
       bool _play{false}; //!< オブジェクトサーバを回しているかのフラグ
       std::vector<std::shared_ptr<ObjectBase>> _addObject; //!< 登録予約用

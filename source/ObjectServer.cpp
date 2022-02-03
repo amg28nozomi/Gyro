@@ -122,6 +122,17 @@ namespace Gyro {
       return _registry; // データベースを叩きつける
     }
 
+    bool ObjectServer::GetPlayerTransForm(AppMath::Vector4& position, AppMath::Vector4& rotation) {
+      auto player = GetPlayer(); // 自機の取得
+      // 中身がnullptrの場合は処理を行わない
+      if (player == nullptr) {
+        return false; // 取得失敗
+      }
+      position = player->GetPosition(); // ローカル座標
+      rotation = player->GetRotation(); // 回転量
+      return true; // 取得成功
+    }
+
     std::shared_ptr<Player::Player>& ObjectServer::GetPlayer() {
       std::shared_ptr<Player::Player> player = nullptr;
       for (auto obj : _registry) {
