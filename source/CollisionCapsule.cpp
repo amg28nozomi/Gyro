@@ -50,7 +50,12 @@ namespace Gyro {
     }
 
     bool CollisionCapsule::IntersectCapsule(const CollisionCapsule& capsule) {
-      return false;
+      // ü•ªŠÔ‚ÌÅ’Z‹——£‚ğæ“¾
+      float dist = LineSegment().MinDist(capsule.LineSegment());
+      // ”¼Œa
+      auto sumRadius = _radius + capsule._radius;
+      return (dist * dist) <= (sumRadius * sumRadius);
+      // return false;
       //float distSq = LineSegment().MinDistSq(capsule.LineSegment());
       //auto sumRadius = _radius + capsule._radius;
       //return distSq <= (sumRadius * sumRadius);
