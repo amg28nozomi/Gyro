@@ -96,6 +96,13 @@ namespace Gyro {
             float GetPlayTime() const {
                 return _playTime;
             }
+            /**
+             * @brief   アニメーション終了の取得
+             * @return  アニメーション終了
+             */
+            bool GetAnimEnd() const {
+                return _animEnd;
+            }
 
         private:
             int _animNum;       //!< アニメーション番号
@@ -104,6 +111,7 @@ namespace Gyro {
             float _playTime;    //!< アニメーション再生時間
             float _playSpeed;   //!< アニメーション再生速度
             bool _motionLoop;   //!< ループ再生有無
+            bool _animEnd;      //!< アニメーション終了
         };
     } // namespace ModelAnim
 } // namespace Gyro
