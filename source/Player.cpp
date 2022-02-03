@@ -132,9 +132,12 @@ namespace Gyro {
 
     void Player::LoadResource() {
       // 各種リソースの読み取り処理
-      _app.GetModelServer().AddMV1Model("player", "res/Player/Gyro multibag.mv1");
-      _app.GetModelServer().AddMV1Model("sky", "res/SkySphere/skysphere.mv1");
-      _app.
+      auto [model, key1] = _app.GetModelServer().GetModel("player", 0);
+      _model = model;     // モデルハンドルを登録
+      auto [handle, key2] = _app.GetModelServer().GetModel("sky", 0);
+      _handleSkySphere = handle; // スカイスフィア
+      auto [stage , key3] = _app.GetModelServer().GetModel("stage", 0);
+      _handleMap = stage; // ステージハンドル
     }
 
     void Player::SetCamera() {

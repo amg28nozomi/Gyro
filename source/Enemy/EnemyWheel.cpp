@@ -8,6 +8,7 @@
 #include "EnemyWheel.h"
 #include "../CollisionSphere.h"
 #include "../UtilityDX.h"
+#include "../ApplicationMain.h"
 
 namespace Gyro {
     namespace Enemy {
@@ -21,14 +22,15 @@ namespace Gyro {
         }
 
         bool EnemyWheel::Init() {
-            // モデル読み込み
-            _mHandle = MV1LoadModel("res/Enemy/Enemy_multimotion.mv1");
-            MV1SetScale(_mHandle, VGet(1.0f, 1.0f, 1.0f));
-            // アニメーションアタッチ
-            _modelAnim.SetMainAttach(_mHandle, 1, 1.0f, true);
-            // 初期化
-            MV1SetScale(_mHandle, VGet(2,2,2));
-            SetEnemyPos(VGet(100, 0, 100));
+          // モデル読み込み
+          auto[handle, key] = _app.GetModelServer().GetModel("enemy", 0);
+          _mHandle = handle; // ハンドル設定
+          // MV1SetScale(_mHandle, VGet(1.0f, 1.0f, 1.0f));
+          // アニメーションアタッチ
+          _modelAnim.SetMainAttach(_mHandle, 1, 1.0f, true);
+          // 初期化
+          MV1SetScale(_mHandle, VGet(2,2,2));
+          SetEnemyPos(VGet(100, 0, 100));
             _position = UtilityDX::ToVector(_enemyPos);
             auto center = UtilityDX::ToVector(_enemyPos);
             center.AddY(100.0f);
