@@ -24,6 +24,8 @@
     <ClCompile Include="source\CollisionBase.cpp" />
     <ClCompile Include="source\CollisionCapsule.cpp" />
     <ClCompile Include="source\CollisionSphere.cpp" />
+    <ClCompile Include="source\Effect\EffectBase.cpp" />
+    <ClCompile Include="source\Effect\SampleEffect.cpp" />
     <ClCompile Include="source\Enemy\EnemyBase.cpp" />
     <ClCompile Include="source\Enemy\EnemyWheel.cpp" />
     <ClCompile Include="source\ModeGame.cpp" />
@@ -46,6 +48,8 @@
     <ClInclude Include="source\CollisionBase.h" />
     <ClInclude Include="source\CollisionCapsule.h" />
     <ClInclude Include="source\CollisionSphere.h" />
+    <ClInclude Include="source\Effect\EffectBase.h" />
+    <ClInclude Include="source\Effect\SampleEffect.h" />
     <ClInclude Include="source\Enemy\EnemyBase.h" />
     <ClInclude Include="source\Enemy\EnemyWheel.h" />
     <ClInclude Include="source\ModeGame.h" />
