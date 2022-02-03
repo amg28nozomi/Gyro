@@ -61,7 +61,7 @@ namespace Gyro {
 
     void ObjectBase::GravityReset() {
       // 重力スケールを初期化する
-      _gravity = 0.0f;
+      // _gravityScale = 0.0f;
       // 線分とステージの押し出し処理を行う
     }
 

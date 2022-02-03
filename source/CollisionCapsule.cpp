@@ -65,9 +65,8 @@ namespace Gyro {
     }
 
     AppMath::LineSegment CollisionCapsule::LineSegment() const {
-      auto line = _length / 2;
       // ¶¬‚µ‚½ü•ª‚ğ•Ô‚·
-      return AppMath::LineSegment(_position.AddVectorY(line), _position.AddVectorY(-line));
+      return AppMath::LineSegment(_position.AddVectorY(_length), _position);
     }
   } // namespace Object
 } // namespace Gyro

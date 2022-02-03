@@ -47,10 +47,10 @@ namespace Gyro {
             /**
              * @brief 更新
              * @param stick     右スティックの大きさ
-             * @param position  プレイヤーの位置
+             * @param target    プレイヤーの位置
              * @param move      プレイヤーの移動量
              */
-            bool Process(const AppFrame::Math::Vector4 stick, const AppFrame::Math::Vector4 positoin, const AppFrame::Math::Vector4 move);
+            bool Process(const AppFrame::Math::Vector4 stick, const AppFrame::Math::Vector4 target, const AppFrame::Math::Vector4 move);
 #ifdef _DEBUG
             /**
              * @brief 描画

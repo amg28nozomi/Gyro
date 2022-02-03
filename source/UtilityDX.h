@@ -25,7 +25,7 @@ namespace Gyro {
      * @param  vector 変換対象
      * @return VECTOR構造体
      */
-    static VECTOR ToVECTOR(AppFrame::Math::Vector4& vector);
+    static VECTOR ToVECTOR(AppFrame::Math::Vector4 vector);
     /**
      * @brief  VECTOR構造体をVector4クラスに変換する
      * @param  vector 変換対象

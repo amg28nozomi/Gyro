@@ -31,7 +31,7 @@ namespace Gyro {
       /**
        * @brief コンストラクタ
        * @param owner 所有者の参照
-       * @param center 中心座標
+       * @param center 中心座標(足)
        * @param line   線分の長さ
        * @param radius 半径
        */

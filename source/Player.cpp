@@ -114,11 +114,11 @@ namespace Gyro {
         // 移動量はあるか
         if (move.LengthSquared() == 0.0f) {
           // 現在座標に重力スケールを加算した値を返す
-          return _position.AddVectorY(_gravityScale);
+          return _position;
         }
         auto x = (move.GetX() / 30000) * MoveSpeed; // x軸の移動量
         auto z = (move.GetY() / 30000) * MoveSpeed; // y軸の移動量
-        _move.Set(x, _gravityScale, z); // 移動量を設定
+        _move.Set(x, 0.0f, z); // 移動量を設定
         // ラジアンを生成(y軸は反転させる)
         auto radian = std::atan2(move.GetX(), -move.GetY());
 #ifndef _DEBUG
@@ -152,8 +152,9 @@ namespace Gyro {
       _rotation = AppMath::Vector4();
       _scale = { 10.0f, 10.0f, 10.0f };
       auto m = _position.AddVectorY(100.0f);
+      // 各種コリジョンの設定
       _sphere = std::make_unique<Object::CollisionSphere>(*this, m, 100.0f);
-      _capsule = std::make_unique<Object::CollisionCapsule>(*this, m, 100.0f, 20.0f);
+      _capsule = std::make_unique<Object::CollisionCapsule>(*this, _position, 150.0f, 20.0f);
       // アニメーションの初期化
       _animaIndex = NoAnimation;
       _animaTime = 0.0f;
@@ -172,9 +173,9 @@ namespace Gyro {
     }
 
     void Player::SetRotation(const AppFrame::Math::Vector4 move) {
-      // 移動量がある場合は向きを変更する
+      // 移動量がある場合は歩きモーションに遷移
+      // 後程移動量に応じて歩き・ダッシュモーション切り替え
       if (move.LengthSquared()) {
-        using Utility = AppFrame::Math::Utility;
         _playerState = PlayerState::Walk;
       }
       else {
@@ -186,25 +187,25 @@ namespace Gyro {
         // 自機の状態に合わせてアニメーション状態を切り替える
         if (old != _playerState) {
             switch (_playerState) {
-            case PlayerState::Idle:
+            case PlayerState::Idle: // 待機
                 _modelAnim.SetBlendAttach(Idle, 10.0f, 1.0f, true);
                 return;
-            case PlayerState::Walk:
+            case PlayerState::Walk: // 歩き
                 _modelAnim.SetBlendAttach(Walk, 10.0f, 1.0f, true);
                 return;
-            case PlayerState::Run:
+            case PlayerState::Run:  // 走り
                 _modelAnim.SetBlendAttach(Run, 10.0f, 1.0f, true);
                 return;
-            case PlayerState::Attack1:
+            case PlayerState::Attack1: // 攻撃1
                 _modelAnim.SetBlendAttach(GroundLightAttack1, 10.0f, 1.0f, false);
                 return;
-            case PlayerState::Attack2:
+            case PlayerState::Attack2: // 攻撃2
                 _modelAnim.SetBlendAttach(GroundLightAttack2, 10.0f, 1.0f, false);
                 return;
-            case PlayerState::Attack3:
+            case PlayerState::Attack3: // 攻撃3
                 _modelAnim.SetBlendAttach(GroundLightAttack3, 10.0f, 1.0f, false);
                 return;
-            case PlayerState::Jump:
+            case PlayerState::Jump:    // ジャンプ
                 _modelAnim.SetBlendAttach(JumpUp, 10.0f, 1.0f, false);
                 return;
             default:
@@ -216,14 +217,19 @@ namespace Gyro {
     bool Player::IsStand() {
       auto old = *_capsule; // 前フレームのカプセル情報
       // カプセル座標を更新する
-      _capsule->Process(AppMath::Vector4(0.0f, _gravityScale));
+      // _capsule->Process(AppMath::Vector4(0.0f, _gravityScale));
       // 地形と衝突しているかの判定を行う
       if (_capsule->IntersectPlane(*_plane)) {
         _gravityScale = 0.0f; // 重力スケールをゼロにする
         // 衝突している場合はめり込み量を算出
-        auto planeY = _plane->GetDistance();
+        auto pos = _position.AddVectorY(_gravityScale);
+        auto planeY = _plane->GetNormal();
+        auto v = ((pos.GetY() - planeY.GetY())) * -1; // めり込み量を算出する
+        // _position.AddY(v); // Y座標に加算する
+        // _capsule->Process(AppMath::Vector4(0.0f, v)); // めり込み量だけ押し出す
         return true; // 立っている
       }
+      // _position.AddY(_gravityScale);
       return false; // 立っていない
     }
 
@@ -235,8 +241,8 @@ namespace Gyro {
       }
       DebugString(); // 座標情報の出力
       _app.GetCamera().Draw(_position, _move); // カメラ情報の出力処理
-      _sphere->Draw(); // 当たり判定の描画
-      _capsule->Draw();
+      // _sphere->Draw(); // 当たり判定の描画
+      _capsule->Draw(); // カプセルの描画
       return true;
     }
 
