@@ -8,6 +8,11 @@
  *********************************************************************/
 #pragma once
 #include "CollisionBase.h"
+
+namespace AppFrame::Math {
+  class Plane;
+}
+
 /**
  * @brief ゲームベース
  */
@@ -59,6 +64,12 @@ namespace Gyro {
        * @return true:衝突 false:衝突していない
        */
       bool IntersectCapsule(const CollisionCapsule& capsule);
+      /**
+       * @brief  平面との衝突判定(線分)
+       * @param  plane
+       * @return 
+       */
+      bool IntersectPlane(const AppFrame::Math::Plane& plane);
     private:
       float _length; //!< 線分の長さ
       float _radius; //!< 半径

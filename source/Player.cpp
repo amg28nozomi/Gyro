@@ -10,6 +10,7 @@
 #include "UtilityDX.h"
 #include "ObjectServer.h"
 #include "Enemy/EnemyBase.h"
+#include "CollisionCapsule.h"
 #define	PI	(3.1415926535897932386f)
 #define	DEG2RAD(x)			( ((x) / 180.0f ) * PI )
 
@@ -54,43 +55,42 @@ namespace Gyro {
     }
 
     bool Player::Process() {
-        // 名前空間の省略
-        namespace App = AppFrame::Application;
-        namespace AppMath = AppFrame::Math;
-        // 入力状態の取得
-        auto input = _app.GetOperation().GetXBoxState();
-        auto [lX, lY] = input.GetStick(false); // 左スティック
-        auto [rX, rY] = input.GetStick(true);  // 右スティック
-        auto [leftTrigger, rightTrigger] = input.GetTrigger(); // トリガーボタン
-        // 実際に使用する移動量(2次元ベクトル)
-        auto stickRight = AppMath::Vector4(rX, rY);
-        // 
-        _position = Move(AppMath::Vector4(lX, lY));
-        // 前フレーム座標
-        auto oldPosition = _position;   
-        // カメラの更新
-        _app.GetCamera().Process(stickRight, _position, _move);
-        // 前フレームの状態を保持
-        auto oldState = _playerState;
-        // 状態の更新
-        SetRotation(_move);
-        Animation(oldState);  // アニメーションの設定
-        _modelAnim.Process(); // アニメーションの再生
-        WorldMatrix(); // ワールド座標の更新
-        _sphere->Process(_move); // 移動量の加算
-        Hit();
-        // ワールド座標の設定
-        MV1SetMatrix(_model, UtilityDX::ToMATRIX(_world));
-        // モデルの向きを設定する
-        // MV1SetRotationXYZ(_model, UtilityDX::ToVECTOR(rotationY));
-        // スカイスフィアの座標
-        auto skypos = AppMath::Utility::ToWorldMatrix(_position, AppMath::Vector4(0, 0, 0), AppMath::Vector4(1.0f, 1.0f, 1.0f));
-        MV1SetMatrix(_handleSkySphere, UtilityDX::ToMATRIX(skypos));
-        // MV1SetPosition(_handleSkySphere, UtilityDX::ToVECTOR(_position));
-        auto stage = AppMath::Utility::ToWorldMatrix(AppMath::Vector4(0, -1500.0f, 0), AppMath::Vector4(0, 0, 0), AppMath::Vector4(1.0f, 1.0f, 1.0f));
-        // ステージの座標
-        MV1SetMatrix(_handleMap, UtilityDX::ToMATRIX(stage));
-        return true;
+      ObjectBase::Process();
+      // 名前空間の省略
+      namespace App = AppFrame::Application;
+      // 入力状態の取得
+      auto input = _app.GetOperation().GetXBoxState();
+      auto [lX, lY] = input.GetStick(false); // 左スティック
+      auto [rX, rY] = input.GetStick(true);  // 右スティック
+      auto [leftTrigger, rightTrigger] = input.GetTrigger(); // トリガーボタン
+      // 前フレーム座標
+      auto oldPosition = _position;
+      // 座標更新
+      _position = Move(AppMath::Vector4(lX, lY)); 
+      // カメラの更新
+      _app.GetCamera().Process(AppMath::Vector4(rX, rY), _position, _move);
+      // 前フレームの状態を保持
+      auto oldState = _playerState;
+      // 状態の更新
+      SetRotation(_move);
+      Animation(oldState);  // アニメーションの設定
+      _modelAnim.Process(); // アニメーションの再生
+      WorldMatrix(); // ワールド座標の更新
+      _sphere->Process(_move); // 移動量の加算
+      _capsule->Process(_move);
+      Hit();
+      // ワールド座標の設定
+      MV1SetMatrix(_model, UtilityDX::ToMATRIX(_world));
+      // モデルの向きを設定する
+      // MV1SetRotationXYZ(_model, UtilityDX::ToVECTOR(rotationY));
+      // スカイスフィアの座標
+      auto skypos = AppMath::Utility::ToWorldMatrix(_position, AppMath::Vector4(0, 0, 0), AppMath::Vector4(1.0f, 1.0f, 1.0f));
+      MV1SetMatrix(_handleSkySphere, UtilityDX::ToMATRIX(skypos));
+      // MV1SetPosition(_handleSkySphere, UtilityDX::ToVECTOR(_position));
+      auto stage = AppMath::Utility::ToWorldMatrix(AppMath::Vector4(0, -1500.0f, 0), AppMath::Vector4(0, 0, 0), AppMath::Vector4(1.0f, 1.0f, 1.0f));
+      // ステージの座標
+      MV1SetMatrix(_handleMap, UtilityDX::ToMATRIX(stage));
+      return true;
     }
 
     bool Player::Draw() const {
@@ -102,7 +102,7 @@ namespace Gyro {
 #ifdef _DEBUG
       DebugDraw(); // デバッグ描画
 #endif
-        return true;
+      return true;
     }
 
     void Player::Input() {
@@ -146,18 +146,25 @@ namespace Gyro {
       // 状態の設定
       _id = ObjectId::Player;
       _state = ObjectState::Active;
+      _gravity = true; // 重力処理を行う
       // 座標・向きの設定
-      namespace AppMath = AppFrame::Math;
-      _position = AppMath::Vector4();
+      _position = AppMath::Vector4(0.0f, 100.0f, 0.0f);
       _rotation = AppMath::Vector4();
       _scale = { 10.0f, 10.0f, 10.0f };
-      auto m = _position;
-      m.AddY(100.0f);
+      auto m = _position.AddVectorY(100.0f);
       _sphere = std::make_unique<Object::CollisionSphere>(*this, m, 100.0f);
+      _capsule = std::make_unique<Object::CollisionCapsule>(*this, m, 100.0f, 20.0f);
       // アニメーションの初期化
       _animaIndex = NoAnimation;
       _animaTime = 0.0f;
       _totalTime = 0.0f;
+      // 地形の衝突判定を設定
+      using Vector = AppFrame::Math::Vector4;
+      // 平面の設定
+      auto a = Vector(0.0f, 0.0f, 100.0f);
+      auto b = Vector(-100.0f, 0.0f, -100.0f);
+      auto c = Vector(100.0f, 0.0f, -100.0f);
+      _plane = std::make_unique<AppFrame::Math::Plane>(a, b, c);
     }
 
     void Player::CameraUpdate(const AppFrame::Math::Vector4 stick) {
@@ -207,8 +214,17 @@ namespace Gyro {
     }
 
     bool Player::IsStand() {
-      // 地形と接触してるか(上下)
-      return true;
+      auto old = *_capsule; // 前フレームのカプセル情報
+      // カプセル座標を更新する
+      _capsule->Process(AppMath::Vector4(0.0f, _gravityScale));
+      // 地形と衝突しているかの判定を行う
+      if (_capsule->IntersectPlane(*_plane)) {
+        _gravityScale = 0.0f; // 重力スケールをゼロにする
+        // 衝突している場合はめり込み量を算出
+        auto planeY = _plane->GetDistance();
+        return true; // 立っている
+      }
+      return false; // 立っていない
     }
 
 #ifdef _DEBUG
@@ -220,6 +236,7 @@ namespace Gyro {
       DebugString(); // 座標情報の出力
       _app.GetCamera().Draw(_position, _move); // カメラ情報の出力処理
       _sphere->Draw(); // 当たり判定の描画
+      _capsule->Draw();
       return true;
     }
 

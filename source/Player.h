@@ -11,12 +11,16 @@
 #include "Camera.h"
 #include "ModelAnim/ModelAnimComponent.h"
 #include "CollisionSphere.h"
+#include "CollisionCapsule.h"
 
 namespace AppFrame::Math{}
 /**
  * @brief ゲームベース
  */
 namespace Gyro {
+  namespace Object {
+    class CollisionCapsule;
+  }
   /**
    * @brief プレイヤーベース
    */
@@ -69,7 +73,10 @@ namespace Gyro {
       float _animaTime;    //!< アニメーションの再生時間
       ModelAnim::ModelAnimComponent _modelAnim; //!< AnimComponentの実態
       std::unique_ptr<Object::CollisionSphere> _sphere; //!< 当たり判定コリジョン(球)
+      std::unique_ptr<Object::CollisionCapsule> _capsule; //!< カプセル
       PlayerState _playerState{PlayerState::Idle}; //!< 自機状態
+
+      std::unique_ptr<AppMath::Plane> _plane; //!< 平面
       int _handleMap;
       int _frameMapCollision;
       int _handleSkySphere;   //!< スカイスフィアハンドル

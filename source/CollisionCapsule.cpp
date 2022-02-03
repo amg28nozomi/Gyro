@@ -6,6 +6,7 @@
  * @date   January 2022
  *********************************************************************/
 #include "CollisionCapsule.h"
+#include <appframe.h>
 #include "CollisionSphere.h"
 #include "UtilityDX.h"
 
@@ -25,6 +26,7 @@ namespace Gyro {
       auto old = _position;
       // 新しい座標情報
       auto newPosition = _position + move;
+      _position = newPosition;
       // ステージとの衝突判定を行う
     }
 
@@ -52,6 +54,14 @@ namespace Gyro {
       //float distSq = LineSegment().MinDistSq(capsule.LineSegment());
       //auto sumRadius = _radius + capsule._radius;
       //return distSq <= (sumRadius * sumRadius);
+    }
+
+    bool CollisionCapsule::IntersectPlane(const AppFrame::Math::Plane& plane) {
+      // 線分と平面は衝突しているか
+      if (LineSegment().IntersectPlane(plane)) {
+        return true; // 衝突している
+      }
+      return false;
     }
 
     AppMath::LineSegment CollisionCapsule::LineSegment() const {

@@ -47,7 +47,12 @@ namespace Gyro {
     void ObjectBase::GravityScale() {
       // デフォルトの重力加速度を重力スケールに加算する
       using Gravity = AppFrame::Math::GravityBase;
-      _gravityScale += Gravity::Acceleration();
+      if (-50.0f < _gravityScale) {
+        _gravityScale += Gravity::Acceleration();
+        if (_gravityScale <= -50.0f) {
+          _gravityScale = -50.0f; // 下限を超過した場合は修正
+        }
+      }
     }
 
     bool ObjectBase::IsStand() {
