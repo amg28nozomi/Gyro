@@ -41,6 +41,7 @@ namespace Gyro {
     }
 
     bool ModeGame::Init() {
+      LoadResource(); // 各種リソースの読み取りを行う
       // 使用するデータの読み込みを記述する
       _plane.Initialize(45000.0, 150);
       _plane.Load(TEXTURE);
@@ -87,6 +88,18 @@ namespace Gyro {
 
     Application::ApplicationMain& ModeGame::GetAppMain() {
       return _appMain;
+    }
+
+    void ModeGame::LoadResource() const {
+      using ModelServer = AppFrame::Model::ModelServer;
+      // 各種モデルハンドルの読み込み
+      const ModelServer::ModelDatas mv1Models{
+        {"player" , "res/Player/Gyro multibag.mv1"}, // 自機
+        {"sky", "res/SkySphere/skysphere.mv1"},      // スカイスフィア
+        {"stage", "res/Stage/houseGEO_1.mv1"}        // ステージ
+      };
+      // モデルサーバで読み取りを行う
+      _app.GetModelServer().AddMV1Model(mv1Models);
     }
   } // namespace Mode
 } // namespace Gyro

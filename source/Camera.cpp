@@ -30,6 +30,7 @@ namespace Gyro {
         }
 
         bool Camera::Process(const AppFrame::Math::Vector4 stick, const AppFrame::Math::Vector4 target, const AppFrame::Math::Vector4 move) {
+          auto [x, y, z] = _position.GetVector3();
           auto s = _position - target;
           float radian = atan2(s.GetZ(), s.GetX());
           float length = sqrt(s.GetZ() * s.GetZ() + s.GetX() * s.GetX());
