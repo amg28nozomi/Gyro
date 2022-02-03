@@ -89,9 +89,8 @@ namespace Gyro {
         }else if (_playerState == PlayerState::Attack2 && _attackFlugY == true && input.GetButton(XINPUT_BUTTON_Y, false)) {
             _playerState = PlayerState::Attack3;
             _cnt = 0;
-        }/*else if (_attackFlugY == false) {
-            SetRotation(_move);
-        }*/
+        }
+
 
         if (_playerState == PlayerState::Idle && _attackFlugX == false && input.GetButton(XINPUT_BUTTON_X, false)) {
             _playerState = PlayerState::Attack1;
@@ -104,16 +103,23 @@ namespace Gyro {
             _playerState = PlayerState::Attack3;
             _cnt = 0;
         }
-        /*if (_attackFlugX == false && _attackFlugY == false) {
-            SetRotation(_move);
-        }*/
 
         if (_cnt > 77) {
             _attackFlugY = false;
+            SetRotation(_move);
         }
-        if (_cnt > 129) {
+
+        if (_cnt > 129 && _playerState == PlayerState::Attack3) {
             _attackFlugX = false;
+            SetRotation(_move);
+        }else if (_cnt > 140) {
+            _attackFlugX = false;
+            SetRotation(_move);
         }
+
+        /*if (_playerState == PlayerState::Idle) {
+            SetRotation(_move);
+        }*/
 
         Animation(oldState);
         _modelAnim.Process();
