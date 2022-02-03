@@ -70,7 +70,7 @@ namespace Gyro {
 
             int _eHandle;   //<! エフェクトハンドル
             int _playEff;   //<! 再生中のエフェクト
-            float _eMagni;  //<! エフェクト拡大率
+            float _eScale;  //<! エフェクト拡大率
             float _eSpeed;  //<! エフェクト再生速度
             VECTOR _ePos;   //<! エフェクト位置
             VECTOR _eDir;   //<! エフェクト向き

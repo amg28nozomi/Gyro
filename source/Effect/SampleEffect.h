@@ -25,11 +25,20 @@ namespace Gyro {
             /**
              * @brief     デストラクタ
              */
-            ~SampleEffect();
+            ~SampleEffect() override;
             /**
-             * @brief     初期化処理
+             * @brief     初期化
              */
             void Init() override;
+            /**
+             * @brief   更新
+             */
+            void Process() override;
+            /**
+             * @brief   描画
+             */
+            void Draw() override;
+
         };
     } // namespace Effect
 } // namespace Gyro

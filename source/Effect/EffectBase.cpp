@@ -22,7 +22,7 @@ namespace Gyro {
             // èâä˙âª
             _eHandle = 0;
             _playEff = -1;
-            _eMagni = 0.0f;
+            _eScale = 0.0f;
             _eSpeed = 0.0f;
             _ePos = VGet(0, 0, 0);
             _eDir = VGet(0, 0, 0);
