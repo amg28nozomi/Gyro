@@ -138,8 +138,9 @@ namespace Gyro {
       virtual void GravityReset();
       /**
        * @brief  ワールド座標の更新
+       * @param  angle 角度フラグ(true:デグリー false:ラジアン)
        */
-      void WorldMatrix();
+      void WorldMatrix(bool angle = AppMath::Degree);
 #ifdef _DEBUG
       /**
        * @brief デバッグ専用の出力処理
