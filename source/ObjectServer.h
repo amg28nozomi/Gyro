@@ -57,7 +57,10 @@ namespace Gyro {
        * @return true:登録成功 false:登録失敗
        */
       bool Register(std::shared_ptr<ObjectBase> object);
-
+      /**
+       * @brief  オブジェクトをコピー
+       * @return オブジェクトが格納されたコンテナ
+       */
       std::vector<std::shared_ptr<ObjectBase>> GetObjects();
       /**
        * @brief  自機の取得
@@ -96,6 +99,11 @@ namespace Gyro {
        * @param container オブジェクトのシェアードポインタが格納されたコンテナの参照
        */
       void AddObjects(std::vector<std::shared_ptr<ObjectBase>>& container);
+      /**
+       * @brief オブジェクトの登録処理
+       * @param obj 登録オブジェクトのユニークポインタ
+       */
+      void Add(std::shared_ptr<ObjectBase> obj);
       /**
        * @brief  オブジェクトの登録予約
        * @param  object オブジェクトのシェアードポインタ

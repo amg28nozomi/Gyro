@@ -85,8 +85,17 @@ namespace Gyro {
 #endif
       }
       // コンテナを回していない場合は直接登録する
-      _registry.emplace_back(std::move(object));
+      Register(std::move(object)); // registry―
       return true; // 登録完了
+    }
+
+    void ObjectServer::Add(std::shared_ptr<ObjectBase> obj) {
+      // 末尾に登録されているかで処理を切り替える
+      if (LastPlayer()) {
+        Insert(std::move(obj)); // 自機の前に登録する
+        return;
+      }
+      _registry.emplace_back(std::move(obj)); // 末尾に登録する
     }
 
     void ObjectServer::DeleteObjects(std::vector<std::shared_ptr<ObjectBase>>& container) {
@@ -98,7 +107,7 @@ namespace Gyro {
     }
 
     void ObjectServer::AddObjects(std::vector<std::shared_ptr<ObjectBase>>& container) {
-      // オブジェクトを末尾に追加
+      // オブジェクトをコンテナに登録する
       for (auto&& obj : container) {
         _registry.emplace_back(std::move(obj));
       }
