@@ -12,6 +12,7 @@
  * @brief ゲームベース
  */
 namespace Gyro {
+  namespace AppMath = AppFrame::Math;
 
   namespace Player {
     class Player;
@@ -62,9 +63,11 @@ namespace Gyro {
        * @brief  自機の取得
        * @return 自機ポインタの参照
        */
-      std::shared_ptr<Player::Player>& GetPlayer();
+      std::shared_ptr<Player::Player> GetPlayer();
       /**
        * @brief  自機のトランスフォームを取得する
+       * @param  position Vector4クラスの参照(自機座標格納用)
+       * @param  rotation Vector4クラスの参照(自機回転量格納用)
        * @return true:取得成功 false:取得失敗
        */
       bool GetPlayerTransForm(AppMath::Vector4& position, AppMath::Vector4& rotation);

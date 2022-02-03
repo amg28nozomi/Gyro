@@ -133,12 +133,12 @@ namespace Gyro {
       return true; // 取得成功
     }
 
-    std::shared_ptr<Player::Player>& ObjectServer::GetPlayer() {
+    std::shared_ptr<Player::Player> ObjectServer::GetPlayer() {
       std::shared_ptr<Player::Player> player = nullptr;
       for (auto obj : _registry) {
         // 自機の場合はポインタを取得
         if (obj->GetId() == ObjectBase::ObjectId::Player) {
-          player = obj; // 自機をコピー
+          player = std::dynamic_pointer_cast<Player::Player>(obj); // 自機をコピー
           break;
         }
       }
