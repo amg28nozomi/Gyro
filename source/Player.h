@@ -69,8 +69,10 @@ namespace Gyro {
       float _animaTime;    //!< アニメーションの再生時間
       Camera::Camera _cam; //!< カメラの実体
       ModelAnim::ModelAnimComponent _modelAnim; //!< AnimComponentの実態
-      bool AttackFlug = false;
+      bool _attackFlugY = false;
+      bool _attackFlugX = false;
       int _cnt;
+      int _cntY;
 
       PlayerState _playerState{PlayerState::Idle}; //!< 自機状態
       int _handleMap;

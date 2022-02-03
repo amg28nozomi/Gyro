@@ -19,18 +19,27 @@ namespace {
   constexpr auto MoveSpeed = 2.0f; //!< デフォルトの移動量
   constexpr auto MoveZero = 0.0f;
   // プレイヤーのアニメーション番号(まだ増える)
-  constexpr auto Walk = 17;                     //!< 歩き
-  constexpr auto Run = 1;                       //!< 走り
-  constexpr auto Idle = 5;                      //!< アイドル
-  constexpr auto JumpUp = 12;                   //!< ジャンプアップ
-  constexpr auto JumpDown = 6;                  //!< ジャンプダウン(落下中)
-  constexpr auto JumpLanding = 6;               //!< ジャンプランド(着地)
-  constexpr auto GroundLightAttack1 = 13;       //!< 地上弱攻撃1
-  constexpr auto GroundLightAttack2 = 14;       //!< 地上弱攻撃2
-  constexpr auto GroundLightAttack3 = 15;       //!< 地上弱攻撃3
-  constexpr auto GroundLightAttackEX = 16;      //!< 地上EX攻撃(弱の〆)
+  constexpr auto Idle = 0;                      //!< アイドル
+  constexpr auto Walk = 1;                      //!< 歩き
+  constexpr auto Run = 2;                       //!< 走り
+  constexpr auto Step = 18;                     //!< ステップ
+  constexpr auto JumpUp = 3;                    //!< ジャンプアップ
+  constexpr auto JumpDown = 4;                  //!< ジャンプダウン(落下中)
+  constexpr auto JumpLanding = 5;               //!< ジャンプランド(着地)
+  constexpr auto GroundLightAttack1 = 6;        //!< 地上弱攻撃1
+  constexpr auto GroundLightAttack2 = 7;        //!< 地上弱攻撃2
+  constexpr auto GroundLightAttack3 = 8;        //!< 地上弱攻撃3
+  constexpr auto GroundLightAttackEX = 9;       //!< 地上EX攻撃(弱の〆)
+  constexpr auto GroundHeavyAttack1 = 10;       //!< 地上強攻撃1
+  constexpr auto GroundHeavyAttack2 = 11;       //!< 地上強攻撃2
+  constexpr auto GroundHeavyAttack3 = 12;       //!< 地上強攻撃3
   constexpr auto AirLightAttack1 = 10;          //!< 空中弱攻撃1
   constexpr auto AirLightAttack2 = 11;          //!< 空中弱攻撃2
+  constexpr auto AirLightAttack3 = 17;          //!< 空中弱攻撃3
+  constexpr auto AirHeavyAttack1 = 15;          //!< 空中強攻撃1
+  constexpr auto AirHeavyAttack2 = 16;          //!< 空中強攻撃2
+  constexpr auto Damage1 = 19;                  //!< 小ダメージ
+  constexpr auto Damage2 = 20;                  //!< 大ダメージ
 }
 
 namespace Gyro {
@@ -44,7 +53,8 @@ namespace Gyro {
     bool Player::Init() {
       SetCamera(); // カメラの設定
       SetState();  // パラメータの設定
-      _modelAnim.SetMainAttach(_model, 5, 1.0f, true);
+      _modelAnim.SetMainAttach(_model, Idle, 1.0f, true);
+      _cntY = 0;
       return true;
     }
 
@@ -69,25 +79,45 @@ namespace Gyro {
         _app.GetCamera().Process(stickRight, _position, _move);
         auto oldState = _playerState;
         // 状態の更新
-        if (input.GetButton(XINPUT_BUTTON_Y, false)) {
+        if (_playerState == PlayerState::Idle && _attackFlugY == false && input.GetButton(XINPUT_BUTTON_Y, false)) {
             _playerState = PlayerState::Attack1;
-            AttackFlug = true;
+            _attackFlugY = true;
             _cnt = 0;
-        }else if (AttackFlug == true && input.GetButton(XINPUT_BUTTON_A, false)) {
+        }else if (_playerState == PlayerState::Attack1 && _attackFlugY == true && input.GetButton(XINPUT_BUTTON_Y, false)) {
             _playerState = PlayerState::Attack2;
             _cnt = 0;
-        }else if (AttackFlug == true && input.GetButton(XINPUT_BUTTON_X, false)) {
+        }else if (_playerState == PlayerState::Attack2 && _attackFlugY == true && input.GetButton(XINPUT_BUTTON_Y, false)) {
             _playerState = PlayerState::Attack3;
             _cnt = 0;
-        }else if (AttackFlug == false) {
+        }/*else if (_attackFlugY == false) {
             SetRotation(_move);
+        }*/
+
+        if (_playerState == PlayerState::Idle && _attackFlugX == false && input.GetButton(XINPUT_BUTTON_X, false)) {
+            _playerState = PlayerState::Attack1;
+            _attackFlugX = true;
+            _cnt = 0;
+        }else if (_playerState == PlayerState::Attack1 && _attackFlugX == true && input.GetButton(XINPUT_BUTTON_X, false)) {
+            _playerState = PlayerState::Attack2;
+            _cnt = 0;
+        }else if (_playerState == PlayerState::Attack2 && _attackFlugX == true && input.GetButton(XINPUT_BUTTON_X, false)) {
+            _playerState = PlayerState::Attack3;
+            _cnt = 0;
         }
-        if (_cnt > 160) {
-            AttackFlug = false;
+        /*if (_attackFlugX == false && _attackFlugY == false) {
+            SetRotation(_move);
+        }*/
+
+        if (_cnt > 77) {
+            _attackFlugY = false;
         }
+        if (_cnt > 129) {
+            _attackFlugX = false;
+        }
+
         Animation(oldState);
         _modelAnim.Process();
-        _cnt++;
+        _cnt += 1;
         // 座標情報をVECTOR構造体に変換
         auto vPosition = UtilityDX::ToVECTOR(_position);
         auto world = WorldMatrix();
@@ -151,7 +181,7 @@ namespace Gyro {
 
     void Player::LoadResource() {
         // 各種リソースの読み取り処理
-        _model = MV1LoadModel("res/Player/Gyro multibag.mv1"); // プレイヤー
+        _model = MV1LoadModel("res/Player/Gyromultimotionalpha4.mv1"); // プレイヤー
         _handleSkySphere = MV1LoadModel("res/SkySphere/skysphere.mv1"); // スカイスフィア
         _handleMap = MV1LoadModel("res/Stage/houseGEO_1.mv1");
     }
@@ -220,13 +250,25 @@ namespace Gyro {
                 _modelAnim.SetBlendAttach(Run, 10.0f, 1.0f, true);
                 break;
             case PlayerState::Attack1:
-                _modelAnim.SetBlendAttach(GroundLightAttack1, 10.0f, 1.3f, false);
+                if (_attackFlugY == true) {
+                    _modelAnim.SetBlendAttach(GroundLightAttack1, 10.0f, 1.3f, false);
+                }else if (_attackFlugX == true) {
+                    _modelAnim.SetBlendAttach(GroundHeavyAttack1, 10.0f, 1.0f, false);
+                }
                 break;
             case PlayerState::Attack2:
-                _modelAnim.SetBlendAttach(GroundLightAttack2, 10.0f, 1.3f, false);
+                if (_attackFlugY == true) {
+                    _modelAnim.SetBlendAttach(GroundLightAttack2, 10.0f, 1.3f, false);
+                }else if (_attackFlugX == true) {
+                    _modelAnim.SetBlendAttach(GroundHeavyAttack2, 10.0f, 1.0f, false);
+                }
                 break;
             case PlayerState::Attack3:
-                _modelAnim.SetBlendAttach(GroundLightAttack3, 10.0f, 1.0f, false);
+                if (_attackFlugY == true) {
+                    _modelAnim.SetBlendAttach(GroundLightAttack3, 10.0f, 1.0f, false);
+                }else if (_attackFlugX == true) {
+                    _modelAnim.SetBlendAttach(GroundHeavyAttack3, 10.0f, 1.0f, false);
+                }
                 break;
             case PlayerState::Jump:
                 _modelAnim.SetBlendAttach(JumpUp, 10.0f, 1.0f, false);

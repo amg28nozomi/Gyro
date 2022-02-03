@@ -80,7 +80,7 @@ namespace Gyro {
             // ƒJƒƒ‰‚Ì‰Šú‰»
             namespace AppMath = AppFrame::Math;
             _position = AppMath::Vector4(0.0f, 120.0f, -500.0f, 1.0f);
-            _target = AppMath::Vector4(0.0f, 80.0f, 0.0f, 1.0f);
+            _target = AppMath::Vector4(0.0f, 0.0f, 0.0f, 1.0f);
             SetCameraNearFar(Near, Far);
         }
     }// namespace Camera
