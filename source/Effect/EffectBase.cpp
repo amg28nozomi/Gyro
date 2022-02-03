@@ -24,8 +24,8 @@ namespace Gyro {
             _playEff = -1;
             _eScale = 0.0f;
             _eSpeed = 0.0f;
-            _ePos = VGet(0, 0, 0);
-            _eDir = VGet(0, 0, 0);
+            _ePos = AppMath::Vector4();
+            _eRot = AppMath::Vector4();
         }
 
         void EffectBase::Process() {
@@ -34,18 +34,18 @@ namespace Gyro {
                 return;
             }
             // 再生中のエフェクトの位置を設定
-            SetPosPlayingEffekseer3DEffect(_playEff, _ePos.x, _ePos.y, _ePos.z);
+            SetPosPlayingEffekseer3DEffect(_playEff, _ePos.GetX(), 100.0f, _ePos.GetZ());
             // 再生中のエフェクトの向きを設定
-            SetRotationPlayingEffekseer3DEffect(_playEff, _eDir.x, _eDir.y, _eDir.z);
+            SetRotationPlayingEffekseer3DEffect(_playEff, 0, _eRot.GetY() *-1, 0);
             // Effekseerにより再生中のエフェクトを更新
             UpdateEffekseer3D();
         }
 
-        void EffectBase::Draw() {
+        void EffectBase::Draw() const{
             // エフェクトが未再生の場合中断
-            if (!IsEffectPlaying()) {
-                return;
-            }
+            //if (!IsEffectPlaying()) {
+            //    return;
+            //}
             // DXライブラリのカメラとEffekseerのカメラを同期
             Effekseer_Sync3DSetting();
             // Effekseerにより再生中の3Dエフェクトの描画を開始

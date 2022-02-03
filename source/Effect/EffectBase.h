@@ -11,8 +11,14 @@
 
  /** 作品用名前空間 */
 namespace Gyro {
+    /** アプリケーション用名前空間 */
+    namespace Application {
+        class ApplicationMain; //!< 前方宣言
+    } // namespace Application
+
     /** 敵用エフェクト用名前空間 */
     namespace Effect {
+        namespace AppMath = AppFrame::Math;
         /**
          * @class EffecBase
          * @brief 敵の基底クラス
@@ -38,24 +44,24 @@ namespace Gyro {
             /**
              * @brief   描画
              */
-            virtual void Draw();
+            virtual void Draw() const;
             /**
              * @brief   エフェクトを再生する
              */
             void PlayEffect();
             /**
              * @brief   エフェクト位置設定
-             * @param   vPos エフェクト位置
+             * @param   position エフェクト位置
              */
-            void SetPosition(const VECTOR& position) {
+            void SetPosition(const AppMath::Vector4 position) {
                 _ePos = position;
             }
             /**
              * @brief   エフェクト向き設定
-             * @param   vDir エフェクト向き
+             * @param   rotation エフェクト向き
              */
-            void SetDirection(const VECTOR& direction) {
-                _eDir = direction;
+            void SetDirection(const float radian) {
+                _eRot.SetY(radian);
             }
 
         protected:
@@ -72,8 +78,8 @@ namespace Gyro {
             int _playEff;   //<! 再生中のエフェクト
             float _eScale;  //<! エフェクト拡大率
             float _eSpeed;  //<! エフェクト再生速度
-            VECTOR _ePos;   //<! エフェクト位置
-            VECTOR _eDir;   //<! エフェクト向き
+            AppMath::Vector4 _ePos;   //<! エフェクト位置
+            AppMath::Vector4 _eRot;   //<! エフェクト向き
         };
     } // namespace Effect
 } // namespace Gyro

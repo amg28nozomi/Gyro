@@ -7,7 +7,9 @@
  *********************************************************************/
 #pragma once
 #include "appframe.h"
+#include <EffekseerForDXLib.h>
 #include "Camera.h"
+
 /**
  * @brief ゲームスペース
  */
@@ -43,6 +45,10 @@ namespace Gyro {
        */
       bool Input() override;
       /**
+       * @brief  終了処理
+       */
+      void Terminate() override;
+      /**
        * @brief  フレームカウンタの取得
        * @return フレームカウンタ
        */
@@ -73,6 +79,12 @@ namespace Gyro {
        * @return
        */
       bool Process() override;
+      /**
+       * @brief  Effekseer設定
+       * @return true 設定成功
+       *         false 設定失敗
+       */
+      bool Effekseer();
     };
   } // namespace Application
 } // namespace Gyro

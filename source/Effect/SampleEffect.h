@@ -37,8 +37,7 @@ namespace Gyro {
             /**
              * @brief   •`‰æ
              */
-            void Draw() override;
-
+            void Draw() const override;
         };
     } // namespace Effect
 } // namespace Gyro

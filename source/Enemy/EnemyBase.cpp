@@ -32,18 +32,14 @@ namespace Gyro {
         }
 
         bool EnemyBase::Process() {
+            _eff.Process();
             return true;
         }
 
         bool EnemyBase::Draw() const {
-            // ˆÊ’uÝ’è
-            MV1SetPosition(_mHandle, _enemyPos);
-            // Œü‚«‚©‚çYŽ²‰ñ“]‚ðŽZo
-            VECTOR vRot = { 0,0,0 };
-            vRot.y = atan2(_enemyDir.x * 1, _enemyDir.z * 1);
-            MV1SetRotationXYZ(_mHandle, vRot);
             // •`‰æ
             MV1DrawModel(_mHandle);
+            _eff.Draw();
 #ifdef _DEBUG
             if (_app.GetDebugFlag()) {
               _sphere->Draw();
