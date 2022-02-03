@@ -77,6 +77,10 @@ namespace Gyro {
       //!< アプリケーションメインの参照
       Application::ApplicationMain& _appMain;
       Primitive::Plane _plane;
+      /**
+       * @brief リソースの読み取り
+       */
+      void LoadResource() const;
     };
   } // namespace Mode
 } // namespace Gyro

@@ -105,6 +105,11 @@ namespace Gyro {
       container.clear(); // コンテナの解放
     }
 
+    void ObjectServer::Insert(std::shared_ptr<ObjectBase> obj) {
+      // 末尾の直前にオブジェクトを追加する
+      _registry.insert(_registry.end() - 1, std::move(obj));
+    }
+
     bool ObjectServer::AddReserve(std::shared_ptr<ObjectBase> object) {
       // 所有権が一つではない場合
       if (object.use_count() != 1) {
@@ -151,6 +156,11 @@ namespace Gyro {
       }
 #endif
       return player; // 自機の参照を返す
+    }
+
+    bool ObjectServer::LastPlayer() const {
+      // 末尾に登録されているオブジェクトは自機か？
+      return _registry.back()->GetId() == ObjectBase::ObjectId::Player;
     }
   } // namespace Object
 } // namespace Gyro

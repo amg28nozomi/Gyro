@@ -81,6 +81,12 @@ namespace Gyro {
        */
       bool AddObject(std::shared_ptr<ObjectBase> obj);
       /**
+       * @brief  末尾の前にオブジェクトを登録する
+       * @param  obj オブジェクトのシェアードポインタ
+       * @return true:登録成功 false:登録失敗
+       */
+      void Insert(std::shared_ptr<ObjectBase> obj);
+      /**
        * @brief  オブジェクトが登録されているコンテナを解放する
        * @param  container オブジェクトのシェアードポインタが格納されたコンテナの参照
        */
@@ -96,6 +102,11 @@ namespace Gyro {
        * @return ture:予約成功 false:予約失敗
        */
       bool AddReserve(std::shared_ptr<ObjectBase> object);
+      /**
+       * @brief  末尾のオブジェクトが自機かの判定
+       * @return true:自機が登録されている false:自機は登録されていない
+       */
+      bool LastPlayer() const;
     };
   } // namespace Object
 } // namespace Gyro
