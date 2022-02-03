@@ -79,6 +79,13 @@ namespace Gyro {
       CollisionType GetType() const {
         return _type;
       }
+      /**
+       * @brief  座標の取得
+       * @return 座標
+       */
+      AppMath::Vector4 GetPosition() const {
+        return _position;
+      }
     protected:
       //!< コリジョンの種類
       CollisionType _type{CollisionType::None};

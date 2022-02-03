@@ -34,7 +34,11 @@ namespace Gyro {
              * @brief   XV
              */
             bool Process() override;
-
+            /**
+             * @brief  •`‰æ”»’è
+             * @return 
+             */
+            bool Draw() const override;
         private:
 
         };

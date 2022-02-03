@@ -36,6 +36,7 @@ namespace Gyro {
       auto [start, end] = LineSegment().GetVector();
       // 指定座標にカプセルを描画する
       DrawCapsule3D(UtilityDX::ToVECTOR(start), UtilityDX::ToVECTOR(end), _radius, 10, 0, 0, false);
+      // DrawFormatString(0, 500, 0, "コリジョンx:%f, y:%f, z:%f", _position.GetX(), _position.GetY(), _position.GetZ());
     }
 #endif
 
@@ -54,7 +55,8 @@ namespace Gyro {
       float dist = LineSegment().MinDist(capsule.LineSegment());
       // 半径
       auto sumRadius = _radius + capsule._radius;
-      return (dist * dist) <= (sumRadius * sumRadius);
+      auto sr = sumRadius * sumRadius;
+      return dist <= sr;
       // return false;
       //float distSq = LineSegment().MinDistSq(capsule.LineSegment());
       //auto sumRadius = _radius + capsule._radius;

@@ -9,9 +9,16 @@
 #include "../ObjectBase.h"
 #include "../ModelAnim/ModelAnimComponent.h"
 #include "../CollisionSphere.h"
+#include "../CollisionCapsule.h"
 
  /** 作品用名前空間 */
 namespace Gyro {
+  /**
+   * @brief オブジェクトベース
+   */
+  namespace Object {
+    class CollisionCapsule;
+  } // namespace Object
     /** 敵用名前空間 */
     namespace Enemy {
         /**
@@ -58,6 +65,10 @@ namespace Gyro {
             Object::CollisionSphere& GetCollision() {
               return *_sphere;
             }
+
+            Object::CollisionCapsule& GetCapsule() {
+              return *_capsule;
+            }
         protected:
             /**
              * @enum class  EnemyState
@@ -76,6 +87,7 @@ namespace Gyro {
             VECTOR _enemyDir;       //!< 敵向き
             VECTOR _enemyTarget;    //!< 敵移動先
             std::unique_ptr<Object::CollisionSphere> _sphere{nullptr}; //!< 球の当たり判定
+            std::unique_ptr<Object::CollisionCapsule> _capsule{ nullptr }; //!< カプセルの当たり判定
 
             EnemyState _enemyState; //!< 敵の状態保持変数
             ModelAnim::ModelAnimComponent _modelAnim;

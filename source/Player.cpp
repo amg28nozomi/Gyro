@@ -274,6 +274,18 @@ namespace Gyro {
         // 球と球の衝突判定
         if (_sphere->IntersectSphere(std::dynamic_pointer_cast<Enemy::EnemyBase>(obj)->GetCollision())) {
           // 衝突した場合は押し出し処理を行う
+        }
+        // カプセルとカプセルの衝突判定
+        if (_capsule->IntersectCapsule(std::dynamic_pointer_cast<Enemy::EnemyBase>(obj)->GetCapsule())) {
+          // 衝突している場合は押し出し処理を行う
+          auto y = _position.GetY(); // Y座標は変更を行わない
+          // 二つの座標から押し出し力を算出する
+          auto mPos = _capsule->GetPosition();
+          auto ePos = std::dynamic_pointer_cast<Enemy::EnemyBase>(obj)->GetCapsule().GetPosition();
+          // 円情報を取得
+          auto mRadius = _capsule->GetRadius();
+          auto eRadius = std::dynamic_pointer_cast<Enemy::EnemyBase>(obj)->GetCapsule().GetRadius();
+
 
         }
       }

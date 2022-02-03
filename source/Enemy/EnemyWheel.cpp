@@ -31,13 +31,15 @@ namespace Gyro {
           // 初期化
           MV1SetScale(_mHandle, VGet(2,2,2));
           SetEnemyPos(VGet(100, 0, 100));
-            _position = UtilityDX::ToVector(_enemyPos);
-            auto center = UtilityDX::ToVector(_enemyPos);
-            center.AddY(100.0f);
-            _sphere = std::make_unique<Object::CollisionSphere>(*this, center, 50.0f);
-            _enemyDir = VGet(0, 0, 1);
-            _enemyMoveSpeed = 5.0f;
-            return true;
+          _position = UtilityDX::ToVector(_enemyPos);
+          auto center = UtilityDX::ToVector(_enemyPos);
+          center.AddY(100.0f);
+          _sphere = std::make_unique<Object::CollisionSphere>(*this, center, 50.0f);
+          _enemyDir = VGet(0, 0, 1);
+          _enemyMoveSpeed = 5.0f;
+          // カプセルコリジョンの設定
+          _capsule = std::make_unique<Object::CollisionCapsule>(*this, _position, 200.0f, 20.0f);
+          return true;
         }
 
         bool EnemyWheel::Process() {
@@ -79,6 +81,17 @@ namespace Gyro {
 
             _modelAnim.Process();
             return true;
+        }
+
+        bool EnemyWheel::Draw() const {
+          EnemyBase::Draw(); // 基底側の描画を実行
+#ifdef _DEBUG
+          // デバッグフラグがある場合のみ描画処理を行う
+          if (_app.GetDebugFlag()) {
+            _capsule->Draw(); // 当たり判定の描画
+          }
+#endif
+          return true; // 描画
         }
     } // namespace Enemy
 } // namespace Gyro

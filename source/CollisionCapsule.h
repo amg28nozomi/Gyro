@@ -70,6 +70,13 @@ namespace Gyro {
        * @return 
        */
       bool IntersectPlane(const AppFrame::Math::Plane& plane);
+      /**
+       * @brief  ”¼Œa‚ÌŽæ“¾
+       * @return ”¼Œa
+       */
+      float GetRadius() const {
+        return _radius;
+      }
     private:
       float _length; //!< ü•ª‚Ì’·‚³
       float _radius; //!< ”¼Œa
