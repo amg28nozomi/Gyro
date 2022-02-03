@@ -9,7 +9,7 @@
 #include "../CollisionSphere.h"
 #include "../UtilityDX.h"
 #include "../ApplicationMain.h"
-
+#include "../ObjectServer.h"
 namespace Gyro {
     namespace Enemy {
         EnemyWheel::EnemyWheel(Application::ApplicationMain& app) : EnemyBase(app) {
@@ -29,7 +29,8 @@ namespace Gyro {
           // アニメーションアタッチ
           _modelAnim.SetMainAttach(_mHandle, 1, 1.0f, true);
           // 初期化
-          MV1SetScale(_mHandle, VGet(2,2,2));
+          //MV1SetScale(_mHandle, VGet(2,2,2));
+          _scale = { 2.0f, 2.0f, 2.0f };
           SetEnemyPos(VGet(100, 0, 100));
           _position = UtilityDX::ToVector(_enemyPos);
           auto center = UtilityDX::ToVector(_enemyPos);
@@ -44,20 +45,35 @@ namespace Gyro {
 
         bool EnemyWheel::Process() {
             EnemyState oldEnemyState = _enemyState;
-            VECTOR target = VGet(0, 0, 0);
-            VECTOR forword = VSub(target, _enemyPos);
-            forword = VNorm(forword);
-            VECTOR move = VScale(forword, _enemyMoveSpeed);
+            AppMath::Vector4 target = AppMath::Vector4();
+            AppMath::Vector4 prot = AppMath::Vector4();
+            _app.GetObjectServer().GetPlayerTransForm(target, prot);
+            AppMath::Vector4 forword = target-(_position);
+            forword.Normalize();
+            AppMath::Vector4 move = forword*(_enemyMoveSpeed);
             // _sphere->Process();
+
+                            // ラジアンを生成(z軸は反転させる)
+            auto radian = std::atan2(move.GetX(), -move.GetZ());
 
             if (CheckHitKey(KEY_INPUT_A)) {
                 _enemyState = EnemyState::WALK;
-                _enemyPos = VAdd(_enemyPos, move);
-                _enemyDir = forword;
-            }
+                _position.Add(move);
+#ifndef _DEBUG
+                _rotation.SetY(radian); // y軸の回転量をセットする
+#else
+                // デグリー値をセットする(デバッグ用)
+                _rotation.SetY(AppMath::Utility::RadianToDegree(radian));
+#endif
+
+        }
             else {
                 _enemyState = EnemyState::WAIT;
             }
+
+            WorldMatrix(); // ワールド座標の更新
+                  // ワールド座標の設定
+            MV1SetMatrix(_mHandle, UtilityDX::ToMATRIX(_world));
 
             // アニメーション変更
             if (oldEnemyState != _enemyState) {
@@ -67,6 +83,7 @@ namespace Gyro {
                     break;
                 case EnemyState::WALK:
                     _modelAnim.SetBlendAttach(2, 10.0f, 1.0f, true);
+                    _eff.PlayEffect();
                     break;
                 case EnemyState::ATTACK:
                     _modelAnim.SetBlendAttach(0, 10.0f, 1.0f, false);
@@ -80,6 +97,9 @@ namespace Gyro {
             }
 
             _modelAnim.Process();
+            _eff.SetPosition(_position);
+            _eff.SetDirection(radian);
+            _eff.Process();
             return true;
         }
 

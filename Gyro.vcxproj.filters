@@ -55,6 +55,12 @@
     <Filter Include="ソース ファイル\Enemy">
       <UniqueIdentifier>{e1696e89-7a5d-4f05-906e-8164078c2bc4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Effect">
+      <UniqueIdentifier>{1c1edf5a-b91f-4ddb-b9c5-ee088b719bd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Effect">
+      <UniqueIdentifier>{66406a47-7fbe-4134-a460-9ef23310ff5a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\ApplicationMain.cpp">
@@ -117,6 +123,12 @@
     <ClCompile Include="source\CollisionCapsule.cpp">
       <Filter>ソース ファイル\Object</Filter>
     </ClCompile>
+    <ClCompile Include="source\Effect\EffectBase.cpp">
+      <Filter>ソース ファイル\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Effect\SampleEffect.cpp">
+      <Filter>ソース ファイル\Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\ApplicationMain.h">
@@ -178,6 +190,12 @@
     </ClInclude>
     <ClInclude Include="source\CollisionCapsule.h">
       <Filter>ヘッダー ファイル\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Effect\EffectBase.h">
+      <Filter>ヘッダー ファイル\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Effect\SampleEffect.h">
+      <Filter>ヘッダー ファイル\Effect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
