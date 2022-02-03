@@ -65,7 +65,7 @@ namespace Gyro {
       // 線分とステージの押し出し処理を行う
     }
 
-    void ObjectBase::WorldMatrix(bool angle = AppMath::Degree) {
+    void ObjectBase::WorldMatrix(bool angle) {
       using Utility = AppMath::Utility;
       // ワールド座標変換を行う
 #ifndef _DEBUG
