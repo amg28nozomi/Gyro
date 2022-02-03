@@ -12,6 +12,10 @@
  * @brief ゲームベース
  */
 namespace Gyro {
+
+  namespace Player {
+    class Player;
+  }
   /**
    * @brief オブジェクトベース
    */
@@ -54,6 +58,11 @@ namespace Gyro {
       bool Register(std::shared_ptr<ObjectBase> object);
 
       std::vector<std::shared_ptr<ObjectBase>> GetObjects();
+      /**
+       * @brief  自機の取得
+       * @return 自機ポインタの参照
+       */
+      std::shared_ptr<Player::Player>& GetPlayer();
     private:
       bool _play{false}; //!< オブジェクトサーバを回しているかのフラグ
       std::vector<std::shared_ptr<ObjectBase>> _addObject; //!< 登録予約用

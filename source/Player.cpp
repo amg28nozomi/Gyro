@@ -148,7 +148,7 @@ namespace Gyro {
       _state = ObjectState::Active;
       _gravity = true; // 重力処理を行う
       // 座標・向きの設定
-      _position = AppMath::Vector4(0.0f, 100.0f, 0.0f);
+      _position = AppMath::Vector4(0.0f, 0.0f, 0.0f);
       _rotation = AppMath::Vector4();
       _scale = { 10.0f, 10.0f, 10.0f };
       auto m = _position.AddVectorY(100.0f);

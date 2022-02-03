@@ -7,6 +7,7 @@
  *********************************************************************/
 #include "ObjectServer.h"
 #include "ObjectBase.h"
+#include "Player.h"
 
 namespace Gyro {
   namespace Object {
@@ -119,6 +120,26 @@ namespace Gyro {
 
     std::vector<std::shared_ptr<ObjectBase>> ObjectServer::GetObjects() {
       return _registry; // データベースを叩きつける
+    }
+
+    std::shared_ptr<Player::Player>& ObjectServer::GetPlayer() {
+      std::shared_ptr<Player::Player> player = nullptr;
+      for (auto obj : _registry) {
+        // 自機の場合はポインタを取得
+        if (obj->GetId() == ObjectBase::ObjectId::Player) {
+          player = obj; // 自機をコピー
+          break;
+        }
+      }
+#ifdef _DEBUG
+      try {
+        LogicError("自機の取得に失敗しました");
+      }
+      catch (std::logic_error error) {
+        DebugString(error.what()); // 出力する
+      }
+#endif
+      return player; // 自機の参照を返す
     }
   } // namespace Object
 } // namespace Gyro
