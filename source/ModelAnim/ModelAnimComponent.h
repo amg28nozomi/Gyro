@@ -7,7 +7,7 @@
  *********************************************************************/
 #pragma once
 #include "appframe.h"
-#include "../ModelAnim/ModelAnimInfo.h"
+#include "ModelAnimInfo.h"
 
  /** 作品用名前空間 */
 namespace Gyro {
@@ -51,6 +51,14 @@ namespace Gyro {
              * @param   loop ループ再生有無
              */
             void SetBlendAttach(const int animNum, const float frame, const float speed, const bool loop);
+            /**
+             * @brief   現在のアニメーション終了判定
+             * @return  true:アニメーション終了
+             *          false:アニメーション再生中
+             */
+            bool GetMainAnimEnd() const {
+                return _main.GetAnimEnd();
+            }
 
         private:
             /**
