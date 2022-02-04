@@ -282,6 +282,8 @@ namespace Gyro {
           // “ñ‚Â‚ÌÀ•W‚©‚ç‰Ÿ‚µo‚µ—Í‚ðŽZo‚·‚é
           auto mPos = _capsule->GetPosition();
           auto ePos = std::dynamic_pointer_cast<Enemy::EnemyBase>(obj)->GetCapsule().GetPosition();
+          // ’·‚³‚ðŽZo‚·‚é
+          auto l = (mPos - ePos).Length();
           // ‰~î•ñ‚ðŽæ“¾
           auto mRadius = _capsule->GetRadius();
           auto eRadius = std::dynamic_pointer_cast<Enemy::EnemyBase>(obj)->GetCapsule().GetRadius();
