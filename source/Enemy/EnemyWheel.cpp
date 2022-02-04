@@ -57,7 +57,12 @@ namespace Gyro {
                             // ラジアンを生成(z軸は反転させる)
             auto radian = std::atan2(move.GetX(), -move.GetZ());
 
-            if (_app.GetOperation().GetXBoxState().GetButton(XINPUT_BUTTON_LEFT_THUMB, true)) {
+            // 入力処理がある場合、更新を行う
+            if (_app.GetOperation().GetXBoxState().GetButton(XINPUT_BUTTON_LEFT_THUMB, false)) {
+              _iMove = !_iMove;
+            }
+
+            if (_iMove) {
                 _enemyState = EnemyState::WALK;
                 _position.Add(move);
                 _capsule->Process(move);

@@ -40,7 +40,7 @@ namespace Gyro {
              */
             bool Draw() const override;
         private:
-
+          bool _iMove{false}; //!< ˆÚ“®ƒtƒ‰ƒO
         };
     } // namespace Enemy
 } // namespace Gyro
