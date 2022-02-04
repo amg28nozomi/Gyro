@@ -47,6 +47,13 @@ namespace Gyro {
       void Draw() override;
 #endif
       /**
+       * @brief 座標の更新
+       * @param position 更新する座標
+       */
+      inline void SetPosition(const AppMath::Vector4& position) {
+        _position = position;
+      }
+      /**
        * @brief  カプセルと線分の衝突判定
        * @param  line 衝突判定を行う線分の参照
        * @return true:衝突 false:衝突していない

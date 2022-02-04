@@ -76,8 +76,8 @@ namespace Gyro {
       Animation(oldState);  // アニメーションの設定
       _modelAnim.Process(); // アニメーションの再生
       WorldMatrix(); // ワールド座標の更新
-      _sphere->Process(_move); // 移動量の加算
-      _capsule->Process(_move);
+      _sphere->Process(_move);  // 移動量の加算
+      _capsule->Process(_move); // カプセルの更新
       Hit();
       // ワールド座標の設定
       MV1SetMatrix(_model, UtilityDX::ToMATRIX(_world));
@@ -282,13 +282,19 @@ namespace Gyro {
           // 二つの座標から押し出し力を算出する
           auto mPos = _capsule->GetPosition();
           auto ePos = std::dynamic_pointer_cast<Enemy::EnemyBase>(obj)->GetCapsule().GetPosition();
-          // 長さを算出する
-          auto l = (mPos - ePos).Length();
-          // 円情報を取得
-          auto mRadius = _capsule->GetRadius();
-          auto eRadius = std::dynamic_pointer_cast<Enemy::EnemyBase>(obj)->GetCapsule().GetRadius();
 
+          auto v = (mPos - ePos);   // 中心距離
+          auto length2 = v.LengthSquared(); // 二点間の長さを算出
+          auto radius2 = _capsule->GetRadius() + std::dynamic_pointer_cast<Enemy::EnemyBase>(obj)->GetCapsule().GetRadius();
 
+          auto l7 = radius2 - std::sqrtf(v.GetX() * v.GetX() + v.GetZ() * v.GetZ());
+          v.Normalize();
+          AppMath::Vector4 vv(v.GetX() * l7, 0.0f, v.GetZ());
+          _position.Add(vv);
+          // auto l = radius2 - v.Length();
+          // _position = (AppMath::Vector4::Normalize(v) * l);
+          // _position.SetY(y);
+          _capsule->SetPosition(_position);
         }
       }
     }
