@@ -60,7 +60,7 @@ namespace Gyro {
 #ifdef _DEBUG
       // デバッグ時限定:左スティックが押された場合、デバッグフラグを切り替える
       if (device.GetButton(XINPUT_BUTTON_RIGHT_THUMB, App::InputTrigger)) {
-        _app.GetSoundComponent().PlayBackGround("test");
+        _app.GetSoundComponent().PlayLoop("bgm");
         _app.ChengeDebugFlag(); // デバッグフラグの切り替え
       }
 #endif
@@ -106,7 +106,8 @@ namespace Gyro {
       using SoundServer = AppFrame::Sound::SoundServer;
       // 
       const SoundServer::SoundMap soundMap{
-        {"test", "res/Sound/pose.wav"}
+        {"test", "res/Sound/pose.wav"},
+        {"bgm", "res/Sound/stage1.wav"}
       };
       // サウンドサーバに登録
       _app.GetSoundServer().AddSounds(soundMap);
