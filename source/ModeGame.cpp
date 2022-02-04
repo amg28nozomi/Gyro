@@ -95,7 +95,7 @@ namespace Gyro {
       using ModelServer = AppFrame::Model::ModelServer;
       // 各種モデルハンドルの読み込み
       const ModelServer::ModelDatas mv1Models{
-        {"player" , "res/Player/Gyro multibag.mv1"},  // 自機
+        {"player" , "res/Player/Gyro multimotion alpha6.mv1"},  // 自機
         {"enemy", "res/Enemy/Enemy_multimotion.mv1"}, // 敵
         {"sky", "res/SkySphere/skysphere.mv1"},       // スカイスフィア
         {"stage", "res/Stage/houseGEO_1.mv1"}         // ステージ

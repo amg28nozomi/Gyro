@@ -12,6 +12,8 @@
 #include "ModelAnim/ModelAnimComponent.h"
 #include "CollisionSphere.h"
 #include "CollisionCapsule.h"
+#include "GaugeHP.h"
+#include "GaugeTrick.h"
 
 namespace AppFrame::Math{}
 /**
@@ -72,9 +74,15 @@ namespace Gyro {
       float _totalTime;    //!< アニメーションの総再生時間
       float _animaTime;    //!< アニメーションの再生時間
       ModelAnim::ModelAnimComponent _modelAnim; //!< AnimComponentの実態
+      Gauge::GaugeHP _gaugeHp;          //!< HPゲージの実態
+      Gauge::GaugeTrick _gaugeTrick;    //!< トリックゲージの実態
       std::unique_ptr<Object::CollisionSphere> _sphere; //!< 当たり判定コリジョン(球)
       std::unique_ptr<Object::CollisionCapsule> _capsule; //!< カプセル
       PlayerState _playerState{PlayerState::Idle}; //!< 自機状態
+
+      bool _attackFlugY = false; //!< 弱攻撃フラグ
+      bool _attackFlugX = false; //!< 強攻撃フラグ
+      int _cnt;
 
       std::unique_ptr<AppMath::Plane> _plane; //!< 平面
       int _handleMap;

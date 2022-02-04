@@ -28,6 +28,10 @@
     <ClCompile Include="source\Effect\SampleEffect.cpp" />
     <ClCompile Include="source\Enemy\EnemyBase.cpp" />
     <ClCompile Include="source\Enemy\EnemyWheel.cpp" />
+    <ClCompile Include="source\GaugeBase.cpp" />
+    <ClCompile Include="source\GaugeHP.cpp" />
+    <ClCompile Include="source\GaugeServer.cpp" />
+    <ClCompile Include="source\GaugeTrick.cpp" />
     <ClCompile Include="source\ModeGame.cpp" />
     <ClCompile Include="source\ModelAnim\ModelAnimComponent.cpp" />
     <ClCompile Include="source\ModelAnim\ModelAnimInfo.cpp" />
@@ -52,6 +56,10 @@
     <ClInclude Include="source\Effect\SampleEffect.h" />
     <ClInclude Include="source\Enemy\EnemyBase.h" />
     <ClInclude Include="source\Enemy\EnemyWheel.h" />
+    <ClInclude Include="source\GaugeBase.h" />
+    <ClInclude Include="source\GaugeHP.h" />
+    <ClInclude Include="source\GaugeServer.h" />
+    <ClInclude Include="source\GaugeTrick.h" />
     <ClInclude Include="source\ModeGame.h" />
     <ClInclude Include="source\ModelAnim\ModelAnimComponent.h" />
     <ClInclude Include="source\ModelAnim\ModelAnimInfo.h" />
