@@ -6,6 +6,7 @@
  * @date    January 2022
  *********************************************************************/
 #include "EnemyWheel.h"
+#include <DxLib.h>
 #include "../CollisionSphere.h"
 #include "../UtilityDX.h"
 #include "../ApplicationMain.h"
@@ -56,9 +57,10 @@ namespace Gyro {
                             // ラジアンを生成(z軸は反転させる)
             auto radian = std::atan2(move.GetX(), -move.GetZ());
 
-            if (CheckHitKey(KEY_INPUT_A)) {
+            if (_app.GetOperation().GetXBoxState().GetButton()) {
                 _enemyState = EnemyState::WALK;
                 _position.Add(move);
+                _capsule->Process(move);
 #ifndef _DEBUG
                 _rotation.SetY(radian); // y軸の回転量をセットする
 #else

@@ -42,7 +42,7 @@ namespace Gyro {
             _eff.Draw();
 #ifdef _DEBUG
             if (_app.GetDebugFlag()) {
-              _sphere->Draw();
+              // _sphere->Draw();
             }
 #endif
             return true;
