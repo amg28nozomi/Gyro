@@ -57,7 +57,7 @@ namespace Gyro {
                             // ƒ‰ƒWƒAƒ“‚ð¶¬(zŽ²‚Í”½“]‚³‚¹‚é)
             auto radian = std::atan2(move.GetX(), -move.GetZ());
 
-            if (_app.GetOperation().GetXBoxState().GetButton()) {
+            if (_app.GetOperation().GetXBoxState().GetButton(XINPUT_BUTTON_LEFT_THUMB, true)) {
                 _enemyState = EnemyState::WALK;
                 _position.Add(move);
                 _capsule->Process(move);
