@@ -66,6 +66,13 @@ namespace Gyro {
        * @return true
        */
       bool Draw() const override;
+      /**
+       * @brief  座標の設定
+       * @param  position 座標
+       * @param  rotation 向き
+       * @param  scale    スケール
+       */
+      void Set(const AppMath::Vector4& position, const AppMath::Vector4& rotation, const AppMath::Vector4& scale) override;
     private:
       AppFrame::Math::Vector4 _move{}; //!< 移動量
 

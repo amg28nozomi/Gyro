@@ -18,8 +18,10 @@ namespace Gyro {
    * @brief オブジェクトベース
    */
   namespace Object {
-    class ObjectServer;
-  } // namespace 
+    // 前方宣言
+    class ObjectServer; //!< オブジェクトサーバ
+    class SpawnServer;  //!< スポーンサーバ
+  } // namespace Object
   /**
    * @brief アプリケーション
    */
@@ -63,6 +65,13 @@ namespace Gyro {
         return *_objectServer;
       }
       /**
+       * @brief  スポーンサーバの取得
+       * @return スポーンサーバの参照
+       */
+      Object::SpawnServer& GetSpawnServer() {
+        return *_spawnServer;
+      }
+      /**
        * @brief  カメラの取得
        * @return カメラの参照
        */
@@ -72,6 +81,8 @@ namespace Gyro {
     private:
       //!< オブジェクトサーバ
       std::unique_ptr<Object::ObjectServer> _objectServer{ nullptr };
+      //!< スポーンサーバ
+      std::unique_ptr<Object::SpawnServer> _spawnServer{nullptr};
       //!< カメラ
       std::unique_ptr<Camera::Camera> _camera{ nullptr };
       /**

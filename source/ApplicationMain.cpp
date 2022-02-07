@@ -10,6 +10,7 @@
 #include <DxLib.h>
 #include "ObjectServer.h"
 #include "ModeGame.h"
+#include "SpawnServer.h"
 
 namespace Gyro {
   namespace Application {
@@ -35,6 +36,9 @@ namespace Gyro {
       // オブジェクトサーバの生成
       _objectServer = std::make_unique<Object::ObjectServer>();
       _objectServer->Init();
+      // スポーンサーバの生成
+      _spawnServer = std::make_unique<Object::SpawnServer>(*this);
+      _spawnServer->Init();
       // カメラの生成
       _camera = std::make_unique<Camera::Camera>();
       _camera->Init();

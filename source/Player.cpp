@@ -155,6 +155,11 @@ namespace Gyro {
       return true;
     }
 
+    void Player::Set(const AppMath::Vector4& position, const AppMath::Vector4& rotation, const AppMath::Vector4& scale) {
+      ObjectBase::Set(position, rotation, scale);
+      // “–‚½‚è”»’è‚Ìİ’è‚ğs‚¤
+    }
+
     void Player::Input() {
 
     }
