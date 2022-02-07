@@ -48,6 +48,8 @@ namespace Gyro {
              * @brief   •`‰æ
              */
             bool Draw() const override;
+
+            void Set()
             /**
              * @brief   “GˆÊ’u‚Ìİ’è
              * @param   vPos “GˆÊ’u

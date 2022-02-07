@@ -88,7 +88,7 @@ namespace Gyro {
       std::tuple<Vector4, Vector4, Vector4> GetTransform() const {
         return std::make_tuple(_position, _rotation, _scale);
       }
-    private:
+    protected:
       ObjectType _type;  //!< オブジェクトタイプ
       Vector4 _position; //!< 生成座標
       Vector4 _rotation; //!< 角度

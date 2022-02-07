@@ -22,6 +22,7 @@ namespace Gyro {
    */
   namespace Object {
     namespace AppMath = AppFrame::Math;
+    class SpawnData; //!< スポーン情報
     /**
      * @class ObjectBase
      * @brief オブジェクトのスーパークラス
@@ -65,12 +66,10 @@ namespace Gyro {
        */
       virtual bool Draw() const;
       /**
-       * @brief  座標・向き・スケールの設定
-       * @param  position 座標にセットする値
-       * @param  rotation 向きにセットする値
-       * @param  scale    スケールにセットする値
+       * @brief  スポーン情報の読み取り
+       * @param  spawn スポーン情報
        */
-      virtual void Set(const AppMath::Vector4& position, const AppMath::Vector4& rotation, const AppMath::Vector4& scale);
+      virtual void Set(const SpawnData& spawn);
       /**
        * @brief  識別番号の取得
        * @return 識別番号

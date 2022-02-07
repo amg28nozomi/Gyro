@@ -67,6 +67,12 @@
     <Filter Include="ヘッダー ファイル\Gauge">
       <UniqueIdentifier>{af9b6bd6-cd7f-4e7d-8fec-afdd6ca5da9a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Object\Spawn">
+      <UniqueIdentifier>{f1646211-8a0e-49ed-a586-773192a095d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Object\Spawn">
+      <UniqueIdentifier>{94a475f6-a796-4cbb-bd90-b26a15e7b214}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\ApplicationMain.cpp">
@@ -148,10 +154,10 @@
       <Filter>ソース ファイル\Gauge</Filter>
     </ClCompile>
     <ClCompile Include="source\SpawnData.cpp">
-      <Filter>ソース ファイル\Object</Filter>
+      <Filter>ソース ファイル\Object\Spawn</Filter>
     </ClCompile>
     <ClCompile Include="source\SpawnServer.cpp">
-      <Filter>ソース ファイル\Object</Filter>
+      <Filter>ソース ファイル\Object\Spawn</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -234,10 +240,10 @@
       <Filter>ヘッダー ファイル\Gauge</Filter>
     </ClInclude>
     <ClInclude Include="source\SpawnData.h">
-      <Filter>ヘッダー ファイル\Object</Filter>
+      <Filter>ヘッダー ファイル\Object\Spawn</Filter>
     </ClInclude>
     <ClInclude Include="source\SpawnServer.h">
-      <Filter>ヘッダー ファイル\Object</Filter>
+      <Filter>ヘッダー ファイル\Object\Spawn</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

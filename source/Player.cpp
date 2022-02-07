@@ -11,6 +11,7 @@
 #include "ObjectServer.h"
 #include "Enemy/EnemyBase.h"
 #include "CollisionCapsule.h"
+#include "SpawnData.h"
 #define	PI	(3.1415926535897932386f)
 #define	DEG2RAD(x)			( ((x) / 180.0f ) * PI )
 
@@ -121,9 +122,9 @@ namespace Gyro {
       _cnt++;
       _gaugeHp.Process();
       _gaugeTrick.Process();
-      Animation(oldState);  // アニメーションの設定
-      _modelAnim.Process(); // アニメーションの再生
-      WorldMatrix(); // ワールド座標の更新
+      Animation(oldState);      // アニメーションの設定
+      _modelAnim.Process();     // アニメーションの再生
+      WorldMatrix();            // ワールド座標の更新
       _sphere->Process(_move);  // 移動量の加算
       _capsule->Process(_move); // カプセルの更新
       Hit();
@@ -155,8 +156,8 @@ namespace Gyro {
       return true;
     }
 
-    void Player::Set(const AppMath::Vector4& position, const AppMath::Vector4& rotation, const AppMath::Vector4& scale) {
-      ObjectBase::Set(position, rotation, scale);
+    void Player::Set(const Object::SpawnData& spawn) {
+      ObjectBase::Set(spawn);
       // 当たり判定の設定を行う
       auto m = _position.AddVectorY(100.0f);
       // 各種コリジョンの設定

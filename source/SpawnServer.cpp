@@ -63,7 +63,7 @@ namespace Gyro {
     }
 
     bool SpawnServer::SetStage(std::string_view key) {
-      // キーが登録されているか
+      // キーは登録されているか
       if (!_registry.contains(key.data())) {
         return false; // キーが未登録のため切り替えない
       }
@@ -94,7 +94,7 @@ namespace Gyro {
 
     bool SpawnServer::Spawn(const SpawnTable& table) const {
       // スポーン情報を基にオブジェクトの生成を行う
-      for (auto num = 0; const auto spawn : table) {
+      for (auto num = 0; const auto& spawn : table) {
         // オブジェクトタイプを基に生成を行う
         switch (spawn.GetType()) {
           // 自機
@@ -141,10 +141,8 @@ namespace Gyro {
       }
       // 自機の生成
       auto player = std::make_shared<Player::Player>(_appMain);
-      // 生成情報の取り出し
-      auto [position, rotation, scale] = spawn.GetTransform();
       // 生成座標の設定
-      player->Set(position, rotation, scale);
+      player->Set(spawn);
       // 生成した自機を返す
       return std::move(player);
     }

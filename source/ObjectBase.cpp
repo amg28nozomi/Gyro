@@ -9,6 +9,7 @@
 #include <appframe.h>
 #include "ApplicationMain.h"
 #include "ModeGame.h"
+#include "SpawnData.h"
 
 namespace Gyro {
   namespace Object {
@@ -36,8 +37,10 @@ namespace Gyro {
       return true;
     }
 
-    void ObjectBase::Set(const AppMath::Vector4& position, const AppMath::Vector4& rotation, const AppMath::Vector4& scale) {
-      // 各種パラメータの設定
+    void ObjectBase::Set(const SpawnData& spawn) {
+      // 各種パラメータの取得
+      auto [position, rotation, scale] = spawn.GetTransform();
+      // 座標・向き・スケールの設定
       _position = position;
       _rotation = rotation;
       _scale = scale;

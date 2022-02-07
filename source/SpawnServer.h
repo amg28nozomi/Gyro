@@ -13,6 +13,9 @@
  * @brief ゲームベース
  */
 namespace Gyro {
+  /**
+   * @brief プレイヤーベース
+   */
   namespace Player {
     class Player;
   } // namespace Player

@@ -67,12 +67,10 @@ namespace Gyro {
        */
       bool Draw() const override;
       /**
-       * @brief  座標の設定
-       * @param  position 座標
-       * @param  rotation 向き
-       * @param  scale    スケール
+       * @brief  スポーン情報の読み取り
+       * @param  spawn スポーン情報
        */
-      void Set(const AppMath::Vector4& position, const AppMath::Vector4& rotation, const AppMath::Vector4& scale) override;
+      void Set(const Object::SpawnData& spawn) override;
     private:
       AppFrame::Math::Vector4 _move{}; //!< 移動量
 
@@ -81,11 +79,11 @@ namespace Gyro {
       float _totalTime;    //!< アニメーションの総再生時間
       float _animaTime;    //!< アニメーションの再生時間
       ModelAnim::ModelAnimComponent _modelAnim; //!< AnimComponentの実態
-      Gauge::GaugeHP _gaugeHp;          //!< HPゲージの実態
-      Gauge::GaugeTrick _gaugeTrick;    //!< トリックゲージの実態
-      std::unique_ptr<Object::CollisionSphere> _sphere; //!< 当たり判定コリジョン(球)
+      Gauge::GaugeHP _gaugeHp;       //!< HPゲージの実態
+      Gauge::GaugeTrick _gaugeTrick; //!< トリックゲージの実態
+      std::unique_ptr<Object::CollisionSphere> _sphere;   //!< 当たり判定コリジョン(球)
       std::unique_ptr<Object::CollisionCapsule> _capsule; //!< カプセル
-      PlayerState _playerState{PlayerState::Idle}; //!< 自機状態
+      PlayerState _playerState{PlayerState::Idle};        //!< 自機状態
 
       bool _attackFlugY = false; //!< 弱攻撃フラグ
       bool _attackFlugX = false; //!< 強攻撃フラグ
@@ -166,9 +164,9 @@ namespace Gyro {
        */
       void Jump();
 
-      float _jumpPower{0.0f}; // ジャンプ力
-      float _jumpInterval{0.0f}; // ジャンプインターバル
-      bool _jump; //!< ジャンプフラグ
+      float _jumpPower{0.0f};    //!< ジャンプ力
+      float _jumpInterval{0.0f}; //!< ジャンプインターバル
+      bool _jump;                //!< ジャンプフラグ
     };
   }
     //} // namespace Player
