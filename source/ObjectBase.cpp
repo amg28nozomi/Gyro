@@ -36,6 +36,13 @@ namespace Gyro {
       return true;
     }
 
+    void ObjectBase::Set(const AppMath::Vector4& position, const AppMath::Vector4& rotation, const AppMath::Vector4& scale) {
+      // 各種パラメータの設定
+      _position = position;
+      _rotation = rotation;
+      _scale = scale;
+    }
+
     void ObjectBase::Gravity() {
       GravityScale(); // グラビティスケールの更新
       // 地形との衝突判定

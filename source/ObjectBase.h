@@ -65,6 +65,13 @@ namespace Gyro {
        */
       virtual bool Draw() const;
       /**
+       * @brief  座標・向き・スケールの設定
+       * @param  position 座標にセットする値
+       * @param  rotation 向きにセットする値
+       * @param  scale    スケールにセットする値
+       */
+      virtual void Set(const AppMath::Vector4& position, const AppMath::Vector4& rotation, const AppMath::Vector4& scale);
+      /**
        * @brief  識別番号の取得
        * @return 識別番号
        */

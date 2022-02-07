@@ -162,5 +162,17 @@ namespace Gyro {
       // 末尾に登録されているオブジェクトは自機か？
       return _registry.back()->GetId() == ObjectBase::ObjectId::Player;
     }
+
+    bool ObjectServer::FindPlayer() const {
+      auto find = false; // 検索フラグ
+      for (auto obj : _registry) {
+        // 自機の場合はフラグをtrueにしてforループを終了する
+        if (obj->GetId() == ObjectBase::ObjectId::Player) {
+          find = true;
+          break; // ループ終了
+        }
+      }
+      return find;
+    }
   } // namespace Object
 } // namespace Gyro

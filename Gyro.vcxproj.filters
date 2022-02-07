@@ -150,6 +150,9 @@
     <ClCompile Include="source\SpawnData.cpp">
       <Filter>ソース ファイル\Object</Filter>
     </ClCompile>
+    <ClCompile Include="source\SpawnServer.cpp">
+      <Filter>ソース ファイル\Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\ApplicationMain.h">
@@ -231,6 +234,9 @@
       <Filter>ヘッダー ファイル\Gauge</Filter>
     </ClInclude>
     <ClInclude Include="source\SpawnData.h">
+      <Filter>ヘッダー ファイル\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SpawnServer.h">
       <Filter>ヘッダー ファイル\Object</Filter>
     </ClInclude>
   </ItemGroup>

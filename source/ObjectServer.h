@@ -71,6 +71,11 @@ namespace Gyro {
        * @return true:取得成功 false:取得失敗
        */
       bool GetPlayerTransForm(AppMath::Vector4& position, AppMath::Vector4& rotation);
+      /**
+       * @brief  自機が登録されているかの判定
+       * @return true:登録されている false:登録されていない
+       */
+      bool FindPlayer() const;
     private:
       bool _play{false}; //!< オブジェクトサーバを回しているかのフラグ
       std::vector<std::shared_ptr<ObjectBase>> _addObject; //!< 登録予約用
