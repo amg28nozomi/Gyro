@@ -7,6 +7,7 @@
  *********************************************************************/
 #include "EnemyBase.h"
 #include "../ApplicationMain.h"
+#include "../SpawnEnemy.h"
 
 namespace Gyro {
     namespace Enemy {
@@ -23,9 +24,6 @@ namespace Gyro {
             // 初期化
             _mHandle = -1;
             _enemyMoveSpeed = 0.0f;
-            _enemyPos = VGet(0, 0, 0);
-            _enemyDir = VGet(0, 0, 0);
-            _enemyTarget = VGet(0, 0, 0);
             _id = ObjectId::Enemy;
             _enemyState = EnemyState::WAIT;
             return true;
@@ -46,6 +44,17 @@ namespace Gyro {
             }
 #endif
             return true;
+        }
+
+        void EnemyBase::Set(Object::SpawnBase spawn) {
+          // 座標情報をセットする
+          ObjectBase::Set(spawn);
+          // 当たり判定の設定
+          SetCollision();
+          // auto enemy = dynamic_cast<Object::SpawnEnemy*>(&spawn);
+        }
+
+        void EnemyBase::SetCollision() {
         }
     } // namespace Enemy
 } // namespace Gyro

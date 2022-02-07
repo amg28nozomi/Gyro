@@ -70,7 +70,7 @@ namespace Gyro {
        * @brief  スポーン情報の読み取り
        * @param  spawn スポーン情報
        */
-      void Set(const Object::SpawnBase& spawn) override;
+      void Set(Object::SpawnBase spawn) override;
     private:
       AppFrame::Math::Vector4 _move{}; //!< 移動量
 

@@ -40,7 +40,7 @@ namespace Gyro {
     /**
      * @brief スポーン情報を格納した動的配列の別名
      */
-    using SpawnTable = std::vector<SpawnBase>;
+    using SpawnTable = std::vector<std::unique_ptr<SpawnBase>>;
     /**
      * @brief エネミーのスポーン情報を格納した動的配列
      */
@@ -49,6 +49,8 @@ namespace Gyro {
      * @brief 番号をキーとしてスポーン情報を管理する連想配列
      */
     using SpawnMap = std::unordered_map<int, SpawnTable>;
+
+    using StageMaps = std::unordered_map<int, std::tuple<SpawnTable, EnemyTable>>;
     /**
      * @class SpawnServer
      * @brief ステージ名をキーとしてスポーン情報を管理するサーバクラス
@@ -77,13 +79,19 @@ namespace Gyro {
        * @param  number 生成番号
        * @return true:生成成功 false:生成失敗
        */
-      bool Spawn(const int number) const;
+      bool Spawn(const int number);
       /**
        * @brief  ステージキーの設定
        * @param  key ステージキー
        * @return true:切り替え成功 false:切り替え失敗
        */
       bool SetStage(std::string_view key);
+      /**
+       * @brief  スポーンテーブルの末尾にエネミーテーブルを追加する
+       * @param  table スポーンテーブルの参照
+       * @param  enemy エネミーテーブルの参照
+       */
+      static void EmplaceBack(SpawnTable& table, EnemyTable& enemy);
     private:
       Application::ApplicationMain& _appMain; //!< アプリケーションの参照
       std::string _stage; //!< ステージキー
@@ -91,7 +99,7 @@ namespace Gyro {
        * @brief  現在のステージに対応するコンテナの取得
        * @return ステージに紐づけられたスポーン情報
        */
-      const SpawnMap NowSpawnMap() const;
+      SpawnMap& NowSpawnMap();
       /**
        * @brief 指定したステージ情報を削除する
        * @param key ステージキー
@@ -102,7 +110,7 @@ namespace Gyro {
        * @param  spawn スポーン情報
        * @return true:生成成功 false:生成失敗
        */
-      bool Spawn(const SpawnTable& table) const;
+      bool Spawn(SpawnTable& table) const;
       /**
        * @brief  オブジェクトサーバに生成したオブジェクトを登録する
        * @param  object オブジェクトのシェアードポインタ
@@ -121,13 +129,13 @@ namespace Gyro {
        * @param  spawn スポーン情報
        * @return エネミーのシェアードポインタ
        */
-      std::shared_ptr<ObjectBase> Enemy(SpawnBase& spawn) const;
+      std::shared_ptr<ObjectBase> Enemy(SpawnBase spawn) const;
       /**
        * @brief  陸上型敵の生成
        * @param  spawn スポーン情報
        * @return 陸上型敵のシェアードポインタ
        */
-      std::shared_ptr<Enemy::EnemyWheel> EnemyWheel(const SpawnBase& spawn) const;
+      std::shared_ptr<Enemy::EnemyWheel> EnemyWheel(SpawnBase spawn) const;
 #ifdef _DEBUG
       /**
        * @brief  スポーン失敗メッセージの生成

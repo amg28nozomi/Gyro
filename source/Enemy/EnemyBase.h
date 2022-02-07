@@ -50,6 +50,11 @@ namespace Gyro {
              */
             bool Draw() const override;
             /**
+             * @brief  スポーン情報の読み取り
+             * @param  スポーン情報の参照
+             */
+            void Set(Object::SpawnBase spawn) override;
+            /**
              * @brief   敵位置の設定
              * @param   vPos 敵位置
              */
@@ -94,6 +99,10 @@ namespace Gyro {
             EnemyState _enemyState; //!< 敵の状態保持変数
             ModelAnim::ModelAnimComponent _modelAnim;
             Effect::SampleEffect _eff;
+            /**
+             * @brief 当たり判定情報の設定
+             */
+            virtual void SetCollision();
         };
     } // namespace Enemy
 } // namespace Gyro

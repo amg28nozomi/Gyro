@@ -46,11 +46,11 @@ namespace Gyro {
         DeleteSpawnMap(key);
       }
       // データベース上にステージ情報を登録する
-      _registry.emplace(key.data(), spawnMap);
+      _registry.emplace(key.data(), std::move(spawnMap));
       return true; // 登録成功
     }
 
-    bool SpawnServer::Spawn(const int number) const {
+    bool SpawnServer::Spawn(const int number) {
       // キーが不正な場合は生成を行わない
       if (!_registry.contains(_stage)) [[unlikely]] {
         return false; // キーが不正です
@@ -80,7 +80,15 @@ namespace Gyro {
       return true; // 設定完了
     }
 
-    const SpawnMap SpawnServer::NowSpawnMap() const {
+    void SpawnServer::EmplaceBack(SpawnTable& table, EnemyTable& enemy) {
+      // エネミーのスポーン情報を登録する
+      for (auto&& spawn : enemy) {
+        // スポーン情報を末尾にmoveする
+        table.emplace_back(std::move(spawn));
+      }
+    }
+
+    SpawnMap& SpawnServer::NowSpawnMap() {
       return _registry.at(_stage);
     }
 
@@ -93,9 +101,9 @@ namespace Gyro {
       _registry.erase(key.data());
     }
 
-    bool SpawnServer::Spawn(const SpawnTable& table) const {
+    bool SpawnServer::Spawn(SpawnTable& table) const {
       // スポーン情報を基にオブジェクトの生成を行う
-      for (auto num = 0; auto spawn : table) {
+      for (auto num = 0; auto&& spawn : table) {
         // オブジェクトタイプを基に生成を行う
         switch (spawn.GetType()) {
           // 自機
@@ -151,7 +159,7 @@ namespace Gyro {
       return std::move(player); // 生成したシェアードポインタを返す
     }
 
-    std::shared_ptr<ObjectBase> SpawnServer::Enemy(SpawnBase& spawn) const {
+    std::shared_ptr<ObjectBase> SpawnServer::Enemy(SpawnBase spawn) const {
       // エネミータイプの取得
       auto type = dynamic_cast<SpawnEnemy*>(&spawn)->GetEnemyType();
       // エネミータイプに応じたシェアードポインタを返す
@@ -163,7 +171,7 @@ namespace Gyro {
       }
     }
 
-    std::shared_ptr<Enemy::EnemyWheel> SpawnServer::EnemyWheel(const SpawnBase& spawn) const {
+    std::shared_ptr<Enemy::EnemyWheel> SpawnServer::EnemyWheel(SpawnBase spawn) const {
       // 陸上型エネミーの生成
       auto wheel = std::make_shared<Enemy::EnemyWheel>(_appMain);
       wheel->Set(spawn);       // スポーン情報の設定

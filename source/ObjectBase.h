@@ -69,7 +69,7 @@ namespace Gyro {
        * @brief  スポーン情報の読み取り
        * @param  spawn スポーン情報
        */
-      virtual void Set(const SpawnBase& spawn);
+      virtual void Set(SpawnBase spawn);
       /**
        * @brief  識別番号の取得
        * @return 識別番号

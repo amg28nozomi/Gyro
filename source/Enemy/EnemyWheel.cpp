@@ -28,27 +28,18 @@ namespace Gyro {
           _mHandle = handle; // ハンドル設定
           // アニメーションアタッチ
           _modelAnim.SetMainAttach(_mHandle, 1, 1.0f, true);
-          _scale = { 2.0f, 2.0f, 2.0f };
-          SetEnemyPos(VGet(100, 0, 100));
-          _position = UtilityDX::ToVector(_enemyPos);
-          auto center = UtilityDX::ToVector(_enemyPos);
-          center.AddY(100.0f);
-          _sphere = std::make_unique<Object::CollisionSphere>(*this, center, 50.0f);
-          _enemyDir = VGet(0, 0, 1);
           _enemyMoveSpeed = 5.0f;
-          // カプセルコリジョンの設定
-          _capsule = std::make_unique<Object::CollisionCapsule>(*this, _position, 200.0f, 20.0f);
           return true;
         }
 
         bool EnemyWheel::Process() {
             EnemyState oldEnemyState = _enemyState;
-            AppMath::Vector4 target = AppMath::Vector4();
-            AppMath::Vector4 prot = AppMath::Vector4();
+            auto target = AppMath::Vector4();
+            auto prot = AppMath::Vector4();
             _app.GetObjectServer().GetPlayerTransForm(target, prot);
-            AppMath::Vector4 forword = target-(_position);
+            AppMath::Vector4 forword = target - (_position);
             forword.Normalize();
-            AppMath::Vector4 move = forword*(_enemyMoveSpeed);
+            AppMath::Vector4 move = forword * (_enemyMoveSpeed);
             // _sphere->Process();
 
                             // ラジアンを生成(z軸は反転させる)
@@ -116,6 +107,13 @@ namespace Gyro {
           }
 #endif
           return true; // 描画
+        }
+
+        void EnemyWheel::SetCollision() {
+          // 球の当たり判定設定
+          _sphere = std::make_unique<Object::CollisionSphere>(*this, _position.AddVectorY(100.0f), 50.0f);
+          // カプセルコリジョンの設定
+          _capsule = std::make_unique<Object::CollisionCapsule>(*this, _position, 200.0f, 20.0f);
         }
     } // namespace Enemy
 } // namespace Gyro

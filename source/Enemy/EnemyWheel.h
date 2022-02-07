@@ -41,6 +41,11 @@ namespace Gyro {
             bool Draw() const override;
         private:
           bool _iMove{false}; //!< ˆÚ“®ƒtƒ‰ƒO
+          /**
+           * @brief  “–‚½‚è”»’è‚ÌÝ’èˆ—
+           * @author —é–ØŠóŠC
+           */
+          void SetCollision() override;
         };
     } // namespace Enemy
 } // namespace Gyro
