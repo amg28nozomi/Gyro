@@ -51,24 +51,20 @@ namespace Gyro {
 
     bool SpawnServer::Spawn(const int number) const {
       // キーが不正な場合は生成を行わない
-      if (!UseKey(_stage)) [[unlikely]] {
+      if (!_registry.contains(_stage)) [[unlikely]] {
         return false; // キーが不正です
       }
       // レジストリーに登録されているか
-      if (NowSpawnMap().contains(number)) {
+      if (!NowSpawnMap().contains(number)) {
         return false; // 生成番号が不正
       }
       // オブジェクトを生成する
-      Spawn(NowSpawnMap().at(number));
+      return Spawn(NowSpawnMap().at(number));
     }
 
     bool SpawnServer::SetStage(std::string_view key) {
       // キーが登録されているか
-      if (UseKey(key.data())) {
-#ifdef _DEBUG
-        std::string error = key.data();
-        throw LogicError(error + ":キーが登録されていません");
-#endif
+      if (!_registry.contains(key.data())) {
         return false; // キーが未登録のため切り替えない
       }
       // 現在のキーと重複しているかの判定
@@ -119,6 +115,7 @@ namespace Gyro {
         }
         ++num; // 処理回数をカウント
       }
+      return true;
     }
 
     bool SpawnServer::AddObject(std::shared_ptr<ObjectBase> object) const {

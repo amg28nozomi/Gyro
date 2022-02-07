@@ -81,6 +81,10 @@ namespace Gyro {
        * @brief リソースの読み取り
        */
       void LoadResource() const;
+      /**
+       * @brief スポーン情報の設定
+       */
+      void SetSpawn();
     };
   } // namespace Mode
 } // namespace Gyro

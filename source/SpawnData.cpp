@@ -7,11 +7,6 @@
  *********************************************************************/
 #include "SpawnData.h"
 
-namespace {
-  // オブジェクトタイプ(整数)
-  constexpr auto TypePlayer = 0; // 自機
-}
-
 namespace Gyro {
   namespace Object {
 

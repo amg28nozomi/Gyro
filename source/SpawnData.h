@@ -17,6 +17,7 @@ namespace Gyro {
    * @brief オブジェクトベース
    */
   namespace Object {
+    constexpr auto TypePlayer = 0; //!< 自機
     /**
      * @brief Vector4クラスの省略
      */

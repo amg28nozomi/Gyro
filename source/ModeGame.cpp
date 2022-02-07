@@ -13,6 +13,7 @@
 #include "PrimitiveBase.h"
 #include "PrimitivePlane.h"
 #include "ObjectServer.h"
+#include "SpawnServer.h"
 
 namespace {
     constexpr auto TEXTURE = _T("res/Groundplants1_D.jpg");
@@ -29,7 +30,7 @@ namespace Gyro {
 
     bool ModeGame::Enter() {
       // オブジェクトを生成
-      _appMain.GetObjectServer().Register(std::move(std::make_shared<Player::Player>(_appMain)));
+      SetSpawn();
       _appMain.GetObjectServer().Register(std::move(std::make_shared<Enemy::EnemyWheel>(_appMain)));
       return true;
     }
@@ -111,6 +112,29 @@ namespace Gyro {
       };
       // サウンドサーバに登録
       _app.GetSoundServer().AddSounds(soundMap);
+    }
+
+    void ModeGame::SetSpawn() {
+      // スポーン情報の設定
+      const Object::SpawnTable table{
+        // 自機の生成情報
+        { Object::TypePlayer, {0.0f, 0.0f, 0.0f,}, {0.0f, 0.0f, 0.0f,}, {10.0f, 10.0f, 10.0f}}
+      };
+      // スポーン情報の登録
+      Object::SpawnMap map {
+        {0, table}
+      };
+      _appMain.GetSpawnServer().AddSpawnTable("test", map);
+#ifndef _DEBUG
+      _appMain.GetSpawnServer().SetStage("test");
+#else
+      try {
+        _appMain.GetSpawnServer().SetStage("test");
+      } catch (std::logic_error error) {
+        OutputDebugString(error.what());
+      }
+#endif
+      _appMain.GetSpawnServer().Spawn(0);
     }
   } // namespace Mode
 } // namespace Gyro
