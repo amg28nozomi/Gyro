@@ -44,6 +44,7 @@
     <ClCompile Include="source\ScoreBonus.cpp" />
     <ClCompile Include="source\ScoreServer.cpp" />
     <ClCompile Include="source\ScoreSystem.cpp" />
+    <ClCompile Include="source\SpawnData.cpp" />
     <ClCompile Include="source\UtilityDX.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -72,6 +73,7 @@
     <ClInclude Include="source\ScoreBonus.h" />
     <ClInclude Include="source\ScoreServer.h" />
     <ClInclude Include="source\ScoreSystem.h" />
+    <ClInclude Include="source\SpawnData.h" />
     <ClInclude Include="source\UtilityDX.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

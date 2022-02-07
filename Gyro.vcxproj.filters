@@ -147,6 +147,9 @@
     <ClCompile Include="source\GaugeTrick.cpp">
       <Filter>ソース ファイル\Gauge</Filter>
     </ClCompile>
+    <ClCompile Include="source\SpawnData.cpp">
+      <Filter>ソース ファイル\Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\ApplicationMain.h">
@@ -226,6 +229,9 @@
     </ClInclude>
     <ClInclude Include="source\GaugeTrick.h">
       <Filter>ヘッダー ファイル\Gauge</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SpawnData.h">
+      <Filter>ヘッダー ファイル\Object</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
