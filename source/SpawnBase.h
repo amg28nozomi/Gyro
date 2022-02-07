@@ -1,5 +1,5 @@
 /*****************************************************************//**
- * @file   SpawnData.h
+ * @file   SpawnBase.h
  * @brief  オブジェクト生成時に使用するパラメータクラス
  * 
  * @author 鈴木希海
@@ -17,7 +17,8 @@ namespace Gyro {
    * @brief オブジェクトベース
    */
   namespace Object {
-    constexpr auto TypePlayer = 0; //!< 自機
+    constexpr auto TypePlayer = 0;     //!< 自機
+    constexpr auto TypeEnemyWheel = 1; //!< 陸上型エネミー
     /**
      * @brief Vector4クラスの省略
      */
@@ -26,7 +27,7 @@ namespace Gyro {
      * @class SpawanData
      * @brief オブジェクト生成時に使用するパラメータクラス
      */
-    class SpawnData {
+    class SpawnBase {
     public:
       /**
        * @brief オブジェクトの種類を表す
@@ -34,11 +35,12 @@ namespace Gyro {
       enum class ObjectType {
         None,   // 無し
         Player, // 自機
+        Enemy,  // 敵
       };
       /**
        * @brief コンストラクタ
        */
-      SpawnData();
+      SpawnBase();
       /**
        * @brief コンストラクタ
        * @param type     オブジェクトタイプ
@@ -46,13 +48,7 @@ namespace Gyro {
        * @param rotation 生成時の向き
        * @param scale    生成時のスケール
        */
-      SpawnData(const int type, const Vector4& position, const Vector4& rotation, const Vector4& scale);
-      /**
-       * @brief  オブジェクト番号をオブジェクトタイプに変換する
-       * @param  number オブジェクトタイプ(整数)
-       * @return オブジェクトタイプを返す
-       */
-      const ObjectType NumberToType(const int number) const;
+      SpawnBase(const int type, const Vector4& position, const Vector4& rotation, const Vector4& scale);
       /**
        * @brief  オブジェクトタイプの取得
        * @return オブジェクトタイプ
@@ -93,6 +89,12 @@ namespace Gyro {
       Vector4 _position; //!< 生成座標
       Vector4 _rotation; //!< 角度
       Vector4 _scale;    //!< スケール
+      /**
+       * @brief  オブジェクト番号をオブジェクトタイプに変換する
+       * @param  number オブジェクトタイプ(整数)
+       * @return オブジェクトタイプを返す
+       */
+      virtual const ObjectType NumberToType(const int number) const;
     };
   } // namespace Object
 } // namespace Gyro

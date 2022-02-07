@@ -19,6 +19,7 @@ namespace Gyro {
    */
   namespace Object {
     class CollisionCapsule;
+    class SpawnEnemy;
   } // namespace Object
     /** “G—p–¼‘O‹óŠÔ */
     namespace Enemy {
@@ -48,8 +49,6 @@ namespace Gyro {
              * @brief   •`‰æ
              */
             bool Draw() const override;
-
-            void Set()
             /**
              * @brief   “GˆÊ’u‚Ìİ’è
              * @param   vPos “GˆÊ’u

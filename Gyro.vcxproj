@@ -44,7 +44,8 @@
     <ClCompile Include="source\ScoreBonus.cpp" />
     <ClCompile Include="source\ScoreServer.cpp" />
     <ClCompile Include="source\ScoreSystem.cpp" />
-    <ClCompile Include="source\SpawnData.cpp" />
+    <ClCompile Include="source\SpawnBase.cpp" />
+    <ClCompile Include="source\SpawnEnemy.cpp" />
     <ClCompile Include="source\SpawnServer.cpp" />
     <ClCompile Include="source\UtilityDX.cpp" />
   </ItemGroup>
@@ -74,7 +75,8 @@
     <ClInclude Include="source\ScoreBonus.h" />
     <ClInclude Include="source\ScoreServer.h" />
     <ClInclude Include="source\ScoreSystem.h" />
-    <ClInclude Include="source\SpawnData.h" />
+    <ClInclude Include="source\SpawnBase.h" />
+    <ClInclude Include="source\SpawnEnemy.h" />
     <ClInclude Include="source\SpawnServer.h" />
     <ClInclude Include="source\UtilityDX.h" />
   </ItemGroup>

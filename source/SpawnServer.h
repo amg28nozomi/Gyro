@@ -7,7 +7,8 @@
  *********************************************************************/
 #pragma once
 #include <appframe.h>
-#include "SpawnData.h"
+#include "SpawnBase.h"
+#include "SpawnEnemy.h"
 
 /**
  * @brief ゲームベース
@@ -17,8 +18,14 @@ namespace Gyro {
    * @brief プレイヤーベース
    */
   namespace Player {
-    class Player;
+    class Player; //!< プレイヤー
   } // namespace Player
+  /**
+   * @brief エネミーベース
+   */
+  namespace Enemy {
+    class EnemyWheel; //!< 前方宣言
+  } // namespace 
   /**
    * @brief アプリケーションベース
    */
@@ -33,7 +40,11 @@ namespace Gyro {
     /**
      * @brief スポーン情報を格納した動的配列の別名
      */
-    using SpawnTable = std::vector<SpawnData>;
+    using SpawnTable = std::vector<SpawnBase>;
+    /**
+     * @brief エネミーのスポーン情報を格納した動的配列
+     */
+    using EnemyTable = std::vector<SpawnEnemy>;
     /**
      * @brief 番号をキーとしてスポーン情報を管理する連想配列
      */
@@ -104,7 +115,19 @@ namespace Gyro {
        * @return 自機のシェアードポインタ
        *         自機が既に登録されている場合はnullptrを返す
        */
-      std::shared_ptr<Player::Player> Player(const SpawnData& spawn) const;
+      std::shared_ptr<Player::Player> Player(const SpawnBase& spawn) const;
+      /**
+       * @brief  エネミーの生成
+       * @param  spawn スポーン情報
+       * @return エネミーのシェアードポインタ
+       */
+      std::shared_ptr<ObjectBase> Enemy(SpawnBase& spawn) const;
+      /**
+       * @brief  陸上型敵の生成
+       * @param  spawn スポーン情報
+       * @return 陸上型敵のシェアードポインタ
+       */
+      std::shared_ptr<Enemy::EnemyWheel> EnemyWheel(const SpawnBase& spawn) const;
 #ifdef _DEBUG
       /**
        * @brief  スポーン失敗メッセージの生成

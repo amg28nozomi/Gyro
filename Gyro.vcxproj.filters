@@ -153,10 +153,13 @@
     <ClCompile Include="source\GaugeTrick.cpp">
       <Filter>ソース ファイル\Gauge</Filter>
     </ClCompile>
-    <ClCompile Include="source\SpawnData.cpp">
+    <ClCompile Include="source\SpawnBase.cpp">
       <Filter>ソース ファイル\Object\Spawn</Filter>
     </ClCompile>
     <ClCompile Include="source\SpawnServer.cpp">
+      <Filter>ソース ファイル\Object\Spawn</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SpawnEnemy.cpp">
       <Filter>ソース ファイル\Object\Spawn</Filter>
     </ClCompile>
   </ItemGroup>
@@ -239,10 +242,13 @@
     <ClInclude Include="source\GaugeTrick.h">
       <Filter>ヘッダー ファイル\Gauge</Filter>
     </ClInclude>
-    <ClInclude Include="source\SpawnData.h">
+    <ClInclude Include="source\SpawnBase.h">
       <Filter>ヘッダー ファイル\Object\Spawn</Filter>
     </ClInclude>
     <ClInclude Include="source\SpawnServer.h">
+      <Filter>ヘッダー ファイル\Object\Spawn</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SpawnEnemy.h">
       <Filter>ヘッダー ファイル\Object\Spawn</Filter>
     </ClInclude>
   </ItemGroup>

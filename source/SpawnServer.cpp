@@ -10,6 +10,7 @@
 #include "ObjectBase.h"
 #include "ObjectServer.h"
 #include "Player.h"
+#include "Enemy/EnemyWheel.h"
 
 namespace Gyro {
   namespace Object {
@@ -94,16 +95,21 @@ namespace Gyro {
 
     bool SpawnServer::Spawn(const SpawnTable& table) const {
       // スポーン情報を基にオブジェクトの生成を行う
-      for (auto num = 0; const auto& spawn : table) {
+      for (auto num = 0; auto spawn : table) {
         // オブジェクトタイプを基に生成を行う
         switch (spawn.GetType()) {
           // 自機
-        case SpawnData::ObjectType::Player:
+        case SpawnBase::ObjectType::Player:
           // 自機の場合は登録を行う
           AddObject(Player(spawn));
           break;
+          // 敵
+        case SpawnBase::ObjectType::Enemy:
+          // 敵の登録を行う
+          AddObject(Enemy(spawn));
+          break;
           // オブジェクトタイプの該当がない場合
-        case SpawnData::ObjectType::None:
+        case SpawnBase::ObjectType::None:
 #ifdef _DEBUG
           try {
             SpawnError(num);
@@ -134,17 +140,34 @@ namespace Gyro {
 #endif
     }
 
-    std::shared_ptr<Player::Player> SpawnServer::Player(const SpawnData& spawn) const {
+    std::shared_ptr<Player::Player> SpawnServer::Player(const SpawnBase& spawn) const {
       // 自機は既に登録されていないか
       if (_appMain.GetObjectServer().FindPlayer()) {
         return nullptr; // 登録されている場合はnullptrを返す
       }
       // 自機の生成
       auto player = std::make_shared<Player::Player>(_appMain);
-      // 生成座標の設定
-      player->Set(spawn);
-      // 生成した自機を返す
-      return std::move(player);
+      player->Set(spawn);       // スポーン情報の設定
+      return std::move(player); // 生成したシェアードポインタを返す
+    }
+
+    std::shared_ptr<ObjectBase> SpawnServer::Enemy(SpawnBase& spawn) const {
+      // エネミータイプの取得
+      auto type = dynamic_cast<SpawnEnemy*>(&spawn)->GetEnemyType();
+      // エネミータイプに応じたシェアードポインタを返す
+      switch (type) {
+      case SpawnEnemy::EnemyType::Wheel: // 陸上型
+        return EnemyWheel(spawn);
+      case SpawnEnemy::EnemyType::None:  // 該当なし
+        return nullptr;  // 該当がない場合はnullptrを返す
+      }
+    }
+
+    std::shared_ptr<Enemy::EnemyWheel> SpawnServer::EnemyWheel(const SpawnBase& spawn) const {
+      // 陸上型エネミーの生成
+      auto wheel = std::make_shared<Enemy::EnemyWheel>(_appMain);
+      wheel->Set(spawn);       // スポーン情報の設定
+      return std::move(wheel); // 生成したシェアードポインタを返す
     }
 
 #ifdef _DEBUG

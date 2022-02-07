@@ -26,11 +26,8 @@ namespace Gyro {
           // モデル読み込み
           auto[handle, key] = _app.GetModelServer().GetModel("enemy", 0);
           _mHandle = handle; // ハンドル設定
-          // MV1SetScale(_mHandle, VGet(1.0f, 1.0f, 1.0f));
           // アニメーションアタッチ
           _modelAnim.SetMainAttach(_mHandle, 1, 1.0f, true);
-          // 初期化
-          //MV1SetScale(_mHandle, VGet(2,2,2));
           _scale = { 2.0f, 2.0f, 2.0f };
           SetEnemyPos(VGet(100, 0, 100));
           _position = UtilityDX::ToVector(_enemyPos);

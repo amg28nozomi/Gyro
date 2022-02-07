@@ -11,7 +11,7 @@
 #include "ObjectServer.h"
 #include "Enemy/EnemyBase.h"
 #include "CollisionCapsule.h"
-#include "SpawnData.h"
+#include "SpawnBase.h"
 #define	PI	(3.1415926535897932386f)
 #define	DEG2RAD(x)			( ((x) / 180.0f ) * PI )
 
@@ -156,7 +156,7 @@ namespace Gyro {
       return true;
     }
 
-    void Player::Set(const Object::SpawnData& spawn) {
+    void Player::Set(const Object::SpawnBase& spawn) {
       ObjectBase::Set(spawn);
       // “–‚½‚è”»’è‚Ìİ’è‚ğs‚¤
       auto m = _position.AddVectorY(100.0f);

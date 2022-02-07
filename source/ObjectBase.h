@@ -22,7 +22,7 @@ namespace Gyro {
    */
   namespace Object {
     namespace AppMath = AppFrame::Math;
-    class SpawnData; //!< スポーン情報
+    class SpawnBase; //!< スポーン情報
     /**
      * @class ObjectBase
      * @brief オブジェクトのスーパークラス
@@ -69,7 +69,7 @@ namespace Gyro {
        * @brief  スポーン情報の読み取り
        * @param  spawn スポーン情報
        */
-      virtual void Set(const SpawnData& spawn);
+      virtual void Set(const SpawnBase& spawn);
       /**
        * @brief  識別番号の取得
        * @return 識別番号
