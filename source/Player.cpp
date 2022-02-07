@@ -158,6 +158,10 @@ namespace Gyro {
     void Player::Set(const AppMath::Vector4& position, const AppMath::Vector4& rotation, const AppMath::Vector4& scale) {
       ObjectBase::Set(position, rotation, scale);
       // 当たり判定の設定を行う
+      auto m = _position.AddVectorY(100.0f);
+      // 各種コリジョンの設定
+      _sphere = std::make_unique<Object::CollisionSphere>(*this, m, 100.0f);
+      _capsule = std::make_unique<Object::CollisionCapsule>(*this, _position, 150.0f, 20.0f);
     }
 
     void Player::Input() {
@@ -206,13 +210,6 @@ namespace Gyro {
       _state = ObjectState::Active;
       _gravity = true; // 重力処理を行う
       // 座標・向きの設定
-      _position = AppMath::Vector4(0.0f, 0.0f, 0.0f);
-      _rotation = AppMath::Vector4();
-      _scale = { 10.0f, 10.0f, 10.0f };
-      auto m = _position.AddVectorY(100.0f);
-      // 各種コリジョンの設定
-      _sphere = std::make_unique<Object::CollisionSphere>(*this, m, 100.0f);
-      _capsule = std::make_unique<Object::CollisionCapsule>(*this, _position, 150.0f, 20.0f);
       // アニメーションの初期化
       _animaIndex = NoAnimation;
       _animaTime = 0.0f;
