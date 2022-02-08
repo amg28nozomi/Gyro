@@ -31,7 +31,6 @@ namespace Gyro {
     bool ModeGame::Enter() {
       // オブジェクトを生成
       SetSpawn();
-      _appMain.GetObjectServer().Register(std::move(std::make_shared<Enemy::EnemyWheel>(_appMain)));
       return true;
     }
 
