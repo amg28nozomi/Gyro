@@ -129,6 +129,10 @@ namespace Gyro {
        */
       void Animation(PlayerState old);
       /**
+       * @brief モーション切り替え
+       */
+      void Anime();
+      /**
        * @brief 指定したアニメーションインデックスの取得
        * @param key アニメーションに紐づけられた文字列
        */

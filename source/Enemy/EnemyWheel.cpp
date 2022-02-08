@@ -24,7 +24,8 @@ namespace Gyro {
 
         bool EnemyWheel::Init() {
           // モデル読み込み
-          auto[handle, key] = _app.GetModelServer().GetModel("enemy", 0);
+          auto[handle, key] = _app.GetModelServer().GetModel("enemy", _number);
+          ++_number;
           _mHandle = handle; // ハンドル設定
           // アニメーションアタッチ
           _modelAnim.SetMainAttach(_mHandle, 1, 1.0f, true);

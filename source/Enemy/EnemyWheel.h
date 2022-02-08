@@ -40,6 +40,7 @@ namespace Gyro {
              */
             bool Draw() const override;
         private:
+          static inline unsigned short _number{0}; //!< ¶¬”Ô†
           bool _iMove{false}; //!< ˆÚ“®ƒtƒ‰ƒO
           /**
            * @brief  “–‚½‚è”»’è‚ÌÝ’èˆ—

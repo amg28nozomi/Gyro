@@ -117,12 +117,17 @@ namespace Gyro {
       // スポーン情報の設定
       const Object::SpawnTable normal {
         // 自機の生成情報
+        // 引数1:オブジェクトタイプ(0:自機　1:敵)
+        // 引数2:ローカル座標
+        // 引数3:向き
+        // 引数4:スケール
         { Object::TypePlayer, {0.0f, 0.0f, 0.0f,}, {0.0f, 0.0f, 0.0f,}, {10.0f, 10.0f, 10.0f}}
       };
       // エネミーテーブル
       const Object::EnemyTable enemy {
         // 陸上型エネミーの配置情報
-        { Object::EnemyWheel, { 100.0f, 0.0f, 100.0f}, {0.0f, 0.0f, 0.0f }, {2.0f, 2.0f, 2.0f}}
+        { Object::EnemyWheel, { 100.0f, 0.0f, 100.0f}, {0.0f, 0.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
+        { Object::EnemyWheel, { 200.0f, 0.0f, 200.0f}, {0.0f, 0.0f, 0.0f }, {2.0f, 2.0f, 2.0f}}
       };
       // 各種テーブルを基にスポーンテーブルを作成
       Object::SpawnData table{
