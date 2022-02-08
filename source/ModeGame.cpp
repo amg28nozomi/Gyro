@@ -127,7 +127,7 @@ namespace Gyro {
       };
       // 各種テーブルを基にスポーンテーブルを作成
       Object::SpawnData table{
-        {0, {normal, enemy}}
+        {0, std::make_tuple(normal, enemy)}
       };
       // スポーンテーブルの登録
       _appMain.GetSpawnServer().AddSpawnTable("test", table);

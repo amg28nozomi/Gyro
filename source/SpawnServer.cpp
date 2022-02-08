@@ -32,7 +32,7 @@ namespace Gyro {
       return true;
     }
 
-    bool SpawnServer::AddSpawnTable(std::string_view key, SpawnData& spawnMap) {
+    bool SpawnServer::AddSpawnTable(std::string_view key, SpawnData spawnMap) {
       // データが登録されているか
       if (spawnMap.empty()) [[unlikely]] {
 #ifdef _DEBUG
@@ -94,14 +94,6 @@ namespace Gyro {
       // キーの切り替え
       _stage = key.data();
       return true; // 設定完了
-    }
-
-    void SpawnServer::EmplaceBack(SpawnTable& table, EnemyTable& enemy) {
-      // エネミーのスポーン情報を登録する
-      for (auto&& spawn : enemy) {
-        // スポーン情報を末尾にmoveする
-        table.emplace_back(std::move(spawn));
-      }
     }
 
     SpawnMap& SpawnServer::NowSpawnMap() {
@@ -173,7 +165,7 @@ namespace Gyro {
       }
       // 自機の生成
       auto player = std::make_shared<Player::Player>(_appMain);
-      player->Set(spawn->GetInstance());       // スポーン情報の設定
+      player->Set(*spawn.get());       // スポーン情報の設定
       return std::move(player); // 生成したシェアードポインタを返す
     }
 
@@ -183,7 +175,7 @@ namespace Gyro {
       // エネミータイプに応じたシェアードポインタを生成して返す
       switch (enemy->GetEnemyType()) {
       case SpawnEnemy::EnemyType::Wheel: // 陸上型
-        return EnemyWheel(enemy->GetInstanceEnemy());
+        return EnemyWheel(*enemy.get());
       case SpawnEnemy::EnemyType::None:  // 該当なし
         return nullptr;  // 該当がない場合はnullptrを返す
       }

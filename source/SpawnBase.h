@@ -49,11 +49,6 @@ namespace Gyro {
        */
       SpawnBase(const int type, const Vector4& position, const Vector4& rotation, const Vector4& scale);
       /**
-       * @brief ムーブコンストラクタ
-       * @param spawn ムーブ対象
-       */
-      SpawnBase(SpawnBase&& spawn) = default;
-      /**
        * @brief  オブジェクトタイプの取得
        * @return オブジェクトタイプ
        */

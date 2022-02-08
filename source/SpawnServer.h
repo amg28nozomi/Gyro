@@ -75,7 +75,7 @@ namespace Gyro {
        * @param  spawnMap スポーン情報のインスタンスが登録された連想配列
        * @return true:登録成功 false:問題発生
        */
-      bool AddSpawnTable(std::string_view key, SpawnData& spawnMap);
+      bool AddSpawnTable(std::string_view key, SpawnData spawnMap);
       /**
        * @brief  オブジェクトの生成処理
        * @param  number 生成番号
@@ -88,12 +88,6 @@ namespace Gyro {
        * @return true:切り替え成功 false:切り替え失敗
        */
       bool SetStage(std::string_view key);
-      /**
-       * @brief  スポーンテーブルの末尾にエネミーテーブルを追加する
-       * @param  table スポーンテーブルの参照
-       * @param  enemy エネミーテーブルの参照
-       */
-      static void EmplaceBack(SpawnTable& table, EnemyTable& enemy);
     private:
       Application::ApplicationMain& _appMain; //!< アプリケーションの参照
       std::string _stage; //!< ステージキー
