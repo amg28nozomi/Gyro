@@ -156,7 +156,7 @@ namespace Gyro {
       return true;
     }
 
-    void Player::Set(Object::SpawnBase spawn) {
+    void Player::Set(Object::SpawnBase& spawn) {
       ObjectBase::Set(spawn);
       // “–‚½‚è”»’è‚Ìİ’è‚ğs‚¤
       auto m = _position.AddVectorY(100.0f);

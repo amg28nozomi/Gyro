@@ -116,33 +116,21 @@ namespace Gyro {
 
     void ModeGame::SetSpawn() {
       // スポーン情報の設定
-      Object::SpawnTable table {
+      const Object::SpawnTable normal {
         // 自機の生成情報
         { Object::TypePlayer, {0.0f, 0.0f, 0.0f,}, {0.0f, 0.0f, 0.0f,}, {10.0f, 10.0f, 10.0f}}
       };
       // エネミーテーブル
-      Object::EnemyTable enemy {
+      const Object::EnemyTable enemy {
         // 陸上型エネミーの配置情報
         { Object::EnemyWheel, { 100.0f, 0.0f, 100.0f}, {0.0f, 0.0f, 0.0f }, {2.0f, 2.0f, 2.0f}}
       };
-      // スポーンテーブルの末尾にエネミーテーブルを追加する
-      Object::SpawnServer::EmplaceBack(table, enemy);
-
-
-      dynamic_cast<Object::SpawnEnemy*>(table.back())->GetEnemyType();
-
-      auto m = std::make_shared<Object::SpawnEnemy>(Object::EnemyWheel, AppMath::Vector4{ 100.0f, 0.0f, 100.0f }, AppMath::Vector4{ 0.0f, 0.0f, 0.0f }, AppMath::Vector4{ 2.0f, 2.0f, 2.0f });
-      std::vector<std::shared_ptr<Object::SpawnBase>> stable;
-      stable.push_back(std::move(m));
-      std::dynamic_pointer_cast<Object::SpawnEnemy>(stable.back())->GetEnemyType();
-
-
-      dynamic_cast<Object::SpawnEnemy*>(&table.back())->GetEnemyType();
-      // スポーン情報の登録
-      Object::SpawnMap map {
-        {0, table}
+      // 各種テーブルを基にスポーンテーブルを作成
+      Object::SpawnData table{
+        {0, {normal, enemy}}
       };
-      _appMain.GetSpawnServer().AddSpawnTable("test", std::move(map));
+      // スポーンテーブルの登録
+      _appMain.GetSpawnServer().AddSpawnTable("test", table);
 #ifndef _DEBUG
       _appMain.GetSpawnServer().SetStage("test");
 #else

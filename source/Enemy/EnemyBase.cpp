@@ -46,9 +46,9 @@ namespace Gyro {
             return true;
         }
 
-        void EnemyBase::Set(Object::SpawnBase spawn) {
+        void EnemyBase::Set(Object::SpawnEnemy& spawn) {
           // 座標情報をセットする
-          ObjectBase::Set(spawn);
+          ObjectBase::Set(spawn.GetInstance());
           // 当たり判定の設定
           SetCollision();
           // auto enemy = dynamic_cast<Object::SpawnEnemy*>(&spawn);

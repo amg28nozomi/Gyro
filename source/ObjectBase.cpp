@@ -37,7 +37,7 @@ namespace Gyro {
       return true;
     }
 
-    void ObjectBase::Set(SpawnBase spawn) {
+    void ObjectBase::Set(SpawnBase& spawn) {
       // 各種パラメータの取得
       auto [position, rotation, scale] = spawn.GetTransform();
       // 座標・向き・スケールの設定

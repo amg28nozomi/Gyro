@@ -9,7 +9,6 @@
 #include <appframe.h>
 #include "SpawnBase.h"
 #include "SpawnEnemy.h"
-
 /**
  * @brief ゲームベース
  */
@@ -38,19 +37,22 @@ namespace Gyro {
   namespace Object {
     class ObjectBase; //!< 前方宣言
     /**
-     * @brief スポーン情報を格納した動的配列の別名
+     * @brief スポーン情報を格納する動的配列の別名
      */
-    using SpawnTable = std::vector<std::unique_ptr<SpawnBase>>;
+    using SpawnTable = std::vector<SpawnBase>;
     /**
-     * @brief エネミーのスポーン情報を格納した動的配列
+     * @brief エネミーのスポーン情報を格納する動的配列の別名
      */
     using EnemyTable = std::vector<SpawnEnemy>;
     /**
-     * @brief 番号をキーとしてスポーン情報を管理する連想配列
+     * @brief 登録時に使用する各種スポーン情報を数値で管理する連想配列
+     *        0:スポーンテーブル 1:エネミーテーブル
      */
-    using SpawnMap = std::unordered_map<int, SpawnTable>;
-
-    using StageMaps = std::unordered_map<int, std::tuple<SpawnTable, EnemyTable>>;
+    using SpawnData = std::unordered_map<int, std::tuple<SpawnTable, EnemyTable>>;
+    /**
+     * @brief 番号をキーとしてスポーン情報のシェアードポインタを管理する連想配列の別名
+     */
+    using SpawnMap = std::unordered_map<int, std::vector<std::shared_ptr<SpawnBase>>>;
     /**
      * @class SpawnServer
      * @brief ステージ名をキーとしてスポーン情報を管理するサーバクラス
@@ -70,10 +72,10 @@ namespace Gyro {
       /**
        * @brief  スポーン情報の登録
        * @param  key スポーン情報に紐づける文字列(ステージ名)
-       * @param  spawnMap スポーン情報が格納された連想配列
+       * @param  spawnMap スポーン情報のインスタンスが登録された連想配列
        * @return true:登録成功 false:問題発生
        */
-      bool AddSpawnTable(std::string_view key, const SpawnMap& spawnMap);
+      bool AddSpawnTable(std::string_view key, SpawnData& spawnMap);
       /**
        * @brief  オブジェクトの生成処理
        * @param  number 生成番号
@@ -95,22 +97,24 @@ namespace Gyro {
     private:
       Application::ApplicationMain& _appMain; //!< アプリケーションの参照
       std::string _stage; //!< ステージキー
+      //!< エネミーのテーブル情報を管理する連想配列
+      std::unordered_map<std::string, std::unordered_map<int, EnemyTable>> _enemyTable;
       /**
        * @brief  現在のステージに対応するコンテナの取得
        * @return ステージに紐づけられたスポーン情報
        */
       SpawnMap& NowSpawnMap();
       /**
-       * @brief 指定したステージ情報を削除する
+       * @brief 指定したスポーン情報を削除する
        * @param key ステージキー
        */
-      void DeleteSpawnMap(std::string_view key);
+      void Delete(std::string_view key);
       /**
        * @brief  オブジェクトの生成処理
-       * @param  spawn スポーン情報
+       * @param  spawn スポーン情報の参照
        * @return true:生成成功 false:生成失敗
        */
-      bool Spawn(SpawnTable& table) const;
+      bool SpawnObject(const int numebr);
       /**
        * @brief  オブジェクトサーバに生成したオブジェクトを登録する
        * @param  object オブジェクトのシェアードポインタ
@@ -123,19 +127,19 @@ namespace Gyro {
        * @return 自機のシェアードポインタ
        *         自機が既に登録されている場合はnullptrを返す
        */
-      std::shared_ptr<Player::Player> Player(const SpawnBase& spawn) const;
+      std::shared_ptr<Player::Player> Player(std::shared_ptr<SpawnBase>& spawn) const;
       /**
        * @brief  エネミーの生成
        * @param  spawn スポーン情報
        * @return エネミーのシェアードポインタ
        */
-      std::shared_ptr<ObjectBase> Enemy(SpawnBase spawn) const;
+      std::shared_ptr<ObjectBase> Enemy(std::shared_ptr<SpawnBase>& spawn) const;
       /**
        * @brief  陸上型敵の生成
        * @param  spawn スポーン情報
        * @return 陸上型敵のシェアードポインタ
        */
-      std::shared_ptr<Enemy::EnemyWheel> EnemyWheel(SpawnBase spawn) const;
+      std::shared_ptr<Enemy::EnemyWheel> EnemyWheel(SpawnEnemy& spawn) const;
 #ifdef _DEBUG
       /**
        * @brief  スポーン失敗メッセージの生成

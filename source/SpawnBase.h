@@ -8,7 +8,6 @@
 #pragma once
 #include <tuple>
 #include <appframe.h>
-
 /**
  * @brief ゲームベース
  */
@@ -50,6 +49,11 @@ namespace Gyro {
        */
       SpawnBase(const int type, const Vector4& position, const Vector4& rotation, const Vector4& scale);
       /**
+       * @brief ムーブコンストラクタ
+       * @param spawn ムーブ対象
+       */
+      SpawnBase(SpawnBase&& spawn) = default;
+      /**
        * @brief  オブジェクトタイプの取得
        * @return オブジェクトタイプ
        */
@@ -83,6 +87,13 @@ namespace Gyro {
        */
       std::tuple<Vector4, Vector4, Vector4> GetTransform() const {
         return std::make_tuple(_position, _rotation, _scale);
+      }
+      /**
+       * @brief  生成情報の参照を取得
+       * @return 参照を返す
+       */
+      SpawnBase& GetInstance() {
+        return *this;
       }
     protected:
       ObjectType _type;  //!< オブジェクトタイプ

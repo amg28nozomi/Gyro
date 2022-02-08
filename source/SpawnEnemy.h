@@ -45,11 +45,23 @@ namespace Gyro {
        */
       SpawnEnemy(const int type, const Vector4& position, const Vector4& rotation, const Vector4& scale);
       /**
+       * @brief ムーブコンストラクタ
+       * @param spawn ムーブ対象
+       */
+      SpawnEnemy(SpawnEnemy&& spawn) = default;
+      /**
        * @brief  エネミータイプの取得
        * @return エネミータイプを返す
        */
       const EnemyType GetEnemyType() const {
         return _enemyType;
+      }
+      /**
+       * @brief  エネミー情報の参照の取得
+       * @return 参照を返す
+       */
+      SpawnEnemy& GetInstanceEnemy() {
+        return *this;
       }
     private:
       EnemyType _enemyType; //!< エネミータイプ

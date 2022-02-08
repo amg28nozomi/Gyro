@@ -53,7 +53,7 @@ namespace Gyro {
              * @brief  スポーン情報の読み取り
              * @param  スポーン情報の参照
              */
-            void Set(Object::SpawnBase spawn) override;
+            void Set(Object::SpawnEnemy& spawn);
             /**
              * @brief   敵位置の設定
              * @param   vPos 敵位置

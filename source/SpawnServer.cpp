@@ -20,19 +20,19 @@ namespace Gyro {
       // サーバ名設定
       SetServerName("SpawnServer");
 #endif
-      _stage.clear();
+      _stage.clear(); // ステージ名を削除
     }
 
     bool SpawnServer::Release() {
-      // スポーン情報を解放する
+      // 各ステージのスポーン情報を削除する
       for (auto&& [key, stage] : _registry) {
-        stage.clear();
+        stage.clear(); // ステージのスポーン情報を解放する
       }
-      _registry.clear(); // 情報削除
+      _registry.clear(); // データベース削除
       return true;
     }
 
-    bool SpawnServer::AddSpawnTable(std::string_view key, const SpawnMap& spawnMap) {
+    bool SpawnServer::AddSpawnTable(std::string_view key, SpawnData& spawnMap) {
       // データが登録されているか
       if (spawnMap.empty()) [[unlikely]] {
 #ifdef _DEBUG
@@ -41,12 +41,31 @@ namespace Gyro {
         return false; // 問題発生
       }
       // キーが重複しているか
-      if (!UseKey(key.data())) {
+      if (Contains(key.data())) {
         // 重複している場合は既存データを削除する
-        DeleteSpawnMap(key);
+        Delete(key);
       }
-      // データベース上にステージ情報を登録する
-      _registry.emplace(key.data(), std::move(spawnMap));
+      // スポーン情報用の連想配列
+      SpawnMap map;
+      // スポーン情報を管理する動的配列
+      std::vector<std::shared_ptr<SpawnBase>> table;
+      // スポーン情報をシェアードポインタに変換して登録を行う
+      for (auto&& [number, spawn] : spawnMap) {
+        // 生成テーブルの取得
+        auto [normal, enemy] = spawn;
+        // 通常のスポーン情報を変換
+        for (auto&& value : normal) {
+          table.emplace_back(std::make_shared<SpawnBase>(value));
+        }
+        // 敵のスポーン情報を変換
+        for (auto&& value : enemy) {
+          table.emplace_back(std::make_shared<SpawnEnemy>(value));
+        }
+        // 変換したテーブルをコンテナに登録
+        map.emplace(number, table);
+      }
+      // データベースに情報を登録する
+      _registry.emplace(key.data(), map);
       return true; // 登録成功
     }
 
@@ -60,7 +79,7 @@ namespace Gyro {
         return false; // 生成番号が不正
       }
       // オブジェクトを生成する
-      return Spawn(NowSpawnMap().at(number));
+      return SpawnObject(number);
     }
 
     bool SpawnServer::SetStage(std::string_view key) {
@@ -70,10 +89,7 @@ namespace Gyro {
       }
       // 現在のキーと重複しているかの判定
       if (key.data() == _stage) {
-#ifdef _DEBUG
-        throw LogicError("キーが重複しています");
-#endif
-        return false; // キーが同一
+        return false; // キーが重複している
       }
       // キーの切り替え
       _stage = key.data();
@@ -89,10 +105,11 @@ namespace Gyro {
     }
 
     SpawnMap& SpawnServer::NowSpawnMap() {
+      // ステージに対応したスポーン情報が格納されたステージ情報を返す
       return _registry.at(_stage);
     }
 
-    void SpawnServer::DeleteSpawnMap(std::string_view key) {
+    void SpawnServer::Delete(std::string_view key) {
       // ステージのスポーン情報取り出し
       auto stageMap = _registry[key.data()];
       // ステージ情報を削除
@@ -101,28 +118,29 @@ namespace Gyro {
       _registry.erase(key.data());
     }
 
-    bool SpawnServer::Spawn(SpawnTable& table) const {
+    bool SpawnServer::SpawnObject(const int number) {
       // スポーン情報を基にオブジェクトの生成を行う
-      for (auto num = 0; auto&& spawn : table) {
+      for (auto num = 0; auto spawn : NowSpawnMap().at(number)) {
         // オブジェクトタイプを基に生成を行う
-        switch (spawn.GetType()) {
+        switch (spawn->GetType()) {
           // 自機
         case SpawnBase::ObjectType::Player:
-          // 自機の場合は登録を行う
+          // 自機の生成・登録
           AddObject(Player(spawn));
           break;
           // 敵
         case SpawnBase::ObjectType::Enemy:
-          // 敵の登録を行う
+          // 敵の生成・登録を行う
           AddObject(Enemy(spawn));
           break;
           // オブジェクトタイプの該当がない場合
         case SpawnBase::ObjectType::None:
 #ifdef _DEBUG
           try {
+            // スポーン失敗用のメッセージを出力
             SpawnError(num);
           } catch (std::logic_error error) {
-            DebugString(error.what()); // 例外文を出力する
+            DebugString(error.what()); 
           }
 #endif
           break; // 生成失敗
@@ -148,33 +166,33 @@ namespace Gyro {
 #endif
     }
 
-    std::shared_ptr<Player::Player> SpawnServer::Player(const SpawnBase& spawn) const {
+    std::shared_ptr<Player::Player> SpawnServer::Player(std::shared_ptr<SpawnBase>& spawn) const {
       // 自機は既に登録されていないか
       if (_appMain.GetObjectServer().FindPlayer()) {
         return nullptr; // 登録されている場合はnullptrを返す
       }
       // 自機の生成
       auto player = std::make_shared<Player::Player>(_appMain);
-      player->Set(spawn);       // スポーン情報の設定
+      player->Set(spawn->GetInstance());       // スポーン情報の設定
       return std::move(player); // 生成したシェアードポインタを返す
     }
 
-    std::shared_ptr<ObjectBase> SpawnServer::Enemy(SpawnBase spawn) const {
+    std::shared_ptr<ObjectBase> SpawnServer::Enemy(std::shared_ptr<SpawnBase>& spawn) const {
       // エネミータイプの取得
-      auto type = dynamic_cast<SpawnEnemy*>(&spawn)->GetEnemyType();
-      // エネミータイプに応じたシェアードポインタを返す
-      switch (type) {
+      auto enemy = std::dynamic_pointer_cast<SpawnEnemy>(spawn);
+      // エネミータイプに応じたシェアードポインタを生成して返す
+      switch (enemy->GetEnemyType()) {
       case SpawnEnemy::EnemyType::Wheel: // 陸上型
-        return EnemyWheel(spawn);
+        return EnemyWheel(enemy->GetInstanceEnemy());
       case SpawnEnemy::EnemyType::None:  // 該当なし
         return nullptr;  // 該当がない場合はnullptrを返す
       }
     }
 
-    std::shared_ptr<Enemy::EnemyWheel> SpawnServer::EnemyWheel(SpawnBase spawn) const {
+    std::shared_ptr<Enemy::EnemyWheel> SpawnServer::EnemyWheel(SpawnEnemy& enemy) const {
       // 陸上型エネミーの生成
       auto wheel = std::make_shared<Enemy::EnemyWheel>(_appMain);
-      wheel->Set(spawn);       // スポーン情報の設定
+      wheel->Set(enemy);       // スポーン情報の設定
       return std::move(wheel); // 生成したシェアードポインタを返す
     }
 
