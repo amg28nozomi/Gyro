@@ -178,6 +178,8 @@ namespace Gyro {
         return EnemyWheel(*enemy.get());
       case SpawnEnemy::EnemyType::None:  // ŠY“–‚È‚µ
         return nullptr;  // ŠY“–‚ª‚È‚¢ê‡‚Ínullptr‚ğ•Ô‚·
+      default:
+        return nullptr;  // İ’è‚³‚ê‚Ä‚¢‚È‚¢ê‡‚ànullptr‚ğ•Ô‚·
       }
     }
 

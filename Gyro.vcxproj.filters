@@ -171,6 +171,9 @@
     <ClCompile Include="source\CollisionOBB.cpp">
       <Filter>ソース ファイル\Object\Collision</Filter>
     </ClCompile>
+    <ClCompile Include="source\CollisionAABB.cpp">
+      <Filter>ソース ファイル\Object\Collision</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\ApplicationMain.h">
@@ -261,6 +264,9 @@
       <Filter>ヘッダー ファイル\Object\Collision</Filter>
     </ClInclude>
     <ClInclude Include="source\CollisionOBB.h">
+      <Filter>ヘッダー ファイル\Object\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="source\CollisionAABB.h">
       <Filter>ヘッダー ファイル\Object\Collision</Filter>
     </ClInclude>
   </ItemGroup>

@@ -11,6 +11,9 @@
 #include <Dxlib.h>
 
 namespace Gyro {
+  /**
+   * @brief 
+   */
   namespace Object {
     /**
      * @class CollisionSphere
