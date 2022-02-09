@@ -37,9 +37,9 @@ namespace Gyro {
         }
 
         void ModelAnimComponent::SetMainAttach(const int handle, std::string_view key, const float speed, const bool loop) {
-            // アタッチ済の場合デタッチする
-            if (!IsAttachIndex(_main)) {
-                SetDetach(_main);
+            // アタッチ済の場合中断
+            if (IsAttachIndex(_main)) {
+                return;
             }
             // モデルハンドル設定
             _mHandle = handle;
@@ -48,9 +48,9 @@ namespace Gyro {
         }
 
         void ModelAnimComponent::SetBlendAttach(std::string_view key, const float flame, const float speed, const bool loop) {
-            // アタッチ済の場合デタッチする
-            if (!IsAttachIndex(_blend)) {
-                SetDetach(_blend);
+            // アタッチ済の場合中断
+            if (IsAttachIndex(_blend)) {
+                return;
             }
             // アニメーションアタッチ
             SetAttach(_blend, key, speed, loop);
