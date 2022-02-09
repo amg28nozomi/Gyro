@@ -72,8 +72,8 @@ namespace Gyro {
              * @brief   ループ再生有無の設定
              * @param   loop ループ再生有無
              */
-            void SetMotionLoop(const bool loop) {
-                _motionLoop = loop;
+            void SetAnimLoop(const bool loop) {
+                _animLoop = loop;
             }
             /**
              * @brief   アニメーション番号の取得
@@ -110,7 +110,7 @@ namespace Gyro {
             float _totalTime;   //!< アニメーション総時間
             float _playTime;    //!< アニメーション再生時間
             float _playSpeed;   //!< アニメーション再生速度
-            bool _motionLoop;   //!< ループ再生有無
+            bool _animLoop;     //!< ループ再生有無
             bool _animEnd;      //!< アニメーション終了
         };
     } // namespace ModelAnim

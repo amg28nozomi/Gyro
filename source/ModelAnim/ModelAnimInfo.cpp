@@ -5,11 +5,12 @@
  * @author  ã{‡Vósê∂
  * @date    December 2021
  *********************************************************************/
-#include "ModelAnimInfo.h"
+#include "../ModelAnim/ModelAnimInfo.h"
 
 namespace Gyro {
     namespace ModelAnim {
         ModelAnimInfo::ModelAnimInfo() {
+            // èÓïÒèâä˙âª
             Reset();
         }
 
@@ -24,7 +25,7 @@ namespace Gyro {
             _totalTime = 0.0f;
             _playTime = 0.0f;
             _playSpeed = 0.0f;
-            _motionLoop = false;
+            _animLoop = false;
             _animEnd = false;
         }
 
@@ -35,8 +36,8 @@ namespace Gyro {
             if (_totalTime < _playTime) {
                 // ÉãÅ[Évçƒê∂ÇÃóLñ≥îªíË
                 // åJÇËï‘Çµ : èIóπ(í‚é~)
-                _playTime = _motionLoop ? 0.0f : _totalTime;
-                _animEnd = _motionLoop ? false : true;
+                _playTime = _animLoop ? 0.0f : _totalTime;
+                _animEnd = _animLoop ? false : true;
             }
         }
     } // namespace ModelAnim

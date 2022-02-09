@@ -5,7 +5,7 @@
  * @author  宮澤耀生
  * @date    December 2021
  *********************************************************************/
-#include "ModelAnimComponent.h"
+#include "../ModelAnim/ModelAnimComponent.h"
 
 namespace Gyro {
     namespace ModelAnim {
@@ -36,32 +36,48 @@ namespace Gyro {
             AnimBlend();
         }
 
-        void ModelAnimComponent::SetMainAttach(const int handle, const int animNum, const float speed, const bool loop) {
+        void ModelAnimComponent::SetMainAttach(const int handle, std::string_view key, const float speed, const bool loop) {
             // アタッチ済の場合デタッチする
-            if (!IsNotAttachIndex(_main)) {
+            if (!IsAttachIndex(_main)) {
                 SetDetach(_main);
             }
             // モデルハンドル設定
             _mHandle = handle;
             // アニメーションアタッチ
-            SetAttach(_main, animNum, speed, loop);
+            SetAttach(_main, key, speed, loop);
         }
 
-        void ModelAnimComponent::SetBlendAttach(const int animNum, const float flame, const float speed, const bool loop) {
+        void ModelAnimComponent::SetBlendAttach(std::string_view key, const float flame, const float speed, const bool loop) {
             // アタッチ済の場合デタッチする
-            if (!IsNotAttachIndex(_blend)) {
+            if (!IsAttachIndex(_blend)) {
                 SetDetach(_blend);
             }
             // アニメーションアタッチ
-            SetAttach(_blend, animNum, speed, loop);
+            SetAttach(_blend, key, speed, loop);
             // 各種設定
             _blendCnt = 0;
             _blendFrame = flame;
         }
 
-        void ModelAnimComponent::SetAttach(ModelAnimInfo& motion, const int animNum, const float speed, const bool loop) {
-            // モデルハンドル未所持の場合中断
+        void ModelAnimComponent::SetAttach(ModelAnimInfo& motion, std::string_view key, const float speed, const bool loop) {
+            // モデルハンドル未所持の場合エラー
             if (_mHandle == -1) {
+#ifdef _DEBUG
+                throw ("アニメーションするモデルハンドルの取得に失敗しました\n");
+                // モデルハンドルが正常に読み込めていない
+                // SetMainAttach()を使わずにSetBlendAttach()を使った
+#endif
+                return;
+            }
+            // アニメーション番号の取得
+            int animNum = MV1GetAnimIndex(_mHandle, key.data());
+            // アニメーション番号取得失敗の場合エラー
+            if (animNum == -1) {
+#ifdef _DEBUG
+                throw ("アニメーション番号の取得に失敗しました\n");
+                // モデルハンドルが正常に読み込めていない
+                // アニメーション名に相違があるなどしてkeyが正常に読み込めていない
+#endif
                 return;
             }
             // アニメーションアタッチ
@@ -71,12 +87,12 @@ namespace Gyro {
             motion.SetAttachIndex(index);
             motion.SetTotalTime(MV1GetAnimTotalTime(_mHandle, animNum));
             motion.SetPlaySpeed(speed);
-            motion.SetMotionLoop(loop);
+            motion.SetAnimLoop(loop);
         }
 
         void ModelAnimComponent::SetDetach(ModelAnimInfo& motion) {
             // 未アタッチの場合中断
-            if (IsNotAttachIndex(motion)) {
+            if (!IsAttachIndex(motion)) {
                 return;
             }
             // アニメーションデタッチ
@@ -87,7 +103,7 @@ namespace Gyro {
 
         void ModelAnimComponent::PlayAnim(ModelAnimInfo& motion) {
             // 未アタッチの場合中断
-            if (IsNotAttachIndex(motion)) {
+            if (!IsAttachIndex(motion)) {
                 return;
             }
             // アニメーション再生
@@ -98,7 +114,7 @@ namespace Gyro {
 
         void ModelAnimComponent::AnimBlend() {
             // どちらか未アタッチの場合中断
-            if (EitherIsNotAttachIndex()) {
+            if (!BothIsAttachIndex()) {
                 return;
             }
             // ブレンド率算出
