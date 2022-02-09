@@ -37,6 +37,7 @@ namespace Gyro {
             void Process();
             /**
              * @brief   メインアニメーションアタッチ
+             *          (初期化時以外使ってはいけない)
              * @param   handle モデルハンドル
              * @param   key アニメーション名
              * @param   speed アニメーション再生速度
@@ -45,6 +46,7 @@ namespace Gyro {
             void SetMainAttach(const int handle, std::string_view key, const float speed, const bool loop);
             /**
              * @brief   ブレンドアニメーションアタッチ
+             *          (アニメーション切り替えはこちらを使う)
              * @param   key アニメーション名
              * @param   frame ブレンドフレーム
              * @param   speed アニメーション再生速度
