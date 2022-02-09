@@ -11,6 +11,14 @@
 #include "../UtilityDX.h"
 #include "../ApplicationMain.h"
 #include "../ObjectServer.h"
+
+namespace {
+    // アニメーションキー
+    constexpr std::string_view IdleKey = "EnemyIdle";       //!< 待機
+    constexpr std::string_view MoveKey = "EnemyMove";       //!< 移動
+    constexpr std::string_view AttackKey = "EnemyAttack";   //!< 攻撃
+}
+
 namespace Gyro {
     namespace Enemy {
         EnemyWheel::EnemyWheel(Application::ApplicationMain& app) : EnemyBase(app) {
@@ -28,7 +36,7 @@ namespace Gyro {
           ++_number;
           _mHandle = handle; // ハンドル設定
           // アニメーションアタッチ
-          _modelAnim.SetMainAttach(_mHandle, 1, 1.0f, true);
+          _modelAnim.SetMainAttach(_mHandle, IdleKey, 1.0f, true);
           _enemyMoveSpeed = 5.0f;
           return true;
         }
@@ -75,14 +83,14 @@ namespace Gyro {
             if (oldEnemyState != _enemyState) {
                 switch (_enemyState) {
                 case EnemyState::WAIT:
-                    _modelAnim.SetBlendAttach(1, 10.0f, 1.0f, true);
+                    _modelAnim.SetBlendAttach(IdleKey, 10.0f, 1.0f, true);
                     break;
                 case EnemyState::WALK:
-                    _modelAnim.SetBlendAttach(2, 10.0f, 1.0f, true);
+                    _modelAnim.SetBlendAttach(MoveKey, 10.0f, 1.0f, true);
                     _eff.PlayEffect();
                     break;
                 case EnemyState::ATTACK:
-                    _modelAnim.SetBlendAttach(0, 10.0f, 1.0f, false);
+                    _modelAnim.SetBlendAttach(AttackKey, 10.0f, 1.0f, false);
                     break;
                 case EnemyState::DEAD:
                     //_modelAnim.SetBlendAttach(1, 10.0f, 1.0f, false);
