@@ -80,7 +80,7 @@ namespace Gyro {
       // 座標更新
       _position = Move(AppMath::Vector4(lX, lY)); 
       // カメラの更新
-      _app.GetCamera().Process(AppMath::Vector4(rX, rY), _position, _move);
+      // _app.GetCamera().Process(AppMath::Vector4(rX, rY), _position, _move);
       // 前フレームの状態を保持
       auto oldState = _playerState;
       // 状態の更新
@@ -128,6 +128,8 @@ namespace Gyro {
       _sphere->Process(_move);  // 移動量の加算
       _capsule->Process(_move); // カプセルの更新
       Hit();
+      // カメラの更新
+      _app.GetCamera().Process(AppMath::Vector4(rX, rY), _position, _move);
       // ワールド座標の設定
       MV1SetMatrix(_model, UtilityDX::ToMATRIX(_world));
       // モデルの向きを設定する
