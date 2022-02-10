@@ -24,6 +24,7 @@
     <ClCompile Include="source\CollisionAABB.cpp" />
     <ClCompile Include="source\CollisionBase.cpp" />
     <ClCompile Include="source\CollisionCapsule.cpp" />
+    <ClCompile Include="source\CollisionComponent.cpp" />
     <ClCompile Include="source\CollisionOBB.cpp" />
     <ClCompile Include="source\CollisionSphere.cpp" />
     <ClCompile Include="source\Effect\EffectBase.cpp" />
@@ -57,6 +58,7 @@
     <ClInclude Include="source\CollisionAABB.h" />
     <ClInclude Include="source\CollisionBase.h" />
     <ClInclude Include="source\CollisionCapsule.h" />
+    <ClInclude Include="source\CollisionComponent.h" />
     <ClInclude Include="source\CollisionOBB.h" />
     <ClInclude Include="source\CollisionSphere.h" />
     <ClInclude Include="source\Effect\EffectBase.h" />
