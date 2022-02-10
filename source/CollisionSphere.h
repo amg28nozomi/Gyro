@@ -1,7 +1,7 @@
 /*****************************************************************//**
  * @file   CollisionSphere.h
  * @brief  コリジョンベースのサブクラス
- *         球の当たり判定クラス
+ *         球の衝突判定クラス
  * 
  * @author 鈴木希海
  * @date   January 2022
@@ -11,6 +11,9 @@
 #include <Dxlib.h>
 
 namespace Gyro {
+  /**
+   * @brief 
+   */
   namespace Object {
     /**
      * @class CollisionSphere

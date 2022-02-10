@@ -63,7 +63,6 @@ namespace Gyro {
             void SetDirection(const float radian) {
                 _eRot.SetY(radian);
             }
-
         protected:
             /**
              * @brief   エフェクトの再生判定

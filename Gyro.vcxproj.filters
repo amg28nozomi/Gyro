@@ -73,6 +73,12 @@
     <Filter Include="ソース ファイル\Object\Spawn">
       <UniqueIdentifier>{94a475f6-a796-4cbb-bd90-b26a15e7b214}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Object\Collision">
+      <UniqueIdentifier>{72674d2d-2ba2-4b61-bd68-0f0237ed10b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Object\Collision">
+      <UniqueIdentifier>{e2cdb3d1-df9f-4197-92ea-623e0a2b77cf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\ApplicationMain.cpp">
@@ -98,12 +104,6 @@
     </ClCompile>
     <ClCompile Include="source\UtilityDX.cpp">
       <Filter>ソース ファイル\Application</Filter>
-    </ClCompile>
-    <ClCompile Include="source\CollisionBase.cpp">
-      <Filter>ソース ファイル\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="source\CollisionSphere.cpp">
-      <Filter>ソース ファイル\Object</Filter>
     </ClCompile>
     <ClCompile Include="source\PrimitiveBase.cpp">
       <Filter>ソース ファイル</Filter>
@@ -132,9 +132,6 @@
     <ClCompile Include="source\Camera.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="source\CollisionCapsule.cpp">
-      <Filter>ソース ファイル\Object</Filter>
-    </ClCompile>
     <ClCompile Include="source\Effect\EffectBase.cpp">
       <Filter>ソース ファイル\Effect</Filter>
     </ClCompile>
@@ -162,6 +159,24 @@
     <ClCompile Include="source\SpawnEnemy.cpp">
       <Filter>ソース ファイル\Object\Spawn</Filter>
     </ClCompile>
+    <ClCompile Include="source\CollisionBase.cpp">
+      <Filter>ソース ファイル\Object\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="source\CollisionCapsule.cpp">
+      <Filter>ソース ファイル\Object\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="source\CollisionSphere.cpp">
+      <Filter>ソース ファイル\Object\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="source\CollisionOBB.cpp">
+      <Filter>ソース ファイル\Object\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="source\CollisionAABB.cpp">
+      <Filter>ソース ファイル\Object\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="source\CollisionComponent.cpp">
+      <Filter>ソース ファイル\Object\Collision</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\ApplicationMain.h">
@@ -187,12 +202,6 @@
     </ClInclude>
     <ClInclude Include="source\UtilityDX.h">
       <Filter>ヘッダー ファイル\Application</Filter>
-    </ClInclude>
-    <ClInclude Include="source\CollisionSphere.h">
-      <Filter>ヘッダー ファイル\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="source\CollisionBase.h">
-      <Filter>ヘッダー ファイル\Object</Filter>
     </ClInclude>
     <ClInclude Include="source\PrimitiveBase.h">
       <Filter>ヘッダー ファイル</Filter>
@@ -221,9 +230,6 @@
     <ClInclude Include="source\Camera.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="source\CollisionCapsule.h">
-      <Filter>ヘッダー ファイル\Object</Filter>
-    </ClInclude>
     <ClInclude Include="source\Effect\EffectBase.h">
       <Filter>ヘッダー ファイル\Effect</Filter>
     </ClInclude>
@@ -250,6 +256,24 @@
     </ClInclude>
     <ClInclude Include="source\SpawnEnemy.h">
       <Filter>ヘッダー ファイル\Object\Spawn</Filter>
+    </ClInclude>
+    <ClInclude Include="source\CollisionBase.h">
+      <Filter>ヘッダー ファイル\Object\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="source\CollisionCapsule.h">
+      <Filter>ヘッダー ファイル\Object\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="source\CollisionSphere.h">
+      <Filter>ヘッダー ファイル\Object\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="source\CollisionOBB.h">
+      <Filter>ヘッダー ファイル\Object\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="source\CollisionAABB.h">
+      <Filter>ヘッダー ファイル\Object\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="source\CollisionComponent.h">
+      <Filter>ヘッダー ファイル\Object\Collision</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

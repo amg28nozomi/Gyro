@@ -1,7 +1,7 @@
 /*****************************************************************//**
  * @file   CollisionCapsule.h
  * @brief  コリジョンベースのサブクラス
- *         カプセルの衝突判定処理クラス
+ *         カプセルの衝突判定クラス
  * 
  * @author 鈴木希海
  * @date   January 2022
@@ -84,14 +84,14 @@ namespace Gyro {
       float GetRadius() const {
         return _radius;
       }
-    private:
-      float _length; //!< 線分の長さ
-      float _radius; //!< 半径
       /**
        * @brief  線分の取得
        * @return 線分を返す
        */
       AppMath::LineSegment LineSegment() const;
+    private:
+      float _length; //!< 線分の長さ
+      float _radius; //!< 半径
     };
   } // namespace Object
 } // namespace Gyro
