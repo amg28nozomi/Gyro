@@ -149,7 +149,7 @@ namespace Gyro {
       MV1DrawModel(_model);
       // スカイスフィアの描画
       MV1DrawModel(_handleSkySphere);
-      MV1DrawModel(_handleMap);
+      // MV1DrawModel(_handleMap);
       _gaugeHp.Draw();
       _gaugeTrick.Draw();
 #ifdef _DEBUG
@@ -289,22 +289,29 @@ namespace Gyro {
     }
 
     bool Player::IsStand() {
-      auto old = *_capsule; // 前フレームのカプセル情報
-      // カプセル座標を更新する
-      // _capsule->Process(AppMath::Vector4(0.0f, _gravityScale));
-      // 地形と衝突しているかの判定を行う
-      if (_capsule->IntersectPlane(*_plane)) {
-        _gravityScale = 0.0f; // 重力スケールをゼロにする
-        // 衝突している場合はめり込み量を算出
-        auto pos = _position.AddVectorY(_gravityScale);
-        auto planeY = _plane->GetNormal();
-        auto v = ((pos.GetY() - planeY.GetY())) * -1; // めり込み量を算出する
-        // _position.AddY(v); // Y座標に加算する
-        // _capsule->Process(AppMath::Vector4(0.0f, v)); // めり込み量だけ押し出す
-        return true; // 立っている
+      // 新しい座標
+      auto newPos = _position.AddVectorY(_gravityScale);
+      // 新しいカプセル
+      auto newCapsule = *_capsule;
+      // カプセル座標をセット
+      newCapsule.SetPosition(newPos);
+      // 線分の取得
+      auto [start, end] = newCapsule.LineSegment().GetVector();
+      // 地形(床)と線分の衝突判定
+      auto hit = MV1CollCheck_Line(_handleMap, 2, UtilityDX::ToVECTOR(end), UtilityDX::ToVECTOR(start));
+      // 衝突フラグがない場合
+      if (hit.HitFlag == 0) {
+        // 新しい座標をセット
+        _position = newPos;
+        // コリジョン情報に更新をかける
+        _capsule->SetPosition(_position);
+        return false; // 床に立っていない
       }
-      // _position.AddY(_gravityScale);
-      return false; // 立っていない
+      // 衝突座標を取得する
+      _position = UtilityDX::ToVector(hit.HitPosition);
+      // 衝突判定をセットする
+      _capsule->SetPosition(_position);
+      return true; // 床に立っている
     }
 
 #ifdef _DEBUG

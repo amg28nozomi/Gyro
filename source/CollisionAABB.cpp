@@ -43,8 +43,16 @@ namespace Gyro {
     }
 
     bool CollisionAABB::CheckLineSegment(const AppMath::LineSegment& segment) {
-      auto denom = segment.Segment();
-      // if(AppMath::Arithmetic::NearZero(demon))
+      // Œü‚«ƒxƒNƒgƒ‹‚ðŽæ“¾
+      auto v = segment.Segment();
+      using Vector4 = AppMath::Vector4;
+      // ’·‚³‚ª‚È‚¢
+      if (Vector4::NearZero(v)) {
+        return false;
+      }
+
+
+
       return false;
     }
   } // namespace Object

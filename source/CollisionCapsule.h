@@ -84,14 +84,14 @@ namespace Gyro {
       float GetRadius() const {
         return _radius;
       }
-    private:
-      float _length; //!< ü•ª‚Ì’·‚³
-      float _radius; //!< ”¼Œa
       /**
        * @brief  ü•ª‚ÌŽæ“¾
        * @return ü•ª‚ð•Ô‚·
        */
       AppMath::LineSegment LineSegment() const;
+    private:
+      float _length; //!< ü•ª‚Ì’·‚³
+      float _radius; //!< ”¼Œa
     };
   } // namespace Object
 } // namespace Gyro
