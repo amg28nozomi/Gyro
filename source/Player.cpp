@@ -288,6 +288,24 @@ namespace Gyro {
         }
     }
 
+    void Player::GravityScale() {
+      // ジャンプフラグが立っている場合
+      if (_jump) {
+        // 新しい重力加速度を設定する
+        auto gScale = _gravityScale + (_jumpPower / 300.0f);
+        // 加速度がジャンプ力を超過していないか？
+        if (_jumpPower <= gScale) {
+          // 重力加速度をセットする
+          _gravityScale = gScale;
+          return;
+        }
+        _jump = false;
+      }
+      using Gravity = AppFrame::Math::GravityBase;
+      // 重力加速度を加算する
+      _gravityScale += Gravity::Acceleration();
+    }
+
     bool Player::IsStand() {
       // 新しい座標
       auto newPos = _position.AddVectorY(_gravityScale);
@@ -307,10 +325,13 @@ namespace Gyro {
         _capsule->SetPosition(_position);
         return false; // 床に立っていない
       }
-      // 衝突座標を取得する
+      // 衝突座標を座標に代入
       _position = UtilityDX::ToVector(hit.HitPosition);
-      // 衝突判定をセットする
+      // 新しい座標をコリジョンに反映
       _capsule->SetPosition(_position);
+      // ジャンプフラグが立っている場合はオフにする
+      _jump = false;
+      _jumpPower = 0.0f;
       return true; // 床に立っている
     }
 
@@ -382,9 +403,10 @@ namespace Gyro {
       if (_jumpInterval != 0.0f) {
         return; // インターバルがない場合は処理を行わない
       }
-      _jump = true; // ジャンプフラグを起動
+      _gravityScale = 0.0f;
+      _jump = true;           // ジャンプフラグ
       _jumpInterval = 300.0f; // インターバルを設定
-
+      _jumpPower = 100.0f;    // ジャンプ力をセット
     }
   } // namespace Player
 }// namespace Gyro

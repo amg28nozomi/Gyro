@@ -154,6 +154,10 @@ namespace Gyro {
       void DebugString() const;
 #endif
       /**
+       * @brief d—Íˆ—
+       */
+      void GravityScale() override;
+      /**
        * @brief  ’nŒ`‚Æ‚ÌÕ“Ë”»’è
        * @return true:Õ“Ë false:Õ“Ë‚µ‚Ä‚¢‚È‚¢
        */
