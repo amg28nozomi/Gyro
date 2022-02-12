@@ -67,6 +67,7 @@ namespace Gyro {
     }
 
     bool Player::Process() {
+      // 更新処理呼び出し
       ObjectBase::Process();
       // 名前空間の省略
       namespace App = AppFrame::Application;
@@ -83,6 +84,13 @@ namespace Gyro {
       // _app.GetCamera().Process(AppMath::Vector4(rX, rY), _position, _move);
       // 前フレームの状態を保持
       auto oldState = _playerState;
+
+      // ジャンプ処理の入口処理
+      if (input.GetButton(XINPUT_BUTTON_A, false) && !_jump) {
+        Jump(); // ジャンプ処理
+      }
+
+
       // 状態の更新
       if (_playerState == PlayerState::Idle && _attackFlugY == false && input.GetButton(XINPUT_BUTTON_Y, false)) {
           _playerState = PlayerState::Attack1;
@@ -180,7 +188,7 @@ namespace Gyro {
         }
         auto x = (move.GetX() / 30000) * MoveSpeed; // x軸の移動量
         auto z = (move.GetY() / 30000) * MoveSpeed; // y軸の移動量
-        _move.Set(x, 0.0f, z); // 移動量を設定
+        _move.Set(x, _gravityScale, z); // 移動量を設定
         // ラジアンを生成(y軸は反転させる)
         auto radian = std::atan2(move.GetX(), -move.GetY());
 #ifndef _DEBUG
@@ -292,9 +300,9 @@ namespace Gyro {
       // ジャンプフラグが立っている場合
       if (_jump) {
         // 新しい重力加速度を設定する
-        auto gScale = _gravityScale + (_jumpPower / 300.0f);
+        auto gScale = _gravityScale + (_jumpPower / 60.0f);
         // 加速度がジャンプ力を超過していないか？
-        if (_jumpPower <= gScale) {
+        if (gScale <= _jumpPower) {
           // 重力加速度をセットする
           _gravityScale = gScale;
           return;
@@ -400,7 +408,7 @@ namespace Gyro {
 
     void Player::Jump() {
       // ジャンプのインターバル中か
-      if (_jumpInterval != 0.0f) {
+      if (_jump) {
         return; // インターバルがない場合は処理を行わない
       }
       _gravityScale = 0.0f;
