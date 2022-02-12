@@ -12,6 +12,10 @@
 namespace Gyro {
   namespace Player {
 
+    JumpComponent::JumpComponent() {
+      _type = ComponentType::Jump;
+    }
+
     void JumpComponent::Set(const float range, const int fright) {
       _range = range;
       _fright = fright;

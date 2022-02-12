@@ -1,27 +1,56 @@
+/*****************************************************************//**
+ * @file   WireComponent.h
+ * @brief  ワイヤーアクション機能クラス
+ * 
+ * @author 鈴木希海
+ * @date   February 2022
+ *********************************************************************/
 #pragma once
+#include "ObjectComponent.h"
 #include <appframe.h>
 
 namespace Gyro {
+  namespace Object {
+    class ObjectBase;
+  }
   namespace Player {
+    namespace AppMath = AppFrame::Math;
+    using Vector4 = AppMath::Vector4;
     /**
      * @class 
-     * @brief 
+     * @brief ワイヤーアクション機能
      */
-    class WireComponent {
+    class WireComponent : public Object::ObjectComponent {
     public:
+
+      WireComponent(Object::ObjectBase& owner);
+      /**
+       * @brief  ターゲット座標の設定
+       * @param  target 対象の座標ベクトル
+       * @return true:設定成功 false:設定失敗
+       */
+      bool SetTarget(const Vector4& target);
       /**
        * @brief 開始処理
        */
-      void Start();
+      void Start() override;
       /**
        * @brief 終了処理
        */
-      void Finish();
-    protected:
+      void Finish() override;
+
+      AppMath::Matrix44 Move() const;
+    private:
+      //!< 所有者の参照
+      Object::ObjectBase& _owner;
       //!< ターゲット座標
-      AppFrame::Math::Vector4 _target{};
+      Vector4 _target{};
       //!< ターゲットへの向き
-      AppFrame::Math::Vector4 _forward{};
+      Vector4 _forward{};
+      //!< 移動時間
+      float _time{0.0f};
+      //!< ワイヤーアクションフラグ
+      bool _wire{false};
     };
   } // namespace Player
 } // namespace Gyro

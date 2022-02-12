@@ -15,6 +15,7 @@
 #include "GaugeHP.h"
 #include "GaugeTrick.h"
 #include "JumpComponent.h"
+#include "MoveComponent.h"
 
 namespace AppFrame::Math{}
 /**
@@ -178,6 +179,8 @@ namespace Gyro {
       void Jump();
       //!< ジャンプコンポーネント
       std::unique_ptr<JumpComponent> _jump;
+      //!< ムーブコンポーネント
+      std::unique_ptr<Object::MoveComponent> _move;
       bool _gravityReset{false}; //!< 重力リセット処理
     };
   }

@@ -6,7 +6,7 @@
  * @date   February 2022
  *********************************************************************/
 #pragma once
-
+#include "ObjectComponent.h"
 /**
  * @brief ゲームベース
  */
@@ -18,12 +18,12 @@ namespace Gyro {
     /**
      * @brief ジャンプ処理
      */
-    class JumpComponent {
+    class JumpComponent : public Object::ObjectComponent {
     public:
       /**
        * @brief コンストラクタ
        */
-      JumpComponent() {}
+      JumpComponent();
       /**
        * @brief  ジャンプの設定
        * @param  range  跳躍距離
@@ -33,11 +33,11 @@ namespace Gyro {
       /**
        * @brief ジャンプ処理の開始
        */
-      void Start();
+      void Start() override;
       /**
        * @brief ジャンプの終了
        */
-      void Finish();
+      void Finish() override;
       /**
        * @brief  ジャンプ力の取得
        * @return ジャンプ力
@@ -77,7 +77,7 @@ namespace Gyro {
       bool IsJump() const {
         return _jump;
       }
-    protected:
+    private:
       int _fright{0};     //!< 総対空時間
       int _count{0};      //!< 経過カウンタ
       float _range{0.0f}; //!< 跳躍距離
