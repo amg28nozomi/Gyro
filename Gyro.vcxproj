@@ -42,6 +42,7 @@
     <ClCompile Include="source\ObjectBase.cpp" />
     <ClCompile Include="source\ObjectServer.cpp" />
     <ClCompile Include="source\Player.cpp" />
+    <ClCompile Include="source\ObjectComponent.cpp" />
     <ClCompile Include="source\PrimitiveBase.cpp" />
     <ClCompile Include="source\PrimitivePlane.cpp" />
     <ClCompile Include="source\ScoreBase.cpp" />
@@ -52,6 +53,7 @@
     <ClCompile Include="source\SpawnEnemy.cpp" />
     <ClCompile Include="source\SpawnServer.cpp" />
     <ClCompile Include="source\UtilityDX.cpp" />
+    <ClCompile Include="source\WireComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\ApplicationMain.h" />
@@ -77,6 +79,7 @@
     <ClInclude Include="source\ObjectBase.h" />
     <ClInclude Include="source\ObjectServer.h" />
     <ClInclude Include="source\Player.h" />
+    <ClInclude Include="source\ObjectComponent.h" />
     <ClInclude Include="source\PrimitiveBase.h" />
     <ClInclude Include="source\PrimitivePlane.h" />
     <ClInclude Include="source\ScoreBase.h" />
@@ -87,6 +90,7 @@
     <ClInclude Include="source\SpawnEnemy.h" />
     <ClInclude Include="source\SpawnServer.h" />
     <ClInclude Include="source\UtilityDX.h" />
+    <ClInclude Include="source\WireComponent.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
