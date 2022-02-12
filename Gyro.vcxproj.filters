@@ -79,6 +79,12 @@
     <Filter Include="ソース ファイル\Object\Collision">
       <UniqueIdentifier>{e2cdb3d1-df9f-4197-92ea-623e0a2b77cf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Object\Player">
+      <UniqueIdentifier>{58b09ebf-581b-4a16-b1cd-e97ea164ee8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Object\Player">
+      <UniqueIdentifier>{f67a62f6-a940-4c2a-b855-27c2868b1209}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\ApplicationMain.cpp">
@@ -177,6 +183,9 @@
     <ClCompile Include="source\CollisionComponent.cpp">
       <Filter>ソース ファイル\Object\Collision</Filter>
     </ClCompile>
+    <ClCompile Include="source\JumpComponent.cpp">
+      <Filter>ソース ファイル\Object\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\ApplicationMain.h">
@@ -274,6 +283,9 @@
     </ClInclude>
     <ClInclude Include="source\CollisionComponent.h">
       <Filter>ヘッダー ファイル\Object\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="source\JumpComponent.h">
+      <Filter>ヘッダー ファイル\Object\Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

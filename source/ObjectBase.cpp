@@ -11,6 +11,10 @@
 #include "ModeGame.h"
 #include "SpawnBase.h"
 
+namespace {
+  constexpr auto MaxGravity = -50.0f;
+}
+
 namespace Gyro {
   namespace Object {
 
@@ -57,10 +61,10 @@ namespace Gyro {
     void ObjectBase::GravityScale() {
       // デフォルトの重力加速度を重力スケールに加算する
       using Gravity = AppFrame::Math::GravityBase;
-      if (-50.0f < _gravityScale) {
+      if (MaxGravity < _gravityScale) {
         _gravityScale += Gravity::Acceleration();
-        if (_gravityScale <= -50.0f) {
-          _gravityScale = -50.0f; // 下限を超過した場合は修正
+        if (_gravityScale <= MaxGravity) {
+          _gravityScale = MaxGravity; // 下限を超過した場合は修正
         }
       }
     }

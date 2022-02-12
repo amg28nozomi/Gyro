@@ -143,6 +143,10 @@ namespace Gyro {
        */
       virtual void GravityReset();
       /**
+       * @brief  押し出し処理
+       */
+      virtual void Extrude(){}
+      /**
        * @brief  ワールド座標の更新
        * @param  angle 角度フラグ(true:デグリー false:ラジアン)
        */

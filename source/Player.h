@@ -14,6 +14,7 @@
 #include "CollisionCapsule.h"
 #include "GaugeHP.h"
 #include "GaugeTrick.h"
+#include "JumpComponent.h"
 
 namespace AppFrame::Math{}
 /**
@@ -28,6 +29,7 @@ namespace Gyro {
    */
   namespace Player {
     namespace AppMath = AppFrame::Math;
+    class JumpComponent; //!< 
     /**
      * @class Player
      * @brief オブジェクトベースのサブクラス
@@ -162,19 +164,21 @@ namespace Gyro {
        * @return true:衝突 false:衝突していない
        */
       bool IsStand() override;
-
+      /**
+       * @brief  押し出し処理
+       */
+      void Extrude() override;
       /**
        * @brief 衝突判定処理
        */
       void Hit();
       /**
-       * @brief ジャンプ処理
+ジャンプできますか       * @brief ジャンプ処理
        */
       void Jump();
-
-      float _jumpPower{0.0f};    //!< ジャンプ力
-      float _jumpInterval{0.0f}; //!< ジャンプインターバル
-      bool _jump;                //!< ジャンプフラグ
+      //!< ジャンプコンポーネント
+      std::unique_ptr<JumpComponent> _jump;
+      bool _gravityReset{false}; //!< 重力リセット処理
     };
   }
     //} // namespace Player

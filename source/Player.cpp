@@ -12,8 +12,6 @@
 #include "Enemy/EnemyBase.h"
 #include "CollisionCapsule.h"
 #include "SpawnBase.h"
-#define	PI	(3.1415926535897932386f)
-#define	DEG2RAD(x)			( ((x) / 180.0f ) * PI )
 
 namespace {
   constexpr auto NoAnimation = -1; //!< アニメーションはアタッチされていない
@@ -60,6 +58,9 @@ namespace Gyro {
     bool Player::Init() {
       SetCamera(); // カメラの設定
       SetState();  // パラメータの設定
+      // ジャンプコンポーネントの設定
+      _jump = std::make_unique<JumpComponent>();
+      _jump->Set(300.0f, 300); // ジャンプの設定
       _modelAnim.SetMainAttach(_model, Idle, 1.0f, true);
       _gaugeHp.Init();
       _gaugeTrick.Init();
@@ -86,7 +87,7 @@ namespace Gyro {
       auto oldState = _playerState;
 
       // ジャンプ処理の入口処理
-      if (input.GetButton(XINPUT_BUTTON_A, false) && !_jump) {
+      if (input.GetButton(XINPUT_BUTTON_A, false)) {
         Jump(); // ジャンプ処理
       }
 
@@ -157,7 +158,7 @@ namespace Gyro {
       MV1DrawModel(_model);
       // スカイスフィアの描画
       MV1DrawModel(_handleSkySphere);
-      // MV1DrawModel(_handleMap);
+      MV1DrawModel(_handleMap);
       _gaugeHp.Draw();
       _gaugeTrick.Draw();
 #ifdef _DEBUG
@@ -183,12 +184,11 @@ namespace Gyro {
         _move.Zero(); // 移動量初期化
         // 移動量はあるか
         if (move.LengthSquared() == 0.0f) {
-          // 現在座標に重力スケールを加算した値を返す
           return _position;
         }
         auto x = (move.GetX() / 30000) * MoveSpeed; // x軸の移動量
         auto z = (move.GetY() / 30000) * MoveSpeed; // y軸の移動量
-        _move.Set(x, _gravityScale, z); // 移動量を設定
+        _move.Set(x, 0.0f, z);     // 移動量を設定
         // ラジアンを生成(y軸は反転させる)
         auto radian = std::atan2(move.GetX(), -move.GetY());
 #ifndef _DEBUG
@@ -298,20 +298,14 @@ namespace Gyro {
 
     void Player::GravityScale() {
       // ジャンプフラグが立っている場合
-      if (_jump) {
+      if (_jump->IsJump()) {
         // 新しい重力加速度を設定する
-        auto gScale = _gravityScale + (_jumpPower / 60.0f);
-        // 加速度がジャンプ力を超過していないか？
-        if (gScale <= _jumpPower) {
-          // 重力加速度をセットする
-          _gravityScale = gScale;
-          return;
-        }
-        _jump = false;
+        _gravityScale = _jump->JumpPower();
+        return;
       }
       using Gravity = AppFrame::Math::GravityBase;
       // 重力加速度を加算する
-      _gravityScale += Gravity::Acceleration();
+      _gravityScale += (Gravity::Acceleration() / 60.0f);
     }
 
     bool Player::IsStand() {
@@ -337,9 +331,8 @@ namespace Gyro {
       _position = UtilityDX::ToVector(hit.HitPosition);
       // 新しい座標をコリジョンに反映
       _capsule->SetPosition(_position);
-      // ジャンプフラグが立っている場合はオフにする
-      _jump = false;
-      _jumpPower = 0.0f;
+      // ジャンプの後始末を行う
+      _jump->Finish();
       return true; // 床に立っている
     }
 
@@ -406,15 +399,31 @@ namespace Gyro {
       }
     }
 
+    void Player::Extrude() {
+      auto newPosition = _position + _move;
+      // コリジョンと壁の押し出し処理を行う
+      auto newCapsule = *_capsule;
+      newCapsule.SetPosition(newPosition);
+      auto [start, end] = newCapsule.LineSegment().GetVector();
+      auto radius = newCapsule.GetRadius();
+      // ステージとの衝突判定
+      auto hit = MV1CollCheck_Capsule(_handleMap, 1, UtilityDX::ToVECTOR(start), UtilityDX::ToVECTOR(end), radius);
+      // 接触箇所がない場合
+      if (!hit.HitNum) {
+        // 衝突用情報の後始末を行う
+        MV1CollResultPolyDimTerminate(hit);
+        return;
+      }
+      MV1CollResultPolyDimTerminate(hit);
+    }
+
     void Player::Jump() {
-      // ジャンプのインターバル中か
-      if (_jump) {
+      // ジャンプフラグが立っている場合は処理を行わない
+      if (_jump->IsJump()) {
         return; // インターバルがない場合は処理を行わない
       }
+      _jump->Start(); // ジャンプ開始
       _gravityScale = 0.0f;
-      _jump = true;           // ジャンプフラグ
-      _jumpInterval = 300.0f; // インターバルを設定
-      _jumpPower = 100.0f;    // ジャンプ力をセット
     }
   } // namespace Player
 }// namespace Gyro
