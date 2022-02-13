@@ -27,22 +27,46 @@ namespace Gyro {
       /**
        * @brief  ターゲット座標の設定
        * @param  target 対象の座標ベクトル
+       * @param  time   移動時間
        * @return true:設定成功 false:設定失敗
        */
-      bool SetTarget(const Vector4& target);
+      bool SetTarget(const Vector4& target, const float time);
       /**
        * @brief 開始処理
        */
-      void Start() override {}
+      void Start() override {
+        _wire = true;
+      }
       /**
        * @brief 終了処理
        */
-      void Finish() override {}
-
-      AppMath::Matrix44 Move() const;
+      void Finish() override {
+        _wire = false;
+      }
+      /**
+       * @brief  
+       * @return 
+       */
+      Vector4 WireMove() const;
+      /**
+       * @brief  ワイヤーアクション中かの判定
+       * @return true:アクション中 false:アクション外
+       */
+      bool IsAction() const {
+        return _wire;
+      }
+      /**
+       * @brief  目標地点の取得
+       * @return 目標地点
+       */
+      Vector4 Target() const {
+        return _target;
+      }
     private:
       //!< 所有者の参照
       Object::ObjectBase& _owner;
+      //!< アクション開始座標
+      Vector4 _start{};
       //!< ターゲット座標
       Vector4 _target{};
       //!< ターゲットへの向き

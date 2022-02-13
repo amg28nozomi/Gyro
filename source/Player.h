@@ -16,6 +16,7 @@
 #include "GaugeTrick.h"
 #include "JumpComponent.h"
 #include "MoveComponent.h"
+#include "WireComponent.h"
 
 namespace AppFrame::Math{}
 /**
@@ -181,13 +182,21 @@ namespace Gyro {
        */
       void Hit();
       /**
-ジャンプできますか       * @brief ジャンプ処理
+       * @brief ジャンプ処理
        */
       void Jump();
+      /**
+       * @brief ワイヤーアクション
+       */
+      void Wire(AppMath::Vector4& move);
+
+
       //!< ジャンプコンポーネント
       std::unique_ptr<JumpComponent> _jump;
       //!< ムーブコンポーネント
       std::unique_ptr<Object::MoveComponent> _move;
+      //!< ワイヤーコンポーネント
+      std::unique_ptr<WireComponent> _wire;
       bool _gravityReset{false}; //!< 重力リセット処理
     };
   }

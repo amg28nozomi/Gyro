@@ -61,6 +61,8 @@ namespace Gyro {
       // ジャンプコンポーネントの設定
       _jump = std::make_unique<JumpComponent>();
       _jump->Set(300.0f, 300); // ジャンプの設定
+      // ワイヤーコンポーネントの設定
+      _wire = std::make_unique<WireComponent>(*this);
       _modelAnim.SetMainAttach(_model, Idle, 1.0f, true);
       _gaugeHp.Init();
       _gaugeTrick.Init();
@@ -79,55 +81,70 @@ namespace Gyro {
       auto [leftTrigger, rightTrigger] = input.GetTrigger(); // トリガーボタン
       // 前フレーム座標
       auto oldPosition = _position;
-      // 移動量の取得
-      auto move = Move(lX, lY);
-      // 座標に現在座標を更新する
-      _position.Add(move);
+      //!< 移動量
+      AppMath::Vector4 move;
       // 前フレームの状態を保持
       auto oldState = _playerState;
-
-      // ジャンプ処理の入口処理
-      if (input.GetButton(XINPUT_BUTTON_A, false)) {
-        Jump(); // ジャンプ処理
+      // ワイヤーアクションの入口処理
+      if (input.GetButton(XINPUT_BUTTON_B, false)) {
+        Wire(move);
       }
-
-
-      // 状態の更新
-      if (_playerState == PlayerState::Idle && _attackFlugY == false && input.GetButton(XINPUT_BUTTON_Y, false)) {
+      // ワイヤーアクション実行中は他のアクションを実行しない
+      if (!_wire->IsAction()) {
+        // ジャンプ処理の入口処理
+        if (input.GetButton(XINPUT_BUTTON_A, false)) {
+          Jump(); // ジャンプ処理
+        }
+        // 移動量の取得
+        move = Move(lX, lY);
+        // 状態の更新
+        if (_playerState == PlayerState::Idle && _attackFlugY == false && input.GetButton(XINPUT_BUTTON_Y, false)) {
           _playerState = PlayerState::Attack1;
           _gaugeTrick.Add(-50.f);
           _attackFlugY = true;
           _cnt = 0;
-      }else if (_playerState == PlayerState::Attack1 && _attackFlugY == true && input.GetButton(XINPUT_BUTTON_Y, false)) {
+        }
+        else if (_playerState == PlayerState::Attack1 && _attackFlugY == true && input.GetButton(XINPUT_BUTTON_Y, false)) {
           _playerState = PlayerState::Attack2;
           _gaugeTrick.Add(-50.f);
           _cnt = 0;
-      }else if (_playerState == PlayerState::Attack2 && _attackFlugY == true && input.GetButton(XINPUT_BUTTON_Y, false)) {
+        }
+        else if (_playerState == PlayerState::Attack2 && _attackFlugY == true && input.GetButton(XINPUT_BUTTON_Y, false)) {
           _playerState = PlayerState::Attack3;
           _gaugeTrick.Add(-50.f);
           _cnt = 0;
-      }
-      if (_playerState == PlayerState::Idle && _attackFlugX == false && input.GetButton(XINPUT_BUTTON_X, false)) {
+        }
+        if (_playerState == PlayerState::Idle && _attackFlugX == false && input.GetButton(XINPUT_BUTTON_X, false)) {
           _playerState = PlayerState::Attack1;
           _gaugeTrick.Add(-50.f);
           _attackFlugX = true;
           _cnt = 0;
-      }else if (_playerState == PlayerState::Attack1 && _attackFlugX == true && input.GetButton(XINPUT_BUTTON_X, false)) {
+        }
+        else if (_playerState == PlayerState::Attack1 && _attackFlugX == true && input.GetButton(XINPUT_BUTTON_X, false)) {
           _playerState = PlayerState::Attack2;
           _gaugeTrick.Add(-50.f);
           _cnt = 0;
-      }else if (_playerState == PlayerState::Attack2 && _attackFlugX == true && input.GetButton(XINPUT_BUTTON_X, false)) {
+        }
+        else if (_playerState == PlayerState::Attack2 && _attackFlugX == true && input.GetButton(XINPUT_BUTTON_X, false)) {
           _playerState = PlayerState::Attack3;
           _gaugeTrick.Add(-50.f);
           _cnt = 0;
-      }
-      if (_modelAnim.GetMainAnimEnd() == true && _attackFlugY == true) {
+        }
+        if (_modelAnim.GetMainAnimEnd() == true && _attackFlugY == true) {
           _attackFlugY = false;
-      }else if (_modelAnim.GetMainAnimEnd() == true && _attackFlugX == true) {
+        }
+        else if (_modelAnim.GetMainAnimEnd() == true && _attackFlugX == true) {
           _attackFlugX = false;
-      }else if (_attackFlugX == false && _attackFlugY == false) {
+        }
+        else if (_attackFlugX == false && _attackFlugY == false) {
           SetRotation(move);
+        }
       }
+      else {
+        Wire(move);
+      }
+      // 座標に現在座標を更新する
+      _position.Add(move);
       _cnt++;
       _gaugeHp.Process();
       _gaugeTrick.Process();
@@ -425,6 +442,19 @@ namespace Gyro {
       }
       _jump->Start(); // ジャンプ開始
       _gravityScale = 0.0f;
+    }
+
+    void Player::Wire(AppMath::Vector4& move) {
+      // ワイヤーアクションが実行されていないか
+      if (!_wire->IsAction()) {
+        // 座標をセットして処理を行う
+        auto o = _app.GetObjectServer().GetObjects();
+        _wire->SetTarget(o.back()->GetPosition(), 180.0f);
+        _wire->Start();
+        return;
+      }
+      // 移動量をセットする
+      move = _wire->WireMove();
     }
   } // namespace Player
 }// namespace Gyro
