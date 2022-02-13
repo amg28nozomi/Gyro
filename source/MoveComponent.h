@@ -1,8 +1,21 @@
+/*****************************************************************//**
+ * @file   MoveComponent.h
+ * @brief  移動コンポーネントクラス
+ * 
+ * @author 鈴木希海
+ * @date   February 2022
+ *********************************************************************/
 #pragma once
 #include "ObjectComponent.h"
 #include <appframe.h>
 
+/**
+ * @brief ゲームベース
+ */
 namespace Gyro {
+  /**
+   * @brief オブジェクトベース
+   */
   namespace Object {
     class ObjectBase;
     namespace AppMath = AppFrame::Math;
@@ -23,26 +36,33 @@ namespace Gyro {
       void Set(const float speed) {
         _speed = speed;
       }
-
+      
       void Start() override;
 
       void Finish() override;
       /**
-       * @brief  移動量の算出(自機用)
-       * @param  move アナログスティックの入力情報ベクトル
-       * @return 移動ベクトル
+       * @brief  移動量の更新
+       * @param  x x軸の入力状態
+       * @param  z z軸の入力状態
+       * @return true:移動量有り false:移動量無し
        */
-      AppMath::Vector4 Move(const AppMath::Vector4& move);
-
-      AppMath::Matrix44 GetTranslate() {
+      bool Move(const float x, const float z);
+      /**
+       * @brief  移動量(平行移動行列)の取得
+       * @return 平行移動行列
+       */
+      AppMath::Matrix44 MoveTranslate() {
         return AppMath::Matrix44::Translate(_move);
       }
-
+      /**
+       * @brief  移動量(ベクトル)の取得
+       * @return 移動量ベクトル
+       */
       AppMath::Vector4 MoveVector() const {
         return _move;
       }
     private:
-      ObjectBase& _owner;
+      ObjectBase& _owner;       //!< 所有者の参照
       AppMath::Vector4 _move{}; //!< 移動ベクトル
       float _speed;  //!< 速度
     };

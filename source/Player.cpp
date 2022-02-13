@@ -79,16 +79,8 @@ namespace Gyro {
       auto [leftTrigger, rightTrigger] = input.GetTrigger(); // トリガーボタン
       // 前フレーム座標
       auto oldPosition = _position;
-      // 移動量
-      auto move = _move->Move(AppMath::Vector4(lX, lY));
-      // ラジアンを生成(y軸は反転させる)
-      auto radian = std::atan2(move.GetX(), -move.GetZ());
-#ifndef _DEBUG
-      _rotation.SetY(radian); // y軸の回転量をセットする
-#else
-      // デグリー値をセットする(デバッグ用)
-      _rotation.SetY(AppMath::Utility::RadianToDegree(radian));
-#endif
+      // 移動量の取得
+      auto move = Move(lX, lY);
       // 座標に現在座標を更新する
       _position.Add(move);
       // 前フレームの状態を保持
@@ -172,6 +164,8 @@ namespace Gyro {
 #ifdef _DEBUG
       DebugDraw(); // デバッグ描画
 #endif
+      // 移動処理の後始末を行う
+      _move->Finish();
       return true;
     }
 
@@ -188,25 +182,23 @@ namespace Gyro {
 
     }
 
-//    AppMath::Vector4 Player::Move(AppMath::Vector4 move) {
-//        _move.Zero(); // 移動量初期化
-//        // 移動量はあるか
-//        if (move.LengthSquared() == 0.0f) {
-//          return _position;
-//        }
-//        auto x = (move.GetX() / 30000) * MoveSpeed; // x軸の移動量
-//        auto z = (move.GetY() / 30000) * MoveSpeed; // y軸の移動量
-//        _move.Set(x, 0.0f, z);     // 移動量を設定
-//        // ラジアンを生成(y軸は反転させる)
-//        auto radian = std::atan2(move.GetX(), -move.GetY());
-//#ifndef _DEBUG
-//        _rotation.SetY(radian); // y軸の回転量をセットする
-//#else
-//        // デグリー値をセットする(デバッグ用)
-//        _rotation.SetY(AppMath::Utility::RadianToDegree(radian));
-//#endif
-//        return _position + _move;
-//    }
+    AppMath::Vector4 Player::Move(const float leftX, const float leftY) {
+      // 移動ベクトル
+      auto move = AppMath::Vector4();
+      // 移動量の生成
+      if (_move->Move(leftX, leftY)) {
+        move = _move->MoveVector();
+        // ラジアンを生成(y軸は反転させる)
+        auto radian = std::atan2(move.GetX(), -move.GetZ());
+#ifndef _DEBUG
+        _rotation.SetY(radian); // y軸の回転量をセットする
+#else
+        // デグリー値をセットする(デバッグ用)
+        _rotation.SetY(AppMath::Utility::RadianToDegree(radian));
+#endif
+      }
+      return move; // 移動量を返す
+    }
 
     void Player::LoadResource() {
       // 各種リソースの読み取り処理

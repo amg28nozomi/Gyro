@@ -76,6 +76,18 @@ namespace Gyro {
             Object::CollisionCapsule& GetCapsule() {
               return *_capsule;
             }
+
+            virtual unsigned short GetThis() const {
+              return 0;
+            }
+            /**
+             * @brief  対象と自身が同一オブジェクトかの判定
+             * @param  handle ハンドル
+             * @return true:一致 false:不一致
+             */
+            inline bool Equals(const int handle) const {
+              return _mHandle == handle;
+            }
         protected:
             /**
              * @enum class  EnemyState

@@ -39,8 +39,13 @@ namespace Gyro {
              * @return 
              */
             bool Draw() const override;
+
+            unsigned short GetThis() const override {
+              return _this;
+            }
         private:
           static inline unsigned short _number{0}; //!< ¶¬”Ô†
+          unsigned short _this{0}; //!< Ž¯•ÊID
           bool _iMove{false}; //!< ˆÚ“®ƒtƒ‰ƒO
           /**
            * @brief  “–‚½‚è”»’è‚ÌÝ’èˆ—

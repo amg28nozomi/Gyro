@@ -1,3 +1,10 @@
+/*****************************************************************//**
+ * @file   MoveComponent.cpp
+ * @brief  移動コンポーネントクラスの定義
+ * 
+ * @author 鈴木希海
+ * @date   February 2022
+ *********************************************************************/
 #include "MoveComponent.h"
 #include <appframe.h>
 
@@ -9,16 +16,16 @@ namespace Gyro {
       _speed = 5.0f;
     }
 
-    AppMath::Vector4 MoveComponent::Move(const AppMath::Vector4& move) {
-      // 入力値がない場合はゼロベクトルを返す
-      if (move.LengthSquared() == 0.0f) {
-        return AppMath::Vector4();
+    bool MoveComponent::Move(const float x, const float z) {
+      // 値が0の場合は処理を行わない
+      if (AppMath::Arithmetic::LengthSquared(x, z) == 0.0f) {
+        return false; // 移動無し
       }
-      //
-      auto x = (move.GetX() / 30000.0f) * _speed;
-      auto z = (move.GetY() / 30000.0f) * _speed;
-      _move = AppMath::Vector4(x, 0.0f, z);
-      return AppMath::Vector4(x, 0.0f, z);
+      // 移動量の算出
+      auto moveX = (x / 30000.0f) * _speed;
+      auto moveZ = (z / 30000.0f) * _speed;
+      _move = AppMath::Vector4(moveX, 0.0f, moveZ);
+      return true;   // 移動有り
     }
 
     void MoveComponent::Start() {
@@ -26,7 +33,7 @@ namespace Gyro {
     }
     
     void MoveComponent::Finish() {
-
+      _move.Zero();
     }
   } // namespace Object
 } // namespace Gyro

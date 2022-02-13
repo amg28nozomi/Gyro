@@ -74,6 +74,11 @@ namespace Gyro {
        * @param  spawn スポーン情報
        */
       void Set(Object::SpawnBase& spawn) override;
+
+      // 仮
+      int StageHandle() const {
+        return _handleMap;
+      }
     private:
       // AppFrame::Math::Vector4 _move{}; //!< 移動量
 
@@ -114,8 +119,10 @@ namespace Gyro {
       void SetCamera();
       /**
        * @brief  移動量の算出
+       * @param  leftX 左スティックの入力情報(x軸)
+       * @param  leftY 左スティックの入力情報(y軸)
        */
-      // AppMath::Vector4 Move(AppMath::Vector4 move);
+      AppMath::Vector4 Move(const float leftX, const float leftY);
       /**
        * @brief カメラの更新
        * @param stick 

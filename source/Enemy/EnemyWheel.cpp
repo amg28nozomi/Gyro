@@ -35,6 +35,7 @@ namespace Gyro {
           auto[handle, key] = _app.GetModelServer().GetModel("enemy", _number);
           ++_number;
           _mHandle = handle; // ハンドル設定
+          _this = key;
           // アニメーションアタッチ
           _modelAnim.SetMainAttach(_mHandle, IdleKey, 1.0f, true);
           _enemyMoveSpeed = 5.0f;
@@ -53,7 +54,6 @@ namespace Gyro {
 
                             // ラジアンを生成(z軸は反転させる)
             auto radian = std::atan2(move.GetX(), -move.GetZ());
-
             // 入力処理がある場合、更新を行う
             if (_app.GetOperation().GetXBoxState().GetButton(XINPUT_BUTTON_LEFT_THUMB, false)) {
               _iMove = !_iMove;
@@ -74,9 +74,9 @@ namespace Gyro {
             else {
                 _enemyState = EnemyState::WAIT;
             }
-            Hit(); // 衝突判定
+            Hit();         // 衝突判定
             WorldMatrix(); // ワールド座標の更新
-                  // ワールド座標の設定
+            // ワールド座標の設定
             MV1SetMatrix(_mHandle, UtilityDX::ToMATRIX(_world));
 
             // アニメーション変更
@@ -131,6 +131,10 @@ namespace Gyro {
           for (auto obj : objects) {
             // 敵の場合のみ処理を行う
             if (obj->GetId() != ObjectId::Enemy) continue;
+            // 一致している場合は除外
+            if (std::dynamic_pointer_cast<Enemy::EnemyBase>(obj)->Equals(_mHandle)) {
+              continue; // 同一オブジェクトのため除外
+            }
             // 球と球の衝突判定
             if (_sphere->IntersectSphere(std::dynamic_pointer_cast<Enemy::EnemyBase>(obj)->GetCollision())) {
               // 衝突した場合は押し出し処理を行う
