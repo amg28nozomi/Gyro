@@ -33,11 +33,11 @@ namespace Gyro {
       /**
        * @brief ŠJnˆ—
        */
-      void Start() override;
+      void Start() override {}
       /**
        * @brief I—¹ˆ—
        */
-      void Finish() override;
+      void Finish() override {}
 
       AppMath::Matrix44 Move() const;
     private:

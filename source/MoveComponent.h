@@ -1,20 +1,15 @@
 #pragma once
 #include "ObjectComponent.h"
-
-namespace AppFrame {
-  namespace Math {
-    class Vector4;
-  }
-}
+#include <appframe.h>
 
 namespace Gyro {
   namespace Object {
     class ObjectBase;
+    namespace AppMath = AppFrame::Math;
     /**
      * @brief 移動コンポーネント
      */
     class MoveComponent : public ObjectComponent {
-      using Vector4 = AppFrame::Math::Vector4;
     public:
       /**
        * @brief コンストラクタ
@@ -28,14 +23,28 @@ namespace Gyro {
       void Set(const float speed) {
         _speed = speed;
       }
+
+      void Start() override;
+
+      void Finish() override;
       /**
        * @brief  移動量の算出(自機用)
        * @param  move アナログスティックの入力情報ベクトル
        * @return 移動ベクトル
        */
-      Vector4 Move(const Vector4& move) const;
+      AppMath::Vector4 Move(const AppMath::Vector4& move);
+
+      AppMath::Matrix44 GetTranslate() {
+        return AppMath::Matrix44::Translate(_move);
+      }
+
+      AppMath::Vector4 MoveVector() const {
+        return _move;
+      }
     private:
-      float _speed;
+      ObjectBase& _owner;
+      AppMath::Vector4 _move{}; //!< 移動ベクトル
+      float _speed;  //!< 速度
     };
   } // namespace Object
 } // namespace Gyro

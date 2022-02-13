@@ -103,6 +103,11 @@ namespace Gyro {
              * @brief “–‚½‚è”»’èî•ñ‚Ìİ’è
              */
             virtual void SetCollision();
+            /**
+             * @brief  ’nŒ`‚Æ‚ÌÕ“Ë”»’è
+             * @return 
+             */
+            bool IsStand() override;
         };
     } // namespace Enemy
 } // namespace Gyro

@@ -47,6 +47,8 @@ namespace Gyro {
            * @author —é–ØŠóŠC
            */
           void SetCollision() override;
+
+          void Hit();
         };
     } // namespace Enemy
 } // namespace Gyro

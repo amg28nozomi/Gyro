@@ -10,6 +10,7 @@
 #include "ApplicationMain.h"
 #include "ModeGame.h"
 #include "SpawnBase.h"
+#include "UtilityDX.h"
 
 namespace {
   constexpr auto MaxGravity = -50.0f;
@@ -70,7 +71,6 @@ namespace Gyro {
     }
 
     bool ObjectBase::IsStand() {
-
       return true;
     }
 

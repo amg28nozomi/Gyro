@@ -74,7 +74,7 @@ namespace Gyro {
             else {
                 _enemyState = EnemyState::WAIT;
             }
-
+            Hit(); // 衝突判定
             WorldMatrix(); // ワールド座標の更新
                   // ワールド座標の設定
             MV1SetMatrix(_mHandle, UtilityDX::ToMATRIX(_world));
@@ -123,6 +123,36 @@ namespace Gyro {
           _sphere = std::make_unique<Object::CollisionSphere>(*this, _position.AddVectorY(100.0f), 50.0f);
           // カプセルコリジョンの設定
           _capsule = std::make_unique<Object::CollisionCapsule>(*this, _position, 200.0f, 20.0f);
+        }
+
+        void EnemyWheel::Hit() {
+          auto objects = _app.GetObjectServer().GetObjects(); // オブジェクトのコピー
+          // 衝突判定を行う
+          for (auto obj : objects) {
+            // 敵の場合のみ処理を行う
+            if (obj->GetId() != ObjectId::Enemy) continue;
+            // 球と球の衝突判定
+            if (_sphere->IntersectSphere(std::dynamic_pointer_cast<Enemy::EnemyBase>(obj)->GetCollision())) {
+              // 衝突した場合は押し出し処理を行う
+            }
+            // カプセルとカプセルの衝突判定
+            if (_capsule->IntersectCapsule(std::dynamic_pointer_cast<Enemy::EnemyBase>(obj)->GetCapsule())) {
+              // 衝突している場合は押し出し処理を行う
+              auto y = _position.GetY(); // Y座標は変更を行わない
+              // 二つの座標から押し出し力を算出する
+              auto mPos = _capsule->GetPosition();
+              auto ePos = std::dynamic_pointer_cast<Enemy::EnemyBase>(obj)->GetCapsule().GetPosition();
+              auto v = (mPos - ePos);   // 中心距離
+              auto length2 = v.LengthSquared(); // 二点間の長さを算出
+              auto radius2 = _capsule->GetRadius() + std::dynamic_pointer_cast<Enemy::EnemyBase>(obj)->GetCapsule().GetRadius();
+
+              auto l7 = radius2 - std::sqrtf(v.GetX() * v.GetX() + v.GetZ() * v.GetZ());
+              v.Normalize();
+              AppMath::Vector4 vv(v.GetX() * l7, 0.0f, v.GetZ());
+              _position.Add(vv);
+              _capsule->SetPosition(_position);
+            }
+          }
         }
     } // namespace Enemy
 } // namespace Gyro

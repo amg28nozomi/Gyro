@@ -75,7 +75,7 @@ namespace Gyro {
        */
       void Set(Object::SpawnBase& spawn) override;
     private:
-      AppFrame::Math::Vector4 _move{}; //!< 移動量
+      // AppFrame::Math::Vector4 _move{}; //!< 移動量
 
       int _model;          //!< モデルハンドル
       int _animaIndex;     //!< アタッチされているアニメ番号
@@ -115,7 +115,7 @@ namespace Gyro {
       /**
        * @brief  移動量の算出
        */
-      AppMath::Vector4 Move(AppMath::Vector4 move);
+      // AppMath::Vector4 Move(AppMath::Vector4 move);
       /**
        * @brief カメラの更新
        * @param stick 

@@ -4,15 +4,29 @@
 namespace Gyro {
   namespace Object {
 
-    MoveComponent::Vector4 MoveComponent::Move(const Vector4& move) const {
+    MoveComponent::MoveComponent(ObjectBase& owner) : _owner(owner) {
+      _move = AppMath::Vector4();
+      _speed = 5.0f;
+    }
+
+    AppMath::Vector4 MoveComponent::Move(const AppMath::Vector4& move) {
       // 入力値がない場合はゼロベクトルを返す
       if (move.LengthSquared() == 0.0f) {
-        return Vector4();
+        return AppMath::Vector4();
       }
       //
       auto x = (move.GetX() / 30000.0f) * _speed;
       auto z = (move.GetY() / 30000.0f) * _speed;
-      return Vector4(x, 0.0f, z);
+      _move = AppMath::Vector4(x, 0.0f, z);
+      return AppMath::Vector4(x, 0.0f, z);
+    }
+
+    void MoveComponent::Start() {
+
+    }
+    
+    void MoveComponent::Finish() {
+
     }
   } // namespace Object
 } // namespace Gyro

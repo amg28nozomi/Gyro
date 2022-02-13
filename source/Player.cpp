@@ -79,10 +79,18 @@ namespace Gyro {
       auto [leftTrigger, rightTrigger] = input.GetTrigger(); // トリガーボタン
       // 前フレーム座標
       auto oldPosition = _position;
-      // 座標更新
-      _position = Move(AppMath::Vector4(lX, lY)); 
-      // カメラの更新
-      // _app.GetCamera().Process(AppMath::Vector4(rX, rY), _position, _move);
+      // 移動量
+      auto move = _move->Move(AppMath::Vector4(lX, lY));
+      // ラジアンを生成(y軸は反転させる)
+      auto radian = std::atan2(move.GetX(), -move.GetZ());
+#ifndef _DEBUG
+      _rotation.SetY(radian); // y軸の回転量をセットする
+#else
+      // デグリー値をセットする(デバッグ用)
+      _rotation.SetY(AppMath::Utility::RadianToDegree(radian));
+#endif
+      // 座標に現在座標を更新する
+      _position.Add(move);
       // 前フレームの状態を保持
       auto oldState = _playerState;
 
@@ -126,7 +134,7 @@ namespace Gyro {
       }else if (_modelAnim.GetMainAnimEnd() == true && _attackFlugX == true) {
           _attackFlugX = false;
       }else if (_attackFlugX == false && _attackFlugY == false) {
-          SetRotation(_move);
+          SetRotation(move);
       }
       _cnt++;
       _gaugeHp.Process();
@@ -134,11 +142,11 @@ namespace Gyro {
       Animation(oldState);      // アニメーションの設定
       _modelAnim.Process();     // アニメーションの再生
       WorldMatrix();            // ワールド座標の更新
-      _sphere->Process(_move);  // 移動量の加算
-      _capsule->Process(_move); // カプセルの更新
+      _sphere->Process(move);  // 移動量の加算
+      _capsule->Process(move); // カプセルの更新
       Hit();
       // カメラの更新
-      _app.GetCamera().Process(AppMath::Vector4(rX, rY), _position, _move);
+      _app.GetCamera().Process(AppMath::Vector4(rX, rY), _position, move);
       // ワールド座標の設定
       MV1SetMatrix(_model, UtilityDX::ToMATRIX(_world));
       // モデルの向きを設定する
@@ -180,25 +188,25 @@ namespace Gyro {
 
     }
 
-    AppMath::Vector4 Player::Move(AppMath::Vector4 move) {
-        _move.Zero(); // 移動量初期化
-        // 移動量はあるか
-        if (move.LengthSquared() == 0.0f) {
-          return _position;
-        }
-        auto x = (move.GetX() / 30000) * MoveSpeed; // x軸の移動量
-        auto z = (move.GetY() / 30000) * MoveSpeed; // y軸の移動量
-        _move.Set(x, 0.0f, z);     // 移動量を設定
-        // ラジアンを生成(y軸は反転させる)
-        auto radian = std::atan2(move.GetX(), -move.GetY());
-#ifndef _DEBUG
-        _rotation.SetY(radian); // y軸の回転量をセットする
-#else
-        // デグリー値をセットする(デバッグ用)
-        _rotation.SetY(AppMath::Utility::RadianToDegree(radian));
-#endif
-        return _position + _move;
-    }
+//    AppMath::Vector4 Player::Move(AppMath::Vector4 move) {
+//        _move.Zero(); // 移動量初期化
+//        // 移動量はあるか
+//        if (move.LengthSquared() == 0.0f) {
+//          return _position;
+//        }
+//        auto x = (move.GetX() / 30000) * MoveSpeed; // x軸の移動量
+//        auto z = (move.GetY() / 30000) * MoveSpeed; // y軸の移動量
+//        _move.Set(x, 0.0f, z);     // 移動量を設定
+//        // ラジアンを生成(y軸は反転させる)
+//        auto radian = std::atan2(move.GetX(), -move.GetY());
+//#ifndef _DEBUG
+//        _rotation.SetY(radian); // y軸の回転量をセットする
+//#else
+//        // デグリー値をセットする(デバッグ用)
+//        _rotation.SetY(AppMath::Utility::RadianToDegree(radian));
+//#endif
+//        return _position + _move;
+//    }
 
     void Player::LoadResource() {
       // 各種リソースの読み取り処理
@@ -220,6 +228,7 @@ namespace Gyro {
       _id = ObjectId::Player;
       _state = ObjectState::Active;
       _gravity = true; // 重力処理を行う
+      _move = std::make_unique<Object::MoveComponent>(*this);
       // 座標・向きの設定
       // アニメーションの初期化
       _animaIndex = NoAnimation;
@@ -343,7 +352,7 @@ namespace Gyro {
         return false; // 出力を行わない
       }
       DebugString(); // 座標情報の出力
-      _app.GetCamera().Draw(_position, _move); // カメラ情報の出力処理
+      _app.GetCamera().Draw(_position, _move->MoveVector()); // カメラ情報の出力処理
       // _sphere->Draw(); // 当たり判定の描画
       _capsule->Draw(); // カプセルの描画
       return true;
@@ -360,7 +369,7 @@ namespace Gyro {
       // 回転情報の出力
       auto [rX, rY, rZ] = _rotation.GetVector3();
       DrawFormatString(0, 40, 255, "rotationX:%f  rotationY:%f rotationZ:%f", rX, rY, rZ);
-      auto [moveX, moveY, moveZ] = _move.GetVector3();
+      auto [moveX, moveY, moveZ] = _move->MoveVector().GetVector3();
       DrawFormatString(0, 60, 255, "moveX:%f  moveY:%f moveZ:%f", moveX, moveY, moveZ);
     }
 #endif
@@ -400,7 +409,7 @@ namespace Gyro {
     }
 
     void Player::Extrude() {
-      auto newPosition = _position + _move;
+      auto newPosition = _position + _move->MoveVector();
       // コリジョンと壁の押し出し処理を行う
       auto newCapsule = *_capsule;
       newCapsule.SetPosition(newPosition);
