@@ -34,15 +34,11 @@ namespace Gyro {
       /**
        * @brief ŠJnˆ—
        */
-      void Start() override {
-        _wire = true;
-      }
+      void Start() override;
       /**
        * @brief I—¹ˆ—
        */
-      void Finish() override {
-        _wire = false;
-      }
+      void Finish() override;
       /**
        * @brief  
        * @return 

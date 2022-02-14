@@ -36,7 +36,7 @@ namespace Gyro {
     Vector4 WireComponent::WireMove() {
       // Œü‚«î•ñ‚Ìæ“¾
       _forward = Vector4::Normalize(_target - _owner.GetPosition());
-      return _forward * 5.0f; // ˆÚ“®—Ê‚ğ•Ô‚·
+      return _forward * 10.0f; // ˆÚ“®—Ê‚ğ•Ô‚·
     }
   } // namespace Player
 } // namespace Gyro
