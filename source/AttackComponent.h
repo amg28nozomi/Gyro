@@ -35,6 +35,7 @@ namespace Gyro {
       /**
        * @brief  コンストラクタ
        * @param  owner     所有者の参照
+       * @param  key       モデルサーバに紐づけられた所有者の
        * @param  collision 当たり判定のシェアードポインタ
        */
       AttackComponent(ObjectBase& owner, std::shared_ptr<CollisionBase> collision);
@@ -79,6 +80,8 @@ namespace Gyro {
     protected:
       //!< 所有者の参照
       ObjectBase& _owner;
+      //!< オブジェトのキー
+      std::string _objectKey;
       //!< 攻撃状態
       AttackState _state;
       //!< 攻撃用当たり判定情報

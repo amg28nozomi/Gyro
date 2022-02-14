@@ -20,6 +20,8 @@ namespace {
 
   constexpr auto MoveSpeed = 5.0f; //!< デフォルトの移動量
   constexpr auto MoveZero = 0.0f;
+
+  constexpr auto WireSpeed = 10.0f; //!< ワイヤー移動速度
   // プレイヤーのアニメーションキー
   constexpr auto Idle = "GyroIdle";                     //!< アイドル
   constexpr auto Walk = "GyroWalk";                     //!< 歩き
@@ -56,6 +58,7 @@ namespace Gyro {
     }
 
     bool Player::Init() {
+      _animationKey = Idle; //!< アイドルモーションを設定
       SetCamera(); // カメラの設定
       SetState();  // パラメータの設定
       // ジャンプコンポーネントの設定
@@ -64,6 +67,7 @@ namespace Gyro {
       // ワイヤーコンポーネントの設定
       _wire = std::make_unique<WireComponent>(*this);
       // アタックコンポーネントの設定
+      // 当たり判定は球をセットする
       _attack = std::make_unique<Object::AttackComponent>(*this, std::move(std::make_shared<Object::CollisionCapsule>(*this, _position, 10.0f, 10.0f)));
       _modelAnim.SetMainAttach(_model, Idle, 1.0f, true);
       _gaugeHp.Init();
@@ -100,35 +104,36 @@ namespace Gyro {
         // 移動量の取得
         move = Move(lX, lY);
         // 状態の更新
-        if (_playerState == PlayerState::Idle && _attackFlugY == false && input.GetButton(XINPUT_BUTTON_Y, false)) {
-          _playerState = PlayerState::Attack1;
+        if (State(PlayerState::Idle) && _attackFlugY == false && input.GetButton(XINPUT_BUTTON_Y, false)) {
+          ChangeState(PlayerState::Attack1, GroundLightAttack1);
           _gaugeTrick.Add(-50.f);
           _attackFlugY = true;
           _cnt = 0;
         }
-        else if (_playerState == PlayerState::Attack1 && _attackFlugY == true && input.GetButton(XINPUT_BUTTON_Y, false)) {
-          _playerState = PlayerState::Attack2;
+        else if (State(PlayerState::Attack1) && _attackFlugY == true && input.GetButton(XINPUT_BUTTON_Y, false)) {
+          ChangeState(PlayerState::Attack2, GroundLightAttack2);
           _gaugeTrick.Add(-50.f);
           _cnt = 0;
         }
-        else if (_playerState == PlayerState::Attack2 && _attackFlugY == true && input.GetButton(XINPUT_BUTTON_Y, false)) {
-          _playerState = PlayerState::Attack3;
+        else if (State(PlayerState::Attack2) && _attackFlugY == true && input.GetButton(XINPUT_BUTTON_Y, false)) {
+          ChangeState(PlayerState::Attack3, GroundLightAttack3);
           _gaugeTrick.Add(-50.f);
           _cnt = 0;
         }
-        if (_playerState == PlayerState::Idle && _attackFlugX == false && input.GetButton(XINPUT_BUTTON_X, false)) {
-          _playerState = PlayerState::Attack1;
+        // 強攻撃入口
+        if (State(PlayerState::Idle) && _attackFlugX == false && input.GetButton(XINPUT_BUTTON_X, false)) {
+          ChangeState(PlayerState::Attack1, GroundHeavyAttack1);
           _gaugeTrick.Add(-50.f);
           _attackFlugX = true;
           _cnt = 0;
         }
-        else if (_playerState == PlayerState::Attack1 && _attackFlugX == true && input.GetButton(XINPUT_BUTTON_X, false)) {
-          _playerState = PlayerState::Attack2;
+        else if (State(PlayerState::Attack1) && _attackFlugX == true && input.GetButton(XINPUT_BUTTON_X, false)) {
+          ChangeState(PlayerState::Attack2, GroundHeavyAttack2);
           _gaugeTrick.Add(-50.f);
           _cnt = 0;
         }
-        else if (_playerState == PlayerState::Attack2 && _attackFlugX == true && input.GetButton(XINPUT_BUTTON_X, false)) {
-          _playerState = PlayerState::Attack3;
+        else if (State(PlayerState::Attack2) && _attackFlugX == true && input.GetButton(XINPUT_BUTTON_X, false)) {
+          ChangeState(PlayerState::Attack3, GroundHeavyAttack3);
           _gaugeTrick.Add(-50.f);
           _cnt = 0;
         }
@@ -150,12 +155,12 @@ namespace Gyro {
       _cnt++;
       _gaugeHp.Process();
       _gaugeTrick.Process();
-      Animation(oldState);      // アニメーションの設定
-      _modelAnim.Process();     // アニメーションの再生
-      WorldMatrix();            // ワールド座標の更新
+      Animation(oldState);     // アニメーションの設定
+      _modelAnim.Process();    // アニメーションの再生
+      WorldMatrix();           // ワールド座標の更新
       _sphere->Process(move);  // 移動量の加算
       _capsule->Process(move); // カプセルの更新
-      Hit();
+      Hit(); //衝突判定
       // カメラの更新
       _app.GetCamera().Process(AppMath::Vector4(rX, rY), _position, move);
       // ワールド座標の設定
@@ -222,7 +227,7 @@ namespace Gyro {
 
     void Player::LoadResource() {
       // 各種リソースの読み取り処理
-      auto [model, key1] = _app.GetModelServer().GetModel("player", 0);
+      auto [model, key1] = _app.GetModelServer().GetModel(_modelKey, 0);
       _model = model;     // モデルハンドルを登録
       auto [handle, key2] = _app.GetModelServer().GetModel("sky", 0);
       _handleSkySphere = handle; // スカイスフィア
@@ -286,27 +291,28 @@ namespace Gyro {
                 break;
             case PlayerState::Attack1: // 攻撃1
                 if (_attackFlugY == true) {
-                    _modelAnim.SetBlendAttach(GroundLightAttack1, 10.0f, 1.3f, false);
+                    _modelAnim.SetBlendAttach(_animationKey, 10.0f, 1.3f, false);
                 }
                 else if (_attackFlugX == true) {
-                    _modelAnim.SetBlendAttach(GroundHeavyAttack1, 10.0f, 1.0f, false);
+                    _modelAnim.SetBlendAttach(_animationKey, 10.0f, 1.0f, false);
                 }
                 break;
             case PlayerState::Attack2: // 攻撃2
                 if (_attackFlugY == true) {
-                    _modelAnim.SetBlendAttach(GroundLightAttack2, 10.0f, 1.3f, false);
+                    _modelAnim.SetBlendAttach(_animationKey, 10.0f, 1.3f, false);
                 }
                 else if (_attackFlugX == true) {
-                    _modelAnim.SetBlendAttach(GroundHeavyAttack2, 10.0f, 1.0f, false);
+                    _modelAnim.SetBlendAttach(_animationKey, 10.0f, 1.0f, false);
                 }
                 break;
             case PlayerState::Attack3: // 攻撃3
-                if (_attackFlugY == true) {
-                    _modelAnim.SetBlendAttach(GroundLightAttack3, 10.0f, 1.0f, false);
-                }
-                else if (_attackFlugX == true) {
-                    _modelAnim.SetBlendAttach(GroundHeavyAttack3, 10.0f, 1.0f, false);
-                }
+              _modelAnim.SetBlendAttach(_animationKey, 10.0f, 1.0f, false);
+                //if (_attackFlugY == true) {
+                //    _modelAnim.SetBlendAttach(_animationKey, 10.0f, 1.0f, false);
+                //}
+                //else if (_attackFlugX == true) {
+                //    _modelAnim.SetBlendAttach(_animationKey, 10.0f, 1.0f, false);
+                //}
                 break;
             case PlayerState::Jump: // ジャンプ
                 _modelAnim.SetBlendAttach(JumpUp, 10.0f, 1.0f, false);
@@ -456,12 +462,18 @@ namespace Gyro {
       if (!_wire->IsAction()) {
         // 座標をセットして処理を行う
         auto o = _app.GetObjectServer().GetObjects();
-        _wire->SetTarget(o.back()->GetPosition(), 180.0f);
+        _wire->SetTarget(o.back()->GetPosition(), WireSpeed);
         _wire->Start();
         return;
       }
       // 移動量がセットされている場合は処理を中断する
       _wire->Finish();
+    }
+
+    void Player::ChangeState(const PlayerState& state, std::string_view animName) {
+      // 各種データの切り替え
+      _playerState = state;
+      _animationKey = animName;
     }
   } // namespace Player
 }// namespace Gyro

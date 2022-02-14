@@ -119,6 +119,20 @@ namespace Gyro {
       AppMath::Vector4 GetScale() const {
         return _scale;
       }
+      /**
+       * @brief  モデルに紐づけられた文字列の取得
+       * @return 文字列
+       */
+      virtual std::string_view ModelKey() const {
+        return "";
+      }
+      /**
+       * @brief 向きの設定
+       * @param rotation 設定する向き
+       */
+      inline void SetRotation(const AppMath::Vector4& rotation) {
+        _rotation = rotation;
+      }
     protected:
       Application::ApplicationMain& _app; //!< アプリケーションの参照
       ObjectId _id{ObjectId::Object}; //!< オブジェクトの識別番号

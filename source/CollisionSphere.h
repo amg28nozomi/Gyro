@@ -10,9 +10,12 @@
 #include "CollisionBase.h"
 #include <Dxlib.h>
 
+/**
+ * @brief 
+ */
 namespace Gyro {
   /**
-   * @brief 
+   * @brief オブジェクトベース
    */
   namespace Object {
     /**
