@@ -24,7 +24,7 @@ namespace {
   constexpr auto Idle = "GyroIdle";                     //!< アイドル
   constexpr auto Walk = "GyroWalk";                     //!< 歩き
   constexpr auto Run = "GyroDash";                      //!< 走り
-  constexpr auto Step = "Gyro step";                    //!< ステップ
+  constexpr auto Step = "GyroStep";                    //!< ステップ
   constexpr auto JumpUp = "GyroJUp";                    //!< ジャンプアップ
   constexpr auto JumpDown = "GyroJDown";                //!< ジャンプダウン(落下中)
   constexpr auto JumpLanding = "GyroJLand";             //!< ジャンプランド(着地)
@@ -32,7 +32,7 @@ namespace {
   constexpr auto GroundLightAttack2 = "GyroLaw2";       //!< 地上弱攻撃2
   constexpr auto GroundLightAttack3 = "GyroLaw3";       //!< 地上弱攻撃3
   constexpr auto GroundLightAttackEX = "GyroLawEx";     //!< 地上EX攻撃(弱の〆)
-  constexpr auto GroundHeavyAttack1 = "GyroHigh1";      //!< 地上強攻撃1
+  constexpr auto GroundHeavyAttack1 = "Gyro High1";      //!< 地上強攻撃1
   constexpr auto GroundHeavyAttack2 = "GyroHigh2";      //!< 地上強攻撃2
   constexpr auto GroundHeavyAttack3 = "GyroHigh3";      //!< 地上強攻撃3
   constexpr auto AirLightAttack1 = "GyroJLaw1";         //!< 空中弱攻撃1
@@ -40,8 +40,10 @@ namespace {
   constexpr auto AirLightAttack3 = "GyroJLaw3";         //!< 空中弱攻撃3
   constexpr auto AirHeavyAttack1 = "GyroJHigh1";        //!< 空中強攻撃1
   constexpr auto AirHeavyAttack2 = "GyroJHigh2";        //!< 空中強攻撃2
-  constexpr auto Damage1 = "Gyro damage1";              //!< 小ダメージ
-  constexpr auto Damage2 = "Gyro damage2";              //!< 大ダメージ
+  constexpr auto ExciteTrick1 = "GyroExciteTrickDirect1";
+  constexpr auto ExciteTrick2 = "GyroExciteTrickDirect2";
+  constexpr auto Damage1 = "GyroDamage1";              //!< 小ダメージ
+  constexpr auto Damage2 = "GyroDamage2";              //!< 大ダメージ
   // ジャンプフラグ
   constexpr auto JumpPowe = 3.0f;
   constexpr auto JumpMax = 300.0f;

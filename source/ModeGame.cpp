@@ -97,8 +97,8 @@ namespace Gyro {
       using ModelServer = AppFrame::Model::ModelServer;
       // 各種モデルハンドルの読み込み
       const ModelServer::ModelDatas mv1Models{
-        {"player" , "res/Player/Gyro multimotion alpha6.mv1"},  // 自機
-        {"enemy", "res/Enemy/Enemy_multimotion.mv1"}, // 敵
+        {"player" , "res/Player/Gyro Multimotion7.mv1"},    // 自機
+        {"enemy", "res/Enemy/Wheel/Enemy_multimotion.mv1"}, // 敵
         {"sky", "res/SkySphere/skysphere.mv1"},       // スカイスフィア
         {"stage", "res/Stage/houseGEO_1.mv1"}         // ステージ
       };
@@ -123,7 +123,7 @@ namespace Gyro {
         // 引数2:ローカル座標
         // 引数3:向き
         // 引数4:スケール
-        { Object::TypePlayer, {0.0f, 0.0f, 0.0f,}, {0.0f, 0.0f, 0.0f,}, {10.0f, 10.0f, 10.0f}}
+        { Object::TypePlayer, {0.0f, 0.0f, 0.0f,}, {0.0f, 0.0f, 0.0f,}, {1.0f, 1.0f, 1.0f}}
       };
       // エネミーテーブル
       const Object::EnemyTable enemy {
