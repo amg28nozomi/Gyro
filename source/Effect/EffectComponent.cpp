@@ -40,7 +40,7 @@ namespace Gyro {
             int play = PlayEffekseer3DEffect(handle);
             // エフェクトの位置を設定
             auto& [x, y, z] = position.GetVector3();
-            SetPosPlayingEffekseer3DEffect(play, x, y + 100.0f, z);
+            SetPosPlayingEffekseer3DEffect(play, x, y, z);
             // エフェクトの向きを設定
             SetRotationPlayingEffekseer3DEffect(play, 0.0f, radian, 0.0f);
         }

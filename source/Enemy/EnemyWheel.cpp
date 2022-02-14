@@ -53,7 +53,7 @@ namespace Gyro {
             AppMath::Vector4 move = forword * (_enemyMoveSpeed);
             // _sphere->Process();
 
-                            // ラジアンを生成(z軸は反転させる)
+            // ラジアンを生成(z軸は反転させる)
             auto radian = std::atan2(move.GetX(), -move.GetZ());
             // 入力処理がある場合、更新を行う
             if (_app.GetOperation().GetXBoxState().GetButton(XINPUT_BUTTON_LEFT_THUMB, false)) {
@@ -88,6 +88,7 @@ namespace Gyro {
                     break;
                 case EnemyState::WALK:
                     _modelAnim.SetBlendAttach(MoveKey, 10.0f, 1.0f, true);
+                    _app.GetEffect().PlayEffect("E_Exprosion", _position, radian);
                     break;
                 case EnemyState::ATTACK:
                     _modelAnim.SetBlendAttach(AttackKey, 10.0f, 1.0f, false);
