@@ -60,6 +60,10 @@ namespace Gyro {
        * @return true:Õ“Ë false:Õ“Ë‚µ‚Ä‚¢‚È‚¢
        */
       bool IntersectPoint(const AppMath::Vector4& point);
+
+      float Radius() const {
+        return _radius;
+      }
     private:
       float _radius{0.0f}; //!< ‰~‚Ì”¼Œa
     };
