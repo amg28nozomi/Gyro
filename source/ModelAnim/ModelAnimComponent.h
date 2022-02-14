@@ -7,7 +7,7 @@
  *********************************************************************/
 #pragma once
 #include "appframe.h"
-#include "../ModelAnim/ModelAnimInfo.h"
+#include "ModelAnimInfo.h"
 
  /** çÏïiópñºëOãÛä‘ */
 namespace Gyro {

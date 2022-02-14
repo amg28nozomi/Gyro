@@ -53,7 +53,7 @@ namespace Gyro {
             AppMath::Vector4 move = forword * (_enemyMoveSpeed);
             // _sphere->Process();
 
-                            // ラジアンを生成(z軸は反転させる)
+            // ラジアンを生成(z軸は反転させる)
             auto radian = std::atan2(move.GetX(), -move.GetZ());
             // 入力処理がある場合、更新を行う
             if (_app.GetOperation().GetXBoxState().GetButton(XINPUT_BUTTON_LEFT_THUMB, false)) {
@@ -61,7 +61,7 @@ namespace Gyro {
             }
 
             if (_iMove) {
-                _enemyState = EnemyState::WALK;
+                _enemyState = EnemyState::Move;
                 _position.Add(move);
                 _capsule->Process(move);
 #ifndef _DEBUG
@@ -73,7 +73,7 @@ namespace Gyro {
 
         }
             else {
-                _enemyState = EnemyState::WAIT;
+                _enemyState = EnemyState::Idle;
             }
             Hit();         // 衝突判定
             WorldMatrix(); // ワールド座標の更新
@@ -83,17 +83,17 @@ namespace Gyro {
             // アニメーション変更
             if (oldEnemyState != _enemyState) {
                 switch (_enemyState) {
-                case EnemyState::WAIT:
+                case EnemyState::Idle:
                     _modelAnim.SetBlendAttach(IdleKey, 10.0f, 1.0f, true);
                     break;
-                case EnemyState::WALK:
+                case EnemyState::Move:
                     _modelAnim.SetBlendAttach(MoveKey, 10.0f, 1.0f, true);
-                    _eff.PlayEffect();
+                    _app.GetEffect().PlayEffect("E_Exprosion", _position, radian);
                     break;
-                case EnemyState::ATTACK:
+                case EnemyState::Attack:
                     _modelAnim.SetBlendAttach(AttackKey, 10.0f, 1.0f, false);
                     break;
-                case EnemyState::DEAD:
+                case EnemyState::Dead:
                     //_modelAnim.SetBlendAttach(1, 10.0f, 1.0f, false);
                     break;
                 default:
@@ -102,9 +102,6 @@ namespace Gyro {
             }
 
             _modelAnim.Process();
-            _eff.SetPosition(_position);
-            _eff.SetDirection(radian);
-            _eff.Process();
             return true;
         }
 

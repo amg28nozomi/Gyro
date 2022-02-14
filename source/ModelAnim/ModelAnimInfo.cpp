@@ -5,7 +5,7 @@
  * @author  ã{‡Vósê∂
  * @date    December 2021
  *********************************************************************/
-#include "../ModelAnim/ModelAnimInfo.h"
+#include "ModelAnimInfo.h"
 
 namespace Gyro {
     namespace ModelAnim {

@@ -74,6 +74,7 @@ namespace Gyro {
       Input(_app.GetOperation());
       // オブジェクトサーバの更新処理実行
       _appMain.GetObjectServer().Process();
+      _appMain.GetEffect().Process();
       _plane.Process();
       _plane.Render();
       return true;
@@ -82,10 +83,7 @@ namespace Gyro {
     bool ModeGame::Draw() const {
       // 描画処理呼び出し
       _appMain.GetObjectServer().Draw();
-      // 並行光源を 1 つ追加する
-      VECTOR light_dir = VGet(0.0f, 1.0f, 0.0f);
-      auto light_handle = CreateDirLightHandle(light_dir);
-
+      _appMain.GetEffect().Draw();
       return true;
     }
 
@@ -97,8 +95,8 @@ namespace Gyro {
       using ModelServer = AppFrame::Model::ModelServer;
       // 各種モデルハンドルの読み込み
       const ModelServer::ModelDatas mv1Models{
-        {"player" , "res/Player/Gyro multimotion alpha6.mv1"},  // 自機
-        {"enemy", "res/Enemy/Enemy_multimotion.mv1"}, // 敵
+        {"player" , "res/Player/Gyro Multimotion7.mv1"},    // 自機
+        {"enemy", "res/Enemy/Wheel/Enemy_multimotion.mv1"}, // 敵
         {"sky", "res/SkySphere/skysphere.mv1"},       // スカイスフィア
         {"stage", "res/Stage/houseGEO_1.mv1"}         // ステージ
       };
@@ -106,13 +104,14 @@ namespace Gyro {
       _app.GetModelServer().AddMV1Model(mv1Models);
       // サウンド情報の読み取り
       using SoundServer = AppFrame::Sound::SoundServer;
-      // 
       const SoundServer::SoundMap soundMap{
         {"test", "res/Sound/pose.wav"},
         {"bgm", "res/Sound/stage1.wav"}
       };
       // サウンドサーバに登録
       _app.GetSoundServer().AddSounds(soundMap);
+      // エフェクトリソースの読み取り
+      LoadEffectResource();
     }
 
     void ModeGame::SetSpawn() {
@@ -123,7 +122,7 @@ namespace Gyro {
         // 引数2:ローカル座標
         // 引数3:向き
         // 引数4:スケール
-        { Object::TypePlayer, {0.0f, 0.0f, 0.0f,}, {0.0f, 0.0f, 0.0f,}, {10.0f, 10.0f, 10.0f}}
+        { Object::TypePlayer, {0.0f, 0.0f, 0.0f,}, {0.0f, 0.0f, 0.0f,}, {1.0f, 1.0f, 1.0f}}
       };
       // エネミーテーブル
       const Object::EnemyTable enemy {
@@ -147,6 +146,34 @@ namespace Gyro {
       }
 #endif
       _appMain.GetSpawnServer().Spawn(0);
+    }
+
+    void ModeGame::LoadEffectResource() const {
+        using EffectServer = Effect::EffectServer;
+        // エフェクトキー定数化
+        const std::string_view eExprosion = "E_Exprosion";      //!< 
+        const std::string_view eEyeLight = "E_EyeLight";        //!< 
+        const std::string_view eHit = "E_Hit";                  //!< 
+        const std::string_view pUltActivate = "P_ult_activate"; //!< 
+        const std::string_view pUltSlash = "P_ult_slash";       //!< 
+        // エフェクトハンドルの読み込み
+        const EffectServer::EffectMap effectMap{
+            {eExprosion, "res/Effect/Enemy_Exprosion/Enemy_Exprosion.efkefc"},
+            {eEyeLight, "res/Effect/Enemy_EyeLight/Enemy_EyeLight.efkefc"},
+            {eHit, "res/Effect/Enemy_Hit/Enemy_Hit.efkefc"},
+            {pUltActivate, "res/Effect/Player_ult_activate/Player_ult_activate.efkefc"},
+            {pUltSlash, "res/Effect/Player_ult_slash/Player_ult_slash.efkefc"}
+        };
+        // エフェクト拡大率の登録
+        const EffectServer::EffectMagniMap effectMagniMap{
+            {eExprosion, 10.0f},
+            {eEyeLight, 10.0f},
+            {eHit, 10.0f},
+            {pUltActivate, 10.0f},
+            {pUltSlash, 10.0f}
+        };
+        // エフェクトサーバに登録
+        _appMain.GetEffectServer().AddEffects(effectMap, effectMagniMap);
     }
   } // namespace Mode
 } // namespace Gyro

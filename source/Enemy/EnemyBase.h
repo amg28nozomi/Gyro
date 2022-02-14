@@ -9,7 +9,6 @@
 #include "../ObjectBase.h"
 #include "../ModelAnim/ModelAnimComponent.h"
 #include "../CollisionSphere.h"
-#include "../Effect/SampleEffect.h"
 #include "../CollisionCapsule.h"
 
  /** ì•i—p–¼‘O‹óŠÔ */
@@ -54,20 +53,6 @@ namespace Gyro {
              * @param  ƒXƒ|[ƒ“î•ñ‚ÌQÆ
              */
             void Set(Object::SpawnEnemy& spawn);
-            /**
-             * @brief   “GˆÊ’u‚Ìİ’è
-             * @param   vPos “GˆÊ’u
-             */
-            virtual void SetEnemyPos(const VECTOR vPos) {
-                _enemyPos = vPos;
-            }
-            /**
-             * @brief   “GˆÚ“®æ‚Ìİ’è
-             * @param   vTarget “GˆÚ“®æ
-             */
-            virtual void SetEnemyTarget(const VECTOR vTarget) {
-                _enemyTarget = vTarget;
-            }
 
             Object::CollisionSphere& GetCollision() {
               return *_sphere;
@@ -94,23 +79,19 @@ namespace Gyro {
              * @brief   “G‚Ìó‘Ô‘JˆÚ—p’è”
              */
             enum class EnemyState {
-                WAIT,   //!<‘Ò‚¿
-                WALK,   //!<•à‚«
-                ATTACK, //!<UŒ‚
-                DEAD    //!<€–S
+                Idle,   //!<‘Ò‹@
+                Move,   //!<ˆÚ“®
+                Attack, //!<UŒ‚
+                Dead    //!<€–S
             };
 
             int _mHandle;           //!< ƒ‚ƒfƒ‹ƒnƒ“ƒhƒ‹
             float _enemyMoveSpeed;  //!< “GˆÚ“®‘¬“x
-            VECTOR _enemyPos;       //!< “GˆÊ’u
-            VECTOR _enemyDir;       //!< “GŒü‚«
-            VECTOR _enemyTarget;    //!< “GˆÚ“®æ
             std::unique_ptr<Object::CollisionSphere> _sphere{nullptr}; //!< ‹…‚Ì“–‚½‚è”»’è
             std::unique_ptr<Object::CollisionCapsule> _capsule{ nullptr }; //!< ƒJƒvƒZƒ‹‚Ì“–‚½‚è”»’è
 
             EnemyState _enemyState; //!< “G‚Ìó‘Ô•Û•Ï”
             ModelAnim::ModelAnimComponent _modelAnim;
-            Effect::SampleEffect _eff;
             /**
              * @brief “–‚½‚è”»’èî•ñ‚Ìİ’è
              */

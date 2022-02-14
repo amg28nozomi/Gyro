@@ -140,12 +140,6 @@
     <ClCompile Include="source\Camera.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="source\Effect\EffectBase.cpp">
-      <Filter>ソース ファイル\Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Effect\SampleEffect.cpp">
-      <Filter>ソース ファイル\Effect</Filter>
-    </ClCompile>
     <ClCompile Include="source\GaugeBase.cpp">
       <Filter>ソース ファイル\Gauge</Filter>
     </ClCompile>
@@ -199,6 +193,12 @@
     </ClCompile>
     <ClCompile Include="source\AttackComponent.cpp">
       <Filter>ソース ファイル\Object\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Effect\EffectComponent.cpp">
+      <Filter>ソース ファイル\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Effect\EffectServer.cpp">
+      <Filter>ソース ファイル\Effect</Filter>
     </ClCompile>
     <ClCompile Include="source\WirePoint.cpp">
       <Filter>ソース ファイル</Filter>
@@ -256,12 +256,6 @@
     <ClInclude Include="source\Camera.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="source\Effect\EffectBase.h">
-      <Filter>ヘッダー ファイル\Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Effect\SampleEffect.h">
-      <Filter>ヘッダー ファイル\Effect</Filter>
-    </ClInclude>
     <ClInclude Include="source\GaugeBase.h">
       <Filter>ヘッダー ファイル\Gauge</Filter>
     </ClInclude>
@@ -315,6 +309,12 @@
     </ClInclude>
     <ClInclude Include="source\AttackComponent.h">
       <Filter>ヘッダー ファイル\Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Effect\EffectComponent.h">
+      <Filter>ヘッダー ファイル\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Effect\EffectServer.h">
+      <Filter>ヘッダー ファイル\Effect</Filter>
     </ClInclude>
     <ClInclude Include="source\WirePoint.h">
       <Filter>ヘッダー ファイル</Filter>
