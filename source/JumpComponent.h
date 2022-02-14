@@ -81,6 +81,8 @@ namespace Gyro {
       int _fright{0};     //!< 総対空時間
       int _count{0};      //!< 経過カウンタ
       float _range{0.0f}; //!< 跳躍距離
+      float _power{0.0f}; //!< ジャンプ力
+      float _old{ 0.0f }; //!<前フレームのジャンプ力
       int _f{0};
       bool _jump{false};  //!< ジャンプフラグ
     };

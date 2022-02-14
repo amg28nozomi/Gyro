@@ -65,7 +65,7 @@ namespace Gyro {
       SetState();  // パラメータの設定
       // ジャンプコンポーネントの設定
       _jump = std::make_unique<JumpComponent>();
-      _jump->Set(300.0f, 300); // ジャンプの設定
+      _jump->Set(300.0f, 120); // ジャンプの設定
       // ワイヤーコンポーネントの設定
       _wire = std::make_unique<WireComponent>(*this);
       // アタックコンポーネントの設定
@@ -361,7 +361,9 @@ namespace Gyro {
       // 新しい座標をコリジョンに反映
       _capsule->SetPosition(_position);
       // ジャンプの後始末を行う
-      _jump->Finish();
+      if (_jump->IsJump()) {
+        _jump->Finish();
+      }
       return true; // 床に立っている
     }
 
@@ -466,6 +468,11 @@ namespace Gyro {
         auto o = _app.GetObjectServer().GetObjects();
         _wire->SetTarget(o.back()->GetPosition(), WireSpeed);
         _wire->Start();
+        // ジャンプフラグが立っている場合は
+        if (_jump->IsJump()) {
+          _jump->Finish();
+          _gravityScale = 0.0f;
+        }
         return;
       }
       // 移動量がセットされている場合は処理を中断する
