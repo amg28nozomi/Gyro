@@ -28,8 +28,6 @@
     <ClCompile Include="source\CollisionComponent.cpp" />
     <ClCompile Include="source\CollisionOBB.cpp" />
     <ClCompile Include="source\CollisionSphere.cpp" />
-    <ClCompile Include="source\Effect\EffectBase.cpp" />
-    <ClCompile Include="source\Effect\SampleEffect.cpp" />
     <ClCompile Include="source\Enemy\EnemyBase.cpp" />
     <ClCompile Include="source\Enemy\EnemyWheel.cpp" />
     <ClCompile Include="source\GaugeBase.cpp" />
@@ -67,8 +65,6 @@
     <ClInclude Include="source\CollisionComponent.h" />
     <ClInclude Include="source\CollisionOBB.h" />
     <ClInclude Include="source\CollisionSphere.h" />
-    <ClInclude Include="source\Effect\EffectBase.h" />
-    <ClInclude Include="source\Effect\SampleEffect.h" />
     <ClInclude Include="source\Enemy\EnemyBase.h" />
     <ClInclude Include="source\Enemy\EnemyWheel.h" />
     <ClInclude Include="source\GaugeBase.h" />

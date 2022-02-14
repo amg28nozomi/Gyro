@@ -88,7 +88,6 @@ namespace Gyro {
                     break;
                 case EnemyState::WALK:
                     _modelAnim.SetBlendAttach(MoveKey, 10.0f, 1.0f, true);
-                    _eff.PlayEffect();
                     break;
                 case EnemyState::ATTACK:
                     _modelAnim.SetBlendAttach(AttackKey, 10.0f, 1.0f, false);
@@ -102,9 +101,6 @@ namespace Gyro {
             }
 
             _modelAnim.Process();
-            _eff.SetPosition(_position);
-            _eff.SetDirection(radian);
-            _eff.Process();
             return true;
         }
 

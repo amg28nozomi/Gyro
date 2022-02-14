@@ -33,14 +33,12 @@ namespace Gyro {
         }
 
         bool EnemyBase::Process() {
-            _eff.Process();
             return true;
         }
 
         bool EnemyBase::Draw() const {
             // •`‰æ
             MV1DrawModel(_mHandle);
-            _eff.Draw();
 #ifdef _DEBUG
             if (_app.GetDebugFlag()) {
               // _sphere->Draw();

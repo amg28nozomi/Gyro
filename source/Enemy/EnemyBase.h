@@ -9,7 +9,6 @@
 #include "../ObjectBase.h"
 #include "../ModelAnim/ModelAnimComponent.h"
 #include "../CollisionSphere.h"
-#include "../Effect/SampleEffect.h"
 #include "../CollisionCapsule.h"
 
  /** ì•i—p–¼‘O‹óŠÔ */
@@ -110,7 +109,6 @@ namespace Gyro {
 
             EnemyState _enemyState; //!< “G‚Ìó‘Ô•Û•Ï”
             ModelAnim::ModelAnimComponent _modelAnim;
-            Effect::SampleEffect _eff;
             /**
              * @brief “–‚½‚è”»’èî•ñ‚Ìİ’è
              */

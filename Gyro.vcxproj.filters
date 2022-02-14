@@ -134,12 +134,6 @@
     <ClCompile Include="source\Camera.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="source\Effect\EffectBase.cpp">
-      <Filter>ソース ファイル\Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Effect\SampleEffect.cpp">
-      <Filter>ソース ファイル\Effect</Filter>
-    </ClCompile>
     <ClCompile Include="source\GaugeBase.cpp">
       <Filter>ソース ファイル\Gauge</Filter>
     </ClCompile>
@@ -246,12 +240,6 @@
     </ClInclude>
     <ClInclude Include="source\Camera.h">
       <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Effect\EffectBase.h">
-      <Filter>ヘッダー ファイル\Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Effect\SampleEffect.h">
-      <Filter>ヘッダー ファイル\Effect</Filter>
     </ClInclude>
     <ClInclude Include="source\GaugeBase.h">
       <Filter>ヘッダー ファイル\Gauge</Filter>
