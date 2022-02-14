@@ -188,6 +188,12 @@
     <ClCompile Include="source\AttackComponent.cpp">
       <Filter>ソース ファイル\Object\Player</Filter>
     </ClCompile>
+    <ClCompile Include="source\Effect\EffectComponent.cpp">
+      <Filter>ソース ファイル\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Effect\EffectServer.cpp">
+      <Filter>ソース ファイル\Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\ApplicationMain.h">
@@ -294,6 +300,12 @@
     </ClInclude>
     <ClInclude Include="source\AttackComponent.h">
       <Filter>ヘッダー ファイル\Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Effect\EffectComponent.h">
+      <Filter>ヘッダー ファイル\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Effect\EffectServer.h">
+      <Filter>ヘッダー ファイル\Effect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
