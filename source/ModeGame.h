@@ -85,6 +85,10 @@ namespace Gyro {
        * @brief スポーン情報の設定
        */
       void SetSpawn();
+      /**
+       * @brief エフェクトリソースの読み取り
+       */
+      void LoadEffectResource() const;
     };
   } // namespace Mode
 } // namespace Gyro

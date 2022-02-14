@@ -113,6 +113,8 @@ namespace Gyro {
       };
       // サウンドサーバに登録
       _app.GetSoundServer().AddSounds(soundMap);
+      // エフェクト情報の読み取り
+      LoadEffectResource();
     }
 
     void ModeGame::SetSpawn() {
@@ -147,6 +149,34 @@ namespace Gyro {
       }
 #endif
       _appMain.GetSpawnServer().Spawn(0);
+    }
+
+    void ModeGame::LoadEffectResource() const {
+        using EffectServer = Effect::EffectServer;
+        // エフェクトキー定数化
+        const std::string_view eExprosion = "E_Exprosion";
+        const std::string_view eEyeLight = "E_EyeLight";
+        const std::string_view eHit = "E_Hit";
+        const std::string_view pUltActivate = "P_ult_activate";
+        const std::string_view pUltSlash = "P_ult_slash";
+        // エフェクトハンドルの読み込み
+        const EffectServer::EffectMap effectMap{
+            {eExprosion, "res/Effect/Enemy_Exprosion/Enemy_Exprosion.efkefc"},
+            {eEyeLight, "res/Effect/Enemy_EyeLight/Enemy_EyeLight.efkefc"},
+            {eHit, "res/Effect/Enemy_Hit/Enemy_Hit.efkefc"},
+            {pUltActivate, "res/Effect/Player_ult_activate/Player_ult_activate.efkefc"},
+            {pUltSlash, "res/Effect/Player_ult_slash/Player_ult_slash.efkefc"}
+        };
+        // エフェクト拡大率の登録
+        const EffectServer::EffectMagniMap effectMagniMap{
+            {eExprosion, 5.0f},
+            {eEyeLight, 20.0f},
+            {eHit, 10.0f},
+            {pUltActivate, 10.0f},
+            {pUltSlash, 5.0f}
+        };
+        // エフェクトサーバに登録
+        _appMain.GetEffectServer().AddEffects(effectMap, effectMagniMap);
     }
   } // namespace Mode
 } // namespace Gyro
