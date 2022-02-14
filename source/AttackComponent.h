@@ -25,6 +25,14 @@ namespace Gyro {
     class AttackComponent : public ObjectComponent {
     public:
       /**
+       * @brief 攻撃状態を表す列挙型クラス
+       */
+      enum class AttackState {
+        NonActive, // ノーアクション
+        Active,    // 活動状態
+        Damega     // ダメージフレーム有り
+      };
+      /**
        * @brief  コンストラクタ
        * @param  owner     所有者の参照
        * @param  collision 当たり判定のシェアードポインタ
@@ -45,6 +53,13 @@ namespace Gyro {
        */
       virtual bool Process(const AppMath::Vector4& localPosition);
       /**
+       * @brief  攻撃状態の取得
+       * @return 攻撃状態
+       */
+      const AttackState& GetState() {
+        return _state;
+      }
+      /**
        * @brief  当たり判定情報の取得
        * @return 当たり判定情報
        */
@@ -54,6 +69,8 @@ namespace Gyro {
     protected:
       //!< 所有者の参照
       ObjectBase& _owner;
+      //!< 攻撃状態
+      AttackState _state;
       //!< 攻撃用当たり判定情報
       std::shared_ptr<CollisionBase> _collision;
       //!< 攻撃判定時間

@@ -54,6 +54,11 @@ namespace Gyro {
           void SetCollision() override;
 
           void Hit();
+          /**
+           * @brief  ダメージを受けたかの判定
+           * @return true:衝突 false:ダメージ無し
+           */
+          bool IsDamege();
         };
     } // namespace Enemy
 } // namespace Gyro

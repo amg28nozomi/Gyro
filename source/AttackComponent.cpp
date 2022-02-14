@@ -6,11 +6,16 @@ namespace Gyro {
   namespace Object {
 
     AttackComponent::AttackComponent(ObjectBase& owner, std::shared_ptr<CollisionBase> collision) : _owner(owner) {
+      _state = AttackState::NonActive;
       // 攻撃判定用のコリジョン情報をセット
       _collision = std::move(collision);
     }
 
     bool AttackComponent::Process(const AppMath::Vector4& localPosition) {
+      // モーション中以外は当たり判定の更新を行わない
+      if (_state == AttackState::NonActive) {
+        return false;
+      }
       // 座標更新
       auto pos = LocalToWorld(AppMath::Vector4()) * localPosition;
       // 移動量分、当たり判定の更新を行う

@@ -81,6 +81,13 @@ namespace Gyro {
       int StageHandle() const {
         return _handleMap;
       }
+      /**
+       * @brief  アタックコンポーネントの取得
+       * @return アタックコンポーネントの参照
+       */
+      Object::AttackComponent& AttackComponent() const {
+        return *_attack;
+      }
     private:
       // AppFrame::Math::Vector4 _move{}; //!< 移動量
 
