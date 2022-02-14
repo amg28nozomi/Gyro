@@ -43,12 +43,22 @@ namespace Gyro {
 
     bool CollisionCapsule::IntersectLine(const AppMath::LineSegment& line) {
       // カプセルと線分の衝突判定
+
       return true;
     }
 
     bool CollisionCapsule::IntersectSphere(const CollisionSphere& sphere) {
-      // カプセルと球の衝突判定
-      return true;
+      // 球の半径を取得
+      auto sphereRadius = sphere.Radius();
+      auto spherePos = sphere.GetPosition();
+      // 球の高さを線分に変換
+      AppMath::LineSegment lengthSphere(spherePos.AddVectorY(-sphereRadius), spherePos.AddVectorY(sphereRadius));
+      // 
+      float dist = LineSegment().MinDist(lengthSphere);
+      // 半径
+      auto sumRadius = _radius + sphereRadius;
+      auto sr = sumRadius * sumRadius;
+      return dist <= sr;
     }
 
     bool CollisionCapsule::IntersectCapsule(const CollisionCapsule& capsule) {

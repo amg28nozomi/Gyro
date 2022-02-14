@@ -27,27 +27,23 @@ namespace Gyro {
       /**
        * @brief  ターゲット座標の設定
        * @param  target 対象の座標ベクトル
-       * @param  time   移動時間
+       * @param  speed  移動速度
        * @return true:設定成功 false:設定失敗
        */
-      bool SetTarget(const Vector4& target, const float time);
+      bool SetTarget(const Vector4& target, const float speed);
       /**
        * @brief 開始処理
        */
-      void Start() override {
-        _wire = true;
-      }
+      void Start() override;
       /**
        * @brief 終了処理
        */
-      void Finish() override {
-        _wire = false;
-      }
+      void Finish() override;
       /**
        * @brief  
        * @return 
        */
-      Vector4 WireMove() const;
+      Vector4 WireMove();
       /**
        * @brief  ワイヤーアクション中かの判定
        * @return true:アクション中 false:アクション外
@@ -72,7 +68,7 @@ namespace Gyro {
       //!< ターゲットへの向き
       Vector4 _forward{};
       //!< 移動時間
-      float _time{0.0f};
+      float _speed{0.0f};
       //!< ワイヤーアクションフラグ
       bool _wire{false};
     };

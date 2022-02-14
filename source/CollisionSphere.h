@@ -10,9 +10,12 @@
 #include "CollisionBase.h"
 #include <Dxlib.h>
 
+/**
+ * @brief 
+ */
 namespace Gyro {
   /**
-   * @brief 
+   * @brief オブジェクトベース
    */
   namespace Object {
     /**
@@ -57,6 +60,10 @@ namespace Gyro {
        * @return true:衝突 false:衝突していない
        */
       bool IntersectPoint(const AppMath::Vector4& point);
+
+      float Radius() const {
+        return _radius;
+      }
     private:
       float _radius{0.0f}; //!< 円の半径
     };

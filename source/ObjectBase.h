@@ -71,6 +71,13 @@ namespace Gyro {
        */
       virtual void Set(SpawnBase& spawn);
       /**
+       * @brief  重力処理を行うかのフラグをセット
+       * @param  flag true:重力処理を行う false:重力処理を無効
+       */
+      virtual inline void GravitySet(const bool flag) {
+        _gravity = flag;
+      }
+      /**
        * @brief  識別番号の取得
        * @return 識別番号
        */
@@ -111,6 +118,20 @@ namespace Gyro {
        */
       AppMath::Vector4 GetScale() const {
         return _scale;
+      }
+      /**
+       * @brief  モデルに紐づけられた文字列の取得
+       * @return 文字列
+       */
+      virtual std::string_view ModelKey() const {
+        return "";
+      }
+      /**
+       * @brief 向きの設定
+       * @param rotation 設定する向き
+       */
+      inline void SetRotation(const AppMath::Vector4& rotation) {
+        _rotation = rotation;
       }
     protected:
       Application::ApplicationMain& _app; //!< アプリケーションの参照

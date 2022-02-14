@@ -88,6 +88,13 @@ namespace Gyro {
       Object::AttackComponent& AttackComponent() const {
         return *_attack;
       }
+      /**
+       * @brief  モデルキーの取得
+       * @return モデルキー
+       */
+      std::string_view ModelKey() const override {
+        return _modelKey;
+      }
     private:
       // AppFrame::Math::Vector4 _move{}; //!< 移動量
 
@@ -143,6 +150,14 @@ namespace Gyro {
        */
       void SetRotation(const AppFrame::Math::Vector4 move);
       /**
+       * @brief  
+       * @param  state
+       * @return 
+       */
+      bool State(const PlayerState& state) const {
+        return _playerState == state;
+      }
+      /**
        * @brief アニメーション処理
        * @param old 前フレームの状態
        */
@@ -197,8 +212,14 @@ namespace Gyro {
        * @brief ワイヤーアクション
        */
       void Wire(AppMath::Vector4& move);
-
-
+      /**
+       * @brief  状態遷移
+       * @param  state 遷移先の状態
+       * @param  animName アニメーション名
+       */
+      void ChangeState(const PlayerState& state, std::string_view animName);
+      //!< モデルサーバに紐づけられた文字列
+      static inline std::string _modelKey{"player"};
       //!< ジャンプコンポーネント
       std::unique_ptr<JumpComponent> _jump;
       //!< ムーブコンポーネント
@@ -207,7 +228,10 @@ namespace Gyro {
       std::unique_ptr<WireComponent> _wire;
       //!< アタックコンポーネント
       std::unique_ptr<Object::AttackComponent> _attack;
-      bool _gravityReset{false}; //!< 重力リセット処理
+      //!< アニメーション名を保持する文字列
+      std::string _animationKey;
+      //!< 重力リセット処理
+      bool _gravityReset{false};
     };
   }
     //} // namespace Player
