@@ -73,6 +73,13 @@ namespace Gyro {
         _hit = flag;
       }
       /**
+       * @brief 座標の更新
+       * @param position 更新する座標
+       */
+      inline void SetPosition(const AppMath::Vector4& position) {
+        _position = position;
+      }
+      /**
        * @brief  コリジョンタイプの取得
        * @return コリジョンタイプを返す
        */

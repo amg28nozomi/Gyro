@@ -17,6 +17,7 @@
 #include "JumpComponent.h"
 #include "MoveComponent.h"
 #include "WireComponent.h"
+#include "AttackComponent.h"
 
 namespace AppFrame::Math{}
 /**
@@ -197,6 +198,8 @@ namespace Gyro {
       std::unique_ptr<Object::MoveComponent> _move;
       //!< ワイヤーコンポーネント
       std::unique_ptr<WireComponent> _wire;
+      //!< アタックコンポーネント
+      std::unique_ptr<Object::AttackComponent> _attack;
       bool _gravityReset{false}; //!< 重力リセット処理
     };
   }
