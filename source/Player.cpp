@@ -181,7 +181,8 @@ namespace Gyro {
       _gaugeHp.Draw();
       _gaugeTrick.Draw();
 #ifdef _DEBUG
-      DebugDraw(); // デバッグ描画
+      DebugDraw();     // デバッグ描画
+      _attack->Draw(); // 攻撃判定の描画
 #endif
       // 移動処理の後始末を行う
       _move->Finish();
