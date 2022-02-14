@@ -8,6 +8,18 @@ namespace Gyro {
       _type = ComponentType::Wire;
     }
 
+    void WireComponent::Start() {
+      _wire = true;
+      // 所有者の重力処理を無効化する
+      _owner.GravitySet(false);
+    }
+
+    void WireComponent::Finish() {
+      _wire = false;
+      // 所有者の重力処理を有効にする
+      _owner.GravitySet(true);
+    }
+
     bool WireComponent::SetTarget(const Vector4& target, const float time) {
       // 移動時間を設定
       _time = time;
@@ -21,10 +33,10 @@ namespace Gyro {
       return false;
     }
 
-    Vector4 WireComponent::WireMove() const {
-      auto v = (_target - _start) / _time; // 移動量
-      return v;
+    Vector4 WireComponent::WireMove() {
+      // 向き情報の取得
+      _forward = Vector4::Normalize(_target - _owner.GetPosition());
+      return _forward * 5.0f; // 移動量を返す
     }
-
   } // namespace Player
 } // namespace Gyro

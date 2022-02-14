@@ -143,7 +143,7 @@ namespace Gyro {
         }
       }
       else {
-        Wire(move);
+        move = _wire->WireMove();
       }
       // 座標に現在座標を更新する
       _position.Add(move);
@@ -416,6 +416,10 @@ namespace Gyro {
           // _position = (AppMath::Vector4::Normalize(v) * l);
           // _position.SetY(y);
           _capsule->SetPosition(_position);
+          // 衝突した場合はワイヤーアクションを中断する
+          if (_wire->IsAction()) {
+            _wire->Finish();
+          }
         }
       }
     }
@@ -456,8 +460,8 @@ namespace Gyro {
         _wire->Start();
         return;
       }
-      // 移動量をセットする
-      move = _wire->WireMove();
+      // 移動量がセットされている場合は処理を中断する
+      _wire->Finish();
     }
   } // namespace Player
 }// namespace Gyro

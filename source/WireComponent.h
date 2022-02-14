@@ -47,7 +47,7 @@ namespace Gyro {
        * @brief  
        * @return 
        */
-      Vector4 WireMove() const;
+      Vector4 WireMove();
       /**
        * @brief  ワイヤーアクション中かの判定
        * @return true:アクション中 false:アクション外

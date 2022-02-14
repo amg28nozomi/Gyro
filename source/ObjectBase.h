@@ -71,6 +71,13 @@ namespace Gyro {
        */
       virtual void Set(SpawnBase& spawn);
       /**
+       * @brief  重力処理を行うかのフラグをセット
+       * @param  flag true:重力処理を行う false:重力処理を無効
+       */
+      virtual inline void GravitySet(const bool flag) {
+        _gravity = flag;
+      }
+      /**
        * @brief  識別番号の取得
        * @return 識別番号
        */

@@ -81,6 +81,12 @@
     <Filter Include="ヘッダー ファイル\Object\Player">
       <UniqueIdentifier>{f67a62f6-a940-4c2a-b855-27c2868b1209}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Object\Wire">
+      <UniqueIdentifier>{4ad71435-711a-4844-a3a0-1e0ebcd85ab9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Object\Wire">
+      <UniqueIdentifier>{b000dd62-374d-45a3-bb0a-98b5fd1ce21b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\ApplicationMain.cpp">
@@ -194,6 +200,9 @@
     <ClCompile Include="source\AttackComponent.cpp">
       <Filter>ソース ファイル\Object\Player</Filter>
     </ClCompile>
+    <ClCompile Include="source\WirePoint.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\ApplicationMain.h">
@@ -306,6 +315,9 @@
     </ClInclude>
     <ClInclude Include="source\AttackComponent.h">
       <Filter>ヘッダー ファイル\Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="source\WirePoint.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
