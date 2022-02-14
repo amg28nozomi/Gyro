@@ -65,7 +65,6 @@ namespace Gyro {
       _wire = std::make_unique<WireComponent>(*this);
       // アタックコンポーネントの設定
       _attack = std::make_unique<Object::AttackComponent>(*this, std::move(std::make_shared<Object::CollisionCapsule>(*this, _position, 10.0f, 10.0f)));
-      _attack->Process(AppMath::Vector4());
       _modelAnim.SetMainAttach(_model, Idle, 1.0f, true);
       _gaugeHp.Init();
       _gaugeTrick.Init();

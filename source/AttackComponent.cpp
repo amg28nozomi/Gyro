@@ -1,3 +1,10 @@
+/*****************************************************************//**
+ * @file   AttackComponent.cpp
+ * @brief  攻撃コンポーネントクラスの定義
+ * 
+ * @author 鈴木希海
+ * @date   February 2022
+ *********************************************************************/
 #include "AttackComponent.h"
 #include "ObjectBase.h"
 #include "CollisionCapsule.h"
@@ -24,6 +31,15 @@ namespace Gyro {
       _collision->Process();
       return true;
     }
+
+#ifdef _DEBUG
+    void AttackComponent::Draw() const {
+      // 攻撃判定中のみ当たり判定の描画を実行する
+      if (_state == AttackState::Active) {
+        _collision->Draw();
+      }
+    }
+#endif
 
     AppMath::Matrix44 AttackComponent::LocalToWorld(const AppMath::Vector4& local) const {
       auto position = _owner.GetPosition() + local;

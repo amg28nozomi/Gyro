@@ -41,17 +41,27 @@ namespace Gyro {
       /**
        * @brief 攻撃判定の開始
        */
-      void Start() override{}
+      inline void Start() override {
+        _state = AttackState::Active;
+      }
       /**
        * @brief 攻撃判定の終了
        */
-      void Finish() override{}
+      inline void Finish() override {
+        _state = AttackState::NonActive;
+      }
       /**
        * @brief  攻撃判定の更新
        * @param  localPosition ローカル座標
-       * @return true:正常終了 false:問題発生
+       * @return true:正常終了 false:攻撃状態ではない
        */
       virtual bool Process(const AppMath::Vector4& localPosition);
+#ifdef _DEBUG
+      /**
+       * @brief 当たり判定の描画処理(デバッグ専用)
+       */
+      void Draw() const;
+#endif
       /**
        * @brief  攻撃状態の取得
        * @return 攻撃状態
@@ -74,7 +84,7 @@ namespace Gyro {
       //!< 攻撃用当たり判定情報
       std::shared_ptr<CollisionBase> _collision;
       //!< 攻撃判定時間
-      float _time;
+      float _time{0.0f};
       /**
        * @brief ローカル座標をワールド座標に変換する
        */
