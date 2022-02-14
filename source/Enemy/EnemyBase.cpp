@@ -28,7 +28,7 @@ namespace Gyro {
             _mHandle = -1;
             _enemyMoveSpeed = 0.0f;
             _id = ObjectId::Enemy;
-            _enemyState = EnemyState::WAIT;
+            _enemyState = EnemyState::Idle;
             return true;
         }
 
