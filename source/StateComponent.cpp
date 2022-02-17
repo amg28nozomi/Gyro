@@ -57,7 +57,7 @@ namespace Gyro {
     }
 
     int StateComponent::Frame(float total, int percent) {
-      float num = 1.0 - (percent / Max);
+      float num = percent / Max;
       return static_cast<int>(total * num);
     }
 

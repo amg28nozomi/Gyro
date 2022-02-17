@@ -49,6 +49,8 @@ namespace {
   // ジャンプフラグ
   constexpr auto JumpPowe = 3.0f;
   constexpr auto JumpMax = 300.0f;
+
+  constexpr auto RunPower = 3.8f;
 }
 
 namespace Gyro {
@@ -113,10 +115,12 @@ namespace Gyro {
       AppMath::Vector4 move;
       // 前フレームの状態を保持
       auto oldState = _playerState;
-      // ワイヤーアクションの入口処理
-      if (input.GetButton(XINPUT_BUTTON_B, false)) {
-        Wire(move);
-      }
+
+      //// ワイヤーアクションの入口処理
+      //if (input.GetButton(XINPUT_BUTTON_B, false)) {
+      //  Wire(move);
+      //}
+      // 
       // ワイヤーフラグが立っていない場合のみ更新を行う
       if (!_wire->IsAction()) {
         // 状態の切り替え処理
@@ -255,6 +259,7 @@ namespace Gyro {
         auto key = NextKey();
         // 攻撃状態の場合は遷移フラグの判定を行う
         if (input.GetButton(key, false) && _stateComponent->Process(_modelAnim.GetMainFrame())) {
+          _attack->Finish();
           // 条件を満たしたので更新を行う
           SetStateParam(stateMap.at(_playerState));
           return true;
@@ -262,6 +267,7 @@ namespace Gyro {
         // アニメーションが終了している場合
         if (_modelAnim.GetMainAnimEnd()) {
           _playerState = PlayerState::Idle;
+          _attack->Finish();
           _stateComponent->Finish();
         }
         return true;
@@ -272,6 +278,7 @@ namespace Gyro {
         if (input.GetButton(XINPUT_BUTTON_X, false)) {
           // 強攻撃に遷移する
           SetStateParam(PlayerState::Attack1);
+          _attack->Start();
           _attackFlag = true;
           return true; // 遷移する
         }
@@ -279,6 +286,7 @@ namespace Gyro {
         if (input.GetButton(XINPUT_BUTTON_Y, false)) {
           // 弱攻撃に遷移する
           SetStateParam(PlayerState::Attack1);
+          _attack->Start();
           _attackFlag = false;
           return true; // 遷移する
         }
@@ -390,7 +398,7 @@ namespace Gyro {
     bool Player::IsRun(const AppMath::Vector4& move) {
       // 移動量の取得
       auto [x, z] = move.GetVector2();
-      if (x == 5.0f || x == -5.0f || z == 5.0f || z == -5.0f) {
+      if (RunPower <= x || x <= -RunPower || RunPower <= z || z <= -RunPower) {
         return true;
       }
       return false;
@@ -483,6 +491,8 @@ namespace Gyro {
       // ジャンプの後始末を行う
       if (_jump->IsJump()) {
         _jump->Finish();
+      }
+      if (_playerState == PlayerState::Jump) {
         _playerState = PlayerState::Idle;
       }
       return true; // 床に立っている
