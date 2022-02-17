@@ -50,10 +50,26 @@ namespace {
   // ジャンプフラグ
   constexpr auto JumpPowe = 3.0f;
   constexpr auto JumpMax = 300.0f;
+
+  constexpr auto RunPower = 3.8f;
 }
 
 namespace Gyro {
   namespace Player {
+
+    /**
+     * @brief 自機の状態をキーとして状態を管理する連想配列クラス
+     */
+    const std::unordered_map<Player::PlayerState, std::pair<int, int>> chaneMap{
+      {Player::PlayerState::Attack1, {60, 90}}, // 攻撃1
+      {Player::PlayerState::Attack2, {60, 90}}, // 攻撃2
+    };
+
+    const std::unordered_map<Player::PlayerState, Player::PlayerState> stateMap{
+      {Player::PlayerState::Attack1, Player::PlayerState::Attack2},
+      {Player::PlayerState::Attack2, Player::PlayerState::Attack3},
+      {Player::PlayerState::Attack3, Player::PlayerState::Idle}
+    };
 
     Player::Player(Application::ApplicationMain& app) : ObjectBase(app) {
       LoadResource(); // リソースの読み取り
@@ -72,6 +88,10 @@ namespace Gyro {
       // アタックコンポーネントの設定
       // 当たり判定は球をセットする
       _attack = std::make_unique<Object::AttackComponent>(*this, std::move(std::make_shared<Object::CollisionSphere>(*this, _position, 30.0f)));
+      // インビジブルコンポーネントの設定
+      _invincible = std::make_unique<Object::InvincibleComponent>(_app);
+      // ステートコンポーネントの設定
+      _stateComponent = std::make_unique<Object::StateComponent>();
       // アニメーションの設定
       _modelAnim.SetMainAttach(_model, Idle, 1.0f, true);
       // ゲージの設定
@@ -96,67 +116,89 @@ namespace Gyro {
       AppMath::Vector4 move;
       // 前フレームの状態を保持
       auto oldState = _playerState;
-      // ワイヤーアクションの入口処理
-      if (input.GetButton(XINPUT_BUTTON_B, false)) {
-        Wire(move);
-      }
-      // ワイヤーアクション実行中は他のアクションを実行しない
+
+      //// ワイヤーアクションの入口処理
+      //if (input.GetButton(XINPUT_BUTTON_B, false)) {
+      //  Wire(move);
+      //}
+      // 
+      // ワイヤーフラグが立っていない場合のみ更新を行う
       if (!_wire->IsAction()) {
-        // ジャンプ処理の入口処理
-        if (input.GetButton(XINPUT_BUTTON_A, false)) {
-          Jump(); // ジャンプ処理
-        }
+        // 状態の切り替え処理
+        auto f = StateChanege(input);
         // 移動量の取得
         move = Move(lX, lY);
-        // 状態の更新
-        if (State(PlayerState::Idle) && _attackFlugY == false && input.GetButton(XINPUT_BUTTON_Y, false)) {
-          _attack->Start();
-          ChangeState(PlayerState::Attack1, GroundLightAttack1);
-          _gaugeTrick.Add(-50.f);
-          _attackFlugY = true;
-          _cnt = 0;
-        }
-        else if (State(PlayerState::Attack1) && _attackFlugY == true && input.GetButton(XINPUT_BUTTON_Y, false)) {
-          ChangeState(PlayerState::Attack2, GroundLightAttack2);
-          _gaugeTrick.Add(-50.f);
-          _cnt = 0;
-        }
-        else if (State(PlayerState::Attack2) && _attackFlugY == true && input.GetButton(XINPUT_BUTTON_Y, false)) {
-          ChangeState(PlayerState::Attack3, GroundLightAttack3);
-          _gaugeTrick.Add(-50.f);
-          _cnt = 0;
-        }
-        // 強攻撃入口
-        if (State(PlayerState::Idle) && _attackFlugX == false && input.GetButton(XINPUT_BUTTON_X, false)) {
-          _attack->Start();
-          ChangeState(PlayerState::Attack1, GroundHeavyAttack1);
-          _gaugeTrick.Add(-50.f);
-          _attackFlugX = true;
-          _cnt = 0;
-        }
-        else if (State(PlayerState::Attack1) && _attackFlugX == true && input.GetButton(XINPUT_BUTTON_X, false)) {
-          ChangeState(PlayerState::Attack2, GroundHeavyAttack2);
-          _gaugeTrick.Add(-50.f);
-          _cnt = 0;
-        }
-        else if (State(PlayerState::Attack2) && _attackFlugX == true && input.GetButton(XINPUT_BUTTON_X, false)) {
-          ChangeState(PlayerState::Attack3, GroundHeavyAttack3);
-          _gaugeTrick.Add(-50.f);
-          _cnt = 0;
-        }
-        if (_modelAnim.GetMainAnimEnd() == true && _attackFlugY == true) {
-          _attackFlugY = false;
-        }
-        else if (_modelAnim.GetMainAnimEnd() == true && _attackFlugX == true) {
-          _attackFlugX = false;
-        }
-        else if (_attackFlugX == false && _attackFlugY == false) {
+        // 
+        if (!f) {
           SetRotation(move);
         }
       }
+      // ワイヤーフラグが立っている場合は移動量を使用
       else {
         move = _wire->WireMove();
       }
+
+      //// ワイヤーアクション実行中は他のアクションを実行しない
+      //if (!_wire->IsAction()) {
+      //  // ジャンプ処理の入口処理
+      //  if (input.GetButton(XINPUT_BUTTON_A, false)) {
+      //    Jump(); // ジャンプ処理
+      //  }
+        // 移動量の取得
+        // move = Move(lX, lY);
+
+        // 状態遷移処理
+
+
+      //  // 状態の更新
+      //  if (State(PlayerState::Idle) && _attackFlugY == false && input.GetButton(XINPUT_BUTTON_Y, false)) {
+      //    _attack->Start();
+      //    ChangeState(PlayerState::Attack1, GroundLightAttack1);
+      //    _gaugeTrick.Add(-50.f);
+      //    _attackFlugY = true;
+      //    _cnt = 0;
+      //  }
+      //  else if (State(PlayerState::Attack1) && _attackFlugY == true && input.GetButton(XINPUT_BUTTON_Y, false)) {
+      //    ChangeState(PlayerState::Attack2, GroundLightAttack2);
+      //    _gaugeTrick.Add(-50.f);
+      //    _cnt = 0;
+      //  }
+      //  else if (State(PlayerState::Attack2) && _attackFlugY == true && input.GetButton(XINPUT_BUTTON_Y, false)) {
+      //    ChangeState(PlayerState::Attack3, GroundLightAttack3);
+      //    _gaugeTrick.Add(-50.f);
+      //    _cnt = 0;
+      //  }
+      //  // 強攻撃入口
+      //  if (State(PlayerState::Idle) && _attackFlugX == false && input.GetButton(XINPUT_BUTTON_X, false)) {
+      //    _attack->Start();
+      //    ChangeState(PlayerState::Attack1, GroundHeavyAttack1);
+      //    _gaugeTrick.Add(-50.f);
+      //    _attackFlugX = true;
+      //    _cnt = 0;
+      //  }
+      //  else if (State(PlayerState::Attack1) && _attackFlugX == true && input.GetButton(XINPUT_BUTTON_X, false)) {
+      //    ChangeState(PlayerState::Attack2, GroundHeavyAttack2);
+      //    _gaugeTrick.Add(-50.f);
+      //    _cnt = 0;
+      //  }
+      //  else if (State(PlayerState::Attack2) && _attackFlugX == true && input.GetButton(XINPUT_BUTTON_X, false)) {
+      //    ChangeState(PlayerState::Attack3, GroundHeavyAttack3);
+      //    _gaugeTrick.Add(-50.f);
+      //    _cnt = 0;
+      //  }
+      //  if (_modelAnim.GetMainAnimEnd() == true && _attackFlugY == true) {
+      //    _attackFlugY = false;
+      //  }
+      //  else if (_modelAnim.GetMainAnimEnd() == true && _attackFlugX == true) {
+      //    _attackFlugX = false;
+      //  }
+      //  else if (_attackFlugX == false && _attackFlugY == false) {
+      //    SetRotation(move);
+      //  }
+      //}
+      //else {
+      //  move = _wire->WireMove();
+      //}
       // 座標に現在座標を更新する
       _position.Add(move);
       _cnt++;
@@ -209,6 +251,68 @@ namespace Gyro {
       // 各種コリジョンの設定
       _sphere = std::make_unique<Object::CollisionSphere>(*this, m, 100.0f);
       _capsule = std::make_unique<Object::CollisionCapsule>(*this, _position, 150.0f, 20.0f);
+    }
+
+    bool Player::StateChanege(const AppFrame::Application::XBoxState& input) {
+      // 既に攻撃状態か
+      if (IsAttackState()) {
+        // 検索で使用するキーの取得
+        auto key = NextKey();
+        // 攻撃状態の場合は遷移フラグの判定を行う
+        if (input.GetButton(key, false) && _stateComponent->Process(_modelAnim.GetMainFrame())) {
+          _attack->Finish();
+          // 条件を満たしたので更新を行う
+          SetStateParam(stateMap.at(_playerState));
+          return true;
+        }
+        // アニメーションが終了している場合
+        if (_modelAnim.GetMainAnimEnd()) {
+          _playerState = PlayerState::Idle;
+          _attack->Finish();
+          _stateComponent->Finish();
+        }
+        return true;
+      }
+      // 攻撃状態に遷移するかの判定？
+      if (_playerState == PlayerState::Idle || _playerState == PlayerState::Run || _playerState == PlayerState::Walk) {
+        // Xボタンの入力があった場合
+        if (input.GetButton(XINPUT_BUTTON_X, false)) {
+          // 強攻撃に遷移する
+          SetStateParam(PlayerState::Attack1);
+          _attack->Start();
+          _attackFlag = true;
+          return true; // 遷移する
+        }
+        // Yボタンの入力があった場合
+        if (input.GetButton(XINPUT_BUTTON_Y, false)) {
+          // 弱攻撃に遷移する
+          SetStateParam(PlayerState::Attack1);
+          _attack->Start();
+          _attackFlag = false;
+          return true; // 遷移する
+        }
+        // Aボタンの入力があった場合はジャンプ状態に遷移
+        if (input.GetButton(XINPUT_BUTTON_A, false)) {
+          Jump(); // ジャンプ処理
+          return true; // 遷移する
+        }
+      }
+      return false;
+    }
+
+    int Player::NextKey() const {
+      // 攻撃フラグに応じて返すキーを切り替える
+      auto key = (_attackFlag) ? XINPUT_BUTTON_Y : XINPUT_BUTTON_X;
+      // 現在の状況に応じたキーを返す
+      switch (_playerState) {
+      case PlayerState::Attack1:
+      case PlayerState::Attack2:
+        return key; // 対応するキーを返す
+      case PlayerState::Attack3:
+        return -1;  // 処理は派生しない
+      default:
+        return -2;  // 攻撃状態ではない
+      }
     }
 
     void Player::Input() {
@@ -273,47 +377,65 @@ namespace Gyro {
     }
 
     void Player::SetRotation(const AppFrame::Math::Vector4 move) {
-      // 移動量がある場合は歩きモーションに遷移
-      // 後程移動量に応じて歩き・ダッシュモーション切り替え
-      if (move.LengthSquared()) {
-        _playerState = PlayerState::Walk;
-        _gaugeHp.Add(3.f);
-      }
-      else {
+
+      if (_playerState == PlayerState::Idle || _playerState == PlayerState::Run || _playerState == PlayerState::Walk) {
+        // 移動量のいずれかが基準を超えていたらRunに遷移
+        if (IsRun(move)) {
+          // 走り状態に遷移
+          _playerState = PlayerState::Run;
+          return;
+        }
+        // 移動量がある場合は歩きモーションに遷移
+        // 後程移動量に応じて歩き・ダッシュモーション切り替え
+        if (move.LengthSquared()) {
+          _playerState = PlayerState::Walk;
+          return;
+        }
+        // 待機状態に遷移する
         _playerState = PlayerState::Idle;
-        _attack->Finish();
       }
+    }
+
+    bool Player::IsRun(const AppMath::Vector4& move) {
+      // 移動量の取得
+      auto [x, z] = move.GetVector2();
+      if (RunPower <= x || x <= -RunPower || RunPower <= z || z <= -RunPower) {
+        return true;
+      }
+      return false;
     }
 
     void Player::Animation(PlayerState old) {
         // 自機の状態に合わせてアニメーション変化
         if (old != _playerState) {
-            switch (_playerState) {
-            case PlayerState::Idle: // 待機
-                _modelAnim.SetBlendAttach(Idle, 10.0f, 1.0f, true);
+          switch (_playerState) {
+          case PlayerState::Idle: // 待機
+              _modelAnim.SetBlendAttach(Idle, 10.0f, 1.0f, true);
+              break;
+          case PlayerState::Walk: // 歩き
+              _modelAnim.SetBlendAttach(Walk, 10.0f, 1.0f, true);
+              break;
+          case PlayerState::Run: // 走り
+              _modelAnim.SetBlendAttach(Run, 10.0f, 1.0f, true);
+              break;
+          case PlayerState::Attack1: // 攻撃1
+            // アニメーションキーの設定
+            _animationKey = (_attackFlag) ? GroundHeavyAttack1 : GroundLightAttack1;
+              if (_attackFlag) {
+                _modelAnim.SetBlendAttach(_animationKey, 10.0f, 1.0f, false);
                 break;
-            case PlayerState::Walk: // 歩き
-                _modelAnim.SetBlendAttach(Walk, 10.0f, 1.0f, true);
-                break;
-            case PlayerState::Run: // 走り
-                _modelAnim.SetBlendAttach(Run, 10.0f, 1.0f, true);
-                break;
-            case PlayerState::Attack1: // 攻撃1
-                if (_attackFlugY == true) {
-                    _modelAnim.SetBlendAttach(_animationKey, 10.0f, 1.3f, false);
-                }
-                else if (_attackFlugX == true) {
-                    _modelAnim.SetBlendAttach(_animationKey, 10.0f, 1.0f, false);
-                }
-                break;
+              }
+              _modelAnim.SetBlendAttach(_animationKey, 10.0f, 1.3f, false);
+               break;
             case PlayerState::Attack2: // 攻撃2
-                if (_attackFlugY == true) {
-                    _modelAnim.SetBlendAttach(_animationKey, 10.0f, 1.3f, false);
-                }
-                else if (_attackFlugX == true) {
-                    _modelAnim.SetBlendAttach(_animationKey, 10.0f, 1.0f, false);
-                }
+              // アニメーションキーの設定
+              _animationKey = (_attackFlag) ? GroundHeavyAttack2 : GroundLightAttack2;
+              if (_attackFlag) {
+                _modelAnim.SetBlendAttach(_animationKey, 10.0f, 1.0f, false);
                 break;
+              }
+              _modelAnim.SetBlendAttach(_animationKey, 10.0f, 1.3f, false);
+              break;
             case PlayerState::Attack3: // 攻撃3
               _modelAnim.SetBlendAttach(_animationKey, 10.0f, 1.0f, false);
                 //if (_attackFlugY == true) {
@@ -371,6 +493,9 @@ namespace Gyro {
       if (_jump->IsJump()) {
         _jump->Finish();
       }
+      if (_playerState == PlayerState::Jump) {
+        _playerState = PlayerState::Idle;
+      }
       return true; // 床に立っている
     }
 
@@ -383,7 +508,7 @@ namespace Gyro {
       DebugString(); // 座標情報の出力
       _app.GetCamera().Draw(_position, _move->MoveVector()); // カメラ情報の出力処理
       // _sphere->Draw(); // 当たり判定の描画
-      _capsule->Draw(); // カプセルの描画
+      _capsule->Draw();   // カプセルの描画
       return true;
     }
 
@@ -436,6 +561,7 @@ namespace Gyro {
           // 衝突した場合はワイヤーアクションを中断する
           if (_wire->IsAction()) {
             _wire->Finish();
+            _playerState = PlayerState::Idle;
           }
         }
       }
@@ -466,6 +592,7 @@ namespace Gyro {
       }
       _jump->Start(); // ジャンプ開始
       _gravityScale = 0.0f;
+      _playerState = PlayerState::Jump;
     }
 
     void Player::Wire(AppMath::Vector4& move) {
@@ -491,15 +618,11 @@ namespace Gyro {
       // 攻撃状態でない場合は処理を行わない
       if (_attack->GetState() == AttackState::NonActive) {
         return;
-      }
-      // アタッチされているアニメーション番号
-      auto animIndex = _app.GetModelServer().GetAnimIndex(_modelKey, _animationKey);
-      // 
-      
+      }     
       // アニメーションから指定したボーンのローカル座標を取得
       // 全ての成分が-1のベクトルが返ってくる
-      auto attachIndex = _modelAnim.GetMainAttachIndex();
-      auto pos = MV1GetFramePosition(_model, 15);// MV1GetAttachAnimFrameLocalPosition(_model, attachIndex, 15);
+      auto attachIndex = _modelAnim.GetAttachIndex();
+      auto pos = MV1GetFramePosition(_model, 15);
       // ローカル座標を攻撃座標にセットする
       _attack->Process(UtilityDX::ToVector(pos));
     }
@@ -509,5 +632,33 @@ namespace Gyro {
       _playerState = state;
       _animationKey = animName;
     }
+
+    bool Player::IsAttackState() const {
+      // 現在の状態は攻撃状態か？
+      switch (_playerState) {
+      case PlayerState::Attack1:
+      case PlayerState::Attack2:
+      case PlayerState::Attack3:
+        return true;  // 攻撃状態
+      default:
+        return false; // 攻撃状態ではない
+      }
+    }
+
+    bool Player::SetStateParam(PlayerState pState) {
+      // 状態の切り替え
+      _playerState = pState;
+      // データが登録されていない場合は設定を行わない
+      if (!chaneMap.contains(_playerState)) {
+        _stateComponent->Finish();
+        return false;
+      }
+      // 自機の状態を取得
+      auto [start, end] = chaneMap.at(_playerState);
+      // 切り替え状態を設定する
+      _stateComponent->Set(_modelAnim.GetMainFrame(), start, end);
+      return true; // 切り替えを完了
+    }
+
   } // namespace Player
 }// namespace Gyro

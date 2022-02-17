@@ -18,6 +18,8 @@
 #include "MoveComponent.h"
 #include "WireComponent.h"
 #include "AttackComponent.h"
+#include "InvincibleComponent.h"
+#include "StateComponent.h"
 
 namespace AppFrame::Math{}
 /**
@@ -109,6 +111,8 @@ namespace Gyro {
       std::unique_ptr<Object::CollisionCapsule> _capsule; //!< カプセル
       PlayerState _playerState{PlayerState::Idle};        //!< 自機状態
 
+      bool _attackFlag{false};   //!< 攻撃フラグ(true:強攻撃 false:弱攻撃)
+
       bool _attackFlugY = false; //!< 弱攻撃フラグ
       bool _attackFlugX = false; //!< 強攻撃フラグ
       int _cnt;
@@ -162,6 +166,12 @@ namespace Gyro {
        * @param old 前フレームの状態
        */
       void Animation(PlayerState old);
+      /**
+       * @brief  状態の切り替え処理(βプレゼン専用)
+       * @param  move XBOXコントローラの入力状態クラスの参照
+       * @return true:チェンジ false:変更なし
+       */
+      bool StateChanege(const AppFrame::Application::XBoxState& input);
       /**
        * @brief モーション切り替え
        */
@@ -222,6 +232,24 @@ namespace Gyro {
        * @brief  攻撃処理
        */
       void Attack();
+      /**
+       * @brief  攻撃状態かの判定
+       * @return true:攻撃状態 false:攻撃状態ではない
+       */
+      bool IsAttackState() const;
+      /**
+       * @brief  キーの設定
+       * @return 
+       */
+      int NextKey() const;
+      /**
+       * @brief
+       * @return 
+       */
+      bool SetStateParam(PlayerState pState);
+
+      bool IsRun(const AppMath::Vector4& move);
+
       //!< モデルサーバに紐づけられた文字列
       static inline std::string _modelKey{"player"};
       //!< ジャンプコンポーネント
@@ -232,6 +260,10 @@ namespace Gyro {
       std::unique_ptr<WireComponent> _wire;
       //!< アタックコンポーネント
       std::unique_ptr<Object::AttackComponent> _attack;
+      //!< インビジブルコンポーネント
+      std::unique_ptr<Object::InvincibleComponent> _invincible;
+      //!< ステートコンポーネント
+      std::unique_ptr<Object::StateComponent> _stateComponent;
       //!< アニメーション名を保持する文字列
       std::string _animationKey;
       //!< 重力リセット処理

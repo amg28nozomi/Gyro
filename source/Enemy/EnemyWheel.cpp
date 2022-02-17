@@ -44,6 +44,8 @@ namespace Gyro {
         }
 
         bool EnemyWheel::Process() {
+          // 基底クラスの更新処理を呼び出し
+          EnemyBase::Process();
           // 前フレームの状態
           EnemyState oldEnemyState = _enemyState;
           // ターゲット座標
@@ -104,7 +106,10 @@ namespace Gyro {
             }
 
             _modelAnim.Process();
-            IsDamege();
+            // 無敵状態ではない場合、ダメージ判定を行う
+            if (!_invincible->Invincible()) {
+              IsDamege();
+            }
             return true;
         }
 
@@ -180,6 +185,8 @@ namespace Gyro {
             // 衝突時に対象球の色を変える
             std::dynamic_pointer_cast<Object::CollisionSphere>(attack.GetCollision())->HitOn();
 #endif
+            // 衝突フラグがある場合は無敵時間を開始する
+            _invincible->Start();
             return true; // 衝突判定
           }
           return false;  // 衝突なし

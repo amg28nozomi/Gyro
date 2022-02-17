@@ -30,13 +30,6 @@ namespace Gyro {
       enum class AttackState {
         NonActive, // ノーアクション
         Active,    // 活動状態
-        Damega     // ダメージフレーム有り
-      };
-      /**
-       * @brief 攻撃の種類を表す列挙型クラス
-       */
-      enum class AttackType {
-        Test // テスト用
       };
       /**
        * @brief  コンストラクタ
@@ -48,15 +41,13 @@ namespace Gyro {
       /**
        * @brief 攻撃判定の開始
        */
-      inline void Start() override {
+      virtual inline void Start() override {
         _state = AttackState::Active;
       }
       /**
        * @brief 攻撃判定の終了
        */
-      inline void Finish() override {
-        _state = AttackState::NonActive;
-      }
+      virtual void Finish() override;
       /**
        * @brief  攻撃判定の更新
        * @param  localPosition ローカル座標
@@ -90,8 +81,6 @@ namespace Gyro {
       std::string _objectKey;
       //!< 攻撃状態
       AttackState _state;
-      //!< 攻撃の種類
-      AttackType _attackType;
       //!< 攻撃用当たり判定情報
       std::shared_ptr<CollisionBase> _collision;
       //!< 攻撃判定時間

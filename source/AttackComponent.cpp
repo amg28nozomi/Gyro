@@ -14,9 +14,13 @@ namespace Gyro {
 
     AttackComponent::AttackComponent(ObjectBase& owner, std::shared_ptr<CollisionBase> collision) : _owner(owner) {
       _state = AttackState::NonActive;
-      _attackType = AttackType::Test;
       // 攻撃判定用のコリジョン情報をセット
       _collision = std::move(collision);
+    }
+
+    void AttackComponent::Finish() {
+      _state = AttackState::NonActive;
+      _collision->SetPosition(_owner.GetPosition());
     }
 
     bool AttackComponent::Process(const AppMath::Vector4& localPosition) {
@@ -24,7 +28,6 @@ namespace Gyro {
       if (_state == AttackState::NonActive) {
         return false;
       }
-      
       auto pos = _owner.GetPosition() + localPosition;
       // 座標更新
       // auto pos = LocalToWorld(_owner.GetPosition()) * localPosition;
