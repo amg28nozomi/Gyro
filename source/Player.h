@@ -18,6 +18,7 @@
 #include "MoveComponent.h"
 #include "WireComponent.h"
 #include "AttackComponent.h"
+#include "InvincibleComponent.h"
 
 namespace AppFrame::Math{}
 /**
@@ -232,6 +233,8 @@ namespace Gyro {
       std::unique_ptr<WireComponent> _wire;
       //!< アタックコンポーネント
       std::unique_ptr<Object::AttackComponent> _attack;
+      //!< インビジブルコンポーネント
+      std::unique_ptr<Object::InvincibleComponent> _invincible;
       //!< アニメーション名を保持する文字列
       std::string _animationKey;
       //!< 重力リセット処理

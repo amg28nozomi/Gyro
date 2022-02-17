@@ -12,6 +12,11 @@
 #include "../Player.h"
 #include "../ObjectServer.h"
 
+namespace {
+  // 無敵時間(フレーム)
+  constexpr auto InvincibleTime = 120.0f;
+}
+
 namespace Gyro {
     namespace Enemy {
         EnemyBase::EnemyBase(Application::ApplicationMain& app) : Object::ObjectBase(app) {
@@ -29,11 +34,22 @@ namespace Gyro {
             _enemyMoveSpeed = 0.0f;
             _id = ObjectId::Enemy;
             _enemyState = EnemyState::Idle;
+            // 無敵処理の生成
+            _invincible = std::make_unique<Object::InvincibleComponent>(_app);
+            // 無敵時間の設定
+            _invincible->Set(InvincibleTime);
             return true;
         }
 
         bool EnemyBase::Process() {
-            return true;
+          // 基底クラスの更新処理を呼び出し
+          ObjectBase::Process();
+          // 無敵状態か
+          if (_invincible->Invincible()) {
+            // 無敵時間の経過処理を呼び出し
+            _invincible->Process();
+          }
+          return true;
         }
 
         bool EnemyBase::Draw() const {

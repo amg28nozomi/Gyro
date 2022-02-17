@@ -62,6 +62,13 @@ namespace Gyro {
        * @param  speed 経過時間(デフォルトは1.0f)
        */
       void Process(const float speed = 1.0f);
+      /**
+       * @brief  無敵状態かの判定
+       * @return true:無敵状態 false:無敵状態ではない
+       */
+      bool Invincible() const {
+        return _invincible == InvincibleState::Invincible;
+      }
     protected:
       //!< アプリケーションの参照
       Application::ApplicationMain& _app;

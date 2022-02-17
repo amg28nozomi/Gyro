@@ -10,6 +10,8 @@
 #include "../ModelAnim/ModelAnimComponent.h"
 #include "../CollisionSphere.h"
 #include "../CollisionCapsule.h"
+#include "../InvincibleComponent.h"
+
 
  /** 作品用名前空間 */
 namespace Gyro {
@@ -66,6 +68,13 @@ namespace Gyro {
               return 0;
             }
             /**
+             * @brief  無敵処理の参照を取得
+             * @return 無敵処理の参照
+             */
+            virtual Object::InvincibleComponent& GetInvincibleComponent() {
+              return *_invincible;
+            }
+            /**
              * @brief  対象と自身が同一オブジェクトかの判定
              * @param  handle ハンドル
              * @return true:一致 false:不一致
@@ -88,8 +97,10 @@ namespace Gyro {
             int _mHandle;           //!< モデルハンドル
             float _enemyMoveSpeed;  //!< 敵移動速度
             std::unique_ptr<Object::CollisionSphere> _sphere{nullptr}; //!< 球の当たり判定
+            //!< カプセル当たり判定
             std::unique_ptr<Object::CollisionCapsule> _capsule{ nullptr }; //!< カプセルの当たり判定
-
+            //!< 無敵コンポーネント
+            std::unique_ptr<Object::InvincibleComponent> _invincible{nullptr};
             EnemyState _enemyState; //!< 敵の状態保持変数
             ModelAnim::ModelAnimComponent _modelAnim;
             /**

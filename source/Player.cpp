@@ -71,6 +71,8 @@ namespace Gyro {
       // アタックコンポーネントの設定
       // 当たり判定は球をセットする
       _attack = std::make_unique<Object::AttackComponent>(*this, std::move(std::make_shared<Object::CollisionSphere>(*this, _position, 30.0f)));
+      // インビジブルコンポーネントの設定
+      _invincible = std::make_unique<Object::InvincibleComponent>(_app);
       // アニメーションの設定
       _modelAnim.SetMainAttach(_model, Idle, 1.0f, true);
       // ゲージの設定
