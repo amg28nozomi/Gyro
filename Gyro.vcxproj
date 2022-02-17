@@ -46,6 +46,7 @@
     <ClCompile Include="source\ObjectServer.cpp" />
     <ClCompile Include="source\Player.cpp" />
     <ClCompile Include="source\ObjectComponent.cpp" />
+    <ClCompile Include="source\PlayerAttack.cpp" />
     <ClCompile Include="source\PrimitiveBase.cpp" />
     <ClCompile Include="source\PrimitivePlane.cpp" />
     <ClCompile Include="source\ScoreBase.cpp" />
@@ -87,6 +88,7 @@
     <ClInclude Include="source\ObjectServer.h" />
     <ClInclude Include="source\Player.h" />
     <ClInclude Include="source\ObjectComponent.h" />
+    <ClInclude Include="source\PlayerAttack.h" />
     <ClInclude Include="source\PrimitiveBase.h" />
     <ClInclude Include="source\PrimitivePlane.h" />
     <ClInclude Include="source\ScoreBase.h" />

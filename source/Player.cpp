@@ -492,15 +492,11 @@ namespace Gyro {
       // 攻撃状態でない場合は処理を行わない
       if (_attack->GetState() == AttackState::NonActive) {
         return;
-      }
-      // アタッチされているアニメーション番号
-      auto animIndex = _app.GetModelServer().GetAnimIndex(_modelKey, _animationKey);
-      // 
-      
+      }     
       // アニメーションから指定したボーンのローカル座標を取得
       // 全ての成分が-1のベクトルが返ってくる
       auto attachIndex = _modelAnim.GetAttachIndex();
-      auto pos = MV1GetFramePosition(_model, 15);// MV1GetAttachAnimFrameLocalPosition(_model, attachIndex, 15);
+      auto pos = MV1GetFramePosition(_model, 15);
       // ローカル座標を攻撃座標にセットする
       _attack->Process(UtilityDX::ToVector(pos));
     }

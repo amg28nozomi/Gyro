@@ -110,6 +110,8 @@ namespace Gyro {
       std::unique_ptr<Object::CollisionCapsule> _capsule; //!< カプセル
       PlayerState _playerState{PlayerState::Idle};        //!< 自機状態
 
+      bool _attackFlag{false};   //!< 攻撃フラグ(true:強攻撃 false:弱攻撃)
+
       bool _attackFlugY = false; //!< 弱攻撃フラグ
       bool _attackFlugX = false; //!< 強攻撃フラグ
       int _cnt;
@@ -163,6 +165,12 @@ namespace Gyro {
        * @param old 前フレームの状態
        */
       void Animation(PlayerState old);
+      /**
+       * @brief  状態の切り替え処理
+       * @param  move 移動量
+       * @return true:チェンジ false:変更なし
+       */
+      bool StateChanege(const AppMath::Vector4& move);
       /**
        * @brief モーション切り替え
        */
