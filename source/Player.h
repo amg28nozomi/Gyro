@@ -242,6 +242,13 @@ namespace Gyro {
        * @return 
        */
       int NextKey() const;
+      /**
+       * @brief
+       * @return 
+       */
+      bool SetStateParam(PlayerState pState);
+
+      bool IsRun(const AppMath::Vector4& move);
 
       //!< モデルサーバに紐づけられた文字列
       static inline std::string _modelKey{"player"};

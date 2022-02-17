@@ -38,7 +38,7 @@ namespace Gyro {
        * @param  end   判定終了フレーム(割合)
        * @return true:設定成功 false:設定失敗
        */
-      bool Set(const float total, const int start, const int end);
+      bool Set(float total, int start, int end);
       /**
        * @brief  開始処理
        */
@@ -63,7 +63,7 @@ namespace Gyro {
        * @param  percent 割合
        * @return 判定フレーム
        */
-      int Frame(const float total, const int percent) const;
+      int Frame(float total, int percent);
     };
   } // namespace Object
 } // namespace Gyro

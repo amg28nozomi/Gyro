@@ -20,15 +20,14 @@ namespace Gyro {
       // 初期化処理
     }
 
-    bool StateComponent::Set(const float total, const int start, const int end) {
-      using Arithmetic = AppFrame::Math::Arithmetic;
+    bool StateComponent::Set(float total, int start, int end) {
       // 範囲内に収まっているかの判定
-      if (Arithmetic::IsRange(start, Min, Max)) {
+      if (AppFrame::Math::Arithmetic::IsRange(start, Min, Max)) {
         // 範囲内に収まっているかの判定
-        if (Arithmetic::IsRange(end, Min, Max)) {
+        if (AppFrame::Math::Arithmetic::IsRange(end, Min, Max)) {
           // 開始フレームと終了フレームをセットする
-          _start = Frame(total, start);
-          _end = Frame(total, end);
+          _start = Frame(total, static_cast<float>(start));
+          _end = Frame(total, static_cast<float>(end));
           return true; // セット成功
         }
       }
@@ -40,10 +39,13 @@ namespace Gyro {
     }
 
     void StateComponent::Finish() {
-
+      _flag = true;
     }
 
     bool StateComponent::Process(const float play) {
+      if (_flag) {
+        return false;
+      }
       using Arithmetic = AppFrame::Math::Arithmetic;
       // 判定範囲内収まっているか？
       if (Arithmetic::IsRange(play, static_cast<float>(_start), static_cast<float>(_end))) {
@@ -54,7 +56,7 @@ namespace Gyro {
       return false;  // 判定外
     }
 
-    int StateComponent::Frame(const float total, const int percent) const {
+    int StateComponent::Frame(float total, int percent) {
       float num = 1.0 - (percent / Max);
       return static_cast<int>(total * num);
     }
