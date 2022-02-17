@@ -38,6 +38,7 @@
     <ClCompile Include="source\GaugeTrick.cpp" />
     <ClCompile Include="source\InvincibleComponent.cpp" />
     <ClCompile Include="source\JumpComponent.cpp" />
+    <ClCompile Include="source\LightAttack1.cpp" />
     <ClCompile Include="source\ModeGame.cpp" />
     <ClCompile Include="source\ModelAnim\ModelAnimComponent.cpp" />
     <ClCompile Include="source\ModelAnim\ModelAnimInfo.cpp" />
@@ -81,6 +82,7 @@
     <ClInclude Include="source\GaugeTrick.h" />
     <ClInclude Include="source\InvincibleComponent.h" />
     <ClInclude Include="source\JumpComponent.h" />
+    <ClInclude Include="source\LightAttack1.h" />
     <ClInclude Include="source\ModeGame.h" />
     <ClInclude Include="source\ModelAnim\ModelAnimComponent.h" />
     <ClInclude Include="source\ModelAnim\ModelAnimInfo.h" />

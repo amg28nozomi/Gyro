@@ -218,6 +218,9 @@
     <ClCompile Include="source\PlayerAttackData.cpp">
       <Filter>ソース ファイル\Object\Player\Attack</Filter>
     </ClCompile>
+    <ClCompile Include="source\LightAttack1.cpp">
+      <Filter>ソース ファイル\Object\Player\Attack</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\ApplicationMain.h">
@@ -341,6 +344,9 @@
       <Filter>ヘッダー ファイル\Object\Player\Attack</Filter>
     </ClInclude>
     <ClInclude Include="source\PlayerAttackData.h">
+      <Filter>ヘッダー ファイル\Object\Player\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="source\LightAttack1.h">
       <Filter>ヘッダー ファイル\Object\Player\Attack</Filter>
     </ClInclude>
   </ItemGroup>

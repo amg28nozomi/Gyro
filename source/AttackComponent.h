@@ -32,12 +32,6 @@ namespace Gyro {
         Active,    // 活動状態
       };
       /**
-       * @brief 攻撃の種類を表す列挙型クラス
-       */
-      enum class AttackType {
-        Test // テスト用
-      };
-      /**
        * @brief  コンストラクタ
        * @param  owner     所有者の参照
        * @param  key       モデルサーバに紐づけられた所有者の
@@ -87,8 +81,6 @@ namespace Gyro {
       std::string _objectKey;
       //!< 攻撃状態
       AttackState _state;
-      //!< 攻撃の種類
-      AttackType _attackType;
       //!< 攻撃用当たり判定情報
       std::shared_ptr<CollisionBase> _collision;
       //!< 攻撃判定時間
