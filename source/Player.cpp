@@ -70,8 +70,10 @@ namespace Gyro {
       _wire = std::make_unique<WireComponent>(*this);
       // アタックコンポーネントの設定
       // 当たり判定は球をセットする
-      _attack = std::make_unique<Object::AttackComponent>(*this, std::move(std::make_shared<Object::CollisionCapsule>(*this, _position, 10.0f, 10.0f)));
+      _attack = std::make_unique<Object::AttackComponent>(*this, std::move(std::make_shared<Object::CollisionSphere>(*this, _position, 30.0f)));
+      // アニメーションの設定
       _modelAnim.SetMainAttach(_model, Idle, 1.0f, true);
+      // ゲージの設定
       _gaugeHp.Init();
       _gaugeTrick.Init();
       return true;
@@ -107,6 +109,7 @@ namespace Gyro {
         move = Move(lX, lY);
         // 状態の更新
         if (State(PlayerState::Idle) && _attackFlugY == false && input.GetButton(XINPUT_BUTTON_Y, false)) {
+          _attack->Start();
           ChangeState(PlayerState::Attack1, GroundLightAttack1);
           _gaugeTrick.Add(-50.f);
           _attackFlugY = true;
@@ -124,6 +127,7 @@ namespace Gyro {
         }
         // 強攻撃入口
         if (State(PlayerState::Idle) && _attackFlugX == false && input.GetButton(XINPUT_BUTTON_X, false)) {
+          _attack->Start();
           ChangeState(PlayerState::Attack1, GroundHeavyAttack1);
           _gaugeTrick.Add(-50.f);
           _attackFlugX = true;
@@ -160,6 +164,7 @@ namespace Gyro {
       Animation(oldState);     // アニメーションの設定
       _modelAnim.Process();    // アニメーションの再生
       WorldMatrix();           // ワールド座標の更新
+      Attack();                //攻撃処理
       _sphere->Process(move);  // 移動量の加算
       _capsule->Process(move); // カプセルの更新
       Hit(); //衝突判定
@@ -275,6 +280,7 @@ namespace Gyro {
       }
       else {
         _playerState = PlayerState::Idle;
+        _attack->Finish();
       }
     }
 
@@ -477,6 +483,24 @@ namespace Gyro {
       }
       // 移動量がセットされている場合は処理を中断する
       _wire->Finish();
+    }
+
+    void Player::Attack() {
+      using AttackState = Object::AttackComponent::AttackState;
+      // 攻撃状態でない場合は処理を行わない
+      if (_attack->GetState() == AttackState::NonActive) {
+        return;
+      }
+      // アタッチされているアニメーション番号
+      auto animIndex = _app.GetModelServer().GetAnimIndex(_modelKey, _animationKey);
+      // 
+      
+      // アニメーションから指定したボーンのローカル座標を取得
+      // 全ての成分が-1のベクトルが返ってくる
+      auto attachIndex = _modelAnim.GetAttachIndex();
+      auto pos = MV1GetFramePosition(_model, 15);// MV1GetAttachAnimFrameLocalPosition(_model, attachIndex, 15);
+      // ローカル座標を攻撃座標にセットする
+      _attack->Process(UtilityDX::ToVector(pos));
     }
 
     void Player::ChangeState(const PlayerState& state, std::string_view animName) {

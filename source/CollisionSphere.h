@@ -32,7 +32,7 @@ namespace Gyro {
        */
       CollisionSphere(ObjectBase& owner, AppMath::Vector4 center, float radius);
       /**
-       * @brief “–‚½‚è”»’è‚ÌXVˆ—
+       * @brief “–‚½‚è”»’è‚Ìİ’è
        */
       void Process() override;
       /**
@@ -42,6 +42,10 @@ namespace Gyro {
       void Process(AppMath::Vector4 move) override;
 #ifdef _DEBUG
       void Draw() override;
+
+      inline void HitOn() {
+        _collision = true;
+      }
 #endif
       /**
        * @brief  Õ“Ë”»’è
@@ -60,7 +64,10 @@ namespace Gyro {
        * @return true:Õ“Ë false:Õ“Ë‚µ‚Ä‚¢‚È‚¢
        */
       bool IntersectPoint(const AppMath::Vector4& point);
-
+      /**
+       * @brief  ”¼Œa‚Ìæ“¾
+       * @return ”¼Œa
+       */
       float Radius() const {
         return _radius;
       }

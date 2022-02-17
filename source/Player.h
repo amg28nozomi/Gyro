@@ -98,10 +98,10 @@ namespace Gyro {
     private:
       // AppFrame::Math::Vector4 _move{}; //!< 移動量
 
-      int _model;          //!< モデルハンドル
-      int _animaIndex;     //!< アタッチされているアニメ番号
-      float _totalTime;    //!< アニメーションの総再生時間
-      float _animaTime;    //!< アニメーションの再生時間
+      int _model;       //!< モデルハンドル
+      int _animaIndex;  //!< アタッチされているアニメ番号
+      float _totalTime; //!< アニメーションの総再生時間
+      float _animaTime; //!< アニメーションの再生時間
       ModelAnim::ModelAnimComponent _modelAnim; //!< AnimComponentの実態
       Gauge::GaugeHP _gaugeHp;       //!< HPゲージの実態
       Gauge::GaugeTrick _gaugeTrick; //!< トリックゲージの実態
@@ -218,6 +218,10 @@ namespace Gyro {
        * @param  animName アニメーション名
        */
       void ChangeState(const PlayerState& state, std::string_view animName);
+      /**
+       * @brief  攻撃処理
+       */
+      void Attack();
       //!< モデルサーバに紐づけられた文字列
       static inline std::string _modelKey{"player"};
       //!< ジャンプコンポーネント

@@ -44,21 +44,23 @@ namespace Gyro {
         }
 
         bool EnemyWheel::Process() {
-            EnemyState oldEnemyState = _enemyState;
-            auto target = AppMath::Vector4();
-            auto prot = AppMath::Vector4();
-            _app.GetObjectServer().GetPlayerTransForm(target, prot);
-            AppMath::Vector4 forword = target - (_position);
-            forword.Normalize();
-            AppMath::Vector4 move = forword * (_enemyMoveSpeed);
-            // _sphere->Process();
+          // 前フレームの状態
+          EnemyState oldEnemyState = _enemyState;
+          // ターゲット座標
+          auto target = AppMath::Vector4();
+          auto prot = AppMath::Vector4();
+          _app.GetObjectServer().GetPlayerTransForm(target, prot);
+          AppMath::Vector4 forword = target - (_position);
+          forword.Normalize();
+          AppMath::Vector4 move = forword * (_enemyMoveSpeed);
+          // _sphere->Process();
 
-            // ラジアンを生成(z軸は反転させる)
-            auto radian = std::atan2(move.GetX(), -move.GetZ());
-            // 入力処理がある場合、更新を行う
-            if (_app.GetOperation().GetXBoxState().GetButton(XINPUT_BUTTON_LEFT_THUMB, false)) {
-              _iMove = !_iMove;
-            }
+          // ラジアンを生成(z軸は反転させる)
+          auto radian = std::atan2(move.GetX(), -move.GetZ());
+          // 入力処理がある場合、更新を行う
+          if (_app.GetOperation().GetXBoxState().GetButton(XINPUT_BUTTON_LEFT_THUMB, false)) {
+            _iMove = !_iMove;
+          }
 
             if (_iMove) {
                 _enemyState = EnemyState::Move;
@@ -102,6 +104,7 @@ namespace Gyro {
             }
 
             _modelAnim.Process();
+            IsDamege();
             return true;
         }
 
@@ -158,17 +161,25 @@ namespace Gyro {
         }
 
         bool EnemyWheel::IsDamege() {
-          // 各種データの取得
+          // 自機の取得
           const auto player = _app.GetObjectServer().GetPlayer();
+          // 攻撃コンポーネントの取得
           auto attack = player->AttackComponent();
-
           using AtkComponent = Object::AttackComponent;
           // 対象は攻撃状態か？
           if (attack.GetState() == AtkComponent::AttackState::NonActive) {
             return false; // 攻撃状態ではない
           }
           // 攻撃状態の場合は攻撃コリジョンと当たり判定を行う
-          if (_capsule->IntersectCapsule(*std::dynamic_pointer_cast<Object::CollisionCapsule>(attack.GetCollision()))) {
+          if (_capsule->IntersectSphere(*std::dynamic_pointer_cast<Object::CollisionSphere>(attack.GetCollision()))) {
+#ifdef _DEBUG
+            if (_app.GetDebugFlag()) {
+              // 死亡状態に遷移する
+              _state = ObjectState::Dead;
+            }
+            // 衝突時に対象球の色を変える
+            std::dynamic_pointer_cast<Object::CollisionSphere>(attack.GetCollision())->HitOn();
+#endif
             return true; // 衝突判定
           }
           return false;  // 衝突なし

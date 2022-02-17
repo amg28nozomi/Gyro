@@ -101,6 +101,10 @@ namespace Gyro {
              * @return 
              */
             bool IsStand() override;
+            /**
+             * @brief  オブジェクトの死亡処理
+             */
+            virtual void Dead();
         };
     } // namespace Enemy
 } // namespace Gyro
