@@ -110,6 +110,7 @@ namespace Gyro {
       std::unique_ptr<Object::CollisionSphere> _sphere;   //!< 当たり判定コリジョン(球)
       std::unique_ptr<Object::CollisionCapsule> _capsule; //!< カプセル
       PlayerState _playerState{PlayerState::Idle};        //!< 自機状態
+      PlayerState _oldState{ PlayerState::Idle };
 
       bool _attackFlag{false};   //!< 攻撃フラグ(true:強攻撃 false:弱攻撃)
 

@@ -114,8 +114,6 @@ namespace Gyro {
       auto oldPosition = _position;
       //!< 移動量
       AppMath::Vector4 move;
-      // 前フレームの状態を保持
-      auto oldState = _playerState;
 
       //// ワイヤーアクションの入口処理
       //if (input.GetButton(XINPUT_BUTTON_B, false)) {
@@ -204,7 +202,7 @@ namespace Gyro {
       _cnt++;
       _gaugeHp.Process();
       _gaugeTrick.Process();
-      Animation(oldState);     // アニメーションの設定
+      Animation(_oldState);     // アニメーションの設定
       _modelAnim.Process();    // アニメーションの再生
       WorldMatrix();           // ワールド座標の更新
       Attack();                //攻撃処理
@@ -259,7 +257,7 @@ namespace Gyro {
         // 検索で使用するキーの取得
         auto key = NextKey();
         // 攻撃状態の場合は遷移フラグの判定を行う
-        if (input.GetButton(key, false) && _stateComponent->Process(_modelAnim.GetMainFrame())) {
+        if (input.GetButton(key, false) && _stateComponent->Process(_modelAnim.GetMainPlayTime())) {
           _attack->Finish();
           // 条件を満たしたので更新を行う
           SetStateParam(stateMap.at(_playerState));
@@ -467,6 +465,8 @@ namespace Gyro {
     }
 
     bool Player::IsStand() {
+      // 前フレーム座標
+      _oldState = _playerState;
       // 新しい座標
       auto newPos = _position.AddVectorY(_gravityScale);
       // 新しいカプセル
@@ -621,7 +621,7 @@ namespace Gyro {
       }     
       // アニメーションから指定したボーンのローカル座標を取得
       // 全ての成分が-1のベクトルが返ってくる
-      auto attachIndex = _modelAnim.GetAttachIndex();
+      auto attachIndex = _modelAnim.GetMainAttachIndex();
       auto pos = MV1GetFramePosition(_model, 15);
       // ローカル座標を攻撃座標にセットする
       _attack->Process(UtilityDX::ToVector(pos));
@@ -656,7 +656,7 @@ namespace Gyro {
       // 自機の状態を取得
       auto [start, end] = chaneMap.at(_playerState);
       // 切り替え状態を設定する
-      _stateComponent->Set(_modelAnim.GetMainFrame(), start, end);
+      _stateComponent->Set(_modelAnim.GetMainPlayTime(), start, end);
       return true; // 切り替えを完了
     }
 
