@@ -90,6 +90,13 @@ namespace Gyro {
                 return _attachIndex;
             }
             /**
+             * @brief  アニメーション総時間の取得
+             * @return アニメーション総時間
+             */
+            float GetTotalTime() const {
+              return _totalTime;
+            }
+            /**
              * @brief   アニメーション再生時間の取得
              * @return  アニメーション再生時間
              */

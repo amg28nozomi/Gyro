@@ -62,6 +62,13 @@ namespace Gyro {
                 return _main.GetAnimEnd();
             }
             /**
+             * @brief  メインモデルの総再生時間を取得
+             * @return 総再生時間
+             */
+            float GetTotalTime() const {
+              return _main.GetTotalTime();
+            }
+            /**
              * @brief   メインモデルの再生フレームを取得
              * @return  再生フレーム
              * @author  鈴木希海

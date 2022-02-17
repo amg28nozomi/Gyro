@@ -73,6 +73,8 @@ namespace Gyro {
       _attack = std::make_unique<Object::AttackComponent>(*this, std::move(std::make_shared<Object::CollisionSphere>(*this, _position, 30.0f)));
       // インビジブルコンポーネントの設定
       _invincible = std::make_unique<Object::InvincibleComponent>(_app);
+      // ステートコンポーネントの設定
+      _stateComponent = std::unique_ptr<Object::StateComponent>();
       // アニメーションの設定
       _modelAnim.SetMainAttach(_model, Idle, 1.0f, true);
       // ゲージの設定
@@ -210,6 +212,38 @@ namespace Gyro {
       // 各種コリジョンの設定
       _sphere = std::make_unique<Object::CollisionSphere>(*this, m, 100.0f);
       _capsule = std::make_unique<Object::CollisionCapsule>(*this, _position, 150.0f, 20.0f);
+    }
+
+    bool Player::StateChanege(const AppFrame::Application::XBoxState& input) {
+      // ワイヤーアクション中は遷移を行わない
+      if (!_wire->IsAction()) {
+        return false;
+      }
+      // 既に攻撃状態か
+      if (IsAttackState()) {
+        // 検索で使用するキーの取得
+        auto key = NextKey();
+        // 攻撃状態の場合は遷移フラグの判定を行う
+        if (input.GetButton(key, false) && _stateComponent->Process(_modelAnim.GetMainFrame())) {
+          // 条件を満たしたので更新を行う
+        }
+      }
+
+    }
+
+    int Player::NextKey() const {
+      // 攻撃フラグに応じて返すキーを切り替える
+      auto key = (_attackFlag) ? XINPUT_BUTTON_Y : XINPUT_BUTTON_X;
+      // 現在の状況に応じたキーを返す
+      switch (_playerState) {
+      case PlayerState::Attack1:
+      case PlayerState::Attack2:
+        return key; // 対応するキーを返す
+      case PlayerState::Attack3:
+        return -1;  // 処理は派生しない
+      default:
+        return -2;  // 攻撃状態ではない
+      }
     }
 
     void Player::Input() {
@@ -505,6 +539,18 @@ namespace Gyro {
       // 各種データの切り替え
       _playerState = state;
       _animationKey = animName;
+    }
+
+    bool Player::IsAttackState() const {
+      // 現在の状態は攻撃状態か？
+      switch (_playerState) {
+      case PlayerState::Attack1:
+      case PlayerState::Attack2:
+      case PlayerState::Attack3:
+        return true;  // 攻撃状態
+      default:
+        return false; // 攻撃状態ではない
+      }
     }
   } // namespace Player
 }// namespace Gyro

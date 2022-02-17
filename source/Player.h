@@ -19,6 +19,7 @@
 #include "WireComponent.h"
 #include "AttackComponent.h"
 #include "InvincibleComponent.h"
+#include "StateComponent.h"
 
 namespace AppFrame::Math{}
 /**
@@ -166,11 +167,11 @@ namespace Gyro {
        */
       void Animation(PlayerState old);
       /**
-       * @brief  状態の切り替え処理
-       * @param  move 移動量
+       * @brief  状態の切り替え処理(βプレゼン専用)
+       * @param  move XBOXコントローラの入力状態クラスの参照
        * @return true:チェンジ false:変更なし
        */
-      bool StateChanege(const AppMath::Vector4& move);
+      bool StateChanege(const AppFrame::Application::XBoxState& input);
       /**
        * @brief モーション切り替え
        */
@@ -231,6 +232,17 @@ namespace Gyro {
        * @brief  攻撃処理
        */
       void Attack();
+      /**
+       * @brief  攻撃状態かの判定
+       * @return true:攻撃状態 false:攻撃状態ではない
+       */
+      bool IsAttackState() const;
+      /**
+       * @brief  キーの設定
+       * @return 
+       */
+      int NextKey() const;
+
       //!< モデルサーバに紐づけられた文字列
       static inline std::string _modelKey{"player"};
       //!< ジャンプコンポーネント
@@ -243,6 +255,8 @@ namespace Gyro {
       std::unique_ptr<Object::AttackComponent> _attack;
       //!< インビジブルコンポーネント
       std::unique_ptr<Object::InvincibleComponent> _invincible;
+      //!< ステートコンポーネント
+      std::unique_ptr<Object::StateComponent> _stateComponent;
       //!< アニメーション名を保持する文字列
       std::string _animationKey;
       //!< 重力リセット処理

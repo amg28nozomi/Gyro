@@ -58,6 +58,7 @@
     <ClCompile Include="source\SpawnBase.cpp" />
     <ClCompile Include="source\SpawnEnemy.cpp" />
     <ClCompile Include="source\SpawnServer.cpp" />
+    <ClCompile Include="source\StateComponent.cpp" />
     <ClCompile Include="source\UtilityDX.cpp" />
     <ClCompile Include="source\WireComponent.cpp" />
     <ClCompile Include="source\WirePoint.cpp" />
@@ -102,6 +103,7 @@
     <ClInclude Include="source\SpawnBase.h" />
     <ClInclude Include="source\SpawnEnemy.h" />
     <ClInclude Include="source\SpawnServer.h" />
+    <ClInclude Include="source\StateComponent.h" />
     <ClInclude Include="source\UtilityDX.h" />
     <ClInclude Include="source\WireComponent.h" />
     <ClInclude Include="source\WirePoint.h" />

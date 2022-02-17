@@ -24,12 +24,13 @@ namespace Gyro {
        * @brief 機能の種類を表す列挙型クラス
        */
       enum class ComponentType {
-        None,      //!< 該当なし
-        Attack,    //!< 攻撃
-        Jump,      //!< ジャンプ
-        Wire,      //!< ワイヤー
-        Move,      //!< 移動処理
-        Invincible //!< 無敵時間
+        None,       //!< 該当なし
+        Attack,     //!< 攻撃
+        Jump,       //!< ジャンプ
+        Wire,       //!< ワイヤー
+        Move,       //!< 移動処理
+        Invincible, //!< 無敵時間
+        State       //!< ステート管理
       };
       /**
        * @brief コンストラクタ

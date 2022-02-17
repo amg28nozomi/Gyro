@@ -221,6 +221,9 @@
     <ClCompile Include="source\LightAttack1.cpp">
       <Filter>ソース ファイル\Object\Player\Attack</Filter>
     </ClCompile>
+    <ClCompile Include="source\StateComponent.cpp">
+      <Filter>ソース ファイル\Object\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\ApplicationMain.h">
@@ -331,9 +334,6 @@
     <ClInclude Include="source\Effect\EffectServer.h">
       <Filter>ヘッダー ファイル\Effect</Filter>
     </ClInclude>
-    <ClInclude Include="source\WirePoint.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="source\InvincibleComponent.h">
       <Filter>ヘッダー ファイル\Object\Player</Filter>
     </ClInclude>
@@ -348,6 +348,12 @@
     </ClInclude>
     <ClInclude Include="source\LightAttack1.h">
       <Filter>ヘッダー ファイル\Object\Player\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="source\StateComponent.h">
+      <Filter>ヘッダー ファイル\Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="source\WirePoint.h">
+      <Filter>ソース ファイル\Object\Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
