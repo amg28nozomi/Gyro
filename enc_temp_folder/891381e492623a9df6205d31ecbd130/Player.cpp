@@ -438,6 +438,12 @@ namespace Gyro {
             case PlayerState::Attack3: // çUåÇ3
               _animationKey = (_attackFlag) ? GroundHeavyAttack3 : GroundLightAttack3;
               _modelAnim.SetBlendAttach(_animationKey, 10.0f, 1.0f, false);
+                //if (_attackFlugY == true) {
+                //    _modelAnim.SetBlendAttach(_animationKey, 10.0f, 1.0f, false);
+                //}
+                //else if (_attackFlugX == true) {
+                //    _modelAnim.SetBlendAttach(_animationKey, 10.0f, 1.0f, false);
+                //}
                 break;
             case PlayerState::Jump: // ÉWÉÉÉìÉv
                 _modelAnim.SetBlendAttach(JumpUp, 10.0f, 1.0f, false);
