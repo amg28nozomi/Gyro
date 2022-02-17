@@ -90,7 +90,7 @@ namespace Gyro {
                     break;
                 case EnemyState::Move:
                     _modelAnim.SetBlendAttach(MoveKey, 10.0f, 1.0f, true);
-                    _app.GetEffect().PlayEffect("E_Exprosion", _position, radian);
+                    _app.GetEffect().PlayEffect(Effect::eExprosion, _position, radian);
                     break;
                 case EnemyState::Attack:
                     _modelAnim.SetBlendAttach(AttackKey, 10.0f, 1.0f, false);
