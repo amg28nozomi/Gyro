@@ -28,7 +28,7 @@ namespace Gyro {
       if (_state == AttackState::NonActive) {
         return false;
       }
-      auto pos = _owner.GetPosition() + localPosition;
+      auto pos = localPosition;
       // 座標更新
       // auto pos = LocalToWorld(_owner.GetPosition()) * localPosition;
       // 移動量分、当たり判定の更新を行う

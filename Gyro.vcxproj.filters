@@ -215,13 +215,13 @@
     <ClCompile Include="source\PlayerAttack.cpp">
       <Filter>ソース ファイル\Object\Player\Attack</Filter>
     </ClCompile>
-    <ClCompile Include="source\PlayerAttackData.cpp">
-      <Filter>ソース ファイル\Object\Player\Attack</Filter>
-    </ClCompile>
     <ClCompile Include="source\LightAttack1.cpp">
       <Filter>ソース ファイル\Object\Player\Attack</Filter>
     </ClCompile>
     <ClCompile Include="source\StateComponent.cpp">
+      <Filter>ソース ファイル\Object\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PlayerAttackData.cpp">
       <Filter>ソース ファイル\Object\Player</Filter>
     </ClCompile>
   </ItemGroup>
