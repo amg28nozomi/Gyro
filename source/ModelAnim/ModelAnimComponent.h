@@ -11,118 +11,119 @@
 
  /** 作品用名前空間 */
 namespace Gyro {
-    /** モデルアニメ用名前空間 */
-    namespace ModelAnim {
-        /**
-         * @class ModelAnimComponent
-         * @brief モデルアニメクラス
-         */
-        class ModelAnimComponent {
-        public:
-            /**
-             * @brief   コンストラクタ
-             */
-            ModelAnimComponent();
-            /**
-             * @brief   デストラクタ
-             */
-            ~ModelAnimComponent();
-            /**
-             * @brief   初期化
-             */
-            void Init();
-            /**
-             * @brief   更新
-             */
-            void Process();
-            /**
-             * @brief   メインアニメーションアタッチ
-             *          (初期化時以外使ってはいけない)
-             * @param   handle モデルハンドル
-             * @param   key アニメーション名
-             * @param   speed アニメーション再生速度
-             * @param   loop ループ再生有無
-             */
-            void SetMainAttach(const int handle, std::string_view key, const float speed, const bool loop);
-            /**
-             * @brief   ブレンドアニメーションアタッチ
-             *          (アニメーション切り替えはこちらを使う)
-             * @param   key アニメーション名
-             * @param   frame ブレンドフレーム
-             * @param   speed アニメーション再生速度
-             * @param   loop ループ再生有無
-             */
-            void SetBlendAttach(std::string_view key, const float frame, const float speed, const bool loop);
-            /**
-             * @brief   現在のアニメーション終了判定
-             * @return  true:アニメーション終了
-             *          false:アニメーション再生中
-             */
-            bool GetMainAnimEnd() const {
-                return _main.GetAnimEnd();
-            }
-            /**
-             * @brief   メインモデルの再生フレームを取得
-             * @return  再生フレーム
-             * @author  鈴木希海
-             */
-            float GetMainFrame() const {
-              return _main.GetPlayTime();
-            }
-            /**
-             * @brief  メインにアタッチされているアタッチ番号
-             * @return アタッチ番号
-             */
-            int GetAttachIndex() const {
-              return _main.GetAttachIndex();
-            }
-        private:
-            /**
-             * @brief   アニメーションアタッチ
-             * @param   info モデル情報
-             * @param   key アニメーション名
-             * @param   speed アニメーション再生速度
-             * @param   loop ループ再生有無
-             */
-            void SetAttach(ModelAnimInfo& info, std::string_view key, const float speed, const bool loop);
-            /**
-             * @brief   アニメーションデタッチ
-             * @param   info モデル情報
-             */
-            void SetDetach(ModelAnimInfo& info);
-            /**
-             * @brief   アニメーション再生
-             * @param   info モデル情報
-             */
-            void PlayAnim(ModelAnimInfo& info);
-            /**
-             * @brief   アニメーションブレンド
-             */
-            void AnimBlend();
-            /**
-             * @brief   モデルのアタッチ判定
-             * @param   info モデル情報
-             * @return  true:アニメーション登録済み
-             *          false:アニメーション未登録
-             */
-            bool IsAttachIndex(ModelAnimInfo& info) const {
-                return info.GetAttachIndex() != -1;
-            }
-            /**
-             * @brief   両方のモデルのアタッチ判定
-             * @return  true:どちらもアニメーション登録済み
-             *          false:どちらか(または両方)アニメーション未登録
-             */
-            bool BothIsAttachIndex() const {
-                return _main.GetAttachIndex() != -1 && _blend.GetAttachIndex() != -1;
-            }
+  /** モデルアニメ用名前空間 */
+  namespace ModelAnim {
+    /**
+     * @class ModelAnimComponent
+     * @brief モデルアニメクラス
+     */
+    class ModelAnimComponent {
+    public:
+      /**
+       * @brief  コンストラクタ
+       */
+      ModelAnimComponent();
+      /**
+       * @brief  デストラクタ
+       */
+      ~ModelAnimComponent();
+      /**
+       * @brief  初期化
+       */
+      void Init();
+      /**
+       * @brief  更新
+       */
+      void Process();
+      /**
+       * @brief  メインアニメーションアタッチ
+       *         (初期化時以外使ってはいけない)
+       * @param  handle モデルハンドル
+       * @param  key アニメーション名
+       * @param  speed アニメーション再生速度
+       * @param  loop ループ再生有無
+       */
+      void SetMainAttach(const int handle, std::string_view key, const float speed, const bool loop);
+      /**
+       * @brief  ブレンドアニメーションアタッチ
+       *         (アニメーション切り替えはこちらを使う)
+       * @param  key アニメーション名
+       * @param  frame ブレンドフレーム
+       * @param  speed アニメーション再生速度
+       * @param  loop ループ再生有無
+       */
+      void SetBlendAttach(std::string_view key, const float frame, const float speed, const bool loop);
+      /**
+       * @brief  現在のアニメーションのアタッチ番号取得
+       * @return アタッチ番号
+       */
+      int GetMainAttachIndex() const {
+        return _main.GetAttachIndex();
+      }
+      /**
+       * @brief  現在のアニメーションの再生時間の取得
+       * @return アニメーション再生時間
+       */
+      float GetMainPlayTime() const {
+        return _main.GetPlayTime();
+      }
+      /**
+       * @brief  現在のアニメーション終了判定
+       * @return true:アニメーション終了
+       *         false:アニメーション再生中
+       */
+      bool GetMainAnimEnd() const {
+        return _main.GetAnimEnd();
+      }
+      /**
+       * @brief  アニメーションブレンド中判定
+       * @return true:アニメーションブレンド中
+       *         false:アニメーションブレンドしていない
+       */
+      bool IsBlending() const {
+        return _blending;
+      }
 
-            int _mHandle;       //!< モデルハンドル
-            int _blendCnt;      //!< ブレンドカウント
-            float _blendFrame;  //!< ブレンドフレーム
+    private:
+      /**
+       * @brief  アニメーションアタッチ
+       * @param  info モデル情報
+       * @param  key アニメーション名
+       * @param  speed アニメーション再生速度
+       * @param  loop ループ再生有無
+       */
+      void SetAttach(ModelAnimInfo& info, std::string_view key, const float speed, const bool loop);
+      /**
+       * @brief  アニメーションデタッチ
+       * @param  info モデル情報
+       */
+      void SetDetach(ModelAnimInfo& info);
+      /**
+       * @brief  アニメーション再生
+       * @param  info モデル情報
+       */
+      void PlayAnim(ModelAnimInfo& info);
+      /**
+       * @brief  アニメーションブレンド
+       */
+      void AnimBlend();
+      /**
+       * @brief  モデルのアタッチ判定
+       * @param  info モデル情報
+       * @return true:アニメーション登録済み
+       *         false:アニメーション未登録
+       */
+      bool IsAttachIndex(ModelAnimInfo& info) const {
+        return info.GetAttachIndex() != -1;
+      }
 
-            ModelAnimInfo _main;   //!< 現在のモデル情報
-            ModelAnimInfo _blend;  //!< 切り替わるモデル情報
-        };
-    } // namespace ModelAnim
+      int _mHandle{ -1 };         //!< モデルハンドル
+      int _blendCnt{ 0 };         //!< ブレンドカウント
+      float _blendFrame{ 0.0f };  //!< ブレンドフレーム
+      bool _blending{ false };    //!< ブレンド中
+
+      ModelAnimInfo _main;   //!< 現在のモデル情報
+      ModelAnimInfo _blend;  //!< 切り替わるモデル情報
+    };
+  } // namespace ModelAnim
 } // namespace Gyro
