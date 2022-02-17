@@ -61,7 +61,14 @@ namespace Gyro {
             bool GetMainAnimEnd() const {
                 return _main.GetAnimEnd();
             }
-
+            /**
+             * @brief   メインモデルの再生フレームを取得
+             * @return  再生フレーム
+             * @author  鈴木希海
+             */
+            float GetMainFrame() const {
+              return _main.GetPlayTime();
+            }
         private:
             /**
              * @brief   アニメーションアタッチ

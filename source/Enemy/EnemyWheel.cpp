@@ -158,17 +158,17 @@ namespace Gyro {
         }
 
         bool EnemyWheel::IsDamege() {
-          // 各種データの取得
+          // 自機の取得
           const auto player = _app.GetObjectServer().GetPlayer();
+          // 攻撃コンポーネントの取得
           auto attack = player->AttackComponent();
-
           using AtkComponent = Object::AttackComponent;
           // 対象は攻撃状態か？
           if (attack.GetState() == AtkComponent::AttackState::NonActive) {
             return false; // 攻撃状態ではない
           }
           // 攻撃状態の場合は攻撃コリジョンと当たり判定を行う
-          if (_capsule->IntersectCapsule(*std::dynamic_pointer_cast<Object::CollisionCapsule>(attack.GetCollision()))) {
+          if (_capsule->IntersectSphere(*std::dynamic_pointer_cast<Object::CollisionSphere>(attack.GetCollision()))) {
             return true; // 衝突判定
           }
           return false;  // 衝突なし

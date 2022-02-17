@@ -14,6 +14,7 @@ namespace Gyro {
 
     AttackComponent::AttackComponent(ObjectBase& owner, std::shared_ptr<CollisionBase> collision) : _owner(owner) {
       _state = AttackState::NonActive;
+      _attackType = AttackType::Test;
       // 攻撃判定用のコリジョン情報をセット
       _collision = std::move(collision);
     }
