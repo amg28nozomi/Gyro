@@ -19,7 +19,7 @@ namespace {
 
 namespace Gyro {
     namespace Enemy {
-        EnemyBase::EnemyBase(Application::ApplicationMain& app) : Object::ObjectBase(app) {
+        EnemyBase::EnemyBase(Application::ApplicationMain& app) : Object::ObjectBase(app), _gaugeHp(app) {
             // ‰Šú‰»
             Init();
         }

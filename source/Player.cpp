@@ -12,6 +12,7 @@
 #include "Enemy/EnemyBase.h"
 #include "CollisionCapsule.h"
 #include "SpawnBase.h"
+#include "StageComponent.h"
 
 namespace {
   constexpr auto NoAnimation = -1; //!< アニメーションはアタッチされていない
@@ -71,7 +72,7 @@ namespace Gyro {
       {Player::PlayerState::Attack3, Player::PlayerState::Idle}
     };
 
-    Player::Player(Application::ApplicationMain& app) : ObjectBase(app) {
+    Player::Player(Application::ApplicationMain& app) : ObjectBase(app), _gaugeHp(app), _gaugeTrick(app) {
       LoadResource(); // リソースの読み取り
       Init();
     }
@@ -476,19 +477,26 @@ namespace Gyro {
       // 線分の取得
       auto [start, end] = newCapsule.LineSegment().GetVector();
       // 地形(床)と線分の衝突判定
-      auto hit = MV1CollCheck_Line(_handleMap, 2, UtilityDX::ToVECTOR(end), UtilityDX::ToVECTOR(start));
-      // 衝突フラグがない場合
-      if (hit.HitFlag == 0) {
-        // 新しい座標をセット
-        _position = newPos;
-        // コリジョン情報に更新をかける
+      auto flag = false;
+      for (int i = 0; i < _app.GetStageComponent().GetStageModel().size(); i++) {
+        _handleMap = _app.GetStageComponent().GetStageModel()[i];
+        auto hit = MV1CollCheck_Line(_handleMap, 2, UtilityDX::ToVECTOR(end), UtilityDX::ToVECTOR(start));
+        // 衝突フラグがない場合
+        if (hit.HitFlag == 0) {
+          // 新しい座標をセット
+          _position = newPos;
+          // コリジョン情報に更新をかける
+          _capsule->SetPosition(_position);
+          continue;
+          //return false; // 床に立っていない
+        }
+        // 衝突座標を座標に代入
+        _position = UtilityDX::ToVector(hit.HitPosition);
+        // 新しい座標をコリジョンに反映
         _capsule->SetPosition(_position);
-        return false; // 床に立っていない
+        flag = true;
+        break;
       }
-      // 衝突座標を座標に代入
-      _position = UtilityDX::ToVector(hit.HitPosition);
-      // 新しい座標をコリジョンに反映
-      _capsule->SetPosition(_position);
       // ジャンプの後始末を行う
       if (_jump->IsJump()) {
         _jump->Finish();
@@ -554,6 +562,8 @@ namespace Gyro {
           v.Normalize();
           AppMath::Vector4 vv(v.GetX() * l7, 0.0f, v.GetZ());
           _position.Add(vv);
+          // カメラの座標に加算
+          _app.GetCamera().CamAddPos(vv);
           // auto l = radius2 - v.Length();
           // _position = (AppMath::Vector4::Normalize(v) * l);
           // _position.SetY(y);
@@ -618,7 +628,7 @@ namespace Gyro {
       // 攻撃状態でない場合は処理を行わない
       if (_attack->GetState() == AttackState::NonActive) {
         return;
-      }     
+      }
       // アニメーションから指定したボーンのローカル座標を取得
       // 全ての成分が-1のベクトルが返ってくる
       auto attachIndex = _modelAnim.GetMainAttachIndex();

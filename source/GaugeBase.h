@@ -6,6 +6,7 @@
  * @date   January 2022
  *********************************************************************/
 #pragma once
+#include "ApplicationMain.h"
 /**
  * @brief ゲームベース
  */
@@ -39,7 +40,7 @@ namespace Gyro {
       /**
        * @brief コンストラクタ
        */
-      GaugeBase();
+      GaugeBase(Application::ApplicationMain& app);
       /**
        * @brief コンストラクタ
        * @param gauge ゲージポイント
@@ -118,6 +119,7 @@ namespace Gyro {
           return _point;
       }
     protected:
+      Application::ApplicationMain& _app; //!< アプリケーションの参照
       float _point{ 0 };       //!< ゲージポイント
       float _hitPoint{ 0 };    //!< ゲージポイント(HP用)
       float _maxW{ 0 };        //!< ゲージの横幅(描画する際の横幅)

@@ -17,7 +17,7 @@ namespace {
 namespace Gyro {
   namespace Gauge {
 
-    GaugeHP::GaugeHP() {
+    GaugeHP::GaugeHP(Application::ApplicationMain& app) : Gauge::GaugeBase(app) {
     }
 
     GaugeHP::~GaugeHP() {

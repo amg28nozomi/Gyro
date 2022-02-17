@@ -11,7 +11,7 @@
 #include "../CollisionSphere.h"
 #include "../CollisionCapsule.h"
 #include "../InvincibleComponent.h"
-
+#include "../GaugeEnemy.h"
 
  /** ì•i—p–¼‘O‹óŠÔ */
 namespace Gyro {
@@ -103,6 +103,7 @@ namespace Gyro {
             std::unique_ptr<Object::InvincibleComponent> _invincible{nullptr};
             EnemyState _enemyState; //!< “G‚Ìó‘Ô•Û•Ï”
             ModelAnim::ModelAnimComponent _modelAnim;
+            Gauge::GaugeEnemy _gaugeHp;
             /**
              * @brief “–‚½‚è”»’èî•ñ‚Ìİ’è
              */

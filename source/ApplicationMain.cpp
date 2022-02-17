@@ -11,6 +11,7 @@
 #include "ObjectServer.h"
 #include "ModeGame.h"
 #include "SpawnServer.h"
+#include "StageComponent.h"
 
 namespace Gyro {
     namespace Application {
@@ -46,6 +47,8 @@ namespace Gyro {
             _effectServer = std::make_unique<Effect::EffectServer>();
             // エフェクトの生成
             _effect = std::make_unique<Effect::EffectComponent>(*this);
+            // ステージコンポーネントの生成
+            _stage = std::make_unique<Stage::StageComponent>(*this);
             // モードゲームの登録
             _modeServer->AddMode("Game", std::make_shared<Mode::ModeGame>(*this));
             _modeServer->TransionToMode("Game");

@@ -11,7 +11,7 @@
 
 namespace {
     constexpr auto Near = 2.0f;             //!< 手前クリップ距離
-    constexpr auto Far = 10000.0f;          //!< 奥クリップ距離
+    constexpr auto Far = 20000.0f;          //!< 奥クリップ距離
     constexpr auto InputMin = 2000.0f;      //!< 入力を受け付ける最低値
     constexpr auto Pi = 3.141596535897932f; //!< 円周率
     constexpr auto Rad2Deg = 180.0f / Pi;   //!< 
@@ -49,7 +49,18 @@ namespace Gyro {
             auto my = _position.GetY() + 4.0f;
             _position.SetY(my);
           }
+          if (_target.GetY() > target.GetY()) {
+              auto a = _target.GetY() - target.GetY();
+              auto py = _position.GetY() - a;
+              _position.SetY(py);
+          }
+          if (_target.GetY() < target.GetY()) {
+              auto a = target.GetY() - _target.GetY();
+              auto my = _position.GetY() + a;
+              _position.SetY(my);
+          }
           // 座標の設定
+          _target.Set(target);
           // VECTOR position(_position.GetX(), _position.GetY(), _position.GetZ());
           // VECTOR target(target.GetX(), target.GetY(), target.GetZ());
           //カメラの位置更新

@@ -17,7 +17,7 @@ namespace {
 namespace Gyro {
   namespace Gauge {
 
-    GaugeTrick::GaugeTrick() {
+    GaugeTrick::GaugeTrick(Application::ApplicationMain& app) : Gauge::GaugeBase(app) {
     }
 
     GaugeTrick::~GaugeTrick() {
