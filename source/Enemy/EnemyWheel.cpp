@@ -166,6 +166,8 @@ namespace Gyro {
         }
 
         bool EnemyWheel::IsDamege() {
+          // 無敵状態かの判定
+
           // 自機の取得
           const auto player = _app.GetObjectServer().GetPlayer();
           // 攻撃コンポーネントの取得

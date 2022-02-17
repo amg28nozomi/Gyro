@@ -199,7 +199,6 @@ namespace Gyro {
       //}
       // 座標に現在座標を更新する
       _position.Add(move);
-      _cnt++;
       _gaugeHp.Process();
       _gaugeTrick.Process();
       Animation(_oldState);     // アニメーションの設定
@@ -273,18 +272,20 @@ namespace Gyro {
       }
       // 攻撃状態に遷移するかの判定？
       if (_playerState == PlayerState::Idle || _playerState == PlayerState::Run || _playerState == PlayerState::Walk) {
-        // Xボタンの入力があった場合
-        if (input.GetButton(XINPUT_BUTTON_X, false)) {
+        // Yボタンの入力があった場合
+        if (input.GetButton(XINPUT_BUTTON_Y, false)) {
           // 強攻撃に遷移する
           SetStateParam(PlayerState::Attack1);
           _attack->Start();
+          _stateComponent->Start();
           _attackFlag = true;
           return true; // 遷移する
         }
-        // Yボタンの入力があった場合
-        if (input.GetButton(XINPUT_BUTTON_Y, false)) {
+        // Xボタンの入力があった場合
+        if (input.GetButton(XINPUT_BUTTON_X, false)) {
           // 弱攻撃に遷移する
           SetStateParam(PlayerState::Attack1);
+          _stateComponent->Start();
           _attack->Start();
           _attackFlag = false;
           return true; // 遷移する
@@ -657,6 +658,7 @@ namespace Gyro {
       auto [start, end] = chaneMap.at(_playerState);
       // 切り替え状態を設定する
       _stateComponent->Set(_modelAnim.GetMainPlayTime(), start, end);
+      _stateComponent->Start();
       return true; // 切り替えを完了
     }
 

@@ -54,9 +54,9 @@ namespace Gyro {
        */
       bool Process(const float play);
     private:
-      int _start{0};       //!< 入力受付フレーム(開始)
-      int _end{0};         //!< 入力受付フレーム(終了)
-      bool _flag{false};   //!< 入力があったか
+      int _start{0};     //!< 入力受付フレーム(開始)
+      int _end{0};       //!< 入力受付フレーム(終了)
+      bool _flag{false}; //!< 入力があったか
       /**
        * @brief  判定フレームの算出
        * @param  total   総再生フレーム
