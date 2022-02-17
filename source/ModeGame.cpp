@@ -62,8 +62,12 @@ namespace Gyro {
 #ifdef _DEBUG
       // デバッグ時限定:左スティックが押された場合、デバッグフラグを切り替える
       if (device.GetButton(XINPUT_BUTTON_RIGHT_THUMB, App::InputTrigger)) {
-        _app.GetSoundComponent().PlayLoop("bgm");
         _app.ChengeDebugFlag(); // デバッグフラグの切り替え
+        if (_app.GetDebugFlag()) {
+          _app.GetSoundComponent().PlayLoop("bgm");
+        } else {
+          _app.GetSoundComponent().StopSound("bgm");
+        }
       }
 #endif
       return true;
@@ -105,8 +109,7 @@ namespace Gyro {
       // サウンド情報の読み取り
       using SoundServer = AppFrame::Sound::SoundServer;
       const SoundServer::SoundMap soundMap{
-        {"test", "res/Sound/pose.wav"},
-        {"bgm", "res/Sound/stage1.wav"}
+        {"bgm", "res/Sound/Stage.mp3"}
       };
       // サウンドサーバに登録
       _app.GetSoundServer().AddSounds(soundMap);
@@ -149,31 +152,45 @@ namespace Gyro {
     }
 
     void ModeGame::LoadEffectResource() const {
-        using EffectServer = Effect::EffectServer;
-        // エフェクトキー定数化
-        const std::string_view eExprosion = "E_Exprosion";      //!< 
-        const std::string_view eEyeLight = "E_EyeLight";        //!< 
-        const std::string_view eHit = "E_Hit";                  //!< 
-        const std::string_view pUltActivate = "P_ult_activate"; //!< 
-        const std::string_view pUltSlash = "P_ult_slash";       //!< 
-        // エフェクトハンドルの読み込み
-        const EffectServer::EffectMap effectMap{
-            {eExprosion, "res/Effect/Enemy_Exprosion/Enemy_Exprosion.efkefc"},
-            {eEyeLight, "res/Effect/Enemy_EyeLight/Enemy_EyeLight.efkefc"},
-            {eHit, "res/Effect/Enemy_Hit/Enemy_Hit.efkefc"},
-            {pUltActivate, "res/Effect/Player_ult_activate/Player_ult_activate.efkefc"},
-            {pUltSlash, "res/Effect/Player_ult_slash/Player_ult_slash.efkefc"}
-        };
-        // エフェクト拡大率の登録
-        const EffectServer::EffectMagniMap effectMagniMap{
-            {eExprosion, 10.0f},
-            {eEyeLight, 10.0f},
-            {eHit, 10.0f},
-            {pUltActivate, 10.0f},
-            {pUltSlash, 10.0f}
-        };
-        // エフェクトサーバに登録
-        _appMain.GetEffectServer().AddEffects(effectMap, effectMagniMap);
+      using EffectServer = Effect::EffectServer;
+      // エフェクトハンドルの読み込み
+      const EffectServer::EffectMap effectMap{
+        {Effect::eEyeLight, "res/Effect/Enemy/EyeLight/Enemy_EyeLight.efkefc"},
+        {Effect::eGroundAttack, "res/Effect/Enemy/GroundAttack/Enemy_ground_attack.efkefc"},
+        {Effect::eHit, "res/Effect/Enemy/Hit/Enemy_Hit.efkefc"},
+        {Effect::eExprosion, "res/Effect/Enemy/Exprosion/Enemy_Exprosion.efkefc"},
+        {Effect::pWeakAttack1, "res/Effect/Player/WeakAttack1/player_weakattack1.efkefc"},
+        {Effect::pWeakAttack2, "res/Effect/Player/WeakAttack2/player_weakattack2.efkefc"},
+        {Effect::pWeakAttack3, "res/Effect/Player/WeakAttack3/player_weakattack3.efkefc"},
+        {Effect::pWeakAttackEX, "res/Effect/Player/WeakAttackEX/player_weakattackEX.efkefc"},
+        {Effect::pHeavyAttack1, "res/Effect/Player/HeavyAttack1/HeavyAttack1.efkefc"},
+        {Effect::pHeavyAttack3, "res/Effect/Player/HeavyAttack3/HeavyAttack3.efkefc"},
+        {Effect::pAirWeakAttack1, "res/Effect/Player/AirWeakAttack1/Player_attack_air_normal_01.efkefc"},
+        {Effect::pUltActivate, "res/Effect/Player/Ult_Activate/Player_ult_activate.efkefc"},
+        {Effect::pUltSlash, "res/Effect/Player/Ult_Slash/Player_ult_slash.efkefc"},
+        {Effect::pHit, "res/Effect/Player/Hit/Hit.efkefc"},
+        {Effect::stageBarrier, "res/Effect/stage_barrier/stage_barrier.efkefc"}
+      };
+      // エフェクト拡大率の登録
+      const EffectServer::EffectMagniMap effectMagniMap{
+        {Effect::eEyeLight, 20.0f},
+        {Effect::eGroundAttack, 10.0f},
+        {Effect::eHit, 10.0f},
+        {Effect::eExprosion, 10.0f},
+        {Effect::pWeakAttack1, 5.0f},
+        {Effect::pWeakAttack2, 5.0f},
+        {Effect::pWeakAttack3, 5.0f},
+        {Effect::pWeakAttackEX, 2.0f},
+        {Effect::pHeavyAttack1, 20.0f},
+        {Effect::pHeavyAttack3, 20.0f},
+        {Effect::pAirWeakAttack1, 20.0f},
+        {Effect::pUltActivate, 10.0f},
+        {Effect::pUltSlash, 10.0f},
+        {Effect::pHit, 20.0f},
+        {Effect::stageBarrier, 20.0f}
+      };
+      // エフェクトサーバに登録
+      _appMain.GetEffectServer().AddEffects(effectMap, effectMagniMap);
     }
   } // namespace Mode
 } // namespace Gyro
