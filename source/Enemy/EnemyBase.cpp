@@ -37,8 +37,11 @@ namespace Gyro {
         }
 
         bool EnemyBase::Draw() const {
+          // 死亡状態の場合は描画を行わない
+          if (_state != ObjectState::Dead) {
             // 描画
             MV1DrawModel(_mHandle);
+          }
 #ifdef _DEBUG
             if (_app.GetDebugFlag()) {
               // _sphere->Draw();
@@ -84,6 +87,12 @@ namespace Gyro {
           // 新しい座標をコリジョンに反映
           _capsule->SetPosition(_position);
           return true; // 床に立っている
+        }
+
+        void EnemyBase::Dead() {
+          _state = ObjectState::Dead;
+          // オブジェクトサーバに死亡処理を行う
+          // _app.GetObjectServer().
         }
     } // namespace Enemy
 } // namespace Gyro

@@ -9,6 +9,7 @@
 
 namespace Gyro {
     namespace Effect {
+
         EffectServer::EffectServer() : AppServer::ServerTemplateUnordered<std::string, int>() {
 #ifdef _DEBUG
             SetServerName("EffectServer"); // ÉTÅ[ÉoñºÇÃê›íË

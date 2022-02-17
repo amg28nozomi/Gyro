@@ -25,10 +25,11 @@ namespace Gyro {
 #ifdef _DEBUG
       _collision = false;
 #endif
-      // 更新処理を行う
-      auto old = _position;
-      // 所有者の座標を取得
-      _position = _owner.GetPosition();
+      //  // 更新処理を行う
+      //  auto old = _position;
+      //  // 所有者の座標を取得
+      //  _position = _owner.GetPosition();
+      //}
     }
 
     void CollisionSphere::Process(AppMath::Vector4 vector) {
@@ -49,6 +50,9 @@ namespace Gyro {
       using AppColor = AppFrame::Data::Color;
       // 球を描画する(衝突している場合は球を塗り潰す)
       DrawSphere3D(UtilityDX::ToVECTOR(_position), _radius, 10, AppColor::GetColor(0, 0, 0), 0, _collision);
+
+      auto [x, y, z] = _position.GetVector3();
+      DrawFormatString(1000, 0, 125, "球 x:%f y:%f, z:%f", x, y, z);
     }
 #endif
 

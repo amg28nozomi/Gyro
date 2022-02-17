@@ -69,6 +69,13 @@ namespace Gyro {
             float GetMainFrame() const {
               return _main.GetPlayTime();
             }
+            /**
+             * @brief  メインにアタッチされているアタッチ番号
+             * @return アタッチ番号
+             */
+            int GetAttachIndex() const {
+              return _main.GetAttachIndex();
+            }
         private:
             /**
              * @brief   アニメーションアタッチ

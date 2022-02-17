@@ -42,7 +42,10 @@ namespace Gyro {
       }
       _play = true;  // 処理開始
       for (auto object : _registry) {
-        object->Process(); // 更新処理呼び出し
+        // オブジェクト状態
+        if (object->GetState() != ObjectBase::ObjectState::Dead) {
+          object->Process(); // 更新処理呼び出し
+        }
       }
       _play = false; // 処理終了
       // 不要になったオブジェクトを削除する

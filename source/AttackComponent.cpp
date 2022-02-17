@@ -24,8 +24,10 @@ namespace Gyro {
       if (_state == AttackState::NonActive) {
         return false;
       }
+      
+      auto pos = _owner.GetPosition() + localPosition;
       // 座標更新
-      auto pos = LocalToWorld(AppMath::Vector4()) * localPosition;
+      // auto pos = LocalToWorld(_owner.GetPosition()) * localPosition;
       // 移動量分、当たり判定の更新を行う
       _collision->SetPosition(pos);
       // 当たり判定情報の更新
