@@ -46,7 +46,7 @@ namespace Gyro {
        * @brief  –³“GŠÔ‚Ìİ’è
        * @param  limit ‘–³“GŠÔ
        */
-      inline void Set(const float limit) {
+      inline void Set(const int limit) {
         _limit = limit;
       }
       /**
@@ -59,9 +59,9 @@ namespace Gyro {
       void Finish() override;
       /**
        * @brief  XVˆ—
-       * @param  speed Œo‰ßŠÔ(ƒfƒtƒHƒ‹ƒg‚Í1.0f)
+       * @param  speed Œo‰ßŠÔ(ƒfƒtƒHƒ‹ƒg‚Í1)
        */
-      void Process(const float speed = 1.0f);
+      void Process(const int speed = 1);
       /**
        * @brief  –³“Gó‘Ô‚©‚Ì”»’è
        * @return true:–³“Gó‘Ô false:–³“Gó‘Ô‚Å‚Í‚È‚¢
@@ -75,15 +75,15 @@ namespace Gyro {
       //!< –³“Gó‘Ô
       InvincibleState _invincible{InvincibleState::Normal};
       //!< ‘–³“GŠÔ
-      float _limit;
+      int _limit;
       //!< –³“GŠÔ
-      float _time;
+      int _time;
       /**
        * @brief  –³“GŠÔ‚ğ’´‰ß‚µ‚½‚©‚Ì”»’è
        * @param  speed ŠÔ
        * @return true:I—¹ false:Œp‘±
        */
-      bool TimeEnd(const float speed);
+      bool TimeEnd(const int speed);
     };
   } // namespace Object
 } // namespace Gyro

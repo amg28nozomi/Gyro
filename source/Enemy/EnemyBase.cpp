@@ -14,7 +14,7 @@
 
 namespace {
   // –³“GŠÔ(ƒtƒŒ[ƒ€)
-  constexpr auto InvincibleTime = 120.0f;
+  constexpr auto InvincibleTime = 120;
 }
 
 namespace Gyro {

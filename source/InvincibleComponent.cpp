@@ -14,13 +14,13 @@ namespace Gyro {
     InvincibleComponent::InvincibleComponent(Application::ApplicationMain& app) : _app(app) {
       // 無敵処理
       _type = ComponentType::Invincible;
-      _limit = 0.0f;
-      _time = 0.0f;
+      _limit = 0;
+      _time = 0;
     }
 
     void InvincibleComponent::Init() {
       // 各種パラメータの初期化
-      _time = 0.0f;
+      _time = 0;
     }
 
     void InvincibleComponent::Start() {
@@ -35,14 +35,14 @@ namespace Gyro {
       Init();
     }
 
-    void InvincibleComponent::Process(const float speed) {
+    void InvincibleComponent::Process(const int speed) {
       // 無敵時間を終えたか
       if (TimeEnd(speed)) {
         Finish(); // 終了
       }
     }
 
-    bool InvincibleComponent::TimeEnd(const float speed) {
+    bool InvincibleComponent::TimeEnd(const int speed) {
       _time += speed; // タイムに加速度を加算する
       // 経過時間は上限を超過したか
       return _limit <= _time;

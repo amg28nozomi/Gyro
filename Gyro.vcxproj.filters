@@ -87,6 +87,12 @@
     <Filter Include="ソース ファイル\Object\Wire">
       <UniqueIdentifier>{b000dd62-374d-45a3-bb0a-98b5fd1ce21b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Object\Player\Attack">
+      <UniqueIdentifier>{68507ea7-35de-48e3-aeef-b7f3f96be202}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Object\Player\Attack">
+      <UniqueIdentifier>{42ab67ed-e027-4484-85de-c08dac454106}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\ApplicationMain.cpp">
@@ -191,9 +197,6 @@
     <ClCompile Include="source\MoveComponent.cpp">
       <Filter>ソース ファイル\Object\Player</Filter>
     </ClCompile>
-    <ClCompile Include="source\AttackComponent.cpp">
-      <Filter>ソース ファイル\Object\Player</Filter>
-    </ClCompile>
     <ClCompile Include="source\Effect\EffectComponent.cpp">
       <Filter>ソース ファイル\Effect</Filter>
     </ClCompile>
@@ -206,8 +209,14 @@
     <ClCompile Include="source\InvincibleComponent.cpp">
       <Filter>ソース ファイル\Object\Player</Filter>
     </ClCompile>
+    <ClCompile Include="source\AttackComponent.cpp">
+      <Filter>ソース ファイル\Object\Player\Attack</Filter>
+    </ClCompile>
     <ClCompile Include="source\PlayerAttack.cpp">
-      <Filter>ソース ファイル\Object\Player</Filter>
+      <Filter>ソース ファイル\Object\Player\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PlayerAttackData.cpp">
+      <Filter>ソース ファイル\Object\Player\Attack</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -313,9 +322,6 @@
     <ClInclude Include="source\MoveComponent.h">
       <Filter>ヘッダー ファイル\Object\Player</Filter>
     </ClInclude>
-    <ClInclude Include="source\AttackComponent.h">
-      <Filter>ヘッダー ファイル\Object\Player</Filter>
-    </ClInclude>
     <ClInclude Include="source\Effect\EffectComponent.h">
       <Filter>ヘッダー ファイル\Effect</Filter>
     </ClInclude>
@@ -328,8 +334,14 @@
     <ClInclude Include="source\InvincibleComponent.h">
       <Filter>ヘッダー ファイル\Object\Player</Filter>
     </ClInclude>
+    <ClInclude Include="source\AttackComponent.h">
+      <Filter>ヘッダー ファイル\Object\Player\Attack</Filter>
+    </ClInclude>
     <ClInclude Include="source\PlayerAttack.h">
-      <Filter>ヘッダー ファイル\Object\Player</Filter>
+      <Filter>ヘッダー ファイル\Object\Player\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="source\PlayerAttackData.h">
+      <Filter>ヘッダー ファイル\Object\Player\Attack</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
