@@ -202,10 +202,10 @@ namespace Gyro {
       _position.Add(move);
       _gaugeHp.Process();
       _gaugeTrick.Process();
-      Animation(_oldState);     // アニメーションの設定
+      Animation(_oldState);    // アニメーションの設定
       _modelAnim.Process();    // アニメーションの再生
       WorldMatrix();           // ワールド座標の更新
-      Attack();                //攻撃処理
+      Attack();                // 攻撃処理
       _sphere->Process(move);  // 移動量の加算
       _capsule->Process(move); // カプセルの更新
       Hit(); //衝突判定
@@ -213,8 +213,6 @@ namespace Gyro {
       _app.GetCamera().Process(AppMath::Vector4(rX, rY), _position, move);
       // ワールド座標の設定
       MV1SetMatrix(_model, UtilityDX::ToMATRIX(_world));
-      // モデルの向きを設定する
-      // MV1SetRotationXYZ(_model, UtilityDX::ToVECTOR(rotationY));
       // スカイスフィアの座標
       auto skypos = AppMath::Utility::ToWorldMatrix(_position, AppMath::Vector4(0, 0, 0), AppMath::Vector4(1.0f, 1.0f, 1.0f));
       MV1SetMatrix(_handleSkySphere, UtilityDX::ToMATRIX(skypos));
@@ -256,12 +254,14 @@ namespace Gyro {
       if (IsAttackState()) {
         // 検索で使用するキーの取得
         auto key = NextKey();
-        // 攻撃状態の場合は遷移フラグの判定を行う
-        if (input.GetButton(key, false) && _stateComponent->Process(_modelAnim.GetMainPlayTime())) {
-          _attack->Finish();
-          // 条件を満たしたので更新を行う
-          SetStateParam(stateMap.at(_playerState));
-          return true;
+        if (key != -1) {
+          // 攻撃状態の場合は遷移フラグの判定を行う
+          if (input.GetButton(key, false) && _stateComponent->Process(_modelAnim.GetMainPlayTime())) {
+            _attack->Finish();
+            // 条件を満たしたので更新を行う
+            SetStateParam(stateMap.at(_playerState));
+            return true;
+          }
         }
         // アニメーションが終了している場合
         if (_modelAnim.GetMainAnimEnd()) {
@@ -479,12 +479,7 @@ namespace Gyro {
         auto hit = MV1CollCheck_Line(_handleMap, 2, UtilityDX::ToVECTOR(end), UtilityDX::ToVECTOR(start));
         // 衝突フラグがない場合
         if (hit.HitFlag == 0) {
-          // 新しい座標をセット
-          _position = newPos;
-          // コリジョン情報に更新をかける
-          _capsule->SetPosition(_position);
           continue;
-          //return false; // 床に立っていない
         }
         // 衝突座標を座標に代入
         _position = UtilityDX::ToVector(hit.HitPosition);
@@ -493,14 +488,25 @@ namespace Gyro {
         flag = true;
         break;
       }
-      // ジャンプの後始末を行う
-      if (_jump->IsJump()) {
-        _jump->Finish();
+      // 衝突フラグに応じて処理を切り替える
+      switch (flag) {
+      case true: // 床との接触有り
+        // ジャンプの後始末を行う
+        if (_jump->IsJump()) {
+          _jump->Finish();
+        }
+        if (_playerState == PlayerState::Jump) {
+          _playerState = PlayerState::Idle;
+        }
+        break;
+      case false:
+        // 新しい座標をセット
+        _position = newPos;
+        // コリジョン情報に更新をかける
+        _capsule->SetPosition(_position);
+        break;
       }
-      if (_playerState == PlayerState::Jump) {
-        _playerState = PlayerState::Idle;
-      }
-      return true; // 床に立っている
+      return flag; // 床に立っている
     }
 
 #ifdef _DEBUG
