@@ -406,6 +406,11 @@ namespace Gyro {
     }
 
     void Player::Animation(PlayerState old) {
+#ifndef _DEBUG
+      auto eRad = -_rotation.GetY();
+#else
+      auto eRad = -AppMath::Utility::DegreeToRadian(_rotation.GetY());
+#endif
         // 自機の状態に合わせてアニメーション変化
         if (old != _playerState) {
           switch (_playerState) {
@@ -423,10 +428,12 @@ namespace Gyro {
             _animationKey = (_attackFlag) ? GroundHeavyAttack1 : GroundLightAttack1;
               if (_attackFlag) {
                 _modelAnim.SetBlendAttach(_animationKey, 10.0f, 1.0f, false);
+                _app.GetEffect().PlayEffect(Effect::pHeavyAttack1, _position, eRad);
                 break;
               }
               _modelAnim.SetBlendAttach(_animationKey, 10.0f, 1.3f, false);
-               break;
+              _app.GetEffect().PlayEffect(Effect::pWeakAttack1, _position, eRad);
+              break;
             case PlayerState::Attack2: // 攻撃2
               // アニメーションキーの設定
               _animationKey = (_attackFlag) ? GroundHeavyAttack2 : GroundLightAttack2;
@@ -435,6 +442,7 @@ namespace Gyro {
                 break;
               }
               _modelAnim.SetBlendAttach(_animationKey, 10.0f, 1.3f, false);
+              _app.GetEffect().PlayEffect(Effect::pWeakAttack2, _position, eRad);
               break;
             case PlayerState::Attack3: // 攻撃3
               _animationKey = (_attackFlag) ? GroundHeavyAttack3 : GroundLightAttack3;

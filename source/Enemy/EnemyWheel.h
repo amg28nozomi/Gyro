@@ -59,6 +59,8 @@ namespace Gyro {
            * @return true:è’ìÀ false:É_ÉÅÅ[ÉWñ≥Çµ
            */
           bool IsDamege();
+
+          void ImageMove();
         };
     } // namespace Enemy
 } // namespace Gyro

@@ -40,7 +40,6 @@ namespace Gyro {
           // アニメーションアタッチ
           _modelAnim.SetMainAttach(_mHandle, IdleKey, 1.0f, true);
           _enemyMoveSpeed = 5.0f;
-          _gaugeHp.Process();
           return true;
         }
 
@@ -49,37 +48,23 @@ namespace Gyro {
           EnemyBase::Process();
           // 前フレームの状態
           EnemyState oldEnemyState = _enemyState;
-          // ターゲット座標
-          auto target = AppMath::Vector4();
-          auto prot = AppMath::Vector4();
-          _app.GetObjectServer().GetPlayerTransForm(target, prot);
-          AppMath::Vector4 forword = target - (_position);
-          forword.Normalize();
-          AppMath::Vector4 move = forword * (_enemyMoveSpeed);
-          // _sphere->Process();
-
-          // ラジアンを生成(z軸は反転させる)
-          auto radian = std::atan2(move.GetX(), -move.GetZ());
-          // 入力処理がある場合、更新を行う
-          if (_app.GetOperation().GetXBoxState().GetButton(XINPUT_BUTTON_LEFT_THUMB, false)) {
-            _iMove = !_iMove;
-          }
-
-            if (_iMove) {
-                _enemyState = EnemyState::Move;
-                _position.Add(move);
-                _capsule->Process(move);
-#ifndef _DEBUG
-                _rotation.SetY(radian); // y軸の回転量をセットする
-#else
-                // デグリー値をセットする(デバッグ用)
-                _rotation.SetY(AppMath::Utility::RadianToDegree(radian));
-#endif
-
-        }
-            else {
-                _enemyState = EnemyState::Idle;
-            }
+          // 危険関数
+          ImageMove();
+//            if (_iMove) {
+//                _enemyState = EnemyState::Move;
+//                _position.Add(move);
+//                _capsule->Process(move);
+//#ifndef _DEBUG
+//                _rotation.SetY(radian); // y軸の回転量をセットする
+//#else
+//                // デグリー値をセットする(デバッグ用)
+//                _rotation.SetY(AppMath::Utility::RadianToDegree(radian));
+//#endif
+//
+//        }
+//            else {
+//                _enemyState = EnemyState::Idle;
+//            }
             Hit();         // 衝突判定
             WorldMatrix(); // ワールド座標の更新
             // ワールド座標の設定
@@ -87,24 +72,34 @@ namespace Gyro {
 
             // アニメーション変更
             if (oldEnemyState != _enemyState) {
-                switch (_enemyState) {
+              auto ePos = _position;
+#ifndef _DEBUG
+              auto eRad = -_rotation.GetY();
+#else
+              auto eRad = -AppMath::Utility::DegreeToRadian(_rotation.GetY());
+#endif
+              switch (_enemyState) {
                 case EnemyState::Idle:
                     _modelAnim.SetBlendAttach(IdleKey, 10.0f, 1.0f, true);
                     break;
                 case EnemyState::Move:
-                    _modelAnim.SetBlendAttach(MoveKey, 10.0f, 1.0f, true);
-                    _app.GetEffect().PlayEffect(Effect::eExprosion, _position, radian);
+                    _modelAnim.SetBlendAttach(MoveKey, 10.0f, 1.0f, false);
+                    ePos.AddY(135.0f);
+                    _app.GetEffect().PlayEffect(Effect::eEyeLight, ePos, eRad);
                     break;
                 case EnemyState::Attack:
                     _modelAnim.SetBlendAttach(AttackKey, 10.0f, 1.0f, false);
+                    _app.GetEffect().PlayEffect(Effect::eGroundAttack, ePos, eRad);
                     break;
                 case EnemyState::Dead:
                     //_modelAnim.SetBlendAttach(1, 10.0f, 1.0f, false);
+                  _app.GetEffect().PlayEffect(Effect::eExprosion, ePos, eRad);
                     break;
                 default:
                     break;
                 }
             }
+            _gaugeHp.Process();
 
             _modelAnim.Process();
             // 無敵状態ではない場合、ダメージ判定を行う
@@ -189,11 +184,57 @@ namespace Gyro {
             // 衝突時に対象球の色を変える
             std::dynamic_pointer_cast<Object::CollisionSphere>(attack.GetCollision())->HitOn();
 #endif
+            _gaugeHp.Add(11.0f);
             // 衝突フラグがある場合は無敵時間を開始する
             _invincible->Start();
             return true; // 衝突判定
           }
           return false;  // 衝突なし
+        }
+
+        // 発表用必ず消す
+        void EnemyWheel::ImageMove() {
+          // ターゲット座標
+          auto target = AppMath::Vector4();
+          auto prot = AppMath::Vector4();
+          _app.GetObjectServer().GetPlayerTransForm(target, prot);
+          AppMath::Vector4 forword = target - (_position);
+          forword.Normalize();
+          AppMath::Vector4 move = forword * (_enemyMoveSpeed);
+          // _sphere->Process();
+
+          // ラジアンを生成(z軸は反転させる)
+          auto radian = std::atan2(move.GetX(), -move.GetZ());
+          // 入力処理がある場合、更新を行う
+          if (_app.GetOperation().GetXBoxState().GetButton(XINPUT_BUTTON_LEFT_THUMB, false)) {
+            _iMove = true;
+            _enemyState = EnemyState::Move;
+          }
+
+          if (_iMove) {
+            if (_enemyState == EnemyState::Attack) {
+              if (_modelAnim.GetMainAnimEnd() && !_modelAnim.IsBlending()) {
+                _enemyState = EnemyState::Idle;
+                _iMove = false;
+              }
+            }
+            if (_enemyState == EnemyState::Move) {
+              if (_modelAnim.GetMainAnimEnd() && !_modelAnim.IsBlending()) {
+                _enemyState = EnemyState::Attack;
+              }
+              _position.Add(move);
+              _capsule->Process(move);
+#ifndef _DEBUG
+              _rotation.SetY(radian); // y軸の回転量をセットする
+#else
+              // デグリー値をセットする(デバッグ用)
+              _rotation.SetY(AppMath::Utility::RadianToDegree(radian));
+#endif
+            }
+          }
+          else {
+            _enemyState = EnemyState::Idle;
+          }
         }
     } // namespace Enemy
 } // namespace Gyro
