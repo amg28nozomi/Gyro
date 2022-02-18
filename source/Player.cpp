@@ -13,6 +13,7 @@
 #include "CollisionCapsule.h"
 #include "SpawnBase.h"
 #include "StageComponent.h"
+#include "AttackBone.h"
 
 namespace {
   constexpr auto NoAnimation = -1; //!< アニメーションはアタッチされていない
@@ -75,9 +76,11 @@ namespace Gyro {
     /**
      * @brief 自機の状態をキーとして、当たり判定をセットするボーン番号を管理する連想配列
      */
-    //const std::unordered_map<Player::PlayerState, int> BoneMap {
-    //  {Player::PlayerState::Attack1, }
-    //}
+    const std::unordered_map<Player::PlayerState, Object::AttackBone> BoneMap {
+      {Player::PlayerState::Attack1, {15, 0}},
+      {Player::PlayerState::Attack2, {20, 0}},
+      {Player::PlayerState::Attack3, {54, 0}},
+    };
 
     Player::Player(Application::ApplicationMain& app) : ObjectBase(app), _gaugeHp(app), _gaugeTrick(app) {
       LoadResource(); // リソースの読み取り
@@ -640,8 +643,12 @@ namespace Gyro {
       }
       // 現在アタッチされているインデックスを取得
       auto attachIndex = _modelAnim.GetMainAttachIndex();
+      // プレイヤー情報の取得
+      auto bone = BoneMap.at(_playerState).GetBone();
+      // インデックス情報の取得
+      auto index = (_attackFlag) ? bone[0] : bone[1];
       // 指定したボーンのワールド座標を取得
-      auto pos = MV1GetFramePosition(_model, 15);
+      auto pos = MV1GetFramePosition(_model, index);
       // ローカル座標を攻撃座標にセットする
       _attack->Process(UtilityDX::ToVector(pos));
     }

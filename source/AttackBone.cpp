@@ -19,5 +19,10 @@ namespace Gyro {
       _bone.emplace_back(bone);
     }
 
+    AttackBone::AttackBone(int a, int b) {
+      _bone.emplace_back(a);
+      _bone.emplace_back(b);
+    }
+
   } // namespace Object
 } // namespace Gyro

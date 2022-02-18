@@ -31,6 +31,15 @@ namespace Gyro {
        * @param  bone ボーン番号
        */
       AttackBone(int bone);
+
+      AttackBone(int a, int b);
+      /**
+       * @brief  ボーン情報の取得
+       * @return ボーン情報
+       */
+      std::vector<int> GetBone() const {
+        return _bone;
+      }
     protected:
       std::vector<int> _bone; //!< ボーン情報
     };
