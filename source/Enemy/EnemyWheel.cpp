@@ -48,8 +48,11 @@ namespace Gyro {
           EnemyBase::Process();
           // 前フレームの状態
           EnemyState oldEnemyState = _enemyState;
-          // 危険関数
-          ImageMove();
+          if (_enemyState != EnemyState::Dead) {
+            // 危険関数
+            ImageMove();
+          }
+
 //            if (_iMove) {
 //                _enemyState = EnemyState::Move;
 //                _position.Add(move);
@@ -93,7 +96,6 @@ namespace Gyro {
                     break;
                 case EnemyState::Dead:
                     //_modelAnim.SetBlendAttach(1, 10.0f, 1.0f, false);
-                  _app.GetEffect().PlayEffect(Effect::eExprosion, ePos, eRad);
                     break;
                 default:
                     break;
@@ -184,7 +186,6 @@ namespace Gyro {
             // 衝突時に対象球の色を変える
             std::dynamic_pointer_cast<Object::CollisionSphere>(attack.GetCollision())->HitOn();
 #endif
-            _gaugeHp.Add(11.0f);
             // 衝突フラグがある場合は無敵時間を開始する
             _invincible->Start();
             return true; // 衝突判定

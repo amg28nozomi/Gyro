@@ -134,7 +134,9 @@ namespace Gyro {
       const Object::EnemyTable enemy {
         // 陸上型エネミーの配置情報
         { Object::EnemyWheel, { 100.0f, 1500.0f, 100.0f}, {0.0f, 0.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
-        { Object::EnemyWheel, { 200.0f, 1500.0f, 200.0f}, {0.0f, 0.0f, 0.0f }, {2.0f, 2.0f, 2.0f}}
+        { Object::EnemyWheel, { -200.0f, 1500.0f, 200.0f}, {0.0f, 0.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
+        { Object::EnemyWheel, { 300.0f, 1500.0f, 200.0f}, {0.0f, 0.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
+        { Object::EnemyWheel, { -400.0f, 1500.0f, 200.0f}, {0.0f, 0.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
       };
       // 各種テーブルを基にスポーンテーブルを作成
       Object::SpawnData table{

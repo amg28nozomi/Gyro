@@ -11,7 +11,7 @@
 
 namespace {
     constexpr auto Near = 2.0f;             //!< 手前クリップ距離
-    constexpr auto Far = 20000.0f;          //!< 奥クリップ距離
+    constexpr auto Far = 10000.0f;          //!< 奥クリップ距離
     constexpr auto InputMin = 2000.0f;      //!< 入力を受け付ける最低値
     constexpr auto Pi = 3.141596535897932f; //!< 円周率
     constexpr auto Rad2Deg = 180.0f / Pi;   //!< 
