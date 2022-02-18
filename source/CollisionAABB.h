@@ -52,7 +52,7 @@ namespace Gyro {
        */
       bool CheckLineSegment(const AppMath::LineSegment& segment);
     private:
-      AppMath::Vector4 _max; // ç≈ëÂì_
+      AppMath::Vector4 _max; //!< ç≈ëÂì_
     };
   } // namespace Object
 } // namespace Gyro

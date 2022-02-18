@@ -99,6 +99,12 @@
     <Filter Include="ソース ファイル\Stage">
       <UniqueIdentifier>{888bbbb8-cb65-463c-8181-2e8c4e394ec3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\System">
+      <UniqueIdentifier>{7ba65220-ebc4-4178-9151-e229911fb050}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\System">
+      <UniqueIdentifier>{c5cd4ae7-9e13-4642-b3f1-94dffe8bc18d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\ApplicationMain.cpp">

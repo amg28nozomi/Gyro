@@ -35,8 +35,12 @@ namespace Gyro {
     }
 
     bool ModeGame::Exit() {
-      // 生成したオブジェクトを取り除く
+      // 生成したオブジェクトを削除
       _appMain.GetObjectServer().Release();
+      // 登録されているエフェクトを削除
+      _appMain.GetEffectServer().Release();
+      // 
+
       return true;
     }
 
@@ -58,13 +62,14 @@ namespace Gyro {
       namespace App = AppFrame::Application;
       // STARTボタンが押された場合、アプリケーションを終了する
       if (device.GetButton(XINPUT_BUTTON_START, App::InputTrigger)) {
-        _appMain.RequestTerminate();
+        _appMain.RequestTerminate(); // アプリケーションの終了処理を呼び出し
       }
 #ifdef _DEBUG
       // デバッグ時限定:左スティックが押された場合、デバッグフラグを切り替える
       if (device.GetButton(XINPUT_BUTTON_RIGHT_THUMB, App::InputTrigger)) {
         _app.ChengeDebugFlag(); // デバッグフラグの切り替え
         if (_app.GetDebugFlag()) {
+          
           _app.GetSoundComponent().PlayLoop("bgm");
           _app.GetSoundComponent().SetVolume("bgm", 50);
         } else {
@@ -76,23 +81,26 @@ namespace Gyro {
     }
 
     bool ModeGame::Process() {
-      // 入力処理
+      // モードゲームの入力処理
       Input(_app.GetOperation());
-      // オブジェクトサーバの更新処理実行
+      // オブジェクトサーバの更新処理
       _appMain.GetObjectServer().Process();
+      // エフェクトサーバの更新処理
       _appMain.GetEffect().Process();
+      // 地形の更新処理
       _plane.Process();
-
       return true;
     }
 
     bool ModeGame::Draw() const {
-      // 描画処理呼び出し
+      // 各種描画処理
       _appMain.GetObjectServer().Draw();
+      // エフェクトの描画
       _appMain.GetEffect().Draw();
+      // 各種ステージの描画
       _appMain.GetStageComponent().Draw();
+      // 地形の描画
       _plane.Draw();
-
       return true;
     }
 
@@ -155,6 +163,7 @@ namespace Gyro {
         OutputDebugString(error.what());
       }
 #endif
+      // 指定したスポーン情報を基にオブジェクトを生成する
       _appMain.GetSpawnServer().Spawn(0);
     }
 
