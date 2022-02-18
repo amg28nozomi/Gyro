@@ -9,7 +9,7 @@
 #include "ApplicationMain.h"
 #include "UtilityDX.h"
 #include "ObjectServer.h"
-#include "Enemy/EnemyBase.h"
+#include "EnemyBase.h"
 #include "CollisionCapsule.h"
 #include "SpawnBase.h"
 #include "StageComponent.h"

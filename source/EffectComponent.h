@@ -6,11 +6,15 @@
  * @date    February 2022
  *********************************************************************/
 #pragma once
-#include "../ApplicationMain.h"
+#include "ApplicationMain.h"
 
- /** 作品用名前空間 */
+ /**
+  * @brief ゲームベース
+  */
 namespace Gyro {
-  /** エフェクト用名前空間 */
+  /**
+   * @brief エフェクトベース
+   */
   namespace Effect {
     namespace AppMath = AppFrame::Math;
     /**
@@ -40,7 +44,7 @@ namespace Gyro {
        * @brief  エフェクト再生
        * @param  key エフェクトキー
        * @param  position エフェクト位置
-       * @param  rotation エフェクト向き
+       * @param  radian エフェクト向き
        */
       void PlayEffect(const std::string_view key, const AppMath::Vector4 position, const float radian);
 
@@ -51,14 +55,12 @@ namespace Gyro {
        */
       int GetEffectHandle(const std::string_view key);
 
-      Application::ApplicationMain& _app; //!< アプリケーションの参照
+      //!< アプリケーションの参照
+      Application::ApplicationMain& _app;
     };
 
     // エフェクトキー定数化
-    constexpr std::string_view eEyeLight = "E_EyeLight";              //!< 敵発見
-    constexpr std::string_view eGroundAttack = "E_GroundAttack";      //!< 敵回転攻撃
-    constexpr std::string_view eHit = "E_Hit";                        //!< 敵被ダメ
-    constexpr std::string_view eExprosion = "E_Exprosion";            //!< 敵爆発
+    // プレイヤー
     constexpr std::string_view pWeakAttack1 = "P_WeakAttack1";        //!< プレイヤー弱攻撃1
     constexpr std::string_view pWeakAttack2 = "P_WeakAttack2";        //!< プレイヤー弱攻撃2
     constexpr std::string_view pWeakAttack3 = "P_WeakAttack3";        //!< プレイヤー弱攻撃3
@@ -69,6 +71,12 @@ namespace Gyro {
     constexpr std::string_view pUltActivate = "P_Ult_Activate";       //!< プレイヤー必殺
     constexpr std::string_view pUltSlash = "P_Ult_Slash";             //!< プレイヤー必殺
     constexpr std::string_view pHit = "P_Hit";                        //!< プレイヤー被ダメ
+    // 敵
+    constexpr std::string_view eEyeLight = "E_EyeLight";              //!< 敵発見
+    constexpr std::string_view eGroundAttack = "E_GroundAttack";      //!< 敵回転攻撃
+    constexpr std::string_view eHit = "E_Hit";                        //!< 敵被ダメ
+    constexpr std::string_view eExprosion = "E_Exprosion";            //!< 敵爆発
+    // ステージ
     constexpr std::string_view stageBarrier = "Stage_Barrier";        //!< ステージバリア
   } // namespace Effect
 } // namespace Gyro
