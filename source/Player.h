@@ -239,18 +239,23 @@ namespace Gyro {
        */
       bool IsAttackState() const;
       /**
-       * @brief  キーの設定
-       * @return 
+       * @brief  対応するXBOXコントローラのキーを取得
+       * @return PlayerTypeの攻撃状態に対応したキーを返す
+       *         Attack3の場合は-1を返す
+       *         それ以外の場合は-2を返す
        */
       int NextKey() const;
       /**
-       * @brief
-       * @return 
+       * @brief   状態の設定
+       * @return  true:攻撃状態に遷移 false:その他状態に遷移
        */
       bool SetStateParam(PlayerState pState);
-
+      /**
+       * @brief  走り状態に遷移するかの判定
+       * @param  move 移動ベクトル
+       * @return true:遷移する false:遷移しない
+       */
       bool IsRun(const AppMath::Vector4& move);
-
       //!< モデルサーバに紐づけられた文字列
       static inline std::string _modelKey{"player"};
       //!< ジャンプコンポーネント

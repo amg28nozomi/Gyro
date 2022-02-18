@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\ApplicationMain.cpp" />
+    <ClCompile Include="source\AttackBone.cpp" />
     <ClCompile Include="source\AttackComponent.cpp" />
     <ClCompile Include="source\Camera.cpp" />
     <ClCompile Include="source\CollisionAABB.cpp" />
@@ -68,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\ApplicationMain.h" />
+    <ClInclude Include="source\AttackBone.h" />
     <ClInclude Include="source\AttackComponent.h" />
     <ClInclude Include="source\Camera.h" />
     <ClInclude Include="source\CollisionAABB.h" />

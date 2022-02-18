@@ -227,9 +227,6 @@
     <ClCompile Include="source\StateComponent.cpp">
       <Filter>ソース ファイル\Object\Player</Filter>
     </ClCompile>
-    <ClCompile Include="source\PlayerAttackData.cpp">
-      <Filter>ソース ファイル\Object\Player</Filter>
-    </ClCompile>
     <ClCompile Include="source\StageComponent.cpp">
       <Filter>ソース ファイル\Stage</Filter>
     </ClCompile>
@@ -238,6 +235,12 @@
     </ClCompile>
     <ClCompile Include="source\GaugeEnemy.cpp">
       <Filter>ソース ファイル\Gauge</Filter>
+    </ClCompile>
+    <ClCompile Include="source\AttackBone.cpp">
+      <Filter>ソース ファイル\Object\Player\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PlayerAttackData.cpp">
+      <Filter>ソース ファイル\Object\Player\Attack</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -381,6 +384,9 @@
     </ClInclude>
     <ClInclude Include="source\GaugeEnemy.h">
       <Filter>ヘッダー ファイル\Gauge</Filter>
+    </ClInclude>
+    <ClInclude Include="source\AttackBone.h">
+      <Filter>ヘッダー ファイル\Object\Player\Attack</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

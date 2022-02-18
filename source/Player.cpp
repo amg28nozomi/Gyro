@@ -72,6 +72,13 @@ namespace Gyro {
       {Player::PlayerState::Attack3, Player::PlayerState::Idle}
     };
 
+    /**
+     * @brief 自機の状態をキーとして、当たり判定をセットするボーン番号を管理する連想配列
+     */
+    //const std::unordered_map<Player::PlayerState, int> BoneMap {
+    //  {Player::PlayerState::Attack1, }
+    //}
+
     Player::Player(Application::ApplicationMain& app) : ObjectBase(app), _gaugeHp(app), _gaugeTrick(app) {
       LoadResource(); // リソースの読み取り
       Init();
@@ -631,9 +638,9 @@ namespace Gyro {
       if (_attack->GetState() == AttackState::NonActive) {
         return;
       }
-      // アニメーションから指定したボーンのローカル座標を取得
-      // 全ての成分が-1のベクトルが返ってくる
+      // 現在アタッチされているインデックスを取得
       auto attachIndex = _modelAnim.GetMainAttachIndex();
+      // 指定したボーンのワールド座標を取得
       auto pos = MV1GetFramePosition(_model, 15);
       // ローカル座標を攻撃座標にセットする
       _attack->Process(UtilityDX::ToVector(pos));
