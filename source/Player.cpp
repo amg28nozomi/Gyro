@@ -233,7 +233,10 @@ namespace Gyro {
       _gaugeTrick.Draw();
 #ifdef _DEBUG
       DebugDraw();     // ƒfƒoƒbƒO•`‰æ
-      _attack->Draw(); // UŒ‚”»’è‚Ì•`‰æ
+      // ƒfƒoƒbƒOƒtƒ‰ƒO‚ª‚ ‚éê‡‚Ì‚Ý•`‰æˆ—‚ðs‚¤
+      if (_app.GetDebugFlag()) {
+        _attack->Draw(); // UŒ‚”»’è‚Ì•`‰æ
+      }
 #endif
       // ˆÚ“®ˆ—‚ÌŒãŽn––‚ðs‚¤
       _move->Finish();

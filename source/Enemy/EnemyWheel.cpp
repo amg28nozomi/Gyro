@@ -179,10 +179,10 @@ namespace Gyro {
           // UŒ‚ó‘Ô‚Ìê‡‚ÍUŒ‚ƒRƒŠƒWƒ‡ƒ“‚Æ“–‚½‚è”»’è‚ğs‚¤
           if (_capsule->IntersectSphere(*std::dynamic_pointer_cast<Object::CollisionSphere>(attack.GetCollision()))) {
 #ifdef _DEBUG
-            if (_app.GetDebugFlag()) {
+            // if (_app.GetDebugFlag()) {
               // €–Só‘Ô‚É‘JˆÚ‚·‚é
-              _state = ObjectState::Dead;
-            }
+            _state = ObjectState::Dead;
+            // }
             // Õ“Ë‚É‘ÎÛ‹…‚ÌF‚ğ•Ï‚¦‚é
             std::dynamic_pointer_cast<Object::CollisionSphere>(attack.GetCollision())->HitOn();
 #endif
