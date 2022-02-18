@@ -66,6 +66,7 @@ namespace Gyro {
         _app.ChengeDebugFlag(); // デバッグフラグの切り替え
         if (_app.GetDebugFlag()) {
           _app.GetSoundComponent().PlayLoop("bgm");
+          _app.GetSoundComponent().SetVolume("bgm", 50.0f);
         } else {
           _app.GetSoundComponent().StopSound("bgm");
         }
