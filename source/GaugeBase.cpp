@@ -10,15 +10,15 @@
 namespace Gyro {
     namespace Gauge {
 
-        GaugeBase::GaugeBase() {
+        GaugeBase::GaugeBase(Application::ApplicationMain& app) : _app(app) {
         }
 
-        GaugeBase::GaugeBase(int gauge) {
+        /*GaugeBase::GaugeBase(int gauge) {
             _point = static_cast<float>(gauge);
         }
 
         GaugeBase::GaugeBase(float gauge) : _point(gauge) {
-        }
+        }*/
 
         bool GaugeBase::Init() {
             return true;

@@ -40,6 +40,7 @@ namespace Gyro {
           // アニメーションアタッチ
           _modelAnim.SetMainAttach(_mHandle, IdleKey, 1.0f, true);
           _enemyMoveSpeed = 5.0f;
+          _gaugeHp.Process();
           return true;
         }
 
@@ -115,6 +116,7 @@ namespace Gyro {
 
         bool EnemyWheel::Draw() const {
           EnemyBase::Draw(); // 基底側の描画を実行
+          _gaugeHp.Draw();
 #ifdef _DEBUG
           // デバッグフラグがある場合のみ描画処理を行う
           if (_app.GetDebugFlag()) {

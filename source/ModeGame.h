@@ -10,6 +10,7 @@
 #include "Player.h"
 #include "PrimitiveBase.h"
 #include "PrimitivePlane.h"
+#include "SpawnServer.h"
 /**
  * @brief ゲームベース
  */

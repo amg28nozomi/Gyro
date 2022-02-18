@@ -93,6 +93,12 @@
     <Filter Include="ソース ファイル\Object\Player\Attack">
       <UniqueIdentifier>{42ab67ed-e027-4484-85de-c08dac454106}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Stage">
+      <UniqueIdentifier>{94031c45-6068-45f7-946b-f83e3fdfd4fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Stage">
+      <UniqueIdentifier>{888bbbb8-cb65-463c-8181-2e8c4e394ec3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\ApplicationMain.cpp">
@@ -223,6 +229,15 @@
     </ClCompile>
     <ClCompile Include="source\PlayerAttackData.cpp">
       <Filter>ソース ファイル\Object\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="source\StageComponent.cpp">
+      <Filter>ソース ファイル\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="source\StageBase.cpp">
+      <Filter>ソース ファイル\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="source\GaugeEnemy.cpp">
+      <Filter>ソース ファイル\Gauge</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -355,5 +370,20 @@
     <ClInclude Include="source\WirePoint.h">
       <Filter>ソース ファイル\Object\Player</Filter>
     </ClInclude>
+    <ClInclude Include="source\StageBase.h">
+      <Filter>ヘッダー ファイル\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="source\StageComponent.h">
+      <Filter>ヘッダー ファイル\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="source\StageData.h">
+      <Filter>ヘッダー ファイル\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="source\GaugeEnemy.h">
+      <Filter>ヘッダー ファイル\Gauge</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

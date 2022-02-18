@@ -26,7 +26,7 @@ namespace Gyro {
       /**
        * @brief コンストラクタ
        */
-      GaugeTrick();
+      GaugeTrick(Application::ApplicationMain& app);
       /**
        * デストラクタ
        */

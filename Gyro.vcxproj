@@ -33,6 +33,7 @@
     <ClCompile Include="source\Enemy\EnemyBase.cpp" />
     <ClCompile Include="source\Enemy\EnemyWheel.cpp" />
     <ClCompile Include="source\GaugeBase.cpp" />
+    <ClCompile Include="source\GaugeEnemy.cpp" />
     <ClCompile Include="source\GaugeHP.cpp" />
     <ClCompile Include="source\GaugeServer.cpp" />
     <ClCompile Include="source\GaugeTrick.cpp" />
@@ -58,6 +59,8 @@
     <ClCompile Include="source\SpawnBase.cpp" />
     <ClCompile Include="source\SpawnEnemy.cpp" />
     <ClCompile Include="source\SpawnServer.cpp" />
+    <ClCompile Include="source\StageBase.cpp" />
+    <ClCompile Include="source\StageComponent.cpp" />
     <ClCompile Include="source\StateComponent.cpp" />
     <ClCompile Include="source\UtilityDX.cpp" />
     <ClCompile Include="source\WireComponent.cpp" />
@@ -78,6 +81,7 @@
     <ClInclude Include="source\Enemy\EnemyBase.h" />
     <ClInclude Include="source\Enemy\EnemyWheel.h" />
     <ClInclude Include="source\GaugeBase.h" />
+    <ClInclude Include="source\GaugeEnemy.h" />
     <ClInclude Include="source\GaugeHP.h" />
     <ClInclude Include="source\GaugeServer.h" />
     <ClInclude Include="source\GaugeTrick.h" />
@@ -103,10 +107,16 @@
     <ClInclude Include="source\SpawnBase.h" />
     <ClInclude Include="source\SpawnEnemy.h" />
     <ClInclude Include="source\SpawnServer.h" />
+    <ClInclude Include="source\StageBase.h" />
+    <ClInclude Include="source\StageComponent.h" />
+    <ClInclude Include="source\StageData.h" />
     <ClInclude Include="source\StateComponent.h" />
     <ClInclude Include="source\UtilityDX.h" />
     <ClInclude Include="source\WireComponent.h" />
     <ClInclude Include="source\WirePoint.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -250,5 +260,12 @@
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="packages\nlohmann.json.3.10.4\build\native\nlohmann.json.targets" Condition="Exists('packages\nlohmann.json.3.10.4\build\native\nlohmann.json.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>このプロジェクトは、このコンピューター上にない NuGet パッケージを参照しています。それらのパッケージをダウンロードするには、[NuGet パッケージの復元] を使用します。詳細については、http://go.microsoft.com/fwlink/?LinkID=322105 を参照してください。見つからないファイルは {0} です。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\nlohmann.json.3.10.4\build\native\nlohmann.json.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\nlohmann.json.3.10.4\build\native\nlohmann.json.targets'))" />
+  </Target>
 </Project>

@@ -25,6 +25,12 @@ namespace Gyro {
         class SpawnServer;  //!< スポーンサーバ
     } // namespace Object
     /**
+     * @brief ステージベース
+     */
+    namespace Stage {
+        class StageComponent;
+    } // namespace Stage
+    /**
      * @brief エフェクトベース
      */
     namespace Effect {
@@ -102,6 +108,13 @@ namespace Gyro {
             Effect::EffectComponent& GetEffect() {
                 return *_effect;
             }
+            /**
+             * @brief  ステージコンポーネントの取得
+             * @return ステージコンポーネントの参照
+             */
+            Stage::StageComponent& GetStageComponent() {
+                return *_stage;
+            }
         private:
             //!< オブジェクトサーバ
             std::unique_ptr<Object::ObjectServer> _objectServer{ nullptr };
@@ -113,6 +126,8 @@ namespace Gyro {
             std::unique_ptr<Effect::EffectServer> _effectServer{ nullptr };
             //! エフェクト
             std::unique_ptr<Effect::EffectComponent> _effect{ nullptr };
+            //!< ステージコンポーネント
+            std::unique_ptr<Stage::StageComponent> _stage{ nullptr };
             /**
              * @brief  更新処理
              * @return

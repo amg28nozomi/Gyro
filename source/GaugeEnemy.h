@@ -1,14 +1,14 @@
 /*****************************************************************//**
  * @file   GaugeHP.h
- * @brief  ゲーム内のHPゲージの処理するクラス
- * 
+ * @brief  ゲーム内のエネミーのHPゲージの処理するクラス
+ *
  * @author 土橋 峡介
  * @date   February 2022
  *********************************************************************/
 #pragma once
 #include "GaugeBase.h"
 #include "GaugeServer.h"
-
+#include "ObjectBase.h"
 /**
  * @brief ゲームベース
  */
@@ -21,16 +21,16 @@ namespace Gyro {
      * @class ゲージHP
      * @brief ゲーム内のHPの処理するクラス
      */
-    class GaugeHP : public Gauge::GaugeBase {
+    class GaugeEnemy : public Gauge::GaugeBase {
     public:
       /**
        * @brief コンストラクタ
        */
-      GaugeHP(Application::ApplicationMain& app);
+      GaugeEnemy(Application::ApplicationMain& app);
       /**
        * デストラクタ
        */
-      ~GaugeHP();
+      ~GaugeEnemy();
       /**
        * @brief 初期化
        */
@@ -44,7 +44,10 @@ namespace Gyro {
        */
       bool Draw() const override;
     private:
+      AppFrame::Math::Vector4 _position;  //!< 座標
+      int _handle{ 0 };
+      int _handle2{ 0 };
+      int _handle3{ 0 };
     };
   } // namesapce Gauge
 } // namespace Gyro
-

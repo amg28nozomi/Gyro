@@ -71,6 +71,10 @@ namespace Gyro {
             float CamTarGetZ() {
                 return _target.GetZ();
             }
+            float CamAddPos(const AppFrame::Math::Vector4 vector) {
+                _position.Add(vector);
+                return 0.0f;
+            }
         private:
             AppFrame::Math::Vector4 _position{};    //!< カメラの座標
             AppFrame::Math::Vector4 _target{};  //!< カメラの注視点(見ている座標)

@@ -13,7 +13,7 @@
 #include "PrimitiveBase.h"
 #include "PrimitivePlane.h"
 #include "ObjectServer.h"
-#include "SpawnServer.h"
+#include "StageComponent.h"
 
 namespace {
     constexpr auto TEXTURE = _T("res/Groundplants1_D.jpg");
@@ -46,6 +46,7 @@ namespace Gyro {
       _plane.Initialize(45000.0, 150);
       _plane.Load(TEXTURE);
       _plane.Create();
+      _appMain.GetStageComponent().Init();
       // 重力加速度をセットする
       AppMath::GravityBase::SetScale(-9.8f);
       return true;
@@ -88,6 +89,8 @@ namespace Gyro {
       // 描画処理呼び出し
       _appMain.GetObjectServer().Draw();
       _appMain.GetEffect().Draw();
+      _appMain.GetStageComponent().Draw();
+
       return true;
     }
 
@@ -125,13 +128,13 @@ namespace Gyro {
         // 引数2:ローカル座標
         // 引数3:向き
         // 引数4:スケール
-        { Object::TypePlayer, {0.0f, 0.0f, 0.0f,}, {0.0f, 0.0f, 0.0f,}, {1.0f, 1.0f, 1.0f}}
+        { Object::TypePlayer, {0.0f, 1500.0f, 0.0f,}, {0.0f, 0.0f, 0.0f,}, {1.0f, 1.0f, 1.0f}}
       };
       // エネミーテーブル
       const Object::EnemyTable enemy {
         // 陸上型エネミーの配置情報
-        { Object::EnemyWheel, { 100.0f, 0.0f, 100.0f}, {0.0f, 0.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
-        { Object::EnemyWheel, { 200.0f, 0.0f, 200.0f}, {0.0f, 0.0f, 0.0f }, {2.0f, 2.0f, 2.0f}}
+        { Object::EnemyWheel, { 100.0f, 1500.0f, 100.0f}, {0.0f, 0.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
+        { Object::EnemyWheel, { 200.0f, 1500.0f, 200.0f}, {0.0f, 0.0f, 0.0f }, {2.0f, 2.0f, 2.0f}}
       };
       // 各種テーブルを基にスポーンテーブルを作成
       Object::SpawnData table{
