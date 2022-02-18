@@ -14,72 +14,63 @@
  * @brief ゲームベース
  */
 namespace Gyro {
+  /**
+   * @brief プリミティブ
+   */
+  namespace Primitive {
     /**
-     * @brief プリミティブ
+     * @class Primitive
+     * @brief プリミティブのスーパークラス
      */
-    namespace Primitive {
-        /**
-         * @class Primitive
-         * @brief プリミティブのスーパークラス
-         */
-        class PrimitiveBase {
-        public:
-            /**
-             * @brief コンストラクタ
-             */
-            PrimitiveBase();
+    class PrimitiveBase {
+    public:
+      /**
+       * @brief コンストラクタ
+       */
+      PrimitiveBase();
+      /**
+       * @brief デストラクタ
+       */
+      virtual ~PrimitiveBase();
+      /**
+       * @brief 画像のロード
+       */
+      virtual bool Load(const TCHAR* fileName);
+      /**
+       * @brief 画像のロード(false時の処理)
+       */
+      virtual bool UnLoad();
+      /**
+       * @brief プリミティブの作成(純粋仮想関数)
+       */
+      virtual bool Create() = 0;
+      /**
+       * @brief 処理
+       */
+      virtual void Process();
+      /**
+       * @brief 描画
+       */
+      virtual bool Draw() const;
+      /**
+       * @brief 頂点情報の取得
+       * @return 頂点情報を返す
+       */
+      const std::shared_ptr<std::vector<VERTEX3D>>& GetVertex() const { return _vertex; }
+      /**
+       * @brief 配列の要素を取得
+       * @return 配列の要素を返す
+       */
+      const std::shared_ptr<std::vector<unsigned short>>& GetIndex() const { return _index; }
 
-            /**
-             * @brief デストラクタ
-             */
-            virtual ~PrimitiveBase();
+    protected:
+      int _handle;        //!< 画像ハンドル
+      int _vertexNum;     //!< 頂点の数
+      int _indexNum;      //!< 要素の数
+      int _polygonNum;    //!< ポリゴンの数
 
-            /**
-             * @brief 画像のロード
-             */
-            virtual bool Load(const TCHAR* fileName);
-
-            /**
-             * @brief 画像のロード(false時の処理)
-             */
-            virtual bool UnLoad();
-
-            /**
-             * @brief プリミティブの作成(純粋仮想関数)
-             */
-            virtual bool Create() = 0;
-
-            /**
-             * @brief 処理
-             */
-            virtual void Process();
-
-            /**
-             * @brief 描画
-             */
-            virtual bool Render();
-
-            /**
-             * @brief 頂点情報の取得
-             * @return 頂点情報を返す
-             */
-            const std::shared_ptr<std::vector<VERTEX3D>>& GetVertex() const { return _vertex; }
-
-            /**
-             * @brief 配列の要素を取得
-             * @return 配列の要素を返す
-             */
-            const std::shared_ptr<std::vector<unsigned short>>& GetIndex() const { return _index; }
-
-        protected:
-            int _handle;        //!< 画像ハンドル
-            int _vertexNum;     //!< 頂点の数
-            int _indexNum;      //!< 要素の数
-            int _polygonNum;    //!< ポリゴンの数
-
-
-            std::shared_ptr<std::vector<VERTEX3D>> _vertex;         //!< 頂点
-            std::shared_ptr<std::vector<unsigned short>> _index;    //!< 要素
-        };
-    }// namespace Primitive
-}// namespace Gyro
+      std::shared_ptr<std::vector<VERTEX3D>> _vertex;         //!< 頂点
+      std::shared_ptr<std::vector<unsigned short>> _index;    //!< 要素
+    };
+  } // namespace Primitive
+} // namespace Gyro

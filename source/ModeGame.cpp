@@ -16,7 +16,7 @@
 #include "StageComponent.h"
 
 namespace {
-    constexpr auto TEXTURE = _T("res/Groundplants1_D.jpg");
+    constexpr auto TEXTURE = _T("res/water.png");
 }
 
 namespace Gyro {
@@ -43,7 +43,7 @@ namespace Gyro {
     bool ModeGame::Init() {
       LoadResource(); // 各種リソースの読み取りを行う
       // 使用するデータの読み込みを記述する
-      _plane.Initialize(45000.0, 150);
+      _plane.Initialize(35000.0, 150);
       _plane.Load(TEXTURE);
       _plane.Create();
       _appMain.GetStageComponent().Init();
@@ -82,7 +82,7 @@ namespace Gyro {
       _appMain.GetObjectServer().Process();
       _appMain.GetEffect().Process();
       _plane.Process();
-      _plane.Render();
+
       return true;
     }
 
@@ -91,6 +91,7 @@ namespace Gyro {
       _appMain.GetObjectServer().Draw();
       _appMain.GetEffect().Draw();
       _appMain.GetStageComponent().Draw();
+      _plane.Draw();
 
       return true;
     }
