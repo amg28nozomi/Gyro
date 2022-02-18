@@ -8,68 +8,65 @@
 #include "PrimitiveBase.h"
 
 namespace {
-    constexpr auto DEGREE_TO_RADIAN = DX_PI_F / 180.0f;
-    MATRIX Identity = MGetIdent();
+  constexpr auto DEGREE_TO_RADIAN = DX_PI_F / 180.0f;
+  MATRIX Identity = MGetIdent();
 }
 
 namespace Gyro {
-    namespace Primitive {
+  namespace Primitive {
 
-        PrimitiveBase::PrimitiveBase() {
-            _handle = -1;
-            _vertexNum = 0;
-            _indexNum = 0;
-            _polygonNum = 0;
+    PrimitiveBase::PrimitiveBase() {
+      _handle = -1;
+      _vertexNum = 0;
+      _indexNum = 0;
+      _polygonNum = 0;
 
-            _vertex.reset(new std::vector<VERTEX3D>());
-            _index.reset(new std::vector<unsigned short>());
-        }
+      _vertex.reset(new std::vector<VERTEX3D>());
+      _index.reset(new std::vector<unsigned short>());
+    }
 
-        PrimitiveBase::~PrimitiveBase() {
-            _vertex->clear();
-            _index->clear();
-        }
+    PrimitiveBase::~PrimitiveBase() {
+      _vertex->clear();
+      _index->clear();
+    }
 
-        bool PrimitiveBase::Load(const TCHAR* fileName) {
-            UnLoad();
+    bool PrimitiveBase::Load(const TCHAR* fileName) {
+      UnLoad();
 
-            _handle = LoadGraph(fileName);
+      _handle = LoadGraph(fileName);
 
-            return (-1 != _handle);
-        }
+      return (-1 != _handle);
+    }
 
-        bool PrimitiveBase::UnLoad() {
-            if (-1 == _handle) {
-                return false;
-            }
+    bool PrimitiveBase::UnLoad() {
+      if (-1 == _handle) {
+          return false;
+      }
 
-            return (-1 != DeleteGraph(_handle));
-        }
+      return (-1 != DeleteGraph(_handle));
+    }
 
-        void PrimitiveBase::Process() {
-            _vertexNum = static_cast<int>(_vertex->size());
-            _indexNum = static_cast<int>(_index->size());
-            _polygonNum = _indexNum / 3;
-        }
+    void PrimitiveBase::Process() {
+      _vertexNum = static_cast<int>(_vertex->size());
+      _indexNum = static_cast<int>(_index->size());
+      _polygonNum = _indexNum / 3;
+    }
 
-        bool PrimitiveBase::Render() {
-            /*auto vertexNum = static_cast<int>(_vertex->size());
-            auto indexNum = static_cast<int>(_index->size());*/
+    bool PrimitiveBase::Draw() const {
+      auto vertexNum = static_cast<int>(_vertex->size());
+      auto indexNum = static_cast<int>(_index->size());
 
-            // ƒ|ƒŠƒSƒ“‚ª‚P‚Â‚à–³‚¯‚ê‚Î•`‰æ‚µ‚È‚¢
-            /*if (3 > _vertexNum || 3 > _indexNum) {
-                return false;
-            }*/
+      // ƒ|ƒŠƒSƒ“‚ª‚P‚Â‚à–³‚¯‚ê‚Î•`‰æ‚µ‚È‚¢
+      if (3 > _vertexNum || 3 > _indexNum) {
+          return false;
+      }
 
-            //auto _polygonNum = _indexNum / 3;
-            auto useHandle = (_handle == -1) ? DX_NONE_GRAPH : _handle;
+      auto _polygonNum = _indexNum / 3;
+      auto useHandle = (_handle == -1) ? DX_NONE_GRAPH : _handle;
 
-            //SetTransformToWorld(&_posture); // Žp¨§Œä—p‚Ì‚½‚ßŒ»ÝƒRƒƒ“ƒgƒAƒEƒg
+      DrawPolygonIndexed3D(_vertex->data(), _vertexNum, _index->data(), _polygonNum, useHandle, FALSE);
 
-            DrawPolygonIndexed3D(_vertex->data(), _vertexNum, _index->data(), _polygonNum, useHandle, FALSE);
-            //SetTransformToWorld(&Identity);
-
-            return true;
-        }
-    }// namespace Primitive
-}// namespace Gyro
+      return true;
+    }
+  } // namespace Primitive
+} // namespace Gyro
