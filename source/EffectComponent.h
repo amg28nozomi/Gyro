@@ -61,22 +61,26 @@ namespace Gyro {
 
     // エフェクトキー定数化
     // プレイヤー
-    constexpr std::string_view pWeakAttack1 = "P_WeakAttack1";        //!< プレイヤー弱攻撃1
-    constexpr std::string_view pWeakAttack2 = "P_WeakAttack2";        //!< プレイヤー弱攻撃2
-    constexpr std::string_view pWeakAttack3 = "P_WeakAttack3";        //!< プレイヤー弱攻撃3
-    constexpr std::string_view pWeakAttackEX = "P_WeakAttackEX";      //!< プレイヤー弱攻撃EX
-    constexpr std::string_view pHeavyAttack1 = "P_HeavyAttack1";      //!< プレイヤー強攻撃1
-    constexpr std::string_view pHeavyAttack3 = "P_HeavyAttack3";      //!< プレイヤー強攻撃3
-    constexpr std::string_view pAirWeakAttack1 = "P_AirWeakAttack1";  //!< プレイヤー空中弱攻撃1
-    constexpr std::string_view pUltActivate = "P_Ult_Activate";       //!< プレイヤー必殺
-    constexpr std::string_view pUltSlash = "P_Ult_Slash";             //!< プレイヤー必殺
-    constexpr std::string_view pHit = "P_Hit";                        //!< プレイヤー被ダメ
+    constexpr std::string_view pWeakAttack1 = "P_WeakAttack1";          //!< プレイヤー弱攻撃1
+    constexpr std::string_view pWeakAttack2 = "P_WeakAttack2";          //!< プレイヤー弱攻撃2
+    constexpr std::string_view pWeakAttack3 = "P_WeakAttack3";          //!< プレイヤー弱攻撃3
+    constexpr std::string_view pWeakAttackEX = "P_WeakAttackEX";        //!< プレイヤー弱攻撃EX
+    constexpr std::string_view pHeavyAttack1 = "P_HeavyAttack1";        //!< プレイヤー強攻撃1
+    constexpr std::string_view pHeavyAttack3 = "P_HeavyAttack3";        //!< プレイヤー強攻撃3
+    constexpr std::string_view pAirWeakAttack1 = "P_AirWeakAttack1";    //!< プレイヤー空中弱攻撃1
+    constexpr std::string_view pAirWeakAttack2 = "P_AirWeakAttack2";    //!< プレイヤー空中弱攻撃1
+    constexpr std::string_view pAirWeakAttack3 = "P_AirWeakAttack3";    //!< プレイヤー空中弱攻撃1
+    constexpr std::string_view pAirHeavyAttack1 = "P_AirHeavyAttack1";  //!< プレイヤー空中弱攻撃1
+    constexpr std::string_view pAirHeavyAttack2 = "P_AirHeavyAttack2";  //!< プレイヤー空中弱攻撃1
+    constexpr std::string_view pUltActivate = "P_Ult_Activate";         //!< プレイヤー必殺
+    constexpr std::string_view pUltSlash = "P_Ult_Slash";               //!< プレイヤー必殺
+    constexpr std::string_view pHit = "P_Hit";                          //!< プレイヤー被ダメ
     // 敵
-    constexpr std::string_view eEyeLight = "E_EyeLight";              //!< 敵発見
-    constexpr std::string_view eGroundAttack = "E_GroundAttack";      //!< 敵回転攻撃
-    constexpr std::string_view eHit = "E_Hit";                        //!< 敵被ダメ
-    constexpr std::string_view eExprosion = "E_Exprosion";            //!< 敵爆発
+    constexpr std::string_view eEyeLight = "E_EyeLight";          //!< 敵発見
+    constexpr std::string_view eGroundAttack = "E_GroundAttack";  //!< 敵回転攻撃
+    constexpr std::string_view eHit = "E_Hit";                    //!< 敵被ダメ
+    constexpr std::string_view eExprosion = "E_Exprosion";        //!< 敵爆発
     // ステージ
-    constexpr std::string_view stageBarrier = "Stage_Barrier";        //!< ステージバリア
+    constexpr std::string_view stageBarrier = "Stage_Barrier";  //!< ステージバリア
   } // namespace Effect
 } // namespace Gyro
