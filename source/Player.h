@@ -252,7 +252,11 @@ namespace Gyro {
        * @return true:遷移する false:遷移しない
        */
       bool IsRun(const AppMath::Vector4& move);
-
+      /**
+       * @brief  プレイヤー状態を数値に変換する
+       * @return プレイヤー状態に対応した
+       */
+      int PlayerStateToNumber() const;
       //!< モデルサーバに紐づけられた文字列
       static inline std::string _modelKey{"player"};
       //!< ジャンプコンポーネント

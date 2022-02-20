@@ -13,6 +13,7 @@
 #include "CollisionCapsule.h"
 #include "SpawnBase.h"
 #include "StageComponent.h"
+#include "ModelAnimData.h"
 
 namespace {
   constexpr auto NoAnimation = -1; //!< アニメーションはアタッチされていない
@@ -53,6 +54,18 @@ namespace {
   constexpr auto JumpMax = 300.0f;
 
   constexpr auto RunPower = 3.8f;
+
+  // 状態を表すキー
+  constexpr auto StateNumberIdle = 0;   //!< 待機
+  constexpr auto StateNumberWalk = 1;   //!< 歩き
+  constexpr auto StateNumberRun = 2;    //!< 走り
+  constexpr auto StateNumberJump = 3;   //!< ジャンプ
+  constexpr auto StateNumberLight1 = 4; //!< 弱攻撃1
+  constexpr auto StateNumberLight2 = 6; //!< 弱攻撃2
+  constexpr auto StateNumberLight3 = 8;  //!< 弱攻撃3
+  constexpr auto StateNumberHeavy1 = 5; //!< 強攻撃1
+  constexpr auto StateNumberHeavy2 = 7; //!< 強攻撃2
+  constexpr auto StateNumberHeavy3 = 9; //!< 強攻撃3
 }
 
 namespace Gyro {
@@ -75,7 +88,28 @@ namespace Gyro {
     /**
      * @brief 自機の攻撃情報情報
      */
-    const std::unordered_map<Player::PlayerState, std::tuple<>>
+    const std::unordered_map<int, ModelAnim::ModelAnimData> animMap {
+      // 待機情報
+      {StateNumberIdle, {Idle, 10.0f, 1.0f, true}},
+      // 歩き
+      {StateNumberWalk, {Walk, 10.0f, 1.0f, true}},
+      // 走り
+      {StateNumberRun, {Run, 10.0f, 1.0f, true}},
+      // ジャンプ
+      {StateNumberJump, {JumpUp, 10.0f, 1.0f, false}},
+      // 弱攻撃1
+      {StateNumberLight1, {GroundLightAttack1, 10.0f, 1.3f, false}},
+      // 弱攻撃2
+      {StateNumberLight2, {GroundLightAttack2, 10.0f, 1.3f, false}},
+      // 弱攻撃3
+      {StateNumberLight3, {GroundLightAttack3, 10.0f, 1.0f, false}},
+      // 強攻撃1
+      {StateNumberHeavy1 ,{GroundHeavyAttack1, 10.0f, 1.0f, false}},
+      // 強攻撃2
+      {StateNumberHeavy2 ,{GroundHeavyAttack2, 10.0f, 1.0f, false}},
+      // 強攻撃3
+      {StateNumberHeavy3 ,{GroundHeavyAttack3, 10.0f, 1.0f, false}}
+    };
 
     Player::Player(Application::ApplicationMain& app) : ObjectBase(app), _gaugeHp(app), _gaugeTrick(app) {
       LoadResource(); // リソースの読み取り
@@ -347,56 +381,70 @@ namespace Gyro {
     }
 
     void Player::Animation(PlayerState old) {
+      // 状態が切り替わっている場合のみ処理を行う
+      if (_playerState == old) {
+        return;
+      }
 #ifndef _DEBUG
       auto eRad = -_rotation.GetY();
 #else
       auto eRad = -AppMath::Utility::DegreeToRadian(_rotation.GetY());
 #endif
-        // 自機の状態に合わせてアニメーション変化
-        if (old != _playerState) {
-          switch (_playerState) {
-          case PlayerState::Idle: // 待機
-              _modelAnim.SetBlendAttach(Idle, 10.0f, 1.0f, true);
-              break;
-          case PlayerState::Walk: // 歩き
-              _modelAnim.SetBlendAttach(Walk, 10.0f, 1.0f, true);
-              break;
-          case PlayerState::Run: // 走り
-              _modelAnim.SetBlendAttach(Run, 10.0f, 1.0f, true);
-              break;
-          case PlayerState::Attack1: // 攻撃1
-            // アニメーションキーの設定
-            _animationKey = (_attackFlag) ? GroundHeavyAttack1 : GroundLightAttack1;
-              if (_attackFlag) {
-                _modelAnim.SetBlendAttach(_animationKey, 10.0f, 1.0f, false);
-                // 攻撃用エフェクトを再生する
-                _app.GetEffect().PlayEffect(Effect::pHeavyAttack1, _position, eRad);
-                break;
-              }
-              _modelAnim.SetBlendAttach(_animationKey, 10.0f, 1.3f, false);
-              _app.GetEffect().PlayEffect(Effect::pWeakAttack1, _position, eRad);
-              break;
-            case PlayerState::Attack2: // 攻撃2
-              // アニメーションキーの設定
-              _animationKey = (_attackFlag) ? GroundHeavyAttack2 : GroundLightAttack2;
-              if (_attackFlag) {
-                _modelAnim.SetBlendAttach(_animationKey, 10.0f, 1.0f, false);
-                break;
-              }
-              _modelAnim.SetBlendAttach(_animationKey, 10.0f, 1.3f, false);
-              _app.GetEffect().PlayEffect(Effect::pWeakAttack2, _position, eRad);
-              break;
-            case PlayerState::Attack3: // 攻撃3
-              _animationKey = (_attackFlag) ? GroundHeavyAttack3 : GroundLightAttack3;
-              _modelAnim.SetBlendAttach(_animationKey, 10.0f, 1.0f, false);
-                break;
-            case PlayerState::Jump: // ジャンプ
-                _modelAnim.SetBlendAttach(JumpUp, 10.0f, 1.0f, false);
-                break;
-            default:
-                break;
-            }
-        }
+      // 遷移番号の取得
+      auto number = PlayerStateToNumber();
+      // 取得に失敗した場合は処理を行わない
+      if (number == -1) {
+        return;
+      }
+      // モデルアニメーション情報の取得
+      auto [key, frame, speed, loop] = animMap.at(number).ModelAnim();
+      // アニメーションをセットする
+      _modelAnim.SetBlendAttach(key.data(), frame, speed, loop);
+        //// 自機の状態に合わせてアニメーション変化
+        //if (old != _playerState) {
+        //  switch (_playerState) {
+        //  case PlayerState::Idle: // 待機
+        //      _modelAnim.SetBlendAttach(Idle, 10.0f, 1.0f, true);
+        //      break;
+        //  case PlayerState::Walk: // 歩き
+        //      _modelAnim.SetBlendAttach(Walk, 10.0f, 1.0f, true);
+        //      break;
+        //  case PlayerState::Run: // 走り
+        //      _modelAnim.SetBlendAttach(Run, 10.0f, 1.0f, true);
+        //      break;
+        //  case PlayerState::Attack1: // 攻撃1
+        //    // アニメーションキーの設定
+        //    _animationKey = (_attackFlag) ? GroundHeavyAttack1 : GroundLightAttack1;
+        //      if (_attackFlag) {
+        //        _modelAnim.SetBlendAttach(_animationKey, 10.0f, 1.0f, false);
+        //        // 攻撃用エフェクトを再生する
+        //        _app.GetEffect().PlayEffect(Effect::pHeavyAttack1, _position, eRad);
+        //        break;
+        //      }
+        //      _modelAnim.SetBlendAttach(_animationKey, 10.0f, 1.3f, false);
+        //      _app.GetEffect().PlayEffect(Effect::pWeakAttack1, _position, eRad);
+        //      break;
+        //    case PlayerState::Attack2: // 攻撃2
+        //      // アニメーションキーの設定
+        //      _animationKey = (_attackFlag) ? GroundHeavyAttack2 : GroundLightAttack2;
+        //      if (_attackFlag) {
+        //        _modelAnim.SetBlendAttach(_animationKey, 10.0f, 1.0f, false);
+        //        break;
+        //      }
+        //      _modelAnim.SetBlendAttach(_animationKey, 10.0f, 1.3f, false);
+        //      _app.GetEffect().PlayEffect(Effect::pWeakAttack2, _position, eRad);
+        //      break;
+        //    case PlayerState::Attack3: // 攻撃3
+        //      _animationKey = (_attackFlag) ? GroundHeavyAttack3 : GroundLightAttack3;
+        //      _modelAnim.SetBlendAttach(_animationKey, 10.0f, 1.0f, false);
+        //        break;
+        //    case PlayerState::Jump: // ジャンプ
+        //        _modelAnim.SetBlendAttach(JumpUp, 10.0f, 1.0f, false);
+        //        break;
+        //    default:
+        //        break;
+        //    }
+        //}
     }
 
     void Player::GravityScale() {
@@ -621,6 +669,37 @@ namespace Gyro {
       _stateComponent->Set(_modelAnim.GetMainPlayTime(), start, end);
       _stateComponent->Start();
       return true; // 切り替えを完了
+    }
+
+    int Player::PlayerStateToNumber() const {
+      auto number = -1;
+      // プレイヤーの状態に応じた数値を返す
+      switch (_playerState) {
+      case PlayerState::Idle:
+        return StateNumberIdle;
+      case PlayerState::Walk:
+        return StateNumberWalk;
+      case PlayerState::Run:
+        return StateNumberRun;
+      case PlayerState::Jump:
+        return StateNumberJump;
+      case PlayerState::Attack1:
+        number = StateNumberLight1;
+        break;
+      case PlayerState::Attack2:
+        number = StateNumberLight2;
+        break;
+      case PlayerState::Attack3:
+        number = StateNumberLight3;
+        break;
+      default:
+        return -1;
+      }
+      // 強攻撃・弱攻撃かの判定
+      auto IsHevyLight = [](bool flag) {
+        return (flag == true) ? 1 : 0;
+      };
+      return number + IsHevyLight(_attackFlag);
     }
 
   } // namespace Player
