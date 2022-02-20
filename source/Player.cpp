@@ -396,7 +396,7 @@ namespace Gyro {
       auto [key, frame, speed, loop] = modelAnim.ModelAnim();
       // アニメーションをセットする
       _modelAnim.SetBlendAttach(key.data(), frame, speed, loop);
-      // エフェクトキーが登録されている場合は再生を行う
+      // エフェクトが登録されている場合は再生する
       if (!modelAnim.Effect().empty()) {
 #ifndef _DEBUG
         auto eRad = -_rotation.GetY();
