@@ -86,7 +86,7 @@ namespace Gyro {
     };
 
     /**
-     * @brief 自機の攻撃情報情報
+     * @brief 状態番号をキーとして、モーションブレンド情報を保持する連想配列
      */
     const std::unordered_map<int, ModelAnim::ModelAnimData> animMap {
       // 待機情報
@@ -98,13 +98,13 @@ namespace Gyro {
       // ジャンプ
       {StateNumberJump, {JumpUp, 10.0f, 1.0f, false}},
       // 弱攻撃1
-      {StateNumberLight1, {GroundLightAttack1, 10.0f, 1.3f, false}},
+      {StateNumberLight1, {GroundLightAttack1, 10.0f, 1.3f, false, Effect::pWeakAttack1}},
       // 弱攻撃2
-      {StateNumberLight2, {GroundLightAttack2, 10.0f, 1.3f, false}},
+      {StateNumberLight2, {GroundLightAttack2, 10.0f, 1.3f, false, Effect::pWeakAttack2}},
       // 弱攻撃3
       {StateNumberLight3, {GroundLightAttack3, 10.0f, 1.0f, false}},
       // 強攻撃1
-      {StateNumberHeavy1 ,{GroundHeavyAttack1, 10.0f, 1.0f, false}},
+      {StateNumberHeavy1 ,{GroundHeavyAttack1, 10.0f, 1.0f, false, Effect::pHeavyAttack1}},
       // 強攻撃2
       {StateNumberHeavy2 ,{GroundHeavyAttack2, 10.0f, 1.0f, false}},
       // 強攻撃3
@@ -385,11 +385,6 @@ namespace Gyro {
       if (_playerState == old) {
         return;
       }
-#ifndef _DEBUG
-      auto eRad = -_rotation.GetY();
-#else
-      auto eRad = -AppMath::Utility::DegreeToRadian(_rotation.GetY());
-#endif
       // 遷移番号の取得
       auto number = PlayerStateToNumber();
       // 取得に失敗した場合は処理を行わない
@@ -397,54 +392,20 @@ namespace Gyro {
         return;
       }
       // モデルアニメーション情報の取得
-      auto [key, frame, speed, loop] = animMap.at(number).ModelAnim();
+      const auto modelAnim = animMap.at(number);
+      auto [key, frame, speed, loop] = modelAnim.ModelAnim();
       // アニメーションをセットする
       _modelAnim.SetBlendAttach(key.data(), frame, speed, loop);
-        //// 自機の状態に合わせてアニメーション変化
-        //if (old != _playerState) {
-        //  switch (_playerState) {
-        //  case PlayerState::Idle: // 待機
-        //      _modelAnim.SetBlendAttach(Idle, 10.0f, 1.0f, true);
-        //      break;
-        //  case PlayerState::Walk: // 歩き
-        //      _modelAnim.SetBlendAttach(Walk, 10.0f, 1.0f, true);
-        //      break;
-        //  case PlayerState::Run: // 走り
-        //      _modelAnim.SetBlendAttach(Run, 10.0f, 1.0f, true);
-        //      break;
-        //  case PlayerState::Attack1: // 攻撃1
-        //    // アニメーションキーの設定
-        //    _animationKey = (_attackFlag) ? GroundHeavyAttack1 : GroundLightAttack1;
-        //      if (_attackFlag) {
-        //        _modelAnim.SetBlendAttach(_animationKey, 10.0f, 1.0f, false);
-        //        // 攻撃用エフェクトを再生する
-        //        _app.GetEffect().PlayEffect(Effect::pHeavyAttack1, _position, eRad);
-        //        break;
-        //      }
-        //      _modelAnim.SetBlendAttach(_animationKey, 10.0f, 1.3f, false);
-        //      _app.GetEffect().PlayEffect(Effect::pWeakAttack1, _position, eRad);
-        //      break;
-        //    case PlayerState::Attack2: // 攻撃2
-        //      // アニメーションキーの設定
-        //      _animationKey = (_attackFlag) ? GroundHeavyAttack2 : GroundLightAttack2;
-        //      if (_attackFlag) {
-        //        _modelAnim.SetBlendAttach(_animationKey, 10.0f, 1.0f, false);
-        //        break;
-        //      }
-        //      _modelAnim.SetBlendAttach(_animationKey, 10.0f, 1.3f, false);
-        //      _app.GetEffect().PlayEffect(Effect::pWeakAttack2, _position, eRad);
-        //      break;
-        //    case PlayerState::Attack3: // 攻撃3
-        //      _animationKey = (_attackFlag) ? GroundHeavyAttack3 : GroundLightAttack3;
-        //      _modelAnim.SetBlendAttach(_animationKey, 10.0f, 1.0f, false);
-        //        break;
-        //    case PlayerState::Jump: // ジャンプ
-        //        _modelAnim.SetBlendAttach(JumpUp, 10.0f, 1.0f, false);
-        //        break;
-        //    default:
-        //        break;
-        //    }
-        //}
+      // エフェクトキーが登録されている場合は再生を行う
+      if (!modelAnim.Effect().empty()) {
+#ifndef _DEBUG
+        auto eRad = -_rotation.GetY();
+#else
+        auto eRad = -AppMath::Utility::DegreeToRadian(_rotation.GetY());
+#endif
+        // エフェクトの再生
+        _app.GetEffect().PlayEffect(modelAnim.Effect(), _position, eRad);
+      }
     }
 
     void Player::GravityScale() {

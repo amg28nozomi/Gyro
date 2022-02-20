@@ -27,12 +27,13 @@ namespace Gyro {
       ModelAnimData();
       /**
        * @brief  コンストラクタ
-       * @param  name  アニメーション名
-       * @param  frame ブレンドフレーム
-       * @param  speed 再生速度
-       * @param  loop  ループフラグ(デフォルトはfalse)
+       * @param  name   アニメーション名
+       * @param  frame  ブレンドフレーム
+       * @param  speed  再生速度
+       * @param  loop   ループフラグ(デフォルトはfalse)
+       * @param  effect エフェクトキー(デフォルトはempty)
        */
-      ModelAnimData(std::string_view name, const float frame, const float speed, bool loop = false);
+      ModelAnimData(std::string_view name, const float frame, const float speed, bool loop = false, std::string_view effect = "");
       /**
        * @brief  アニメーション名の取得
        * @return アニメーション名
@@ -62,6 +63,13 @@ namespace Gyro {
         return _loop;
       }
       /**
+       * @brief  エフェクト名の取得
+       * @return エフェクト名
+       */
+      std::string Effect() const {
+        return _effect;
+      }
+      /**
        * @brief  アニメーション情報の取得
        * @return アニメーション情報
        */
@@ -69,7 +77,8 @@ namespace Gyro {
         return std::make_tuple(_name, _blendFrame, _speed, _loop);
       }
     protected:
-      std::string _name; //!< アニメーション名
+      std::string _name;   //!< アニメーション名
+      std::string _effect; //!< エフェクト名
       float _blendFrame; //!< ブレンドフレーム
       float _speed;      //!< 再生速度
       bool _loop;        //!< ループフラグ(true:ループする false:ループしない)

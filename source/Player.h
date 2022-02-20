@@ -26,9 +26,12 @@ namespace AppFrame::Math{}
  * @brief ゲームベース
  */
 namespace Gyro {
+  /**
+   * @brief オブジェクトベース
+   */
   namespace Object {
     class CollisionCapsule;
-  }
+  } // namespace Object
   /**
    * @brief プレイヤーベース
    */
