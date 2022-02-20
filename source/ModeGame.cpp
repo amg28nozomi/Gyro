@@ -31,6 +31,10 @@ namespace Gyro {
     bool ModeGame::Enter() {
       // オブジェクトを生成
       SetSpawn();
+      // BGMの再生開始
+      _app.GetSoundComponent().PlayLoop("bgm");
+      // 再生音量の設定
+      _app.GetSoundComponent().SetVolume("bgm", 50);
       return true;
     }
 
@@ -67,14 +71,26 @@ namespace Gyro {
 #ifdef _DEBUG
       // デバッグ時限定:左スティックが押された場合、デバッグフラグを切り替える
       if (device.GetButton(XINPUT_BUTTON_RIGHT_THUMB, App::InputTrigger)) {
-        _app.ChengeDebugFlag(); // デバッグフラグの切り替え
-        if (_app.GetDebugFlag()) {
-          
-          _app.GetSoundComponent().PlayLoop("bgm");
-          _app.GetSoundComponent().SetVolume("bgm", 50);
-        } else {
+        // デバッグフラグの切り替え
+        _app.ChengeDebugFlag();
+        // サウンドフラグに応じて処理を切り替える
+        switch (_app.GetSoundComponent().CheckSound("bgm")) {
+          // サウンド再生中
+        case AppFrame::Sound::Play:
+          // BGMの再生を停止する
           _app.GetSoundComponent().StopSound("bgm");
+          break;
+          // サウンド停止中
+        case AppFrame::Sound::Stop:
+          // BGMの再生開始
+          _app.GetSoundComponent().PlayLoop("bgm");
+          // 再生音量の設定
+          _app.GetSoundComponent().SetVolume("bgm", 50);
+          break;
         }
+        // デバッグフラグがONの場合のみ処理を実行する
+        //if (_app.GetDebugFlag()) {
+        //}
       }
 #endif
       return true;
