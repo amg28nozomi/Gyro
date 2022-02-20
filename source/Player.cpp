@@ -72,6 +72,11 @@ namespace Gyro {
       {Player::PlayerState::Attack3, Player::PlayerState::Idle}
     };
 
+    /**
+     * @brief 自機の攻撃情報情報
+     */
+    const std::unordered_map<Player::PlayerState, std::tuple<>>
+
     Player::Player(Application::ApplicationMain& app) : ObjectBase(app), _gaugeHp(app), _gaugeTrick(app) {
       LoadResource(); // リソースの読み取り
       Init();
@@ -111,8 +116,8 @@ namespace Gyro {
       auto [lX, lY] = input.GetStick(false); // 左スティック
       auto [rX, rY] = input.GetStick(true);  // 右スティック
       auto [leftTrigger, rightTrigger] = input.GetTrigger(); // トリガーボタン
-      // 前フレーム座標
-      auto oldPosition = _position;
+      // 前フレーム座標の保持
+      _move->OldPosition();
       //!< 移動量
       AppMath::Vector4 move;
       // ワイヤーフラグが立っていない場合のみ更新を行う
@@ -141,9 +146,6 @@ namespace Gyro {
       _sphere->Process(move);  // 移動量の加算
       _capsule->Process(move); // カプセルの更新
       Hit(); //衝突判定
-
-      auto pos = _position.Direction(oldPosition);
-      pos.SetZ(pos.GetZ() * -1.0f);
       // カメラの更新
       _app.GetCamera().Process(AppMath::Vector4(rX, rY), _position, move);
       // ワールド座標の設定
@@ -315,6 +317,7 @@ namespace Gyro {
     }
 
     void Player::SetRotation(const AppFrame::Math::Vector4 move) {
+      // 指定状態の場合は
 
       if (_playerState == PlayerState::Idle || _playerState == PlayerState::Run || _playerState == PlayerState::Walk) {
         // 移動量のいずれかが基準を超えていたらRunに遷移
@@ -366,6 +369,7 @@ namespace Gyro {
             _animationKey = (_attackFlag) ? GroundHeavyAttack1 : GroundLightAttack1;
               if (_attackFlag) {
                 _modelAnim.SetBlendAttach(_animationKey, 10.0f, 1.0f, false);
+                // 攻撃用エフェクトを再生する
                 _app.GetEffect().PlayEffect(Effect::pHeavyAttack1, _position, eRad);
                 break;
               }

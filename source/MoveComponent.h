@@ -36,10 +36,18 @@ namespace Gyro {
       void Set(const float speed) {
         _speed = speed;
       }
-      
+      /**
+       * @brief 移動処理の開始
+       */
       void Start() override;
-
+      /**
+       * @brief 移動処理の更新
+       */
       void Finish() override;
+      /**
+       * @brief 前フレーム座標の更新
+       */
+      void OldPosition();
       /**
        * @brief  移動量の更新
        * @param  x x軸の入力状態
@@ -55,6 +63,13 @@ namespace Gyro {
         return AppMath::Matrix44::Translate(_move);
       }
       /**
+       * @brief  所有者の前フレーム座標の取得
+       * @return 所有者の前フレーム座標
+       */
+      AppMath::Vector4 OldPosition() const {
+        return _oldPosition;
+      }
+      /**
        * @brief  移動量(ベクトル)の取得
        * @return 移動量ベクトル
        */
@@ -62,9 +77,14 @@ namespace Gyro {
         return _move;
       }
     private:
-      ObjectBase& _owner;       //!< 所有者の参照
-      AppMath::Vector4 _move{}; //!< 移動ベクトル
-      float _speed;  //!< 速度
+      //!< 所有者の参照
+      ObjectBase& _owner;
+      //!< 所有者の前フレーム座標
+      AppMath::Vector4 _oldPosition{};
+      //!< 移動ベクトル
+      AppMath::Vector4 _move{};
+      //!< 速度
+      float _speed;
     };
   } // namespace Object
 } // namespace Gyro

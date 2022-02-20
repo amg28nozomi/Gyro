@@ -7,6 +7,7 @@
  *********************************************************************/
 #include "MoveComponent.h"
 #include <appframe.h>
+#include "ObjectBase.h"
 
 namespace Gyro {
   namespace Object {
@@ -14,6 +15,11 @@ namespace Gyro {
     MoveComponent::MoveComponent(ObjectBase& owner) : _owner(owner) {
       _move = AppMath::Vector4();
       _speed = 5.0f;
+    }
+
+    void MoveComponent::OldPosition() {
+      // 前フレーム座標の更新
+      _oldPosition = _owner.GetPosition();
     }
 
     bool MoveComponent::Move(const float x, const float z) {

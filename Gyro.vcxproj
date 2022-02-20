@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="source\ModelAnimData.cpp" />
     <ClCompile Include="source\ApplicationMain.cpp" />
     <ClCompile Include="source\AttackComponent.cpp" />
     <ClCompile Include="source\Camera.cpp" />
@@ -67,6 +68,7 @@
     <ClCompile Include="source\WirePoint.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="source\ModelAnimData.h" />
     <ClInclude Include="source\ApplicationMain.h" />
     <ClInclude Include="source\AttackComponent.h" />
     <ClInclude Include="source\Camera.h" />

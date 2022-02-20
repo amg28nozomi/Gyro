@@ -245,6 +245,9 @@
     <ClCompile Include="source\ModelAnimInfo.cpp">
       <Filter>ソース ファイル\ModelAnim</Filter>
     </ClCompile>
+    <ClCompile Include="source\ModelAnimData.cpp">
+      <Filter>ソース ファイル\ModelAnim</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\ApplicationMain.h">
@@ -386,6 +389,9 @@
       <Filter>ヘッダー ファイル\ModelAnim</Filter>
     </ClInclude>
     <ClInclude Include="source\ModelAnimInfo.h">
+      <Filter>ヘッダー ファイル\ModelAnim</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ModelAnimData.h">
       <Filter>ヘッダー ファイル\ModelAnim</Filter>
     </ClInclude>
   </ItemGroup>
