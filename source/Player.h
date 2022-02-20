@@ -114,10 +114,6 @@ namespace Gyro {
 
       bool _attackFlag{false};   //!< 攻撃フラグ(true:強攻撃 false:弱攻撃)
 
-      bool _attackFlugY = false; //!< 弱攻撃フラグ
-      bool _attackFlugX = false; //!< 強攻撃フラグ
-      int _cnt;
-
       std::unique_ptr<AppMath::Plane> _plane; //!< 平面
       int _handleMap;
       int _frameMapCollision;
@@ -240,15 +236,21 @@ namespace Gyro {
       bool IsAttackState() const;
       /**
        * @brief  キーの設定
-       * @return 
+       * @return 現在の状態に対応するジョイパッドキーを返す
+       *         最終コンボの場合は-1を返す
+       *         それ以外の場合は-2を返す
        */
       int NextKey() const;
       /**
-       * @brief
-       * @return 
+       * @brief  状態の変更
+       * @return true: false:
        */
       bool SetStateParam(PlayerState pState);
-
+      /**
+       * @brief  走り状態に遷移するかの判定
+       * @param  move 移動量
+       * @return true:遷移する false:遷移しない
+       */
       bool IsRun(const AppMath::Vector4& move);
 
       //!< モデルサーバに紐づけられた文字列
@@ -270,6 +272,5 @@ namespace Gyro {
       //!< 重力リセット処理
       bool _gravityReset{false};
     };
-  }
-    //} // namespace Player
+  } // namespace Player
 } // namespace Gyro

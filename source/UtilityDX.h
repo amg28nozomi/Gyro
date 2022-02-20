@@ -1,6 +1,6 @@
 /*****************************************************************//**
  * @file   UtilityDX.h
- * @brief  
+ * @brief  DXライブラリ構造体への相互変換クラス
  * 
  * @author 鈴木希海
  * @date   January 2022
@@ -13,10 +13,13 @@ namespace AppFrame::Math {
   class Matrix44;
 }
 
+/**
+ * @brief ゲームベース
+ */
 namespace Gyro {
   /**
    * @class UtilityDX
-   * @brief 
+   * @brief DXライブラリに用意された構造体への相互変換クラス
    */
   class UtilityDX {
   public:
@@ -39,4 +42,4 @@ namespace Gyro {
      */
     static MATRIX ToMATRIX(AppFrame::Math::Matrix44 matrix);
   };
-}
+} // namespae AppFrame

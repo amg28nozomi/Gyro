@@ -30,9 +30,14 @@ namespace Gyro {
         }
 
         bool Camera::Process(const AppFrame::Math::Vector4 stick, const AppFrame::Math::Vector4 target, const AppFrame::Math::Vector4 move) {
-          auto s = _position - target;
-          float radian = atan2(s.GetZ(), s.GetX());
-          float length = sqrt(s.GetZ() * s.GetZ() + s.GetX() * s.GetX());
+          // ターゲット座標までの向きを算出
+          auto direction = target.Direction(_position);
+          // 向きベクトルの各成分を取得
+          auto [dX, dY, dZ] = direction.GetVector3();
+          // 成分を基に角度と長さを算出
+          auto radian = atan2(dZ, dX);
+          auto length = AppFrame::Math::Arithmetic::Length(dZ, dX);
+          // X軸の入力具合に応じて向きを回す
           if (stick.GetX() > InputMin) { radian -= 0.1f; }
           if (stick.GetX() < -InputMin) { radian += 0.1f; }
           // x,z位置
@@ -65,7 +70,6 @@ namespace Gyro {
           // VECTOR target(target.GetX(), target.GetY(), target.GetZ());
           //カメラの位置更新
           SetCameraPositionAndTarget_UpVecY(UtilityDX::ToVECTOR(_position), UtilityDX::ToVECTOR(target));
-
           return true;
         }
 

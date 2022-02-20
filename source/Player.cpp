@@ -115,12 +115,6 @@ namespace Gyro {
       auto oldPosition = _position;
       //!< 移動量
       AppMath::Vector4 move;
-
-      //// ワイヤーアクションの入口処理
-      //if (input.GetButton(XINPUT_BUTTON_B, false)) {
-      //  Wire(move);
-      //}
-      // 
       // ワイヤーフラグが立っていない場合のみ更新を行う
       if (!_wire->IsAction()) {
         // 状態の切り替え処理
@@ -136,68 +130,6 @@ namespace Gyro {
       else {
         move = _wire->WireMove();
       }
-
-      //// ワイヤーアクション実行中は他のアクションを実行しない
-      //if (!_wire->IsAction()) {
-      //  // ジャンプ処理の入口処理
-      //  if (input.GetButton(XINPUT_BUTTON_A, false)) {
-      //    Jump(); // ジャンプ処理
-      //  }
-        // 移動量の取得
-        // move = Move(lX, lY);
-
-        // 状態遷移処理
-
-
-      //  // 状態の更新
-      //  if (State(PlayerState::Idle) && _attackFlugY == false && input.GetButton(XINPUT_BUTTON_Y, false)) {
-      //    _attack->Start();
-      //    ChangeState(PlayerState::Attack1, GroundLightAttack1);
-      //    _gaugeTrick.Add(-50.f);
-      //    _attackFlugY = true;
-      //    _cnt = 0;
-      //  }
-      //  else if (State(PlayerState::Attack1) && _attackFlugY == true && input.GetButton(XINPUT_BUTTON_Y, false)) {
-      //    ChangeState(PlayerState::Attack2, GroundLightAttack2);
-      //    _gaugeTrick.Add(-50.f);
-      //    _cnt = 0;
-      //  }
-      //  else if (State(PlayerState::Attack2) && _attackFlugY == true && input.GetButton(XINPUT_BUTTON_Y, false)) {
-      //    ChangeState(PlayerState::Attack3, GroundLightAttack3);
-      //    _gaugeTrick.Add(-50.f);
-      //    _cnt = 0;
-      //  }
-      //  // 強攻撃入口
-      //  if (State(PlayerState::Idle) && _attackFlugX == false && input.GetButton(XINPUT_BUTTON_X, false)) {
-      //    _attack->Start();
-      //    ChangeState(PlayerState::Attack1, GroundHeavyAttack1);
-      //    _gaugeTrick.Add(-50.f);
-      //    _attackFlugX = true;
-      //    _cnt = 0;
-      //  }
-      //  else if (State(PlayerState::Attack1) && _attackFlugX == true && input.GetButton(XINPUT_BUTTON_X, false)) {
-      //    ChangeState(PlayerState::Attack2, GroundHeavyAttack2);
-      //    _gaugeTrick.Add(-50.f);
-      //    _cnt = 0;
-      //  }
-      //  else if (State(PlayerState::Attack2) && _attackFlugX == true && input.GetButton(XINPUT_BUTTON_X, false)) {
-      //    ChangeState(PlayerState::Attack3, GroundHeavyAttack3);
-      //    _gaugeTrick.Add(-50.f);
-      //    _cnt = 0;
-      //  }
-      //  if (_modelAnim.GetMainAnimEnd() == true && _attackFlugY == true) {
-      //    _attackFlugY = false;
-      //  }
-      //  else if (_modelAnim.GetMainAnimEnd() == true && _attackFlugX == true) {
-      //    _attackFlugX = false;
-      //  }
-      //  else if (_attackFlugX == false && _attackFlugY == false) {
-      //    SetRotation(move);
-      //  }
-      //}
-      //else {
-      //  move = _wire->WireMove();
-      //}
       // 座標に現在座標を更新する
       _position.Add(move);
       _gaugeHp.Process();
@@ -209,6 +141,9 @@ namespace Gyro {
       _sphere->Process(move);  // 移動量の加算
       _capsule->Process(move); // カプセルの更新
       Hit(); //衝突判定
+
+      auto pos = _position.Direction(oldPosition);
+      pos.SetZ(pos.GetZ() * -1.0f);
       // カメラの更新
       _app.GetCamera().Process(AppMath::Vector4(rX, rY), _position, move);
       // ワールド座標の設定
