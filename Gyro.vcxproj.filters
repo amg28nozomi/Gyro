@@ -140,18 +140,6 @@
     <ClCompile Include="source\Player.cpp">
       <Filter>ソース ファイル\Object</Filter>
     </ClCompile>
-    <ClCompile Include="source\Enemy\EnemyBase.cpp">
-      <Filter>ソース ファイル\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Enemy\EnemyWheel.cpp">
-      <Filter>ソース ファイル\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ModelAnim\ModelAnimComponent.cpp">
-      <Filter>ソース ファイル\ModelAnim</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ModelAnim\ModelAnimInfo.cpp">
-      <Filter>ソース ファイル\ModelAnim</Filter>
-    </ClCompile>
     <ClCompile Include="source\ObjectServer.cpp">
       <Filter>ソース ファイル\Object</Filter>
     </ClCompile>
@@ -209,12 +197,6 @@
     <ClCompile Include="source\MoveComponent.cpp">
       <Filter>ソース ファイル\Object\Player</Filter>
     </ClCompile>
-    <ClCompile Include="source\Effect\EffectComponent.cpp">
-      <Filter>ソース ファイル\Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Effect\EffectServer.cpp">
-      <Filter>ソース ファイル\Effect</Filter>
-    </ClCompile>
     <ClCompile Include="source\WirePoint.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -244,6 +226,24 @@
     </ClCompile>
     <ClCompile Include="source\GaugeEnemy.cpp">
       <Filter>ソース ファイル\Gauge</Filter>
+    </ClCompile>
+    <ClCompile Include="source\EffectComponent.cpp">
+      <Filter>ソース ファイル\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="source\EffectServer.cpp">
+      <Filter>ソース ファイル\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="source\EnemyBase.cpp">
+      <Filter>ソース ファイル\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="source\EnemyWheel.cpp">
+      <Filter>ソース ファイル\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ModelAnimComponent.cpp">
+      <Filter>ソース ファイル\ModelAnim</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ModelAnimInfo.cpp">
+      <Filter>ソース ファイル\ModelAnim</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -279,18 +279,6 @@
     </ClInclude>
     <ClInclude Include="source\Player.h">
       <Filter>ヘッダー ファイル\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Enemy\EnemyBase.h">
-      <Filter>ヘッダー ファイル\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Enemy\EnemyWheel.h">
-      <Filter>ヘッダー ファイル\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="source\ModelAnim\ModelAnimComponent.h">
-      <Filter>ヘッダー ファイル\ModelAnim</Filter>
-    </ClInclude>
-    <ClInclude Include="source\ModelAnim\ModelAnimInfo.h">
-      <Filter>ヘッダー ファイル\ModelAnim</Filter>
     </ClInclude>
     <ClInclude Include="source\ObjectServer.h">
       <Filter>ヘッダー ファイル\Object</Filter>
@@ -349,12 +337,6 @@
     <ClInclude Include="source\MoveComponent.h">
       <Filter>ヘッダー ファイル\Object\Player</Filter>
     </ClInclude>
-    <ClInclude Include="source\Effect\EffectComponent.h">
-      <Filter>ヘッダー ファイル\Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Effect\EffectServer.h">
-      <Filter>ヘッダー ファイル\Effect</Filter>
-    </ClInclude>
     <ClInclude Include="source\InvincibleComponent.h">
       <Filter>ヘッダー ファイル\Object\Player</Filter>
     </ClInclude>
@@ -387,6 +369,24 @@
     </ClInclude>
     <ClInclude Include="source\GaugeEnemy.h">
       <Filter>ヘッダー ファイル\Gauge</Filter>
+    </ClInclude>
+    <ClInclude Include="source\EffectComponent.h">
+      <Filter>ヘッダー ファイル\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="source\EffectServer.h">
+      <Filter>ヘッダー ファイル\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="source\EnemyBase.h">
+      <Filter>ヘッダー ファイル\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="source\EnemyWheel.h">
+      <Filter>ヘッダー ファイル\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ModelAnimComponent.h">
+      <Filter>ヘッダー ファイル\ModelAnim</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ModelAnimInfo.h">
+      <Filter>ヘッダー ファイル\ModelAnim</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

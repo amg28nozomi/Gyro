@@ -10,7 +10,7 @@
 #include "ObjectBase.h"
 #include "ObjectServer.h"
 #include "Player.h"
-#include "Enemy/EnemyWheel.h"
+#include "EnemyWheel.h"
 
 namespace Gyro {
   namespace Object {

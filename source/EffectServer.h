@@ -6,11 +6,15 @@
  * @date    February 2022
  *********************************************************************/
 #pragma once
-#include "../ApplicationMain.h"
+#include "ApplicationMain.h"
 
- /** 作品用名前空間 */
+ /**
+  * @brief ゲームベース
+  */
 namespace Gyro {
-  /** エフェクト用名前空間 */
+  /**
+   * @brief エフェクトベース
+   */
   namespace Effect {
     namespace AppServer = AppFrame::Server;
     /**

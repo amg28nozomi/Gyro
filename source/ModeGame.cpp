@@ -9,7 +9,7 @@
 #include <memory>
 #include "ApplicationMain.h"
 #include "Player.h"
-#include "Enemy/EnemyWheel.h"
+#include "EnemyWheel.h"
 #include "PrimitiveBase.h"
 #include "PrimitivePlane.h"
 #include "ObjectServer.h"
@@ -171,10 +171,6 @@ namespace Gyro {
       using EffectServer = Effect::EffectServer;
       // エフェクトハンドルの読み込み
       const EffectServer::EffectMap effectMap{
-        {Effect::eEyeLight, "res/Effect/Enemy/EyeLight/Enemy_EyeLight.efkefc"},
-        {Effect::eGroundAttack, "res/Effect/Enemy/GroundAttack/Enemy_ground_attack.efkefc"},
-        {Effect::eHit, "res/Effect/Enemy/Hit/Enemy_Hit.efkefc"},
-        {Effect::eExprosion, "res/Effect/Enemy/Exprosion/Enemy_Exprosion.efkefc"},
         {Effect::pWeakAttack1, "res/Effect/Player/WeakAttack1/player_weakattack1_1.efkefc"},
         {Effect::pWeakAttack2, "res/Effect/Player/WeakAttack2/player_weakattack2_2.efkefc"},
         {Effect::pWeakAttack3, "res/Effect/Player/WeakAttack3/player_weakattack3.efkefc"},
@@ -182,27 +178,39 @@ namespace Gyro {
         {Effect::pHeavyAttack1, "res/Effect/Player/HeavyAttack1/HeavyAttack1.efkefc"},
         {Effect::pHeavyAttack3, "res/Effect/Player/HeavyAttack3/HeavyAttack3.efkefc"},
         {Effect::pAirWeakAttack1, "res/Effect/Player/AirWeakAttack1/Player_attack_air_normal_01.efkefc"},
+        {Effect::pAirWeakAttack2, "res/Effect/Player/AirWeakAttack2/Player_attack_air_normal_02.efkefc"},
+        {Effect::pAirWeakAttack3, "res/Effect/Player/AirWeakAttack3/Player_attack_air_normal_03.efkefc"},
+        {Effect::pAirHeavyAttack1, "res/Effect/Player/AirHeavyAttack1/Player_attack_air_heavy_01.efkefc"},
+        {Effect::pAirHeavyAttack2, "res/Effect/Player/AirHeavyAttack2/Player_attack_air_heavy_02.efkefc"},
         {Effect::pUltActivate, "res/Effect/Player/Ult_Activate/Player_ult_activate.efkefc"},
         {Effect::pUltSlash, "res/Effect/Player/Ult_Slash/Player_ult_slash.efkefc"},
         {Effect::pHit, "res/Effect/Player/Hit/Hit.efkefc"},
+        {Effect::eEyeLight, "res/Effect/Enemy/EyeLight/Enemy_EyeLight.efkefc"},
+        {Effect::eGroundAttack, "res/Effect/Enemy/GroundAttack/Enemy_ground_attack.efkefc"},
+        {Effect::eHit, "res/Effect/Enemy/Hit/Enemy_Hit.efkefc"},
+        {Effect::eExprosion, "res/Effect/Enemy/Exprosion/Enemy_Exprosion.efkefc"},
         {Effect::stageBarrier, "res/Effect/stage_barrier/stage_barrier.efkefc"}
       };
       // エフェクト拡大率の登録
       const EffectServer::EffectMagniMap effectMagniMap{
-        {Effect::eEyeLight, 20.0f},
-        {Effect::eGroundAttack, 10.0f},
-        {Effect::eHit, 10.0f},
-        {Effect::eExprosion, 10.0f},
         {Effect::pWeakAttack1, 5.0f},
         {Effect::pWeakAttack2, 5.0f},
         {Effect::pWeakAttack3, 5.0f},
         {Effect::pWeakAttackEX, 2.0f},
         {Effect::pHeavyAttack1, 20.0f},
         {Effect::pHeavyAttack3, 20.0f},
-        {Effect::pAirWeakAttack1, 20.0f},
+        {Effect::pAirWeakAttack1, 10.0f},
+        {Effect::pAirWeakAttack2, 10.0f},
+        {Effect::pAirWeakAttack3, 10.0f},
+        {Effect::pAirHeavyAttack1, 10.0f},
+        {Effect::pAirHeavyAttack2, 10.0f},
         {Effect::pUltActivate, 10.0f},
         {Effect::pUltSlash, 10.0f},
         {Effect::pHit, 20.0f},
+        {Effect::eEyeLight, 20.0f},
+        {Effect::eGroundAttack, 10.0f},
+        {Effect::eHit, 20.0f},
+        {Effect::eExprosion, 10.0f},
         {Effect::stageBarrier, 20.0f}
       };
       // エフェクトサーバに登録

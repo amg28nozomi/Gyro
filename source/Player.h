@@ -9,7 +9,7 @@
 #pragma once
 #include "ObjectBase.h"
 #include "Camera.h"
-#include "ModelAnim/ModelAnimComponent.h"
+#include "ModelAnimComponent.h"
 #include "CollisionSphere.h"
 #include "CollisionCapsule.h"
 #include "GaugeHP.h"

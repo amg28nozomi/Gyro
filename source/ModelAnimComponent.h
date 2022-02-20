@@ -9,9 +9,13 @@
 #include "appframe.h"
 #include "ModelAnimInfo.h"
 
- /** 作品用名前空間 */
+ /**
+  * @brief ゲームベース
+  */
 namespace Gyro {
-  /** モデルアニメ用名前空間 */
+  /**
+   * @brief モデルアニメベース
+   */
   namespace ModelAnim {
     /**
      * @class ModelAnimComponent
@@ -59,6 +63,13 @@ namespace Gyro {
        */
       int GetMainAttachIndex() const {
         return _main.GetAttachIndex();
+      }
+      /**
+       * @brief  現在のアニメーションの総時間の取得
+       * @return アニメーション総時間
+       */
+      float GetMainTotalTime() const {
+        return _main.GetTotalTime();
       }
       /**
        * @brief  現在のアニメーションの再生時間の取得
