@@ -64,6 +64,27 @@ namespace Gyro {
       return AddObject(std::move(object)); // 登録処理に移行
     }
 
+    void ObjectServer::ObjectClear(const bool flag) {
+      // 自機格納用
+      std::shared_ptr<ObjectBase> player = nullptr;
+      // 自機保存フラグが立っている場合は自機を保持する
+      if (flag) {
+        // 自機の所有権を移行
+        player = MovePlayer();
+      }
+      // コンテナに登録されているオブジェクトを削除
+      DeleteObjects(_addObject);
+      DeleteObjects(_registry);
+      // 再登録フラグは立っているか
+      if (flag) {
+        // 自機の取得に成功しているか
+        if (player != nullptr) {
+          // データベース上に再登録する
+          _registry.emplace_back(player);
+        }
+      }
+    }
+
     bool ObjectServer::AddObject(std::shared_ptr<ObjectBase> object) {
       // オブジェクトはnullではないか
       if (object == nullptr) {
@@ -96,6 +117,7 @@ namespace Gyro {
       // 登録オブジェクトを解放する
       for (auto&& obj : container) {
         // 解放処理を行う
+        obj.reset();
       }
       container.clear(); // コンテナの解放
     }
@@ -169,13 +191,33 @@ namespace Gyro {
     bool ObjectServer::FindPlayer() const {
       auto find = false; // 検索フラグ
       for (auto obj : _registry) {
-        // 自機の場合はフラグをtrueにしてforループを終了する
+        // 自機の場合はフラグをtrueにしてループを終了する
         if (obj->GetId() == ObjectBase::ObjectId::Player) {
           find = true;
           break; // ループ終了
         }
       }
       return find;
+    }
+
+    std::shared_ptr<ObjectBase> ObjectServer::MovePlayer() {
+      // 自機を格納するためのシェアードポイント
+      std::shared_ptr<ObjectBase> pointer = nullptr;
+      for (auto object : _registry) {
+        // 対象が自機かの判定
+        if (object->GetId() != ObjectBase::ObjectId::Player) {
+          continue;
+        }
+        // 自機の場合は所有権を移動
+        pointer = std::move(object);
+      }
+#ifdef _DEBUG
+      // 自機が登録されていない場合はエラー分を出力
+      if (pointer == nullptr) {
+        DebugString(_name + ":自機が登録されていません");
+      }
+#endif
+      return pointer;
     }
   } // namespace Object
 } // namespace Gyro

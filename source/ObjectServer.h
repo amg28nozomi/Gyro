@@ -57,7 +57,15 @@ namespace Gyro {
        * @return true:登録成功 false:登録失敗
        */
       bool Register(std::shared_ptr<ObjectBase> object);
-
+      /**
+       * @brief  コンテナに登録されているオブジェクトを解放する
+       * @param  flag 自機を解放するかの判定(true:自機も削除する(デフォルト) false:自機のみ残す)
+       */
+      void ObjectClear(const bool flag);
+      /**
+       * @brief  登録オブジェクトの取得
+       * @return オブジェクトのシェアードポインタが格納された動的配列
+       */
       std::vector<std::shared_ptr<ObjectBase>> GetObjects();
       /**
        * @brief  自機の取得
@@ -112,6 +120,12 @@ namespace Gyro {
        * @return true:自機が登録されている false:自機は登録されていない
        */
       bool LastPlayer() const;
+      /**
+       * @brief  自機のシェアードポインタの所有権を取得する
+       * @return 自機が登録されている場合は自機のシェアードポインタを返す
+       *         未登録の場合はnullptrを返す
+       */
+      std::shared_ptr<ObjectBase> MovePlayer();
     };
   } // namespace Object
 } // namespace Gyro
