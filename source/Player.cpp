@@ -193,7 +193,6 @@ namespace Gyro {
     bool Player::Draw() const {
       // プレイヤーの描画
       MV1DrawModel(_model);
-      // スカイスフィアの描画
       MV1DrawModel(_handleMap);
       _gaugeHp.Draw();
       _gaugeTrick.Draw();
@@ -294,6 +293,7 @@ namespace Gyro {
       // 移動量の生成
       if (_move->Move(leftX, leftY)) {
         move = _move->MoveVector();
+
         // ラジアンを生成(y軸は反転させる)
         auto radian = std::atan2(move.GetX(), -move.GetZ());
 #ifndef _DEBUG

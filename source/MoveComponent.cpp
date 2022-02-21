@@ -27,8 +27,15 @@ namespace Gyro {
       if (AppMath::Arithmetic::LengthSquared(x, z) == 0.0f) {
         return false; // 移動無し
       }
+      // 向きベクトルの算出
+      //auto forward = AppMath::Vector4::Normalize(AppMath::Vector4((x / 30000.0f) * _speed, 0.0f, (z / 30000.0f) * _speed));
+      // 所有者の向きベクトルを設定する
+      // _owner.SetForward(forward);
+      // 
       // 移動量の算出
       auto moveX = (x / 30000.0f) * _speed;
+      // auto moveX = forward.GetX()* _speed;
+      // auto moveZ = forward.GetZ() * _speed;
       auto moveZ = (z / 30000.0f) * _speed;
       _move = AppMath::Vector4(moveX, 0.0f, moveZ);
       return true;   // 移動有り

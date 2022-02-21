@@ -33,13 +33,13 @@ namespace Gyro {
 
     bool SkySphere::Process() {
       // ワールド座標行列
-      _world= AppMath::Utility::ToWorldMatrix(_owner.GetPosition(), _rotation, _scale);
+      // _world= AppMath::Utility::ToWorldMatrix(_owner.GetPosition(), _rotation, _scale);
       // _world = AppMath::Matrix44::Identity();
       //_world.Translate(_position);
       //_world = _world * w;
 
-      // _position = _owner.GetPosition();
-      // MV1SetPosition(_handle, UtilityDX::ToVECTOR(_position));
+      _position = _owner.GetPosition();
+      MV1SetPosition(_handle, UtilityDX::ToVECTOR(_position));
       // ワールド座標の更新
       // WorldMatrix();
       // 座標の設定

@@ -114,6 +114,8 @@ namespace Gyro {
       std::unique_ptr<Object::CollisionCapsule> _capsule; //!< カプセル
       PlayerState _playerState{PlayerState::Idle};        //!< 自機状態
       PlayerState _oldState{ PlayerState::Idle };
+      //!< 前方ベクトル
+      AppMath::Vector4 _forward{};
 
       bool _attackFlag{false};   //!< 攻撃フラグ(true:強攻撃 false:弱攻撃)
 

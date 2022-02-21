@@ -78,6 +78,10 @@ namespace Gyro {
       virtual inline void GravitySet(const bool flag) {
         _gravity = flag;
       }
+
+      inline void SetForward(AppMath::Vector4 forward) {
+        _forward = forward;
+      }
       /**
        * @brief  識別番号の取得
        * @return 識別番号
@@ -134,6 +138,13 @@ namespace Gyro {
       inline void SetRotation(const AppMath::Vector4& rotation) {
         _rotation = rotation;
       }
+      /**
+       * @brief  向きベクトルの取得
+       * @return 向きベクトル
+       */
+      inline AppMath::Vector4 Forward() const {
+        return _forward;
+      }
     protected:
       Application::ApplicationMain& _app; //!< アプリケーションの参照
       ObjectId _id{ObjectId::Object}; //!< オブジェクトの識別番号
@@ -141,7 +152,8 @@ namespace Gyro {
       AppFrame::Math::Matrix44 _world;         //!< ワールド座標
       AppFrame::Math::Vector4 _position;       //!< ローカル座標
       AppFrame::Math::Vector4 _rotation;       //!< 回転(Debug:デグリー Release:ラジアン)
-      AppFrame::Math::Vector4 _scale{0, 0, 0}; //!< 拡大率
+      AppFrame::Math::Vector4 _scale{0.0f, 0.0f, 0.0f}; //!< 拡大率
+      AppFrame::Math::Vector4 _forward{0.0f, 0.0f, 0.0f};
       bool _stand{false};   //!< 立ちフラグ(true:床に立っている false:床と接触していない)
       bool _gravity{false}; //!< 重力処理を行うか(true:重力処理を行う false:重力処理を行わない)
       float _mass{0.0f};    //!< 質量
