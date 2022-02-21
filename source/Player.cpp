@@ -187,10 +187,6 @@ namespace Gyro {
       // スカイスフィアの座標
       auto skypos = AppMath::Utility::ToWorldMatrix(_position, AppMath::Vector4(0, 0, 0), AppMath::Vector4(1.0f, 1.0f, 1.0f));
       MV1SetMatrix(_handleSkySphere, UtilityDX::ToMATRIX(skypos));
-      // MV1SetPosition(_handleSkySphere, UtilityDX::ToVECTOR(_position));
-      auto stage = AppMath::Utility::ToWorldMatrix(AppMath::Vector4(0, -1500.0f, 0), AppMath::Vector4(0, 0, 0), AppMath::Vector4(1.0f, 1.0f, 1.0f));
-      // ステージの座標
-      MV1SetMatrix(_handleMap, UtilityDX::ToMATRIX(stage));
       return true;
     }
 
@@ -434,8 +430,8 @@ namespace Gyro {
       // 地形(床)と線分の衝突判定
       auto flag = false;
       for (int i = 0; i < _app.GetStageComponent().GetStageModel().size(); i++) {
-        _handleMap = _app.GetStageComponent().GetStageModel()[i];
-        auto hit = MV1CollCheck_Line(_handleMap, 2, UtilityDX::ToVECTOR(end), UtilityDX::ToVECTOR(start));
+        auto handle = _app.GetStageComponent().GetStageModel()[i];
+        auto hit = MV1CollCheck_Line(handle, 2, UtilityDX::ToVECTOR(end), UtilityDX::ToVECTOR(start));
         // 衝突フラグがない場合
         if (hit.HitFlag == 0) {
           continue;

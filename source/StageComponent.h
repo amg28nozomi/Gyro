@@ -37,19 +37,17 @@ namespace Gyro {
        */
       bool Init() override;
       /**
-       * @brief 
+       * @brief ステージ情報を読み込む
+       * @param key _stageModelMapに登録するキー
+       * @param stageData ステージ情報
        */
       void LoadStage(std::string_view key, StageData& stageData);
       /**
-       * @brief  
-       * @param  key 
-       * @return 
+       * @brief  ステージ情報をもとにオブジェクトをおいていく
+       * @param  key _stageModelMapに登録するキー
+       * @return true
        */
       bool CreateStage(std::string key);
-      /**
-       * @brief 更新
-       */
-      bool Process() override;
       /**
        * @brief 描画
        */
@@ -62,7 +60,10 @@ namespace Gyro {
       std::vector<std::pair<int, StageData>> GetStageModels(std::string key);
 
     private:
-      std::unordered_map<std::string, std::vector<std::pair<int, StageData>>> _stageModelMap; //!< 各ステージ情報の連想配列
+      /**
+       * @brief 文字列をキーとしてステージ情報を管理する連想配列
+       */
+      std::unordered_map<std::string, std::vector<std::pair<int, StageData>>> _stageModelMap;
     };
   } //namespace Stage
 } // namespace Gyro

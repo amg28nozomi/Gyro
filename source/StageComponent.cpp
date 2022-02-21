@@ -18,7 +18,6 @@ namespace Gyro {
 
     StageComponent::StageComponent(Application::ApplicationMain& app) : Object::StageBase(app) {
       _stageModelMap.clear();
-      Init();
     }
 
     bool StageComponent::Init() {
@@ -108,14 +107,15 @@ namespace Gyro {
       return true;
     }
 
-    bool StageComponent::Process() {
-
-        return true;
-    }
-
     bool StageComponent::Draw() const {
       for (auto ite : _model) {
-        MV1DrawModel(ite);
+          if (ite == -1) {
+              int i = 0;
+        }
+        auto f = MV1DrawModel(ite);
+        if (f == -1) {
+            int i = 0;
+        }
       }
 
       return true;

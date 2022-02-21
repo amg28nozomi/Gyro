@@ -15,6 +15,11 @@ namespace Gyro {
   namespace Object {
 
     StageBase::StageBase(Application::ApplicationMain& app) : _app(app) {
+        Init();
+    }
+
+    StageBase::~StageBase() {
+        _model.clear();
     }
 
     bool StageBase::Init() {
@@ -29,15 +34,6 @@ namespace Gyro {
 
     bool StageBase::Draw() const {
       return true;
-    }
-
-    void StageBase::Set(SpawnBase& spawn) {
-      // 各種パラメータの取得
-      auto [position, rotation, scale] = spawn.GetTransform();
-      // 座標・向き・スケールの設定
-      _position = position;
-      _rotation = rotation;
-      _scale = scale;
     }
   }
 }
