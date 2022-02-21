@@ -54,7 +54,7 @@ namespace Gyro {
       _plane.Initialize(35000.0, 150);
       _plane.Load(TEXTURE);
       _plane.Create();
-      _appMain.GetStageComponent().Init();
+      _appMain.GetStageComponent().Init("Stage");
       // 重力加速度をセットする
       AppMath::GravityBase::SetScale(-9.8f);
       return true;

@@ -19,7 +19,7 @@ namespace Gyro {
    * @brief アプリケーションベース
    */
   namespace Application {
-      class ApplicationMain; //!< 前方宣言
+    class ApplicationMain; //!< 前方宣言
   } // namespace Application
   /**
    * @brief ステージ
@@ -42,9 +42,11 @@ namespace Gyro {
        */
       ~StageComponent();
       /**
-       * 初期化
+       * @brief  初期化
+       * @param  key 
+       * @return true
        */
-      bool Init();
+      bool Init(std::string_view key);
       /**
        * @brief ステージ情報を読み込む
        * @param key _stageModelMapに登録するキー

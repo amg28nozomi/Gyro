@@ -28,7 +28,7 @@ namespace Gyro {
       _model.clear();
     }
 
-    bool StageComponent::Init() {
+    bool StageComponent::Init(std::string_view key) {
       // パスの生成
       std::filesystem::path p = "res/Stage";
       const auto jsonPath = (p / "stage.json").generic_string();
@@ -112,10 +112,12 @@ namespace Gyro {
         MV1SetScale(handle, UtilityDX::ToVECTOR(scale));
         _model.emplace_back(handle);
       }
+
       return true;
     }
 
     bool StageComponent::Draw() const {
+      // モデルハンドル格納コンテナを回して描画する
       for (auto ite : _model) {
         MV1DrawModel(ite);
       }
