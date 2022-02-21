@@ -116,14 +116,12 @@ namespace Gyro {
       PlayerState _oldState{ PlayerState::Idle };
       //!< 前方ベクトル
       AppMath::Vector4 _forward{};
-
-      bool _attackFlag{false};   //!< 攻撃フラグ(true:強攻撃 false:弱攻撃)
-
-      std::unique_ptr<AppMath::Plane> _plane; //!< 平面
+      //!< 攻撃フラグ(true:強攻撃 false:弱攻撃)
+      bool _attackFlag{false};
+      //!< 平面
+      std::unique_ptr<AppMath::Plane> _plane;
       int _handleMap;
       int _frameMapCollision;
-      //!< スカイスフィアのハンドル
-      int _handleSkySphere;   //!< スカイスフィアハンドル
       /**
        * @brief 入力処理
        */
@@ -175,26 +173,12 @@ namespace Gyro {
        * @return true:チェンジ false:変更なし
        */
       bool StateChanege(const AppFrame::Application::XBoxState& input);
-      /**
-       * @brief モーション切り替え
-       */
-      void Anime();
-      /**
-       * @brief 指定したアニメーションインデックスの取得
-       * @param key アニメーションに紐づけられた文字列
-       */
-      int AnimaIndex(std::string_view key) const;
-      /**
-       * @brief アニメーションのアタッチ
-       */
-      bool AttachAnima(std::string_view key);
-      /**
-       * @brief 現在の状態に応じたアニメキーを返す
-       */
-      std::string_view GetAnimaKey() const;
 #ifdef _DEBUG
+      /**
+       * @brief  デバッグ専用の描画処理
+       * @return true: false:
+       */
       bool DebugDraw() const override;
-
       /**
        * @brief Debug専用描画
        */

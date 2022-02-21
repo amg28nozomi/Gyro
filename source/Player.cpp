@@ -421,11 +421,14 @@ namespace Gyro {
       newCapsule.SetPosition(newPos);
       // 線分の取得
       auto [start, end] = newCapsule.LineSegment().GetVector();
-      // 地形(床)と線分の衝突判定
+      // 衝突フラグ
       auto flag = false;
+      // 地形(床)と線分の衝突判定
       for (int i = 0; i < _app.GetStageComponent().GetStageModel().size(); i++) {
-        _handleMap = _app.GetStageComponent().GetStageModel()[i];
-        auto hit = MV1CollCheck_Line(_handleMap, 2, UtilityDX::ToVECTOR(end), UtilityDX::ToVECTOR(start));
+        // 衝突情報の取得
+        auto handleMap = _app.GetStageComponent().GetStageModel()[i];
+        // 地形と線分の衝突判定
+        auto hit = MV1CollCheck_Line(handleMap, 2, UtilityDX::ToVECTOR(end), UtilityDX::ToVECTOR(start));
         // 衝突フラグがない場合
         if (hit.HitFlag == 0) {
           continue;
@@ -626,20 +629,27 @@ namespace Gyro {
       auto number = -1;
       // プレイヤーの状態に応じた数値を返す
       switch (_playerState) {
+        // 待機
       case PlayerState::Idle:
         return StateNumberIdle;
+        // 歩き
       case PlayerState::Walk:
         return StateNumberWalk;
+        // 走り
       case PlayerState::Run:
         return StateNumberRun;
+        // ジャンプ
       case PlayerState::Jump:
         return StateNumberJump;
+        // 攻撃1
       case PlayerState::Attack1:
         number = StateNumberLight1;
         break;
+        // 攻撃2
       case PlayerState::Attack2:
         number = StateNumberLight2;
         break;
+        // 攻撃3
       case PlayerState::Attack3:
         number = StateNumberLight3;
         break;
@@ -650,6 +660,7 @@ namespace Gyro {
       auto IsHevyLight = [](bool flag) {
         return (flag == true) ? 1 : 0;
       };
+      // 攻撃番号
       return number + IsHevyLight(_attackFlag);
     }
 
