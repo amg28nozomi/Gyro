@@ -43,7 +43,7 @@ namespace Gyro {
       catch (const std::logic_error& e) {
         OutputDebugString(e.what());
       }
-#endif
+#endif // 
 
       nlohmann::json value;
       // ファイルの中身を取り出す
