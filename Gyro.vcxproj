@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="source\InteriorBase.cpp" />
     <ClCompile Include="source\ModelAnimData.cpp" />
     <ClCompile Include="source\ApplicationMain.cpp" />
     <ClCompile Include="source\AttackComponent.cpp" />
@@ -57,6 +58,7 @@
     <ClCompile Include="source\ScoreBonus.cpp" />
     <ClCompile Include="source\ScoreServer.cpp" />
     <ClCompile Include="source\ScoreSystem.cpp" />
+    <ClCompile Include="source\SkySphere.cpp" />
     <ClCompile Include="source\SpawnBase.cpp" />
     <ClCompile Include="source\SpawnEnemy.cpp" />
     <ClCompile Include="source\SpawnServer.cpp" />
@@ -68,6 +70,7 @@
     <ClCompile Include="source\WirePoint.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="source\InteriorBase.h" />
     <ClInclude Include="source\ModelAnimData.h" />
     <ClInclude Include="source\ApplicationMain.h" />
     <ClInclude Include="source\AttackComponent.h" />
@@ -106,6 +109,7 @@
     <ClInclude Include="source\ScoreBonus.h" />
     <ClInclude Include="source\ScoreServer.h" />
     <ClInclude Include="source\ScoreSystem.h" />
+    <ClInclude Include="source\SkySphere.h" />
     <ClInclude Include="source\SpawnBase.h" />
     <ClInclude Include="source\SpawnEnemy.h" />
     <ClInclude Include="source\SpawnServer.h" />

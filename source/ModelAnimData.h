@@ -79,9 +79,9 @@ namespace Gyro {
     protected:
       std::string _name;   //!< アニメーション名
       std::string _effect; //!< エフェクト名
-      float _blendFrame; //!< ブレンドフレーム
-      float _speed;      //!< 再生速度
-      bool _loop;        //!< ループフラグ(true:ループする false:ループしない)
+      float _blendFrame;   //!< ブレンドフレーム
+      float _speed;        //!< 再生速度
+      bool _loop;          //!< ループフラグ(true:ループする false:ループしない)
     };
   } // namespace ModelAnim
 } // namespace Gyro

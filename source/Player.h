@@ -36,8 +36,11 @@ namespace Gyro {
    * @brief プレイヤーベース
    */
   namespace Player {
+    /**
+     * @brief 名前空間の省略
+     */
     namespace AppMath = AppFrame::Math;
-    class JumpComponent; //!< 
+    class JumpComponent; //!< ジャンプコンポーネント
     /**
      * @class Player
      * @brief オブジェクトベースのサブクラス
@@ -101,8 +104,6 @@ namespace Gyro {
         return _modelKey;
       }
     private:
-      // AppFrame::Math::Vector4 _move{}; //!< 移動量
-
       int _model;       //!< モデルハンドル
       int _animaIndex;  //!< アタッチされているアニメ番号
       float _totalTime; //!< アニメーションの総再生時間
