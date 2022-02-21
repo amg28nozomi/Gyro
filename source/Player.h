@@ -84,8 +84,10 @@ namespace Gyro {
        * @param  spawn スポーン情報
        */
       void Set(Object::SpawnBase& spawn) override;
-
-      // 仮
+      /**
+       * @brief  ステージハンドルの取得
+       * @return ステージハンドル
+       */
       int StageHandle() const {
         return _handleMap;
       }
@@ -105,9 +107,6 @@ namespace Gyro {
       }
     private:
       int _model;       //!< モデルハンドル
-      int _animaIndex;  //!< アタッチされているアニメ番号
-      float _totalTime; //!< アニメーションの総再生時間
-      float _animaTime; //!< アニメーションの再生時間
       ModelAnim::ModelAnimComponent _modelAnim; //!< AnimComponentの実態
       Gauge::GaugeHP _gaugeHp;       //!< HPゲージの実態
       Gauge::GaugeTrick _gaugeTrick; //!< トリックゲージの実態
@@ -121,6 +120,7 @@ namespace Gyro {
       std::unique_ptr<AppMath::Plane> _plane; //!< 平面
       int _handleMap;
       int _frameMapCollision;
+      //!< スカイスフィアのハンドル
       int _handleSkySphere;   //!< スカイスフィアハンドル
       /**
        * @brief 入力処理

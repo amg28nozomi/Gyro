@@ -33,9 +33,10 @@ namespace Gyro {
        * @brief オブジェクト識別番号の列挙型クラス
        */
       enum class ObjectId {
-        Object, //!< オブジェクト
-        Player, //!< プレイヤー
-        Enemy   //!< 敵
+        Object,   //!< オブジェクト
+        Player,   //!< プレイヤー
+        Enemy,    //!< 敵
+        SkySphere //!< スカイスフィア
       };
       /**
        * @brief オブジェクトの状態を表す列挙型クラス

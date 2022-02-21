@@ -25,10 +25,42 @@ namespace Gyro {
        * @brief コンストラクタ
        */
       SkySphere(Application::ApplicationMain& app, ObjectBase& owner);
-
-
+      /**
+       * @brief 初期化処理
+       */
+      bool Init() override;
+      /**
+       * @brief  オブジェクトの設定
+       * @param  spawn 生成情報
+       */
+      void Set(Object::SpawnBase& spawn) override;
+      /**
+       * @brief  更新処理
+       * @return true
+       */
+      bool Process() override;
+      /**
+       * @brief  描画処理
+       */
+      bool Draw() const override;
+      /**
+       * @brief  モデルハンドルの設定
+       * @param  key モデルハンドルに紐づけられた文字列
+       * @return true:設定成功 false:設定失敗
+       */
+      bool SetKey(std::string_view key);
+      /**
+       * @brief  ハンドルの取得
+       * @return モデルハンドル
+       */
+      int GetHandle() const {
+        return _handle;
+      }
     protected:
-      ObjectBase& _owner; //!< 所有者
+      //!< 所有者の参照
+      Object::ObjectBase& _owner;
+      //!< モデルハンドル
+      int _handle;
     };
-  } // namespace Object
+  } // namespace Interior
 } // namespace Gyro

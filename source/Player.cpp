@@ -141,15 +141,15 @@ namespace Gyro {
     }
 
     bool Player::Process() {
-      // 更新処理呼び出し
+      // 基底クラスの更新処理呼び出し
       ObjectBase::Process();
       // 名前空間の省略
       namespace App = AppFrame::Application;
       // 入力状態の取得
       auto input = _app.GetOperation().GetXBoxState();
-      auto [lX, lY] = input.GetStick(false); // 左スティック
-      auto [rX, rY] = input.GetStick(true);  // 右スティック
-      auto [leftTrigger, rightTrigger] = input.GetTrigger(); // トリガーボタン
+      // アナログスティックの入力状態を取得
+      auto [leftX, leftY] = input.GetStick(false);
+      auto [rightX, rightY] = input.GetStick(true);
       // 前フレーム座標の保持
       _move->OldPosition();
       //!< 移動量
@@ -159,7 +159,7 @@ namespace Gyro {
         // 状態の切り替え処理
         auto f = StateChanege(input);
         // 移動量の取得
-        move = Move(lX, lY);
+        move = Move(leftX, leftY);
         // 
         if (!f) {
           SetRotation(move);
@@ -181,7 +181,7 @@ namespace Gyro {
       _capsule->Process(move); // カプセルの更新
       Hit(); //衝突判定
       // カメラの更新
-      _app.GetCamera().Process(AppMath::Vector4(rX, rY), _position, move);
+      _app.GetCamera().Process(AppMath::Vector4(rightX, rightY), _position, move);
       // ワールド座標の設定
       MV1SetMatrix(_model, UtilityDX::ToMATRIX(_world));
       // スカイスフィアの座標
@@ -334,9 +334,6 @@ namespace Gyro {
       _move = std::make_unique<Object::MoveComponent>(*this);
       // 座標・向きの設定
       // アニメーションの初期化
-      _animaIndex = NoAnimation;
-      _animaTime = 0.0f;
-      _totalTime = 0.0f;
       // 地形の衝突判定を設定
       using Vector = AppFrame::Math::Vector4;
       // 平面の設定
