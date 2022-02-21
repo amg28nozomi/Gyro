@@ -109,13 +109,7 @@ namespace Gyro {
 
     bool StageComponent::Draw() const {
       for (auto ite : _model) {
-          if (ite == -1) {
-              int i = 0;
-        }
-        auto f = MV1DrawModel(ite);
-        if (f == -1) {
-            int i = 0;
-        }
+        MV1DrawModel(ite);
       }
 
       return true;
