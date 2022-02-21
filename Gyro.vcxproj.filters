@@ -105,6 +105,12 @@
     <Filter Include="ソース ファイル\System">
       <UniqueIdentifier>{c5cd4ae7-9e13-4642-b3f1-94dffe8bc18d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Object\Interior">
+      <UniqueIdentifier>{8e2b3081-9231-404f-9e01-6be0e76cc4f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Object\Interior">
+      <UniqueIdentifier>{a253feb1-b2f6-46c6-b5fa-bc70919366a9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\ApplicationMain.cpp">
@@ -252,7 +258,7 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="source\InteriorBase.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\Object\Interior</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -404,7 +410,7 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="source\InteriorBase.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\Object\Interior</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -15,6 +15,12 @@
  */
 namespace Gyro {
   /**
+   * @brief オブジェクトベース
+   */
+  namespace Object {
+    class SpawnBase;
+  } // namespace Object
+  /**
    * @brief インテリアベース
    */
   namespace Interior {
@@ -36,6 +42,30 @@ namespace Gyro {
        * @param  app アプリケーションの参照
        */
       InteriorBase(Application::ApplicationMain& app);
+      /**
+       * @brief  デストラクタ
+       */
+      ~InteriorBase() = default;
+      /**
+       * @brief  初期化処理
+       * @return true
+       */
+      virtual bool Init() override;
+      /**
+       * @brief  更新処理
+       * @return true
+       */
+      virtual bool Process() override;
+      /**
+       * @brief  描画処理
+       * @return true
+       */
+      virtual bool Draw() const override;
+      /**
+       * @brief  設定処理
+       * @param  spawn スポーン情報
+       */
+      virtual void Set(Object::SpawnBase& spawn) override;
       /**
        * @brief  インテリアタイプの取得
        * @return インテリアタイプ
