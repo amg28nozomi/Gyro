@@ -15,6 +15,7 @@ namespace Gyro {
 
     SkySphere::SkySphere(Application::ApplicationMain& app, ObjectBase& owner) : ObjectBase(app), _owner(owner) {
       _id = ObjectId::SkySphere;
+      _gravity = false;
       Init();
     }
 
@@ -31,12 +32,18 @@ namespace Gyro {
     }
 
     bool SkySphere::Process() {
-      // 自機の中心座標を追従する
-      _position = _owner.GetPosition();
+      // ワールド座標行列
+      _world= AppMath::Utility::ToWorldMatrix(_owner.GetPosition(), _rotation, _scale);
+      // _world = AppMath::Matrix44::Identity();
+      //_world.Translate(_position);
+      //_world = _world * w;
+
+      // _position = _owner.GetPosition();
+      // MV1SetPosition(_handle, UtilityDX::ToVECTOR(_position));
       // ワールド座標の更新
-      WorldMatrix();
+      // WorldMatrix();
       // 座標の設定
-      MV1SetMatrix(_handle ,UtilityDX::ToMATRIX(_world));
+      auto num = MV1SetMatrix(_handle ,UtilityDX::ToMATRIX(_world));
       return true;
     }
 

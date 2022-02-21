@@ -184,10 +184,6 @@ namespace Gyro {
       _app.GetCamera().Process(AppMath::Vector4(rightX, rightY), _position, move);
       // ワールド座標の設定
       MV1SetMatrix(_model, UtilityDX::ToMATRIX(_world));
-      // スカイスフィアの座標
-      auto skypos = AppMath::Utility::ToWorldMatrix(_position, AppMath::Vector4(0, 0, 0), AppMath::Vector4(1.0f, 1.0f, 1.0f));
-      MV1SetMatrix(_handleSkySphere, UtilityDX::ToMATRIX(skypos));
-      // MV1SetPosition(_handleSkySphere, UtilityDX::ToVECTOR(_position));
       auto stage = AppMath::Utility::ToWorldMatrix(AppMath::Vector4(0, -1500.0f, 0), AppMath::Vector4(0, 0, 0), AppMath::Vector4(1.0f, 1.0f, 1.0f));
       // ステージの座標
       MV1SetMatrix(_handleMap, UtilityDX::ToMATRIX(stage));
@@ -198,7 +194,6 @@ namespace Gyro {
       // プレイヤーの描画
       MV1DrawModel(_model);
       // スカイスフィアの描画
-      MV1DrawModel(_handleSkySphere);
       MV1DrawModel(_handleMap);
       _gaugeHp.Draw();
       _gaugeTrick.Draw();
@@ -315,8 +310,6 @@ namespace Gyro {
       // 各種リソースの読み取り処理
       auto [model, key1] = _app.GetModelServer().GetModel(_modelKey, 0);
       _model = model;     // モデルハンドルを登録
-      auto [handle, key2] = _app.GetModelServer().GetModel("sky", 0);
-      _handleSkySphere = handle; // スカイスフィア
       auto [stage , key3] = _app.GetModelServer().GetModel("stage", 0);
       _handleMap = stage; // ステージハンドル
     }
