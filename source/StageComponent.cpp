@@ -16,8 +16,16 @@
 namespace Gyro {
   namespace Stage {
 
-    StageComponent::StageComponent(Application::ApplicationMain& app) : Object::StageBase(app) {
+    StageComponent::StageComponent(Application::ApplicationMain& app) {
+      // リソースの解放
       _stageModelMap.clear();
+      _model.clear();
+    }
+
+    StageComponent::~StageComponent() {
+      // リソースの解放
+      _stageModelMap.clear();
+      _model.clear();
     }
 
     bool StageComponent::Init() {

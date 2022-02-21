@@ -60,7 +60,6 @@
     <ClCompile Include="source\SpawnBase.cpp" />
     <ClCompile Include="source\SpawnEnemy.cpp" />
     <ClCompile Include="source\SpawnServer.cpp" />
-    <ClCompile Include="source\StageBase.cpp" />
     <ClCompile Include="source\StageComponent.cpp" />
     <ClCompile Include="source\StateComponent.cpp" />
     <ClCompile Include="source\UtilityDX.cpp" />
@@ -109,7 +108,6 @@
     <ClInclude Include="source\SpawnBase.h" />
     <ClInclude Include="source\SpawnEnemy.h" />
     <ClInclude Include="source\SpawnServer.h" />
-    <ClInclude Include="source\StageBase.h" />
     <ClInclude Include="source\StageComponent.h" />
     <ClInclude Include="source\StageData.h" />
     <ClInclude Include="source\StateComponent.h" />

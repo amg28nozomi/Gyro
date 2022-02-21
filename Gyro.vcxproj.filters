@@ -221,9 +221,6 @@
     <ClCompile Include="source\StageComponent.cpp">
       <Filter>ソース ファイル\Stage</Filter>
     </ClCompile>
-    <ClCompile Include="source\StageBase.cpp">
-      <Filter>ソース ファイル\Stage</Filter>
-    </ClCompile>
     <ClCompile Include="source\GaugeEnemy.cpp">
       <Filter>ソース ファイル\Gauge</Filter>
     </ClCompile>
@@ -357,9 +354,6 @@
     </ClInclude>
     <ClInclude Include="source\WirePoint.h">
       <Filter>ソース ファイル\Object\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="source\StageBase.h">
-      <Filter>ヘッダー ファイル\Stage</Filter>
     </ClInclude>
     <ClInclude Include="source\StageComponent.h">
       <Filter>ヘッダー ファイル\Stage</Filter>

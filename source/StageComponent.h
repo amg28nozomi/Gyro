@@ -7,7 +7,6 @@
  *********************************************************************/
 #pragma once
 #include "StageData.h"
-#include "StageBase.h"
 #include "appframe.h"
 #include <string>
 #include <unordered_map>
@@ -17,6 +16,12 @@
  */
 namespace Gyro {
   /**
+   * @brief アプリケーションベース
+   */
+  namespace Application {
+      class ApplicationMain; //!< 前方宣言
+  } // namespace Application
+  /**
    * @brief ステージ
    */
   namespace Stage {
@@ -25,7 +30,7 @@ namespace Gyro {
      * @class StageComponent
      * @brief ステージコンポーネントクラス
      */
-    class StageComponent : public Object::StageBase {
+    class StageComponent{
     public:
       /**
        * @brief コンストラクタ
@@ -33,9 +38,13 @@ namespace Gyro {
        */
       StageComponent(Application::ApplicationMain& app);
       /**
+       * @brief デストラクタ
+       */
+      ~StageComponent();
+      /**
        * 初期化
        */
-      bool Init() override;
+      bool Init();
       /**
        * @brief ステージ情報を読み込む
        * @param key _stageModelMapに登録するキー
@@ -51,19 +60,26 @@ namespace Gyro {
       /**
        * @brief 描画
        */
-      bool Draw() const override;
+      bool Draw() const;
       /**
        * @brief  ステージ情報の取得
        * @param  key 各ステージに関連づけた任意の文字列
        * @return ハンドルとステージ情報
        */
       std::vector<std::pair<int, StageData>> GetStageModels(std::string key);
-
+      /**
+       * @brief  モデルハンドル格納コンテナの取得
+       * @return モデルハンドル格納コンテナ
+       */
+      std::vector<int> GetStageModel() const {
+          return _model;
+      }
     private:
       /**
        * @brief 文字列をキーとしてステージ情報を管理する連想配列
        */
       std::unordered_map<std::string, std::vector<std::pair<int, StageData>>> _stageModelMap;
+      std::vector<int> _model{ -1 }; //!< モデルハンドル格納用コンテナ
     };
   } //namespace Stage
 } // namespace Gyro
