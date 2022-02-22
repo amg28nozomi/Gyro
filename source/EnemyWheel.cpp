@@ -40,6 +40,8 @@ namespace Gyro {
       SetParameter();
       // アニメーションアタッチ
       _modelAnim.SetMainAttach(_mHandle, IdleKey, 1.0f, true);
+      _radius = 100.0f;
+
       return true;
     }
 
@@ -65,6 +67,7 @@ namespace Gyro {
           break;
         default:
           _enemyState = EnemyState::Idle;
+          Sercth(_radius);
           break;
       }
       // 衝突判定
@@ -89,6 +92,7 @@ namespace Gyro {
       _gaugeHp.Process();
       // モデルアニメの更新
       _modelAnim.Process();
+
       return true;
     }
 

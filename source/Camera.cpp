@@ -2,7 +2,7 @@
  * @file   Camera.cpp
  * @brief  カメラクラスの処理
  *
- * @author amg
+ * @author 土橋 峡介
  * @date   January 2022
  *********************************************************************/
 #include "Camera.h"
@@ -28,15 +28,16 @@ namespace Gyro {
 
     bool Camera::Init() {
       SetState(); // 初期設定
+
       return true;
     }
 
     bool Camera::Process(const AppFrame::Math::Vector4 stick, const AppFrame::Math::Vector4 target, const AppFrame::Math::Vector4 move) {
       // 状態を見て処理変更
-      if (_cameraState == CameraState::Normal) {
+      switch (_cameraState) {
+      case CameraState::Normal:
         Normal(stick, target, move);
-      }
-      else {
+      case CameraState::SpecialMove:
         Special(target, move);
       }
       
@@ -56,6 +57,7 @@ namespace Gyro {
       float length = sqrt(sz * sz + sx * sx);
       float degree = AppFrame::Math::Utility::RadianToDegree(radian);
       DrawFormatString(x, y, GetColor(255, 0, 0), " length = %5.2f, radian = %5.2f, degree = %5.2f", length, radian, degree); y += size;
+
       return true;
     }
 #endif // _DEBUG

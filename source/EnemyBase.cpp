@@ -35,6 +35,7 @@ namespace Gyro {
       _invincible = std::make_unique<Object::InvincibleComponent>(_app);
       // 無敵時間の設定
       _invincible->Set(InvincibleTime);
+
       return true;
     }
 
@@ -46,6 +47,11 @@ namespace Gyro {
         // 無敵時間の経過処理を呼び出し
         _invincible->Process();
       }
+      // カウントが1以上あるか？
+      if (_cnt > 0) {
+          _cnt--;
+      }
+
       return true;
     }
 
@@ -90,6 +96,15 @@ namespace Gyro {
 
     void EnemyBase::Attack() {
 
+    }
+
+    void EnemyBase::Sercth(const float radius) {
+      auto objects = _app.GetObjectServer().GetObjects(); // オブジェクトのコピー
+      for (auto obj : objects) {
+          if (obj->GetId() != ObjectId::Player) continue;
+          
+          
+      }
     }
 
     void EnemyBase::Hit() {
