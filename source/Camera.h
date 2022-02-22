@@ -15,75 +15,111 @@ namespace AppFrame::Math {}
  * @brief ゲームベース
  */
 namespace Gyro {
+  /**
+   * @brief カメラ
+   */
+  namespace Camera {
     /**
-     * @brief カメラ
+     * @class Camera
+     * @brief カメラクラス
      */
-    namespace Camera {
-        /**
-         * @class Camera
-         * @brief カメラクラス
-         */
-        class Camera {
-        public:
-            /**
-             * @brief カメラの状態を表す列挙型クラス
-             */
-            enum class CameraState {
-                Normal,         //!< 通常
-                SpecialMove,    //!< 必殺技
-            };
-            /**
-             * @brief コンストラクタ
-             */
-            Camera();
-            /**
-             * @brief デストラクタ
-             */
-             //~Camera();
-             /**
-              * @brief 初期化
-              */
-            bool Init();
-            /**
-             * @brief 更新
-             * @param stick     右スティックの大きさ
-             * @param target    プレイヤーの位置
-             * @param move      プレイヤーの移動量
-             */
-            bool Process(const AppFrame::Math::Vector4 stick, const AppFrame::Math::Vector4 target, const AppFrame::Math::Vector4 move);
+    class Camera {
+    public:
+      /**
+       * @brief カメラの状態を表す列挙型クラス
+       */
+      enum class CameraState {
+        Normal,         //!< 通常
+        SpecialMove,    //!< 必殺技
+      };
+      /**
+       * @brief コンストラクタ
+       */
+      Camera();
+      /**
+       * @brief デストラクタ
+       */
+      ~Camera();
+      /**
+       * @brief 初期化
+       */
+      bool Init();
+      /**
+       * @brief  更新
+       * @param  stick     右スティックの大きさ
+       * @param  target    プレイヤーの位置
+       * @param  move      プレイヤーの移動量
+       * @return true
+       */
+      bool Process(const AppFrame::Math::Vector4 stick, const AppFrame::Math::Vector4 target, const AppFrame::Math::Vector4 move);
 #ifdef _DEBUG
-            /**
-             * @brief 描画
-             * @param position  プレイヤーの位置
-             * @param move      プレイヤーの移動量
-             */
-            bool Draw(const AppFrame::Math::Vector4 positoin, const AppFrame::Math::Vector4 move) const;
-#endif // DEBUG
-            float CamPosGetX() {
-                return _position.GetX();
-            }
-            float CamPosGetZ() {
-                return _position.GetZ();
-            }
-            float CamTarGetX() {
-                return _target.GetX();
-            }
-            float CamTarGetZ() {
-                return _target.GetZ();
-            }
-            float CamAddPos(const AppFrame::Math::Vector4 vector) {
-                _position.Add(vector);
-                return 0.0f;
-            }
-        private:
-            AppFrame::Math::Vector4 _position{};    //!< カメラの座標
-            AppFrame::Math::Vector4 _target{};  //!< カメラの注視点(見ている座標)
-            CameraState _cameraState{ CameraState::Normal }; //!< カメラ状態
+      /**
+       * @brief  描画
+       * @param  position  プレイヤーの位置
+       * @param  move      プレイヤーの移動量
+       * @return true
+       */
+      bool Draw(const AppFrame::Math::Vector4 positoin, const AppFrame::Math::Vector4 move) const;
+#endif
+      /**
+       * @brief  カメラのXを取得
+       * @return カメラのX座標
+       */
+      float CamPosGetX() {
+          return _position.GetX();
+      }
+      /**
+       * @brief  カメラのZ座標を取得
+       * @return カメラのZ座標
+       */
+      float CamPosGetZ() {
+          return _position.GetZ();
+      }
+      /**
+       * @brief  注視点のX座標を取得
+       * @return 注視点のX座標
+       */
+      float CamTarGetX() {
+          return _target.GetX();
+      }
+      /**
+       * @brief  注視点のZ座標を取得
+       * @return 注視点のZ座標
+       */
+      float CamTarGetZ() {
+          return _target.GetZ();
+      }
+      /**
+       * @brief  カメラの座標に足す
+       * @param  vector
+       * @return 0.0f
+       */
+      float CamAddPos(const AppFrame::Math::Vector4 vector) {
+          _position.Add(vector);
+          return 0.0f;
+      }
+    private:
+      AppFrame::Math::Vector4 _position{};    //!< カメラの座標
+      AppFrame::Math::Vector4 _target{};  //!< カメラの注視点(見ている座標)
+      CameraState _cameraState{ CameraState::Normal }; //!< カメラ状態
 
-            /**
-             * @brief 状態の設定
-             */
-            void SetState();
-        };
-    }// namespace Camera
+      /**
+       * @brief  Normal状態の処理
+       * @param  stick     右スティックの大きさ
+       * @param  target    プレイヤーの位置
+       * @param  move      プレイヤーの移動量
+       */
+      void Normal(const AppFrame::Math::Vector4 stick, const AppFrame::Math::Vector4 target, const AppFrame::Math::Vector4 move);
+      /**
+       * @brief  Special状態の処理
+       * @param  target    プレイヤーの位置
+       * @param  move      プレイヤーの移動量
+       */
+      void Special(const AppFrame::Math::Vector4 target, const AppFrame::Math::Vector4 move);
+      /**
+       * @brief 状態の設定
+       */
+      void SetState();
+    };
+  }// namespace Camera
 }// namespace Gyro
