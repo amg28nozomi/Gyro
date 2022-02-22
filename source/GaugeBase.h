@@ -22,35 +22,9 @@ namespace Gyro {
     class GaugeBase {
     public:
       /**
-       * @brief ゲージ識別番号の列挙型クラス
-       */
-      enum class GaugeId {
-        Gauge,  //!< ゲージ
-        Player, //!< プレイヤー
-        Enemy   //!< エネミー
-      };
-      /**
-       * @brief ゲージの状態を表す列挙型クラス
-       */
-      enum class GaugeState {
-        Active, //!< 活動状態
-        Paused, //!< 停止状態
-        Dead    //!< 死亡状態
-      };
-      /**
        * @brief コンストラクタ
        */
       GaugeBase(Application::ApplicationMain& app);
-      /**
-       * @brief コンストラクタ
-       * @param gauge ゲージポイント
-       */
-      GaugeBase(int gauge);
-      /**
-       * @brief コンストラクタ
-       * @param gauge ゲージポイント
-       */
-      GaugeBase(float gauge);
       /**
        * @brief デストラクタ
        */
@@ -70,27 +44,6 @@ namespace Gyro {
        * @return true
        */
       virtual bool Draw() const;
-      /**
-       * @brief  識別番号の取得
-       * @return 識別番号
-       */
-      GaugeId GetId() const {
-          return _id;
-      }
-      /**
-       * @brief  状態の取得
-       * @return 状態
-       */
-      GaugeState GetState() const {
-          return _state;
-      }
-      /**
-       * @brief  死亡状態かの判定
-       * @return true:死亡状態 false:死んでいない
-       */
-      virtual bool IsDead() const {
-          return _state == GaugeState::Dead;
-      }
       /**
        * @brief ゲージの増加
        * @param value 値
@@ -125,8 +78,6 @@ namespace Gyro {
       float _maxW{ 0 };        //!< ゲージの横幅(描画する際の横幅)
       float _maxGauge{ 0 };    //!< ゲージの横幅(変動)
       float _value{ 0 };       //!< 値
-      GaugeId _id{ GaugeId::Gauge }; //!< ゲージの識別番号
-      GaugeState _state{ GaugeState::Active }; //!< 状態
     };
   }// namespace Gauge
 }// namespace Gyro
