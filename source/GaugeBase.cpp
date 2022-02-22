@@ -8,34 +8,27 @@
 #include "GaugeBase.h"
 
 namespace Gyro {
-    namespace Gauge {
+  namespace Gauge {
 
-        GaugeBase::GaugeBase(Application::ApplicationMain& app) : _app(app) {
-        }
+    GaugeBase::GaugeBase(Application::ApplicationMain& app) : _app(app) {
+    }
 
-        /*GaugeBase::GaugeBase(int gauge) {
-            _point = static_cast<float>(gauge);
-        }
+    bool GaugeBase::Init() {
+      return true;
+    }
 
-        GaugeBase::GaugeBase(float gauge) : _point(gauge) {
-        }*/
+    bool GaugeBase::Process() {
+      _point = (_maxW - 5) - ((_maxW - 5) / _maxGauge) * _value;
 
-        bool GaugeBase::Init() {
-            return true;
-        }
+      return true;
+    }
 
-        bool GaugeBase::Process() {
-            _point = (_maxW - 5) - ((_maxW - 5) / _maxGauge) * _value;
+    bool GaugeBase::Draw() const {
+      return true;
+    }
 
-            return true;
-        }
-
-        bool GaugeBase::Draw() const {
-            return true;
-        }
-
-        void GaugeBase::Add(float value) {
-            _value += value;
-        }
-    } // namespace Gauge
+    void GaugeBase::Add(float value) {
+      _value += value;
+    }
+  } // namespace Gauge
 } // namespace Gyro

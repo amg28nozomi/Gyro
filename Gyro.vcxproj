@@ -36,7 +36,6 @@
     <ClCompile Include="source\GaugeBase.cpp" />
     <ClCompile Include="source\GaugeEnemy.cpp" />
     <ClCompile Include="source\GaugeHP.cpp" />
-    <ClCompile Include="source\GaugeServer.cpp" />
     <ClCompile Include="source\GaugeTrick.cpp" />
     <ClCompile Include="source\InvincibleComponent.cpp" />
     <ClCompile Include="source\JumpComponent.cpp" />
@@ -84,7 +83,6 @@
     <ClInclude Include="source\GaugeBase.h" />
     <ClInclude Include="source\GaugeEnemy.h" />
     <ClInclude Include="source\GaugeHP.h" />
-    <ClInclude Include="source\GaugeServer.h" />
     <ClInclude Include="source\GaugeTrick.h" />
     <ClInclude Include="source\InvincibleComponent.h" />
     <ClInclude Include="source\JumpComponent.h" />

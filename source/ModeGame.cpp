@@ -16,7 +16,7 @@
 #include "StageComponent.h"
 
 namespace {
-    constexpr auto TEXTURE = _T("res/water.png");
+    constexpr auto TEXTURE = _T("res/Stage/water.png");
 }
 
 namespace Gyro {

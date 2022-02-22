@@ -195,7 +195,7 @@ namespace Gyro {
       MV1DrawModel(_model);
       // スカイスフィアの描画
       MV1DrawModel(_handleSkySphere);
-      MV1DrawModel(_handleMap);
+      //MV1DrawModel(_handleMap);
       _gaugeHp.Draw();
       _gaugeTrick.Draw();
 #ifdef _DEBUG

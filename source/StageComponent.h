@@ -43,10 +43,10 @@ namespace Gyro {
       ~StageComponent();
       /**
        * @brief  初期化
-       * @param  key 
+       * @param  jsonName jsonのファイル名
        * @return true
        */
-      bool Init(std::string_view key);
+      bool Init(std::filesystem::path jsonName);
       /**
        * @brief ステージ情報を読み込む
        * @param key _stageModelMapに登録するキー
