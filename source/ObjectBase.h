@@ -120,6 +120,20 @@ namespace Gyro {
         return _scale;
       }
       /**
+       * @brief  向きベクトルの取得
+       * @return 向きベクトル
+       */
+      AppMath::Vector4 GetForward() const {
+        return _forward;
+      }
+      /**
+       * @brief  アプリケーションの取得
+       * @return アプリケーションの参照
+       */
+      Application::ApplicationMain& GetApplicaton() const {
+        return _app;
+      }
+      /**
        * @brief  モデルに紐づけられた文字列の取得
        * @return 文字列
        */
@@ -134,13 +148,22 @@ namespace Gyro {
         _rotation = rotation;
       }
     protected:
-      Application::ApplicationMain& _app; //!< アプリケーションの参照
-      ObjectId _id{ObjectId::Object}; //!< オブジェクトの識別番号
-      ObjectState _state{ObjectState::Active}; //!< 状態
-      AppFrame::Math::Matrix44 _world;         //!< ワールド座標
-      AppFrame::Math::Vector4 _position;       //!< ローカル座標
-      AppFrame::Math::Vector4 _rotation;       //!< 回転(Debug:デグリー Release:ラジアン)
-      AppFrame::Math::Vector4 _scale{0, 0, 0}; //!< 拡大率
+      //!< アプリケーションの参照
+      Application::ApplicationMain& _app;
+      //!< オブジェクトの識別番号
+      ObjectId _id{ObjectId::Object};
+      //!< 状態
+      ObjectState _state{ObjectState::Active};
+      //!< ワールド座標
+      AppMath::Matrix44 _world;
+      //!< ローカル座標
+      AppMath::Vector4 _position;
+      //!< 回転(Debug:デグリー Release:ラジアン)
+      AppMath::Vector4 _rotation;
+      //!< 拡大率
+      AppMath::Vector4 _scale{0, 0, 0};
+      //!< 向きベクトル
+      AppMath::Vector4 _forward{0, 0, 0};
       bool _stand{false};   //!< 立ちフラグ(true:床に立っている false:床と接触していない)
       bool _gravity{false}; //!< 重力処理を行うか(true:重力処理を行う false:重力処理を行わない)
       float _mass{0.0f};    //!< 質量

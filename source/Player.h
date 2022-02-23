@@ -81,8 +81,10 @@ namespace Gyro {
        * @param  spawn スポーン情報
        */
       void Set(Object::SpawnBase& spawn) override;
-
-      // 仮
+      /**
+       * @brief  ステージハンドルの取得
+       * @return ステージハンドル
+       */
       int StageHandle() const {
         return _handleMap;
       }
@@ -172,23 +174,6 @@ namespace Gyro {
        * @return true:チェンジ false:変更なし
        */
       bool StateChanege(const AppFrame::Application::XBoxState& input);
-      /**
-       * @brief モーション切り替え
-       */
-      void Anime();
-      /**
-       * @brief 指定したアニメーションインデックスの取得
-       * @param key アニメーションに紐づけられた文字列
-       */
-      int AnimaIndex(std::string_view key) const;
-      /**
-       * @brief アニメーションのアタッチ
-       */
-      bool AttachAnima(std::string_view key);
-      /**
-       * @brief 現在の状態に応じたアニメキーを返す
-       */
-      std::string_view GetAnimaKey() const;
 #ifdef _DEBUG
       bool DebugDraw() const override;
 

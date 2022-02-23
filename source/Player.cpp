@@ -307,6 +307,7 @@ namespace Gyro {
         // デグリー値をセットする(デバッグ用)
         _rotation.SetY(AppMath::Utility::RadianToDegree(radian));
 #endif
+        _forward = AppMath::Vector4::Normalize(_position + move);
       }
       return move; // 移動量を返す
     }
