@@ -16,7 +16,7 @@ namespace Gyro {
 
     MoveComponent::MoveComponent(ObjectBase& owner) : _owner(owner) {
       _move = AppMath::Vector4();
-      _speed = 5.0f;
+      _speed = 10.0f;
     }
 
     void MoveComponent::OldPosition() {
@@ -37,21 +37,25 @@ namespace Gyro {
       const auto cameraTarget = camera.GetTarget();
       // 別名定義
       using Vector4 = AppMath::Vector4;
-
-      auto cameraZ = Vector4::Normalize(cameraTarget - cameraPos);
-      auto cameraX = Vector4::Cross(cameraZ.Up(), cameraZ);
-      cameraX = Vector4::Normalize(cameraX);
-      // カメラ向きを基に移動量を算出する
-      auto length = _owner.GetPosition().Direction(cameraPos);
-      // 正規化
-      length.Normalize();
-
-      // 所有者の向きベクトルを取得
-      const auto [forwardX, forwardY, forwardZ] = _owner.GetForward().GetVector3();
+      // カメラ向きの取得
+      // auto cameraForward = Vector4::Normalize(cameraPos.Direction(cameraTarget));
+      auto cameraForward = cameraPos.Direction(_owner.GetPosition());
+      cameraForward = Vector4::Normalize(Vector4::Scale(cameraForward, Vector4(1.0f, 0.0f, 1.0f)));
+      // デッドゾーンの取得
+      const auto xState= _owner.GetApplicaton().GetOperation().GetXBoxState();
+      auto deadZone = xState.GetDeadZone();
+      // 移動方向
+      auto inputX = (x / static_cast<float>(deadZone.first));
+      auto inputZ = (z / static_cast<float>(deadZone.second));
+      // auto moveForward = Vector4::Normalize(Vector4::Scale(cameraForward ,Vector4(x / 30000.0f, 0.0f, z / 30000.0f)));
+      auto moveForward = Vector4::Normalize(Vector4::Scale(cameraForward, Vector4(inputX , 0.0f, inputZ)));
       // 移動量の算出
-      auto speedX = (x / 30000.0f) * _speed;
-      auto speedZ = ((z / 30000.0f) * _speed * length.GetZ()) * -1.0f;
-      _move = Vector4(speedX, 0.0f, speedZ);
+      //auto speedX = (x / 30000.0f) * _speed;
+      //auto speedZ = (z / 30000.0f) * _speed; // * /* length.GetZ()) * */ -1.0f
+      _move = moveForward * _speed;
+      // _move = Vector4::Scale(move, moveForward);
+      // Y座標の情報は無視する
+      _move.SetY(0.0f);
       return true;   // 移動有り
     }
 

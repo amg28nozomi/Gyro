@@ -2,7 +2,7 @@
  * @file   Player.cpp
  * @brief  オブジェクトベースのサブクラスの定義
  *
- * @author 土橋峡介
+ * @author 鈴木希海
  * @date   January 2022
  *********************************************************************/
 #include "Player.h"
@@ -152,7 +152,7 @@ namespace Gyro {
       auto [rightX, rightY] = input.GetStick(true);
       // 前フレーム座標の保持
       _move->OldPosition();
-      //!< 移動量
+      // 移動量
       AppMath::Vector4 move;
       // ワイヤーフラグが立っていない場合のみ更新を行う
       if (!_wire->IsAction()) {
@@ -160,7 +160,7 @@ namespace Gyro {
         auto f = StateChanege(input);
         // 移動量の取得
         move = Move(leftX, leftY);
-        // 
+        // 状態の変化がない場合
         if (!f) {
           SetRotation(move);
         }
@@ -292,9 +292,9 @@ namespace Gyro {
       auto move = AppMath::Vector4();
       // 移動量の生成
       if (_move->Move(leftX, leftY)) {
+        // 移動量の取得
         move = _move->MoveVector();
-
-        // ラジアンを生成(y軸は反転させる)
+        // ラジアンを生成(z軸は反転させる)
         auto radian = std::atan2(move.GetX(), -move.GetZ());
 #ifndef _DEBUG
         _rotation.SetY(radian); // y軸の回転量をセットする
@@ -325,9 +325,8 @@ namespace Gyro {
       _id = ObjectId::Player;
       _state = ObjectState::Active;
       _gravity = true; // 重力処理を行う
+      // 移動コンポーネントの生成
       _move = std::make_unique<Object::MoveComponent>(*this);
-      // 座標・向きの設定
-      // アニメーションの初期化
       // 地形の衝突判定を設定
       using Vector = AppFrame::Math::Vector4;
       // 平面の設定
@@ -343,7 +342,6 @@ namespace Gyro {
 
     void Player::SetRotation(const AppFrame::Math::Vector4 move) {
       // 指定状態の場合は
-
       if (_playerState == PlayerState::Idle || _playerState == PlayerState::Run || _playerState == PlayerState::Walk) {
         // 移動量のいずれかが基準を超えていたらRunに遷移
         if (IsRun(move)) {

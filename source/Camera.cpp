@@ -83,7 +83,7 @@ namespace Gyro {
           float sx = _position.GetX() - positoin.GetX();
           float sz = _position.GetZ() - positoin.GetZ();
           float radian = atan2(sz, sx);
-          float length = sqrt(sz * sz + sx * sx);
+          float length = AppFrame::Math::Arithmetic::Length(sz, sx);
           float degree = AppFrame::Math::Utility::RadianToDegree(radian);
           DrawFormatString(x, y, GetColor(255, 0, 0), " length = %5.2f, radian = %5.2f, degree = %5.2f", length, radian, degree); y += size;
           return true;

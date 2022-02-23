@@ -106,13 +106,23 @@ namespace Gyro {
         return _modelKey;
       }
     private:
-      int _model;       //!< モデルハンドル
-      ModelAnim::ModelAnimComponent _modelAnim; //!< AnimComponentの実態
-      Gauge::GaugeHP _gaugeHp;       //!< HPゲージの実態
-      Gauge::GaugeTrick _gaugeTrick; //!< トリックゲージの実態
-      std::unique_ptr<Object::CollisionSphere> _sphere;   //!< 当たり判定コリジョン(球)
-      std::unique_ptr<Object::CollisionCapsule> _capsule; //!< カプセル
-      PlayerState _playerState{PlayerState::Idle};        //!< 自機状態
+      //!< モデルハンドル
+      int _model;
+      //!< 歩き・ダッシュモーションの再生速度
+      float _animSpeed;
+      //!< AnimComponent
+      ModelAnim::ModelAnimComponent _modelAnim;
+      //!< HPゲージ
+      Gauge::GaugeHP _gaugeHp;
+      //!< トリックゲージ
+      Gauge::GaugeTrick _gaugeTrick;
+      //!< 当たり判定コリジョン(球)
+      std::unique_ptr<Object::CollisionSphere> _sphere;
+      //!< 当たり判定コリジョン(カプセル)
+      std::unique_ptr<Object::CollisionCapsule> _capsule;
+      //!< 自機状態
+      PlayerState _playerState{PlayerState::Idle};
+      //!< 前フレーム状態
       PlayerState _oldState{ PlayerState::Idle };
       //!< 前方ベクトル
       AppMath::Vector4 _forward{};
@@ -156,7 +166,7 @@ namespace Gyro {
       void SetRotation(const AppFrame::Math::Vector4 move);
       /**
        * @brief  
-       * @param  state
+       * @param  state 
        * @return 
        */
       bool State(const PlayerState& state) const {
@@ -247,6 +257,8 @@ namespace Gyro {
        * @return プレイヤー状態に対応した
        */
       int PlayerStateToNumber() const;
+
+    private:
       //!< モデルサーバに紐づけられた文字列
       static inline std::string _modelKey{"player"};
       //!< ジャンプコンポーネント
