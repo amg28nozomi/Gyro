@@ -298,6 +298,7 @@ namespace Gyro {
       auto move = AppMath::Vector4();
       // ˆÚ“®—Ê‚Ì¶¬
       if (_move->Move(leftX, leftY)) {
+        // ˆÚ“®—Ê‚Ìæ“¾
         move = _move->MoveVector();
         // ƒ‰ƒWƒAƒ“‚ğ¶¬(y²‚Í”½“]‚³‚¹‚é)
         auto radian = std::atan2(move.GetX(), -move.GetZ());

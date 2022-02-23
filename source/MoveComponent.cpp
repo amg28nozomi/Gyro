@@ -27,6 +27,9 @@ namespace Gyro {
       if (AppMath::Arithmetic::LengthSquared(x, z) == 0.0f) {
         return false; // ˆÚ“®–³‚µ
       }
+      // Œ»İ‚ÌŒü‚«
+      auto [directionX, directionY, directionZ] = _owner.
+
       // ˆÚ“®—Ê‚ÌZo
       auto moveX = (x / 30000.0f) * _speed;
       auto moveZ = (z / 30000.0f) * _speed;
