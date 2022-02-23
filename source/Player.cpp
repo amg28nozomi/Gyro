@@ -159,7 +159,7 @@ namespace Gyro {
         // 状態の切り替え処理
         auto f = StateChanege(input);
         // 移動量の取得
-        move = Move(leftX, leftY);
+        move = Move(static_cast<float>(leftX), static_cast<float>(leftY));
         // 状態の変化がない場合
         if (!f) {
           SetRotation(move);
@@ -170,38 +170,31 @@ namespace Gyro {
         move = _wire->WireMove();
       }
       // 座標に現在座標を更新する
-      _position.Add(move);
-      _gaugeHp.Process();
-      _gaugeTrick.Process();
+      _position.Add(move);     // 現在座標の更新
+      _gaugeHp.Process();      // HPゲージの更新
+      _gaugeTrick.Process();   // トリックゲージの更新
       Animation(_oldState);    // アニメーションの設定
       _modelAnim.Process();    // アニメーションの再生
       WorldMatrix();           // ワールド座標の更新
       Attack();                // 攻撃処理
       _sphere->Process(move);  // 移動量の加算
       _capsule->Process(move); // カプセルの更新
-      Hit(); //衝突判定
+      //衝突判定
+      Hit();
       // カメラの更新
       _app.GetCamera().Process(AppMath::Vector4(rightX, rightY), _position, move);
       // ワールド座標の設定
       MV1SetMatrix(_model, UtilityDX::ToMATRIX(_world));
-      auto stage = AppMath::Utility::ToWorldMatrix(AppMath::Vector4(0, -1500.0f, 0), AppMath::Vector4(0, 0, 0), AppMath::Vector4(1.0f, 1.0f, 1.0f));
-      // ステージの座標
-      MV1SetMatrix(_handleMap, UtilityDX::ToMATRIX(stage));
-      // MV1SetPosition(_handleSkySphere, UtilityDX::ToVECTOR(_position));
-      auto stage = AppMath::Utility::ToWorldMatrix(AppMath::Vector4(0, -1500.0f, 0), AppMath::Vector4(0, 0, 0), AppMath::Vector4(1.0f, 1.0f, 1.0f));
-      // ステージの座標
-      MV1SetMatrix(_handleMap, UtilityDX::ToMATRIX(stage));
       return true;
     }
-      MV1DrawModel(_handleMap);
-      MV1DrawModel(_model);
-      // スカイスフィアの描画
-      MV1DrawModel(_handleSkySphere);
-      MV1DrawModel(_handleMap);
-      _gaugeHp.Draw();
-      _gaugeTrick.Draw();
+
+    bool Player::Draw() const{
+      MV1DrawModel(_model); // 自機の描画
+      _gaugeHp.Draw();      // HPゲージの描画
+      _gaugeTrick.Draw();   // トリックゲージの描画
 #ifdef _DEBUG
-      DebugDraw();     // デバッグ描画
+      // デバッグ情報の出力
+      DebugDraw();
       // デバッグフラグがある場合のみ描画処理を行う
       if (_app.GetDebugFlag()) {
         _attack->Draw(); // 攻撃判定の描画
@@ -424,14 +417,12 @@ namespace Gyro {
       newCapsule.SetPosition(newPos);
       // 線分の取得
       auto [start, end] = newCapsule.LineSegment().GetVector();
-        // 衝突情報の取得
-        auto handleMap = _app.GetStageComponent().GetStageModel()[i];
-        // 地形と線分の衝突判定
-        auto hit = MV1CollCheck_Line(handleMap, 2, UtilityDX::ToVECTOR(end), UtilityDX::ToVECTOR(start));
+
+      auto flag = false;
       // 地形(床)と線分の衝突判定
       for (int i = 0; i < _app.GetStageComponent().GetStageModel().size(); i++) {
-        _handleMap = _app.GetStageComponent().GetStageModel()[i];
-        auto hit = MV1CollCheck_Line(_handleMap, 2, UtilityDX::ToVECTOR(end), UtilityDX::ToVECTOR(start));
+        auto handleMap = _app.GetStageComponent().GetStageModel()[i];
+        auto hit = MV1CollCheck_Line(handleMap, 2, UtilityDX::ToVECTOR(end), UtilityDX::ToVECTOR(start));
         // 衝突フラグがない場合
         if (hit.HitFlag == 0) {
           continue;
