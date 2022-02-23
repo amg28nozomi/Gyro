@@ -16,21 +16,26 @@
 namespace Gyro {
   namespace Stage {
 
-    StageComponent::StageComponent(Application::ApplicationMain& app) : Object::StageBase(app) {
-      _stageModelMap.clear();
-      Init();
+    StageComponent::StageComponent(Application::ApplicationMain& app) {
+      // リソースの解放
+      ReleaseStageInfo();
     }
 
-    bool StageComponent::Init() {
+    StageComponent::~StageComponent() {
+      // リソースの解放
+      ReleaseStageInfo();
+    }
+
+    bool StageComponent::Init(std::filesystem::path jsonName) {
       // パスの生成
       std::filesystem::path p = "res/Stage";
-      const auto jsonPath = (p / "stage.json").generic_string();
+      const auto jsonPath = (p / jsonName).generic_string() + ".json";
       // jsonファイルを読み取り専用で開く
       std::ifstream reading(jsonPath, std::ios::in);
 #ifdef _DEBUG
       try {
         if (reading.fail()) {
-          throw std::logic_error("----------- ファイルが開けませんでした ----------\n");
+            throw std::logic_error("-----------" + jsonPath + "ファイルが開けませんでした ----------\n");
         }
       }
       catch (const std::logic_error& e) {
@@ -45,7 +50,7 @@ namespace Gyro {
       reading.close();
 
       // ステージの配置情報を取り出す
-      for (auto && stageData : value["Stage"]) {
+      for (auto && stageData : value[jsonName.generic_string()]) {
         const auto fileName = stageData["filename"];    // ファイル名
         const auto TargetX = stageData["tx"];           // x座標
         const auto TargetY = stageData["ty"];           // y座標
@@ -57,25 +62,28 @@ namespace Gyro {
         const auto ScaleY = stageData["sy"];            // y拡大値
         const auto ScaleZ = stageData["sz"];            // z拡大値
 
-        // SetPositionやSetRotationに読み込んだ情報いれて使う
+        // filePathの作成
         const auto filePath = (p / fileName).generic_string() + ".mv1";
         namespace AppMath = AppFrame::Math;
+        // jsonファイルから取り出した情報を座標、回転、拡大率に入れる
         auto position = AppMath::Vector4(TargetX, TargetY, TargetZ);
         auto rotation = AppMath::Vector4(RotateX, RotateY, RotateZ);
         auto scale = AppMath::Vector4(ScaleX, ScaleY, ScaleZ);
         StageData stageData = StageData(filePath, position, rotation, scale);
-        std::filesystem::path keyName = ("Stage");
+        std::filesystem::path keyName = (jsonName.generic_string());
         LoadStage(keyName.generic_string(), stageData);
       }
-      CreateStage("Stage");
+      CreateStage(jsonName.generic_string());
 
       return true;
     }
 
     void StageComponent::LoadStage(std::string_view key, StageData& stageData) {
+      // keyの配列がなければelse
       if (_stageModelMap.contains(key.data())) {
         for (auto& stageModel : _stageModelMap[key.data()]) {
           auto [originalHandle, Data] = stageModel;
+          // すでに登録されていたらコピーしたものを使う
           if (stageData.FileName() == Data.FileName()) {
             auto copyHandle = MV1DuplicateModel(originalHandle);
             _stageModelMap[key.data()].emplace_back(copyHandle, stageData);
@@ -105,18 +113,22 @@ namespace Gyro {
         MV1SetScale(handle, UtilityDX::ToVECTOR(scale));
         _model.emplace_back(handle);
       }
+
       return true;
     }
 
-    bool StageComponent::Process() {
-
-        return true;
-    }
-
     bool StageComponent::Draw() const {
+      // モデルハンドル格納コンテナを回して描画する
       for (auto ite : _model) {
         MV1DrawModel(ite);
       }
+
+      return true;
+    }
+
+    bool StageComponent::ReleaseStageInfo() {
+      _stageModelMap.clear();
+      _model.clear();
 
       return true;
     }

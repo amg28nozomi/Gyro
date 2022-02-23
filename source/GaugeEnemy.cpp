@@ -9,6 +9,7 @@
 #include "ObjectBase.h"
 #include "ObjectServer.h"
 #include "UtilityDX.h"
+
 namespace {
   constexpr auto GAUGE_X_POSITION_1 = -33.f;
   constexpr auto GAUGE_X_POSITION_2 = 33.f;

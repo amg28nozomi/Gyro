@@ -105,6 +105,12 @@
     <Filter Include="ソース ファイル\System">
       <UniqueIdentifier>{c5cd4ae7-9e13-4642-b3f1-94dffe8bc18d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Primitive">
+      <UniqueIdentifier>{beaf3f7c-56d7-4077-94ee-19bb8bd0130d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Primitive">
+      <UniqueIdentifier>{7bedbbd5-c42a-44fd-b499-409db4a8d525}</UniqueIdentifier>
+    </Filter>
     <Filter Include="ヘッダー ファイル\Object\Interior">
       <UniqueIdentifier>{8e2b3081-9231-404f-9e01-6be0e76cc4f7}</UniqueIdentifier>
     </Filter>
@@ -137,12 +143,6 @@
     <ClCompile Include="source\UtilityDX.cpp">
       <Filter>ソース ファイル\Application</Filter>
     </ClCompile>
-    <ClCompile Include="source\PrimitiveBase.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="source\PrimitivePlane.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="source\Player.cpp">
       <Filter>ソース ファイル\Object</Filter>
     </ClCompile>
@@ -156,9 +156,6 @@
       <Filter>ソース ファイル\Gauge</Filter>
     </ClCompile>
     <ClCompile Include="source\GaugeHP.cpp">
-      <Filter>ソース ファイル\Gauge</Filter>
-    </ClCompile>
-    <ClCompile Include="source\GaugeServer.cpp">
       <Filter>ソース ファイル\Gauge</Filter>
     </ClCompile>
     <ClCompile Include="source\GaugeTrick.cpp">
@@ -227,9 +224,6 @@
     <ClCompile Include="source\StageComponent.cpp">
       <Filter>ソース ファイル\Stage</Filter>
     </ClCompile>
-    <ClCompile Include="source\StageBase.cpp">
-      <Filter>ソース ファイル\Stage</Filter>
-    </ClCompile>
     <ClCompile Include="source\GaugeEnemy.cpp">
       <Filter>ソース ファイル\Gauge</Filter>
     </ClCompile>
@@ -254,6 +248,12 @@
     <ClCompile Include="source\ModelAnimData.cpp">
       <Filter>ソース ファイル\ModelAnim</Filter>
     </ClCompile>
+    <ClCompile Include="source\PrimitiveBase.cpp">
+      <Filter>ソース ファイル\Primitive</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PrimitivePlane.cpp">
+      <Filter>ソース ファイル\Primitive</Filter>
+    </ClCompile>
     <ClCompile Include="source\InteriorBase.cpp">
       <Filter>ソース ファイル\Object\Interior</Filter>
     </ClCompile>
@@ -264,9 +264,6 @@
   <ItemGroup>
     <ClInclude Include="source\ApplicationMain.h">
       <Filter>ヘッダー ファイル\Application</Filter>
-    </ClInclude>
-    <ClInclude Include="source\ModeGame.h">
-      <Filter>ヘッダー ファイル\Mode</Filter>
     </ClInclude>
     <ClInclude Include="source\ScoreBase.h">
       <Filter>ヘッダー ファイル\Score</Filter>
@@ -286,12 +283,6 @@
     <ClInclude Include="source\UtilityDX.h">
       <Filter>ヘッダー ファイル\Application</Filter>
     </ClInclude>
-    <ClInclude Include="source\PrimitiveBase.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="source\PrimitivePlane.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="source\Player.h">
       <Filter>ヘッダー ファイル\Object</Filter>
     </ClInclude>
@@ -305,9 +296,6 @@
       <Filter>ヘッダー ファイル\Gauge</Filter>
     </ClInclude>
     <ClInclude Include="source\GaugeHP.h">
-      <Filter>ヘッダー ファイル\Gauge</Filter>
-    </ClInclude>
-    <ClInclude Include="source\GaugeServer.h">
       <Filter>ヘッダー ファイル\Gauge</Filter>
     </ClInclude>
     <ClInclude Include="source\GaugeTrick.h">
@@ -373,9 +361,6 @@
     <ClInclude Include="source\WirePoint.h">
       <Filter>ソース ファイル\Object\Player</Filter>
     </ClInclude>
-    <ClInclude Include="source\StageBase.h">
-      <Filter>ヘッダー ファイル\Stage</Filter>
-    </ClInclude>
     <ClInclude Include="source\StageComponent.h">
       <Filter>ヘッダー ファイル\Stage</Filter>
     </ClInclude>
@@ -405,6 +390,15 @@
     </ClInclude>
     <ClInclude Include="source\ModelAnimData.h">
       <Filter>ヘッダー ファイル\ModelAnim</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ModeGame.h">
+      <Filter>ヘッダー ファイル\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="source\PrimitiveBase.h">
+      <Filter>ヘッダー ファイル\Primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="source\PrimitivePlane.h">
+      <Filter>ヘッダー ファイル\Primitive</Filter>
     </ClInclude>
     <ClInclude Include="source\InteriorBase.h">
       <Filter>ヘッダー ファイル\Object\Interior</Filter>

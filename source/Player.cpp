@@ -187,12 +187,16 @@ namespace Gyro {
       auto stage = AppMath::Utility::ToWorldMatrix(AppMath::Vector4(0, -1500.0f, 0), AppMath::Vector4(0, 0, 0), AppMath::Vector4(1.0f, 1.0f, 1.0f));
       // ステージの座標
       MV1SetMatrix(_handleMap, UtilityDX::ToMATRIX(stage));
+      // MV1SetPosition(_handleSkySphere, UtilityDX::ToVECTOR(_position));
+      auto stage = AppMath::Utility::ToWorldMatrix(AppMath::Vector4(0, -1500.0f, 0), AppMath::Vector4(0, 0, 0), AppMath::Vector4(1.0f, 1.0f, 1.0f));
+      // ステージの座標
+      MV1SetMatrix(_handleMap, UtilityDX::ToMATRIX(stage));
       return true;
     }
-
-    bool Player::Draw() const {
-      // プレイヤーの描画
+      MV1DrawModel(_handleMap);
       MV1DrawModel(_model);
+      // スカイスフィアの描画
+      MV1DrawModel(_handleSkySphere);
       MV1DrawModel(_handleMap);
       _gaugeHp.Draw();
       _gaugeTrick.Draw();
@@ -420,14 +424,14 @@ namespace Gyro {
       newCapsule.SetPosition(newPos);
       // 線分の取得
       auto [start, end] = newCapsule.LineSegment().GetVector();
-      // 衝突フラグ
-      auto flag = false;
-      // 地形(床)と線分の衝突判定
-      for (int i = 0; i < _app.GetStageComponent().GetStageModel().size(); i++) {
         // 衝突情報の取得
         auto handleMap = _app.GetStageComponent().GetStageModel()[i];
         // 地形と線分の衝突判定
         auto hit = MV1CollCheck_Line(handleMap, 2, UtilityDX::ToVECTOR(end), UtilityDX::ToVECTOR(start));
+      // 地形(床)と線分の衝突判定
+      for (int i = 0; i < _app.GetStageComponent().GetStageModel().size(); i++) {
+        _handleMap = _app.GetStageComponent().GetStageModel()[i];
+        auto hit = MV1CollCheck_Line(_handleMap, 2, UtilityDX::ToVECTOR(end), UtilityDX::ToVECTOR(start));
         // 衝突フラグがない場合
         if (hit.HitFlag == 0) {
           continue;

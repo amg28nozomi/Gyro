@@ -40,6 +40,8 @@ namespace Gyro {
       SetParameter();
       // アニメーションアタッチ
       _modelAnim.SetMainAttach(_mHandle, IdleKey, 1.0f, true);
+      _radius = 300.0f;
+
       return true;
     }
 
@@ -48,10 +50,7 @@ namespace Gyro {
       EnemyBase::Process();
       // 前フレームの状態
       EnemyState oldEnemyState = _enemyState;
-      // 入力処理がある場合、更新を行う
-      if (_app.GetOperation().GetXBoxState().GetButton(XINPUT_BUTTON_LEFT_THUMB, false)) {
-        _enemyState = EnemyState::Move;
-      }
+      // 索敵範囲に入ったら状態をMoveに変化
       // 状態もどき
       switch (_enemyState) {
         case Gyro::Enemy::EnemyBase::EnemyState::Move:
@@ -65,6 +64,7 @@ namespace Gyro {
           break;
         default:
           _enemyState = EnemyState::Idle;
+          Sercth(_radius);
           break;
       }
       // 衝突判定
@@ -89,6 +89,7 @@ namespace Gyro {
       _gaugeHp.Process();
       // モデルアニメの更新
       _modelAnim.Process();
+
       return true;
     }
 
@@ -102,6 +103,8 @@ namespace Gyro {
       if (_app.GetDebugFlag()) {
         // 当たり判定の描画
         _capsule->Draw();
+        auto pos = _position.AddVectorY(10.0f);
+        DrawCone3D(UtilityDX::ToVECTOR(pos), UtilityDX::ToVECTOR(_position), _radius, 16, GetColor(0, 0, 255), GetColor(255, 255, 255), false);
       }
 #endif
       return true;

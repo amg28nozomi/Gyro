@@ -24,7 +24,6 @@ namespace Gyro {
     class CollisionCapsule;
     class SpawnEnemy;
   } // namespace Object
-
   /**
    * @brief 敵ベース
    */
@@ -128,6 +127,11 @@ namespace Gyro {
        */
       virtual void Attack();
       /**
+       * @brief 探索処理
+       * @param radius 円の半径(索敵範囲)
+       */
+      virtual void Sercth(const float radius);
+      /**
        * @brief  衝突処理
        */
       virtual void Hit();
@@ -164,8 +168,10 @@ namespace Gyro {
         return old != _enemyState;
       }
 
-      int _mHandle{ -1 };  //!< モデルハンドル
-      int _enemyHP{ 0 };   //!< 敵体力
+      int _cnt{ 0 };        //!< カウント
+      int _mHandle{ -1 };   //!< モデルハンドル
+      int _enemyHP{ 0 };    //!< 敵体力
+      float _radius{ 0.0f }; //!< 半径
        //!< 球の当たり判定
       std::unique_ptr<Object::CollisionSphere> _sphere{ nullptr };
       //!< カプセル当たり判定

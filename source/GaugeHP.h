@@ -7,8 +7,6 @@
  *********************************************************************/
 #pragma once
 #include "GaugeBase.h"
-#include "GaugeServer.h"
-
 /**
  * @brief ゲームベース
  */
