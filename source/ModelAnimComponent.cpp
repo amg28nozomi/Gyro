@@ -63,6 +63,13 @@ namespace Gyro {
       _blending = true;
     }
 
+    void ModelAnimComponent::SetPlaySpeed(const float speed) {
+      // アタッチされているアニメーション名を取得
+      auto anim = _main.GetAttachIndex();
+      // 再生時間を再設定する
+
+    }
+
     void ModelAnimComponent::SetAttach(ModelAnimInfo& motion, std::string_view key, const float speed, const bool loop) {
       // モデルハンドル未所持の場合エラー
       if (_mHandle == -1) {

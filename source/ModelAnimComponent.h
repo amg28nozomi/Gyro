@@ -43,20 +43,26 @@ namespace Gyro {
        * @brief  メインアニメーションアタッチ
        *         (初期化時以外使ってはいけない)
        * @param  handle モデルハンドル
-       * @param  key アニメーション名
-       * @param  speed アニメーション再生速度
-       * @param  loop ループ再生有無
+       * @param  key    アニメーション名
+       * @param  speed  アニメーション再生速度
+       * @param  loop   ループ再生有無
        */
       void SetMainAttach(const int handle, std::string_view key, const float speed, const bool loop);
       /**
        * @brief  ブレンドアニメーションアタッチ
        *         (アニメーション切り替えはこちらを使う)
-       * @param  key アニメーション名
+       * @param  key   アニメーション名
        * @param  frame ブレンドフレーム
        * @param  speed アニメーション再生速度
-       * @param  loop ループ再生有無
+       * @param  loop  ループ再生有無
        */
       void SetBlendAttach(std::string_view key, const float frame, const float speed, const bool loop);
+      /**
+       * @brief  アニメーションの再生速度を変化させる
+       * @param  speed セットする再生速度
+       * @author 鈴木希海
+       */
+      void SetPlaySpeed(const float speed);
       /**
        * @brief  現在のアニメーションのアタッチ番号取得
        * @return アタッチ番号

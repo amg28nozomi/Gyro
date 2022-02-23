@@ -359,10 +359,19 @@ namespace Gyro {
 
     bool Player::IsRun(const AppMath::Vector4& move) {
       // ˆÚ“®—Ê‚ÌŽæ“¾
-      auto [x, z] = move.GetVector2();
-      if (RunPower <= x || x <= -RunPower || RunPower <= z || z <= -RunPower) {
-        return true;
+      auto [x, y , z] = move.GetVector3();
+      // •Ê–¼’è‹`
+      using Utility = AppMath::Utility;
+      // ¬•ª‚ð³”‚É•ÏŠ·
+      AppMath::Vector4 m(Utility::ToPlus(x), Utility::ToPlus(z));
+      // “ü—Í’l‚ªˆê’èˆÈã‚Ìê‡‚ÍˆÚ“®‚µ‚Ä‚¢‚é
+      if (10.0f <= m.Length2D()) {
+        return true; // ‘–‚èó‘Ô‚Å‚ ‚é
       }
+      
+      /*if (RunPower <= x || x <= -RunPower || RunPower <= z || z <= -RunPower) {
+        return true;
+      }*/
       return false;
     }
 

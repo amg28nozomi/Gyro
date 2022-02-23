@@ -38,8 +38,8 @@ namespace Gyro {
       // 別名定義
       using Vector4 = AppMath::Vector4;
       // カメラ向きの取得
-      // auto cameraForward = Vector4::Normalize(cameraPos.Direction(cameraTarget));
       auto cameraForward = cameraPos.Direction(_owner.GetPosition());
+      // カメラ向きの取得
       cameraForward = Vector4::Normalize(Vector4::Scale(cameraForward, Vector4(1.0f, 0.0f, 1.0f)));
       // デッドゾーンの取得
       const auto xState= _owner.GetApplicaton().GetOperation().GetXBoxState();
@@ -48,7 +48,7 @@ namespace Gyro {
       auto inputX = (x / deadZone);
       auto inputZ = (z / deadZone);
       // auto moveForward = Vector4::Normalize(Vector4::Scale(cameraForward ,Vector4(x / 30000.0f, 0.0f, z / 30000.0f)));
-      auto moveForward = Vector4::Normalize(Vector4::Scale(cameraForward, Vector4(-inputX , 0.0f, inputZ)));
+      auto moveForward = Vector4::Normalize(Vector4::Scale(cameraForward, Vector4(inputX , 0.0f, inputZ)));
       // 移動量の算出
       _move = moveForward * _speed;
       // _move = Vector4::Scale(move, moveForward);
