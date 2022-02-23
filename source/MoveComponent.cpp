@@ -16,7 +16,7 @@ namespace Gyro {
 
     MoveComponent::MoveComponent(ObjectBase& owner) : _owner(owner) {
       _move = AppMath::Vector4();
-      _speed = 10.0f;
+      _speed = 8.0f;
     }
 
     void MoveComponent::OldPosition() {
@@ -43,15 +43,13 @@ namespace Gyro {
       cameraForward = Vector4::Normalize(Vector4::Scale(cameraForward, Vector4(1.0f, 0.0f, 1.0f)));
       // デッドゾーンの取得
       const auto xState= _owner.GetApplicaton().GetOperation().GetXBoxState();
-      auto deadZone = xState.GetDeadZone();
+      auto deadZone = static_cast<float>(xState.GetDeadZoneMax());
       // 移動方向
-      auto inputX = (x / static_cast<float>(deadZone.first));
-      auto inputZ = (z / static_cast<float>(deadZone.second));
+      auto inputX = (x / deadZone);
+      auto inputZ = (z / deadZone);
       // auto moveForward = Vector4::Normalize(Vector4::Scale(cameraForward ,Vector4(x / 30000.0f, 0.0f, z / 30000.0f)));
-      auto moveForward = Vector4::Normalize(Vector4::Scale(cameraForward, Vector4(inputX , 0.0f, inputZ)));
+      auto moveForward = Vector4::Normalize(Vector4::Scale(cameraForward, Vector4(-inputX , 0.0f, inputZ)));
       // 移動量の算出
-      //auto speedX = (x / 30000.0f) * _speed;
-      //auto speedZ = (z / 30000.0f) * _speed; // * /* length.GetZ()) * */ -1.0f
       _move = moveForward * _speed;
       // _move = Vector4::Scale(move, moveForward);
       // Y座標の情報は無視する
