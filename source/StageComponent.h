@@ -64,6 +64,11 @@ namespace Gyro {
        */
       bool Draw() const;
       /**
+       * @brief  ステージ情報の解放
+       * @return true
+       */
+      bool ReleaseStageInfo();
+      /**
        * @brief  ステージ情報の取得
        * @param  key 各ステージに関連づけた任意の文字列
        * @return ハンドルとステージ情報

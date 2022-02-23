@@ -127,8 +127,8 @@ namespace Gyro {
        */
       virtual void Attack();
       /**
-       * @brief ƒAƒCƒhƒ‹ˆ—
-       * @param ”¼Œa
+       * @brief ’Tõˆ—
+       * @param radius ‰~‚Ì”¼Œa(õ“G”ÍˆÍ)
        */
       virtual void Sercth(const float radius);
       /**

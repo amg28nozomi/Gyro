@@ -100,10 +100,15 @@ namespace Gyro {
 
     void EnemyBase::Sercth(const float radius) {
       auto objects = _app.GetObjectServer().GetObjects(); // オブジェクトのコピー
-      for (auto obj : objects) {
-          if (obj->GetId() != ObjectId::Player) continue;
-          
-          
+      for (auto pla : objects) {
+          if (pla->GetId() != ObjectId::Player) continue;
+          auto position = pla->GetPosition();
+          auto a = position.GetX() - _position.GetX();
+          auto b = position.GetZ() - _position.GetZ();
+          auto c = sqrt(a * a + b * b);
+          if (c < radius) {
+              _enemyState = EnemyState::Move;
+          }
       }
     }
 

@@ -18,14 +18,12 @@ namespace Gyro {
 
     StageComponent::StageComponent(Application::ApplicationMain& app) {
       // リソースの解放
-      _stageModelMap.clear();
-      _model.clear();
+      ReleaseStageInfo();
     }
 
     StageComponent::~StageComponent() {
       // リソースの解放
-      _stageModelMap.clear();
-      _model.clear();
+      ReleaseStageInfo();
     }
 
     bool StageComponent::Init(std::filesystem::path jsonName) {
@@ -124,6 +122,13 @@ namespace Gyro {
       for (auto ite : _model) {
         MV1DrawModel(ite);
       }
+
+      return true;
+    }
+
+    bool StageComponent::ReleaseStageInfo() {
+      _stageModelMap.clear();
+      _model.clear();
 
       return true;
     }

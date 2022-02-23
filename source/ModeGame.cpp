@@ -54,7 +54,7 @@ namespace Gyro {
       _plane.Initialize(35000.0, 150);
       _plane.Load(TEXTURE);
       _plane.Create();
-      _appMain.GetStageComponent().Init("Stage");
+      _appMain.GetStageComponent().Init("stage");
       // 重力加速度をセットする
       AppMath::GravityBase::SetScale(-9.8f);
       return true;
@@ -154,15 +154,15 @@ namespace Gyro {
         // 引数2:ローカル座標
         // 引数3:向き
         // 引数4:スケール
-        { Object::TypePlayer, {0.0f, 1500.0f, 0.0f,}, {0.0f, 0.0f, 0.0f,}, {1.0f, 1.0f, 1.0f}}
+        { Object::TypePlayer, {0.0f, 150.0f, -200.0f,}, {0.0f, 0.0f, 0.0f,}, {1.0f, 1.0f, 1.0f}}
       };
       // エネミーテーブル
       const Object::EnemyTable enemy {
         // 陸上型エネミーの配置情報
-        { Object::EnemyWheel, { 100.0f, 1500.0f, 100.0f}, {0.0f, 0.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
-        { Object::EnemyWheel, { -200.0f, 1500.0f, 200.0f}, {0.0f, 0.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
-        { Object::EnemyWheel, { 300.0f, 1500.0f, 200.0f}, {0.0f, 0.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
-        { Object::EnemyWheel, { -400.0f, 1500.0f, 200.0f}, {0.0f, 0.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
+        { Object::EnemyWheel, { 100.0f, 250.0f, 100.0f}, {0.0f, 0.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
+        { Object::EnemyWheel, { -200.0f, 250.0f, 200.0f}, {0.0f, 0.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
+        { Object::EnemyWheel, { 300.0f, 250.0f, 200.0f}, {0.0f, 0.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
+        { Object::EnemyWheel, { -400.0f, 250.0f, 200.0f}, {0.0f, 0.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
       };
       // 各種テーブルを基にスポーンテーブルを作成
       Object::SpawnData table{
