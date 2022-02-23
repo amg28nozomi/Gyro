@@ -98,6 +98,20 @@ namespace Gyro {
           _position.Add(vector);
           return 0.0f;
       }
+      /**
+       * @brief  カメラ座標の取得
+       * @return カメラ座標
+       */
+      AppFrame::Math::Vector4 GetPosition() const {
+        return _position;
+      }
+      /**
+       * @brief  注視点の取得
+       * @return 注視点
+       */
+      AppFrame::Math::Vector4 GetTarget() const {
+        return _target;
+      }
     private:
       AppFrame::Math::Vector4 _position{};    //!< カメラの座標
       AppFrame::Math::Vector4 _target{};  //!< カメラの注視点(見ている座標)
