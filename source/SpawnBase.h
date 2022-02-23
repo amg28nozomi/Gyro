@@ -18,6 +18,8 @@ namespace Gyro {
   namespace Object {
     constexpr auto TypePlayer = 0;     //!< 自機
     constexpr auto TypeEnemyWheel = 1; //!< 陸上型エネミー
+
+    constexpr auto TypeSkySphere = 5;  //!< スカイスフィア
     /**
      * @brief Vector4クラスの省略
      */
@@ -32,9 +34,10 @@ namespace Gyro {
        * @brief オブジェクトの種類を表す
        */
       enum class ObjectType {
-        None,   // 無し
-        Player, // 自機
-        Enemy,  // 敵
+        None,     // 無し
+        Player,   // 自機
+        Enemy,    // 敵
+        SkySphere // スカイスフィア
       };
       /**
        * @brief コンストラクタ

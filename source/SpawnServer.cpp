@@ -11,6 +11,7 @@
 #include "ObjectServer.h"
 #include "Player.h"
 #include "EnemyWheel.h"
+#include "SkySphere.h"
 
 namespace Gyro {
   namespace Object {
@@ -125,6 +126,11 @@ namespace Gyro {
           // 敵の生成・登録を行う
           AddObject(Enemy(spawn));
           break;
+          // スカイスフィア
+        case SpawnBase::ObjectType::SkySphere:
+          // スカイスフィアの生成・登録を行う
+          AddObject(Skysphere(spawn));
+          break;
           // オブジェクトタイプの該当がない場合
         case SpawnBase::ObjectType::None:
 #ifdef _DEBUG
@@ -188,6 +194,17 @@ namespace Gyro {
       auto wheel = std::make_shared<Enemy::EnemyWheel>(_appMain);
       wheel->Set(enemy);       // スポーン情報の設定
       return std::move(wheel); // 生成したシェアードポインタを返す
+    }
+
+    std::shared_ptr<SkySphere> SpawnServer::Skysphere(std::shared_ptr<SpawnBase>& spawn) const {
+      // 自機は登録されているか
+      if (!_appMain.GetObjectServer().FindPlayer()) {
+        return nullptr; // 未登録
+      }
+      // スカイスフィアの生成
+      auto skySphere = std::make_shared<SkySphere>(_appMain, *_appMain.GetObjectServer().GetPlayer());
+      skySphere->SetKey("sky");
+      return std::move(skySphere);
     }
 
 #ifdef _DEBUG

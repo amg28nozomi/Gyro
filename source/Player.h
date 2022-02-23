@@ -36,8 +36,11 @@ namespace Gyro {
    * @brief プレイヤーベース
    */
   namespace Player {
+    /**
+     * @brief 名前空間の省略
+     */
     namespace AppMath = AppFrame::Math;
-    class JumpComponent; //!< 
+    class JumpComponent; //!< ジャンプコンポーネント
     /**
      * @class Player
      * @brief オブジェクトベースのサブクラス
@@ -103,12 +106,7 @@ namespace Gyro {
         return _modelKey;
       }
     private:
-      // AppFrame::Math::Vector4 _move{}; //!< 移動量
-
       int _model;       //!< モデルハンドル
-      int _animaIndex;  //!< アタッチされているアニメ番号
-      float _totalTime; //!< アニメーションの総再生時間
-      float _animaTime; //!< アニメーションの再生時間
       ModelAnim::ModelAnimComponent _modelAnim; //!< AnimComponentの実態
       Gauge::GaugeHP _gaugeHp;       //!< HPゲージの実態
       Gauge::GaugeTrick _gaugeTrick; //!< トリックゲージの実態
@@ -116,13 +114,14 @@ namespace Gyro {
       std::unique_ptr<Object::CollisionCapsule> _capsule; //!< カプセル
       PlayerState _playerState{PlayerState::Idle};        //!< 自機状態
       PlayerState _oldState{ PlayerState::Idle };
-
-      bool _attackFlag{false};   //!< 攻撃フラグ(true:強攻撃 false:弱攻撃)
-
-      std::unique_ptr<AppMath::Plane> _plane; //!< 平面
+      //!< 前方ベクトル
+      AppMath::Vector4 _forward{};
+      //!< 攻撃フラグ(true:強攻撃 false:弱攻撃)
+      bool _attackFlag{false};
+      //!< 平面
+      std::unique_ptr<AppMath::Plane> _plane;
       int _handleMap;
       int _frameMapCollision;
-      int _handleSkySphere;   //!< スカイスフィアハンドル
       /**
        * @brief 入力処理
        */
@@ -175,8 +174,11 @@ namespace Gyro {
        */
       bool StateChanege(const AppFrame::Application::XBoxState& input);
 #ifdef _DEBUG
+      /**
+       * @brief  デバッグ専用の描画処理
+       * @return true: false:
+       */
       bool DebugDraw() const override;
-
       /**
        * @brief Debug専用描画
        */

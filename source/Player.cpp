@@ -141,15 +141,15 @@ namespace Gyro {
     }
 
     bool Player::Process() {
-      // 更新処理呼び出し
+      // 基底クラスの更新処理呼び出し
       ObjectBase::Process();
       // 名前空間の省略
       namespace App = AppFrame::Application;
       // 入力状態の取得
       auto input = _app.GetOperation().GetXBoxState();
-      auto [lX, lY] = input.GetStick(false); // 左スティック
-      auto [rX, rY] = input.GetStick(true);  // 右スティック
-      auto [leftTrigger, rightTrigger] = input.GetTrigger(); // トリガーボタン
+      // アナログスティックの入力状態を取得
+      auto [leftX, leftY] = input.GetStick(false);
+      auto [rightX, rightY] = input.GetStick(true);
       // 前フレーム座標の保持
       _move->OldPosition();
       //!< 移動量
@@ -159,7 +159,7 @@ namespace Gyro {
         // 状態の切り替え処理
         auto f = StateChanege(input);
         // 移動量の取得
-        move = Move(lX, lY);
+        move = Move(leftX, leftY);
         // 
         if (!f) {
           SetRotation(move);
@@ -181,13 +181,9 @@ namespace Gyro {
       _capsule->Process(move); // カプセルの更新
       Hit(); //衝突判定
       // カメラの更新
-      _app.GetCamera().Process(AppMath::Vector4(rX, rY), _position, move);
+      _app.GetCamera().Process(AppMath::Vector4(rightX, rightY), _position, move);
       // ワールド座標の設定
       MV1SetMatrix(_model, UtilityDX::ToMATRIX(_world));
-      // スカイスフィアの座標
-      auto skypos = AppMath::Utility::ToWorldMatrix(_position, AppMath::Vector4(0, 0, 0), AppMath::Vector4(1.0f, 1.0f, 1.0f));
-      MV1SetMatrix(_handleSkySphere, UtilityDX::ToMATRIX(skypos));
-      // MV1SetPosition(_handleSkySphere, UtilityDX::ToVECTOR(_position));
       auto stage = AppMath::Utility::ToWorldMatrix(AppMath::Vector4(0, -1500.0f, 0), AppMath::Vector4(0, 0, 0), AppMath::Vector4(1.0f, 1.0f, 1.0f));
       // ステージの座標
       MV1SetMatrix(_handleMap, UtilityDX::ToMATRIX(stage));
@@ -197,8 +193,6 @@ namespace Gyro {
     bool Player::Draw() const {
       // プレイヤーの描画
       MV1DrawModel(_model);
-      // スカイスフィアの描画
-      MV1DrawModel(_handleSkySphere);
       MV1DrawModel(_handleMap);
       _gaugeHp.Draw();
       _gaugeTrick.Draw();
@@ -299,6 +293,7 @@ namespace Gyro {
       // 移動量の生成
       if (_move->Move(leftX, leftY)) {
         move = _move->MoveVector();
+
         // ラジアンを生成(y軸は反転させる)
         auto radian = std::atan2(move.GetX(), -move.GetZ());
 #ifndef _DEBUG
@@ -316,8 +311,6 @@ namespace Gyro {
       // 各種リソースの読み取り処理
       auto [model, key1] = _app.GetModelServer().GetModel(_modelKey, 0);
       _model = model;     // モデルハンドルを登録
-      auto [handle, key2] = _app.GetModelServer().GetModel("sky", 0);
-      _handleSkySphere = handle; // スカイスフィア
       auto [stage , key3] = _app.GetModelServer().GetModel("stage", 0);
       _handleMap = stage; // ステージハンドル
     }
@@ -335,9 +328,6 @@ namespace Gyro {
       _move = std::make_unique<Object::MoveComponent>(*this);
       // 座標・向きの設定
       // アニメーションの初期化
-      _animaIndex = NoAnimation;
-      _animaTime = 0.0f;
-      _totalTime = 0.0f;
       // 地形の衝突判定を設定
       using Vector = AppFrame::Math::Vector4;
       // 平面の設定
@@ -432,11 +422,14 @@ namespace Gyro {
       newCapsule.SetPosition(newPos);
       // 線分の取得
       auto [start, end] = newCapsule.LineSegment().GetVector();
-      // 地形(床)と線分の衝突判定
+      // 衝突フラグ
       auto flag = false;
+      // 地形(床)と線分の衝突判定
       for (int i = 0; i < _app.GetStageComponent().GetStageModel().size(); i++) {
-        _handleMap = _app.GetStageComponent().GetStageModel()[i];
-        auto hit = MV1CollCheck_Line(_handleMap, 2, UtilityDX::ToVECTOR(end), UtilityDX::ToVECTOR(start));
+        // 衝突情報の取得
+        auto handleMap = _app.GetStageComponent().GetStageModel()[i];
+        // 地形と線分の衝突判定
+        auto hit = MV1CollCheck_Line(handleMap, 2, UtilityDX::ToVECTOR(end), UtilityDX::ToVECTOR(start));
         // 衝突フラグがない場合
         if (hit.HitFlag == 0) {
           continue;
@@ -637,20 +630,27 @@ namespace Gyro {
       auto number = -1;
       // プレイヤーの状態に応じた数値を返す
       switch (_playerState) {
+        // 待機
       case PlayerState::Idle:
         return StateNumberIdle;
+        // 歩き
       case PlayerState::Walk:
         return StateNumberWalk;
+        // 走り
       case PlayerState::Run:
         return StateNumberRun;
+        // ジャンプ
       case PlayerState::Jump:
         return StateNumberJump;
+        // 攻撃1
       case PlayerState::Attack1:
         number = StateNumberLight1;
         break;
+        // 攻撃2
       case PlayerState::Attack2:
         number = StateNumberLight2;
         break;
+        // 攻撃3
       case PlayerState::Attack3:
         number = StateNumberLight3;
         break;
@@ -661,6 +661,7 @@ namespace Gyro {
       auto IsHevyLight = [](bool flag) {
         return (flag == true) ? 1 : 0;
       };
+      // 攻撃番号
       return number + IsHevyLight(_attackFlag);
     }
 

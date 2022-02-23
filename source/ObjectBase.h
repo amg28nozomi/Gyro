@@ -33,9 +33,10 @@ namespace Gyro {
        * @brief オブジェクト識別番号の列挙型クラス
        */
       enum class ObjectId {
-        Object, //!< オブジェクト
-        Player, //!< プレイヤー
-        Enemy   //!< 敵
+        Object,   //!< オブジェクト
+        Player,   //!< プレイヤー
+        Enemy,    //!< 敵
+        SkySphere //!< スカイスフィア
       };
       /**
        * @brief オブジェクトの状態を表す列挙型クラス
@@ -76,6 +77,10 @@ namespace Gyro {
        */
       virtual inline void GravitySet(const bool flag) {
         _gravity = flag;
+      }
+
+      inline void SetForward(AppMath::Vector4 forward) {
+        _forward = forward;
       }
       /**
        * @brief  識別番号の取得
@@ -146,6 +151,13 @@ namespace Gyro {
        */
       inline void SetRotation(const AppMath::Vector4& rotation) {
         _rotation = rotation;
+      }
+      /**
+       * @brief  向きベクトルの取得
+       * @return 向きベクトル
+       */
+      inline AppMath::Vector4 Forward() const {
+        return _forward;
       }
     protected:
       //!< アプリケーションの参照

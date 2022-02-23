@@ -36,6 +36,7 @@ namespace Gyro {
    */
   namespace Object {
     class ObjectBase; //!< 前方宣言
+    class SkySphere;  //!< スカイスフィア
     /**
      * @brief スポーン情報を格納する動的配列の別名
      */
@@ -134,6 +135,12 @@ namespace Gyro {
        * @return 陸上型敵のシェアードポインタ
        */
       std::shared_ptr<Enemy::EnemyWheel> EnemyWheel(SpawnEnemy& spawn) const;
+      /**
+       * @brief  スカイスフィアの生成
+       * @param  spawn スポーン情報
+       * @return スカイスフィアのシェアードポインタ
+       */
+      std::shared_ptr<SkySphere> Skysphere(std::shared_ptr<SpawnBase>& spawn) const;
 #ifdef _DEBUG
       /**
        * @brief  スポーン失敗メッセージの生成

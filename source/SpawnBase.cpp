@@ -32,6 +32,8 @@ namespace Gyro {
         return ObjectType::Player; // 自機
       case TypeEnemyWheel:
         return ObjectType::Enemy;  // エネミー
+      case TypeSkySphere:
+        return ObjectType::SkySphere; // スカイスフィア
       default:
         return ObjectType::None;   // 該当なし
       }
