@@ -25,13 +25,14 @@ namespace Gyro {
       _totalTime = 0.0f;
       _playTime = 0.0f;
       _playSpeed = 0.0f;
+      _speedRate = 1.0f;
       _animLoop = false;
       _animEnd = false;
     }
 
     void ModelAnimInfo::CountPlayTime() {
       // 速度分再生時間を進める
-      _playTime += _playSpeed;
+      _playTime += _playSpeed * _speedRate;
       // 総時間を過ぎたら
       if (_totalTime < _playTime) {
           // ループ再生の有無判定
