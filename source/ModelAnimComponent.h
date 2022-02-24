@@ -47,7 +47,7 @@ namespace Gyro {
        * @param  speed  アニメーション再生速度
        * @param  loop   ループ再生有無
        */
-      void SetMainAttach(const int handle, std::string_view key, const float speed, const bool loop);
+      void SetMainAttach(const int handle, const std::string_view key, const float speed, const bool loop);
       /**
        * @brief  ブレンドアニメーションアタッチ
        *         (アニメーション切り替えはこちらを使う)
@@ -56,15 +56,31 @@ namespace Gyro {
        * @param  speed アニメーション再生速度
        * @param  loop  ループ再生有無
        */
-      void SetBlendAttach(std::string_view key, const float frame, const float speed, const bool loop);
+      void SetBlendAttach(const std::string_view key, const float frame, const float speed, const bool loop);
       /**
-       * @brief  アニメーションの再生速度を変化させる
-       * @param  speed セットする再生速度
-       * @author 鈴木希海
+       * @brief  現在のアニメーションの再生速度倍率の設定
+       * @param  rate 再生速度倍率
        */
-      void SetPlaySpeed(const float speed);
+      void SetMainSpeedRate(const float rate) {
+        _main.SetSpeedRate(rate);
+      }
       /**
-       * @brief  現在のアニメーションのアタッチ番号取得
+       * @brief  アニメーション名のアニメーション番号変換
+       * @param  key アニメーション名
+       * @return アニメーション番号
+       */
+      int AnimKeyConversion(const std::string_view key) const {
+        return MV1GetAnimIndex(_mHandle, key.data());
+      }
+      /**
+       * @brief  現在のアニメーションのアニメーション番号の取得
+       * @return アニメーション番号
+       */
+      int GetMainAnimNum() const {
+        return _main.GetAnimNum();
+      }
+      /**
+       * @brief  現在のアニメーションのアタッチ番号の取得
        * @return アタッチ番号
        */
       int GetMainAttachIndex() const {
@@ -109,7 +125,7 @@ namespace Gyro {
        * @param  speed アニメーション再生速度
        * @param  loop ループ再生有無
        */
-      void SetAttach(ModelAnimInfo& info, std::string_view key, const float speed, const bool loop);
+      void SetAttach(ModelAnimInfo& info, const std::string_view key, const float speed, const bool loop);
       /**
        * @brief  アニメーションデタッチ
        * @param  info モデル情報

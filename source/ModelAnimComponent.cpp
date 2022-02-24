@@ -28,12 +28,11 @@ namespace Gyro {
       // アニメーション再生
       PlayAnim(_main);
       PlayAnim(_blend);
-
       // アニメーションブレンド
       AnimBlend();
     }
 
-    void ModelAnimComponent::SetMainAttach(const int handle, std::string_view key, const float speed, const bool loop) {
+    void ModelAnimComponent::SetMainAttach(const int handle, const std::string_view key, const float speed, const bool loop) {
       // アタッチ済の場合エラー
       if (IsAttachIndex(_main)) {
 #ifdef _DEBUG
@@ -49,7 +48,7 @@ namespace Gyro {
       SetAttach(_main, key, speed, loop);
     }
 
-    void ModelAnimComponent::SetBlendAttach(std::string_view key, const float flame, const float speed, const bool loop) {
+    void ModelAnimComponent::SetBlendAttach(const std::string_view key, const float flame, const float speed, const bool loop) {
       // アタッチ済の場合デタッチ
       if (IsAttachIndex(_blend)) {
           SetDetach(_blend);
@@ -63,14 +62,7 @@ namespace Gyro {
       _blending = true;
     }
 
-    void ModelAnimComponent::SetPlaySpeed(const float speed) {
-      // アタッチされているアニメーション名を取得
-      auto anim = _main.GetAttachIndex();
-      // 再生時間を再設定する
-
-    }
-
-    void ModelAnimComponent::SetAttach(ModelAnimInfo& motion, std::string_view key, const float speed, const bool loop) {
+    void ModelAnimComponent::SetAttach(ModelAnimInfo& motion, const std::string_view key, const float speed, const bool loop) {
       // モデルハンドル未所持の場合エラー
       if (_mHandle == -1) {
 #ifdef _DEBUG
@@ -80,8 +72,8 @@ namespace Gyro {
 #endif
         return;
       }
-      // アニメーション番号の取得
-      int animNum = MV1GetAnimIndex(_mHandle, key.data());
+      // アニメーション名のアニメーション番号変換
+      int animNum = AnimKeyConversion(key);
       // アニメーション番号取得失敗の場合エラー
       if (animNum == -1) {
 #ifdef _DEBUG

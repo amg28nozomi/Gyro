@@ -73,6 +73,13 @@ namespace Gyro {
         _playSpeed = speed;
       }
       /**
+       * @brief  再生速度倍率の設定
+       * @param  rate 再生速度倍率
+       */
+      void SetSpeedRate(const float rate) {
+        _speedRate = rate;
+      }
+      /**
        * @brief  ループ再生有無の設定
        * @param  loop ループ再生有無
        */
@@ -121,6 +128,7 @@ namespace Gyro {
       float _totalTime{ 0.0f };  //!< アニメーション総時間
       float _playTime{ 0.0f };   //!< アニメーション再生時間
       float _playSpeed{ 0.0f };  //!< アニメーション再生速度
+      float _speedRate{ 1.0f };  //!< 再生速度倍率
       bool _animLoop{ false };   //!< ループ再生有無
       bool _animEnd{ false };    //!< アニメーション終了
     };
