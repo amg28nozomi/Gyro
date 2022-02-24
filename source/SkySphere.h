@@ -36,7 +36,7 @@ namespace Gyro {
       void Set(Object::SpawnBase& spawn) override;
       /**
        * @brief  更新処理
-       * @return true
+       * @return true:更新成功 false:更新失敗
        */
       bool Process() override;
       /**

@@ -104,6 +104,13 @@ namespace Gyro {
         return _state == ObjectState::Dead;
       }
       /**
+       * @brief  ワールド座標行列の取得
+       * @return ワールド座標行列
+       */
+      AppMath::Matrix44 GetMatrix() const {
+        return _world;
+      }
+      /**
        * @brief  ローカル座標の取得
        * @return ローカル座標
        */
@@ -111,15 +118,15 @@ namespace Gyro {
         return _position;
       }
       /**
-       * @brief  
-       * @return 
+       * @brief  向きの取得
+       * @return 向き
        */
       AppMath::Vector4 GetRotation() const {
         return _rotation;
       }
       /**
        * @brief  拡大率の取得
-       * @return 
+       * @return スケール
        */
       AppMath::Vector4 GetScale() const {
         return _scale;

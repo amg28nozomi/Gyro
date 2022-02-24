@@ -204,6 +204,7 @@ namespace Gyro {
       // スカイスフィアの生成
       auto skySphere = std::make_shared<SkySphere>(_appMain, *_appMain.GetObjectServer().GetPlayer());
       skySphere->SetKey("sky");
+      skySphere->Set(*spawn);
       return std::move(skySphere);
     }
 

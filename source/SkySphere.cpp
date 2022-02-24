@@ -32,19 +32,16 @@ namespace Gyro {
     }
 
     bool SkySphere::Process() {
-      // ワールド座標行列
-      // _world= AppMath::Utility::ToWorldMatrix(_owner.GetPosition(), _rotation, _scale);
-      // _world = AppMath::Matrix44::Identity();
-      //_world.Translate(_position);
-      //_world = _world * w;
-
-      _position = _owner.GetPosition();
-      MV1SetPosition(_handle, UtilityDX::ToVECTOR(_position));
-      // ワールド座標の更新
-      // WorldMatrix();
-      // 座標の設定
-      auto num = MV1SetMatrix(_handle ,UtilityDX::ToMATRIX(_world));
-      return true;
+      // 別名定義
+      using Matrix44 = AppMath::Matrix44;
+      // 初期化
+      _world = Matrix44::Identity();
+      // 拡大率を追加
+      _world.MulScaling(_scale);
+      _world.MulTranslate(_position + _owner.GetPosition());
+      // 設定に成功したかを戻り値で返す
+      auto flag = MV1SetMatrix(_handle, UtilityDX::ToMATRIX(_world)) == 0;
+      return flag;
     }
 
     bool SkySphere::Draw() const {

@@ -21,7 +21,6 @@
 #include "InvincibleComponent.h"
 #include "StateComponent.h"
 
-namespace AppFrame::Math{}
 /**
  * @brief ゲームベース
  */
@@ -30,7 +29,7 @@ namespace Gyro {
    * @brief オブジェクトベース
    */
   namespace Object {
-    class CollisionCapsule;
+    class CollisionCapsule; //!< 前方宣言
   } // namespace Object
   /**
    * @brief プレイヤーベース
