@@ -132,13 +132,15 @@ namespace Gyro {
     }
 
     void EnemyWheel::Move() {
+      using Vector4 = AppMath::Vector4;
       // ターゲット座標
-      auto target = AppMath::Vector4();
+      auto target = Vector4();
       auto prot = AppMath::Vector4();
       _app.GetObjectServer().GetPlayerTransForm(target, prot);
-      AppMath::Vector4 forword = target - (_position);
-      forword.Normalize();
-      AppMath::Vector4 move = forword * (WheelMoveSpead);
+      auto forward = _position.Direction(target);
+      // 正規化
+      forward.Normalize();
+      auto move = forward * (WheelMoveSpead);
       // _sphere->Process();
       // ラジアンを生成(z軸は反転させる)
       auto radian = std::atan2(move.GetX(), -move.GetZ());
