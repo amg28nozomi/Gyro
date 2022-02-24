@@ -22,6 +22,8 @@ namespace {
 
   constexpr auto MoveSpeed = 5.0f; //!< デフォルトの移動量
   constexpr auto MoveZero = 0.0f;
+  // 走り状態
+  constexpr auto RunValue = 36.0f;
 
   constexpr auto WireSpeed = 10.0f; //!< ワイヤー移動速度
   // プレイヤーのアニメーションキー
@@ -306,10 +308,9 @@ namespace Gyro {
 
     void Player::LoadResource() {
       // 各種リソースの読み取り処理
-      auto [model, key1] = _app.GetModelServer().GetModel(_modelKey, 0);
-      _model = model;     // モデルハンドルを登録
-      auto [stage , key3] = _app.GetModelServer().GetModel("stage", 0);
-      _handleMap = stage; // ステージハンドル
+      auto [model, key1] = _app.GetModelServer().GetModel(_modelKey, 1);
+      // 取得したモデルハンドルを設定
+      _model = model;
     }
 
     void Player::SetCamera() {
@@ -362,17 +363,14 @@ namespace Gyro {
       auto [x, y , z] = move.GetVector3();
       // 別名定義
       using Utility = AppMath::Utility;
-      // 成分を正数に変換
-      AppMath::Vector4 m(Utility::ToPlus(x), Utility::ToPlus(z));
-      // 入力値が一定以上の場合は移動している
-      if (10.0f <= m.Length2D()) {
-        return true; // 走り状態である
+      // 正数に変換
+      x = Utility::ToPlus(x) * Utility::ToPlus(x);
+      z = Utility::ToPlus(z) * Utility::ToPlus(z);
+      // 走り状態かの判定
+      if (RunValue <= x || RunValue <= z) {
+        return true; // 走り状態に
       }
-      
-      /*if (RunPower <= x || x <= -RunPower || RunPower <= z || z <= -RunPower) {
-        return true;
-      }*/
-      return false;
+      return false;  // 走り状態ではない
     }
 
     void Player::Animation(PlayerState old) {
@@ -542,7 +540,8 @@ namespace Gyro {
       auto [start, end] = newCapsule.LineSegment().GetVector();
       auto radius = newCapsule.GetRadius();
       // ステージとの衝突判定
-      auto hit = MV1CollCheck_Capsule(_handleMap, 1, UtilityDX::ToVECTOR(start), UtilityDX::ToVECTOR(end), radius);
+      int handleMap = 0;
+      auto hit = MV1CollCheck_Capsule(handleMap, 1, UtilityDX::ToVECTOR(start), UtilityDX::ToVECTOR(end), radius);
       // 接触箇所がない場合
       if (!hit.HitNum) {
         // 衝突用情報の後始末を行う
