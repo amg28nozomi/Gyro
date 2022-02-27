@@ -17,7 +17,9 @@
 
 namespace {
     constexpr auto TEXTURE = _T("res/Stage/water.png");
-}
+    constexpr auto GravityScale = -9.8; //!< 重力スケール
+    constexpr auto BgmVolume = 50;      //!< BGMの再生ボリューム
+} // namespace
 
 namespace Gyro {
   namespace Mode {
@@ -29,13 +31,16 @@ namespace Gyro {
     }
 
     bool ModeGame::Enter() {
+      // リソースの読み取り処理
+      LoadResource();
+      // エフェクトリソースの読み取り
+      LoadEffectResource();
       // オブジェクトを生成
-
       SetSpawn();
-      // BGMの再生開始
+      // BGMのループ再生開始
       _app.GetSoundComponent().PlayLoop("bgm");
       // 再生音量の設定
-      _app.GetSoundComponent().SetVolume("bgm", 50);
+      _app.GetSoundComponent().SetVolume("bgm", BgmVolume);
       return true;
     }
 
@@ -44,19 +49,18 @@ namespace Gyro {
       _appMain.GetObjectServer().Release();
       // 登録されているエフェクトを削除
       _appMain.GetEffectServer().Release();
-      //
       return true;
     }
 
     bool ModeGame::Init() {
-      LoadResource(); // 各種リソースの読み取りを行う
       // 使用するデータの読み込みを記述する
       _plane.Initialize(35000.0, 150);
       _plane.Load(TEXTURE);
       _plane.Create();
+      // ステージコンポーネントの初期化
       _appMain.GetStageComponent().Init("stage");
       // 重力加速度をセットする
-      AppMath::GravityBase::SetScale(-9.8f);
+      AppMath::GravityBase::SetScale(GravityScale);
       return true;
     }
 
@@ -88,9 +92,6 @@ namespace Gyro {
           _app.GetSoundComponent().SetVolume("bgm", 50);
           break;
         }
-        // デバッグフラグがONの場合のみ処理を実行する
-        //if (_app.GetDebugFlag()) {
-        //}
       }
 #endif
       return true;
@@ -124,7 +125,12 @@ namespace Gyro {
       return _appMain;
     }
 
-    void ModeGame::LoadResource() const {
+    void ModeGame::LoadResource() {
+      // リソースの読み込みは行われているか
+      if (_isLoad) {
+        return; // 読み込み済み
+      }
+      // 別名定義
       using ModelServer = AppFrame::Model::ModelServer;
       // 各種モデルハンドルの読み込み
       const ModelServer::ModelDatas mv1Models{
@@ -137,13 +143,14 @@ namespace Gyro {
       _app.GetModelServer().AddMV1Model(mv1Models);
       // サウンド情報の読み取り
       using SoundServer = AppFrame::Sound::SoundServer;
+      // Sound情報の設定
       const SoundServer::SoundMap soundMap{
         {"bgm", "res/Sound/Stage.mp3"}
       };
       // サウンドサーバに登録
       _app.GetSoundServer().AddSounds(soundMap);
-      // エフェクトリソースの読み取り
-      LoadEffectResource();
+      // 読み込み完了
+      _isLoad = true;
     }
 
     void ModeGame::SetSpawn() {
