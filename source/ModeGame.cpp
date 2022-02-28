@@ -18,7 +18,7 @@
 namespace {
     constexpr auto TEXTURE = _T("res/Stage/water.png");
     constexpr auto GravityScale = -9.8; //!< 重力スケール
-    constexpr auto BgmVolume = 50;      //!< BGMの再生ボリューム
+    constexpr auto BgmVolume = 50.0f;   //!< BGMの再生ボリューム
 } // namespace
 
 namespace Gyro {
