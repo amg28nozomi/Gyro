@@ -9,7 +9,7 @@
 #include "PrimitivePlane.h"
 
 namespace {
-  constexpr auto DEFAULT_SIZE = 100.0;
+  constexpr auto DEFAULT_SIZE = 100.0f;
   constexpr auto DEFAULT_DIVISION_NUM = 10;
   constexpr auto DEGREE_TO_RADIAN = DX_PI_F / 180.0f;
   constexpr COLOR_U8 DEFAULT_DIFFUSE = { 255, 255, 255, 255 };
@@ -27,12 +27,12 @@ namespace Gyro {
     }
 
     // newしたとき値をそのまま指定できる
-    Plane::Plane(double size, int divisionNum) : PrimitiveBase() {
+    Plane::Plane(float size, int divisionNum) : PrimitiveBase() {
       _size = size;
       _divisionNum = divisionNum;
     }
 
-    bool Plane::Initialize(double size, int divisionNum) {
+    bool Plane::Initialize(float size, int divisionNum) {
       _size = size;
       _divisionNum = divisionNum;
 
@@ -40,7 +40,7 @@ namespace Gyro {
     }
 
     bool Plane::Create() {
-      auto divisionNumD = static_cast<double>(_divisionNum);
+      auto divisionNumD = static_cast<float>(_divisionNum);
       auto polygonSize = _size / divisionNumD;
       // 地面全体の中心を原点にするオフセット
       auto halfPolygonSize = polygonSize * 0.5f;

@@ -70,6 +70,10 @@ namespace Gyro {
        */
       void Attack() override;
       /**
+       * @brief  ノックバック処理
+       */
+      void NockBack() override;
+      /**
        * @brief  衝突処理
        */
       void Hit() override;

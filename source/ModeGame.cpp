@@ -110,12 +110,12 @@ namespace Gyro {
     }
 
     bool ModeGame::Draw() const {
-      // 各種描画処理
-      _appMain.GetObjectServer().Draw();
       // 各種ステージの描画
       _appMain.GetStageComponent().Draw();
       // 地形の描画
       _plane.Draw();
+      // 各種描画処理
+      _appMain.GetObjectServer().Draw();
       // エフェクトの描画
       _appMain.GetEffect().Draw();
       return true;

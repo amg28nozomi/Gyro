@@ -23,11 +23,11 @@ namespace Gyro {
     GaugeTrick::~GaugeTrick() {
     }
 
-    bool GaugeTrick::Init() {
+    bool GaugeTrick::Init(float value) {
       _maxW = 605.f;
-      _maxGauge = 1000.f;
+      _maxGauge = value;
       _point = 0.f;
-      _value = 950.f;
+      _value = 0.f;
 
       return true;
     }
@@ -44,12 +44,12 @@ namespace Gyro {
     }
 
     bool GaugeTrick::Draw() const {
-      auto cr = GetColor(0, 0, 0);
-      auto cr2 = GetColor(204, 204, 204);
-      auto trickCr = GetColor(255, 165, 0);
-      DrawBox(GAUGE_X_POSITION_1 - 5, GAUGE_Y_POSITION_1 - 5, static_cast<int>(_maxW), GAUGE_Y_POSITION_2 + 5, cr, TRUE);
-      DrawBox(GAUGE_X_POSITION_1, GAUGE_Y_POSITION_1, GAUGE_X_POSITION_2, GAUGE_Y_POSITION_2, cr2, TRUE);
-      DrawBox(GAUGE_X_POSITION_1, GAUGE_Y_POSITION_1, static_cast<int>(_point), GAUGE_Y_POSITION_2, trickCr, TRUE);
+      auto black = GetColor(0, 0, 0);
+      auto gray = GetColor(204, 204, 204);
+      auto orange = GetColor(255, 165, 0);
+      DrawBox(GAUGE_X_POSITION_1 - 5, GAUGE_Y_POSITION_1 - 5, static_cast<int>(_maxW), GAUGE_Y_POSITION_2 + 5, black, TRUE);
+      DrawBox(GAUGE_X_POSITION_1, GAUGE_Y_POSITION_1, GAUGE_X_POSITION_2, GAUGE_Y_POSITION_2, gray, TRUE);
+      DrawBox(GAUGE_X_POSITION_1, GAUGE_Y_POSITION_1, static_cast<int>(_point), GAUGE_Y_POSITION_2, orange, TRUE);
 
       return true;
     }

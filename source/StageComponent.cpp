@@ -109,6 +109,11 @@ namespace Gyro {
         auto [handle, stageData] = stageModel;
         auto [position, rotation, scale] = stageData.GetStageParam();
         MV1SetPosition(handle, UtilityDX::ToVECTOR(position));
+        // デグリー値をラジアン値に変換
+        auto rotX = AppFrame::Math::Utility::DegreeToRadian(rotation.GetX());
+        auto rotY = AppFrame::Math::Utility::DegreeToRadian(rotation.GetY());
+        auto rotZ = AppFrame::Math::Utility::DegreeToRadian(rotation.GetZ());
+        rotation.Set(rotX, rotY, rotZ);
         MV1SetRotationXYZ(handle, UtilityDX::ToVECTOR(rotation));
         MV1SetScale(handle, UtilityDX::ToVECTOR(scale));
         _model.emplace_back(handle);

@@ -137,8 +137,8 @@ namespace Gyro {
       // アニメーションの設定
       _modelAnim.SetMainAttach(_model, Idle, 1.0f, true);
       // ゲージの設定
-      _gaugeHp.Init();
-      _gaugeTrick.Init();
+      _gaugeHp.Init(1000.f);
+      _gaugeTrick.Init(30000.f);
       return true;
     }
 

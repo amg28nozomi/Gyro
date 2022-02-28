@@ -30,7 +30,7 @@ namespace Gyro {
        * @param size サイズ
        * @param devisionNum 分割数
        */
-      Plane(double size, int devisionNum);
+      Plane(float size, int devisionNum);
       /**
        * @brief デストラクタ
        */
@@ -40,14 +40,14 @@ namespace Gyro {
        * @param size サイズ
        * @param divisionNum 分割数
        */
-      bool Initialize(double size, int divisionNum);
+      bool Initialize(float size, int divisionNum);
       /**
        * @brief プリミティブの作成
        */
       bool Create() override;
 
     protected:
-      double _size;       //!< サイズ
+      float _size;       //!< サイズ
       int _divisionNum;   //!< 床全体のサイズを分割した数
     };
   } // namespace Gyro

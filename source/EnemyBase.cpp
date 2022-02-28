@@ -19,7 +19,7 @@ namespace {
 
 namespace Gyro {
   namespace Enemy {
-    EnemyBase::EnemyBase(Application::ApplicationMain& app) : Object::ObjectBase(app), _gaugeHp(app) {
+    EnemyBase::EnemyBase(Application::ApplicationMain& app) : Object::ObjectBase(app) {
       // 初期化
       Init();
     }
@@ -98,17 +98,32 @@ namespace Gyro {
 
     }
 
-    void EnemyBase::Sercth(const float radius) {
+    void EnemyBase::NockBack() {
+
+    }
+
+    void EnemyBase::Sercth() {
       auto objects = _app.GetObjectServer().GetObjects(); // オブジェクトのコピー
       for (auto pla : objects) {
-          if (pla->GetId() != ObjectId::Player) continue;
-          auto position = pla->GetPosition();
-          auto a = position.GetX() - _position.GetX();
-          auto b = position.GetZ() - _position.GetZ();
-          auto c = sqrt(a * a + b * b);
-          if (c < radius) {
-              _enemyState = EnemyState::Move;
-          }
+        if (pla->GetId() != ObjectId::Player) continue;
+        auto position = pla->GetPosition();
+        // 円と点の距離
+        auto a = position.GetX() - _position.GetX();
+        auto b = position.GetZ() - _position.GetZ();
+        auto c = sqrt(a * a + b * b);
+        // 距離と半径を比較して状態変化
+        if (c < _attackRadius) {
+          _enemyState = EnemyState::Attack;
+          break;
+        }
+        else if (c < _serchRadius) {
+          _enemyState = EnemyState::Move;
+          break;
+        }
+        else {
+          _enemyState = EnemyState::Idle;
+          break;
+        }
       }
     }
 

@@ -117,6 +117,12 @@
     <Filter Include="ソース ファイル\Object\Interior">
       <UniqueIdentifier>{a253feb1-b2f6-46c6-b5fa-bc70919366a9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Camera">
+      <UniqueIdentifier>{7e11cc74-e004-448b-9056-aabb30d1af51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Camera">
+      <UniqueIdentifier>{80aa6526-8417-4724-b9db-7de0bc53a4cb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\ApplicationMain.cpp">
@@ -148,9 +154,6 @@
     </ClCompile>
     <ClCompile Include="source\ObjectServer.cpp">
       <Filter>ソース ファイル\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Camera.cpp">
-      <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="source\GaugeBase.cpp">
       <Filter>ソース ファイル\Gauge</Filter>
@@ -284,6 +287,9 @@
     <ClCompile Include="source\ModeTitle.cpp">
       <Filter>ソース ファイル\Mode</Filter>
     </ClCompile>
+    <ClCompile Include="source\Camera.cpp">
+      <Filter>ソース ファイル\Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\ApplicationMain.h">
@@ -312,9 +318,6 @@
     </ClInclude>
     <ClInclude Include="source\ObjectServer.h">
       <Filter>ヘッダー ファイル\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Camera.h">
-      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="source\GaugeBase.h">
       <Filter>ヘッダー ファイル\Gauge</Filter>
@@ -453,6 +456,9 @@
     </ClInclude>
     <ClInclude Include="source\ModeTeam.h">
       <Filter>ヘッダー ファイル\Mode</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Camera.h">
+      <Filter>ヘッダー ファイル\Camera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
