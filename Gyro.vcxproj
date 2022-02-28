@@ -63,6 +63,7 @@
     <ClCompile Include="source\SpawnServer.cpp" />
     <ClCompile Include="source\StageComponent.cpp" />
     <ClCompile Include="source\StateComponent.cpp" />
+    <ClCompile Include="source\Studio.cpp" />
     <ClCompile Include="source\UtilityDX.cpp" />
     <ClCompile Include="source\WireComponent.cpp" />
     <ClCompile Include="source\WirePoint.cpp" />
@@ -113,6 +114,7 @@
     <ClInclude Include="source\StageComponent.h" />
     <ClInclude Include="source\StageData.h" />
     <ClInclude Include="source\StateComponent.h" />
+    <ClInclude Include="source\Studio.h" />
     <ClInclude Include="source\UtilityDX.h" />
     <ClInclude Include="source\WireComponent.h" />
     <ClInclude Include="source\WirePoint.h" />
