@@ -17,7 +17,7 @@
 
 namespace {
     constexpr auto TEXTURE = _T("res/Stage/water.png");
-    constexpr auto GravityScale = -9.8; //!< 重力スケール
+    constexpr auto GravityScale = -9.8f; //!< 重力スケール
     constexpr auto BgmVolume = 50;      //!< BGMの再生ボリューム
 } // namespace
 
@@ -102,7 +102,7 @@ namespace Gyro {
       Input(_app.GetOperation());
       // オブジェクトサーバの更新処理
       _appMain.GetObjectServer().Process();
-      // エフェクトサーバの更新処理
+      // エフェクトの更新処理
       _appMain.GetEffect().Process();
       // 地形の更新処理
       _plane.Process();
@@ -112,12 +112,12 @@ namespace Gyro {
     bool ModeGame::Draw() const {
       // 各種描画処理
       _appMain.GetObjectServer().Draw();
-      // エフェクトの描画
-      _appMain.GetEffect().Draw();
       // 各種ステージの描画
       _appMain.GetStageComponent().Draw();
       // 地形の描画
       _plane.Draw();
+      // エフェクトの描画
+      _appMain.GetEffect().Draw();
       return true;
     }
 

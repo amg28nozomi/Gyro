@@ -9,7 +9,7 @@
 #include "appframe.h"
 #include <DxLib.h>
 #include "ObjectServer.h"
-#include "ModeGame.h"
+#include "ModeAMG.h"
 #include "SpawnServer.h"
 #include "StageComponent.h"
 
@@ -50,8 +50,8 @@ namespace Gyro {
             // ステージコンポーネントの生成
             _stage = std::make_unique<Stage::StageComponent>(*this);
             // モードゲームの登録
-            _modeServer->AddMode("Game", std::make_shared<Mode::ModeGame>(*this));
-            _modeServer->TransionToMode("Game");
+            _modeServer->AddMode("AMG", std::make_shared<Mode::ModeAMG>(*this));
+            _modeServer->TransionToMode("AMG");
             return true;
         }
 

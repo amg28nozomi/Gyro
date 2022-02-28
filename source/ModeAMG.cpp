@@ -6,11 +6,11 @@
  * @date    February 2022
  *********************************************************************/
 #include "ModeAMG.h"
-#include "ModeTeam.h"
+#include "ModeTitle.h"
 
 namespace {
   // 各種定数
-  constexpr int MaxCount = 60;  //!< モード最大カウント
+  constexpr int MaxCount = 30;  //!< モード最大カウント
 }
 
 namespace Gyro {
@@ -54,8 +54,8 @@ namespace Gyro {
       // モードAMGの削除
       _appMain.GetModeServer().PopBuck();
       // モードチームの登録
-      _appMain.GetModeServer().AddMode("Team", std::make_shared<Mode::ModeTeam>(_appMain));
-      _appMain.GetModeServer().TransionToMode("Team");
+      _appMain.GetModeServer().AddMode("Title", std::make_shared<Mode::ModeTitle>(_appMain));
+      _appMain.GetModeServer().TransionToMode("Title");
     }
   }
 }
