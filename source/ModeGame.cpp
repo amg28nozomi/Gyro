@@ -54,7 +54,7 @@ namespace Gyro {
 
     bool ModeGame::Init() {
       // 使用するデータの読み込みを記述する
-      _plane.Initialize(35000.0, 150);
+      _plane.Initialize(35840.0, 35);
       _plane.Load(TEXTURE);
       _plane.Create();
       // ステージコンポーネントの初期化
