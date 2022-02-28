@@ -16,6 +16,7 @@ namespace Gyro {
     }
 
     bool EffectServer::Release() {
+      // データベースに登録されているか
       if (_registry.empty()) {
         return true; // データが空
       }
@@ -30,7 +31,7 @@ namespace Gyro {
 
     bool EffectServer::AddEffect(std::string_view key, const std::filesystem::path effectFile, const float magni) {
       // キーは未使用か
-      if (_registry.contains(key.data())) {
+      if (Contains(key.data())) {
         return false; // キーが重複している
       }
       // エフェクト情報の読み取り
@@ -57,7 +58,7 @@ namespace Gyro {
     }
 
     int EffectServer::GetEffectHandle(std::string_view key) const {
-      if (!_registry.contains(key.data())) {
+      if (!Contains(key.data())) {
         return -1; // キーが有効ではない
       }
       // エフェクトハンドルを返す

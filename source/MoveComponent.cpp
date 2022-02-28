@@ -37,9 +37,12 @@ namespace Gyro {
       const auto cameraTarget = camera.GetTarget();
       // 別名定義
       using Vector4 = AppMath::Vector4;
-      using Matirx44 = AppMath::Matrix44;
-      // 外積を求める
-      auto cross = cameraPos.Cross(_owner.GetPosition());
+      // 所有者の座標
+      const auto target = _owner.GetPosition();
+      // 二つのベクトルのなす角を求める
+      auto cos = Vector4::Dot(cameraPos, target) / (Vector4::Length(cameraPos) * Vector4::Length(target));
+      // ラジアンで算出
+      auto f = std::acos(cos);
 
       // カメラ向きの取得
       auto cameraForward = cameraPos.Direction(_owner.GetPosition());

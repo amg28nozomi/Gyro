@@ -77,11 +77,12 @@ namespace Gyro {
     private:
       //!< アプリケーションメインの参照
       Application::ApplicationMain& _appMain;
+      //!< 床
       Primitive::Plane _plane;
       /**
        * @brief リソースの読み取り
        */
-      void LoadResource() const;
+      void LoadResource();
       /**
        * @brief スポーン情報の設定
        */
