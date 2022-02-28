@@ -1,0 +1,61 @@
+/*****************************************************************//**
+ * @file    ModeTeam.cpp
+ * @brief   モードチームクラス
+ *
+ * @author  宮澤耀生
+ * @date    February 2022
+ *********************************************************************/
+#include "ModeTeam.h"
+#include "ModeTitle.h"
+
+namespace {
+  // 各種定数
+  constexpr int MaxCount = 60;  //!< モード最大カウント
+}
+
+namespace Gyro {
+  namespace Mode {
+    ModeTeam::ModeTeam(Application::ApplicationMain& app) : ModeBase(*app.GetInstance()), _appMain(app) {
+
+    }
+
+    ModeTeam::~ModeTeam() {
+
+    }
+
+    bool ModeTeam::Init() {
+      // リソース読み込み
+      LoadResource();
+      return true;
+    }
+
+    bool ModeTeam::Process() {
+      _count++;  // カウントを増やす
+      // モード最大カウントを過ぎたら
+      if (MaxCount < _count) {
+        // モード切り替え
+        ChangeMode();
+      }
+      return true;
+    }
+
+    bool ModeTeam::Draw() const {
+      // チーム描画
+      //DrawGraph(0, 0, _teamHandle, false);
+      return true;
+    }
+
+    void ModeTeam::LoadResource() {
+      // チーム読み込み
+      //_teamHandle = LoadGraph("res/Logo/.png");
+    }
+
+    void ModeTeam::ChangeMode() {
+      // モードチームの削除
+      _appMain.GetModeServer().PopBuck();
+      // モードタイトルの登録
+      _appMain.GetModeServer().AddMode("Title", std::make_shared<Mode::ModeTitle>(_appMain));
+      _appMain.GetModeServer().TransionToMode("Title");
+    }
+  }
+}

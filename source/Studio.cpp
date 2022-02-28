@@ -73,10 +73,10 @@ namespace Gyro {
       auto [title, key1] = _app.GetModelServer().GetModel("studio", 0);
       _studioHandle = title;
       // ジャイロ読み込み
-      auto [gyro, key2] = _app.GetModelServer().GetModel("gyro", 0);
+      auto [gyro, key2] = _app.GetModelServer().GetModel("player", 0);
       _gyroHandle = gyro;
       // スカイ読み込み
-      auto [sky, key3] = _app.GetModelServer().GetModel("bluesky", 0);
+      auto [sky, key3] = _app.GetModelServer().GetModel("sky", 0);
       _skyHandle = sky;
     }
 
