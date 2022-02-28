@@ -296,7 +296,8 @@ namespace Gyro {
         // ラジアンを生成(z軸は反転させる)
         auto radian = std::atan2(move.GetX(), -move.GetZ());
 #ifndef _DEBUG
-        _rotation.SetY(radian); // y軸の回転量をセットする
+        // y軸の回転量をセットする
+        _rotation.SetY(radian);
 #else
         // デグリー値をセットする(デバッグ用)
         _rotation.SetY(AppMath::Utility::RadianToDegree(radian));
