@@ -42,7 +42,13 @@ namespace Gyro {
        * @brief  描画
        */
       bool Draw() const override;
-
+      /**
+       * @brief  攻撃状態の座標の取得
+       * @return 攻撃状態の座標
+       */
+      AppFrame::Math::Vector4 GetAttackPosition() {
+        return _oldPosition;
+      }
       unsigned short GetThis() const override {
         return _this;
       }
@@ -93,6 +99,7 @@ namespace Gyro {
       bool IsDamege() override;
 
       bool _iMove{ false };  //!< 移動フラグ
+      AppFrame::Math::Vector4 _oldPosition;   //!< 攻撃状態に移行したタイミングの座標
       static inline unsigned short _number{ 0 };  //!< 生成番号
       unsigned short _this{ 0 };  //!< 識別ID
     };

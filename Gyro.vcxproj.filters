@@ -290,6 +290,9 @@
     <ClCompile Include="source\Camera.cpp">
       <Filter>ソース ファイル\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="source\KnockBackComponent.cpp">
+      <Filter>ソース ファイル\Object\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\ApplicationMain.h">
@@ -459,6 +462,9 @@
     </ClInclude>
     <ClInclude Include="source\Camera.h">
       <Filter>ヘッダー ファイル\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="source\KnockBackComponent.h">
+      <Filter>ヘッダー ファイル\Object\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

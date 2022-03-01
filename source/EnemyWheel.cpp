@@ -173,24 +173,25 @@ namespace Gyro {
     }
 
     void EnemyWheel::Attack() {
+      // アニメーションから指定したボーンのローカル座標を取得
+      auto attachIndex = _modelAnim.GetMainAttachIndex();
+      auto rPos = MV1GetFramePosition(_mHandle, 13);
+      //auto lPos = MV1GetFramePosition(_mHandle, 9);
+      /*for (auto i = 0; i < 2; i++) {
+        if (i < 1) {
+          _sphere->SetPosition(UtilityDX::ToVector(rPos));
+        }else {
+          _sphere->SetPosition(UtilityDX::ToVector(lPos));
+        }
+        _sphere->Process();
+      }*/
+      _sphere->SetPosition(UtilityDX::ToVector(rPos));
+      _sphere->Process();
+      _oldPosition = _position;
+      // アニメーション終了でIdleへ移行
       if (_modelAnim.GetMainAnimEnd() && !_modelAnim.IsBlending()) {
-        // アニメーションから指定したボーンのローカル座標を取得
-        auto attachIndex = _modelAnim.GetMainAttachIndex();
-        auto rPos = MV1GetFramePosition(_mHandle, 13);
-        auto lPos = MV1GetFramePosition(_mHandle, 9);
-        for (auto i = 0; i < 2; i++) {
-          if (i < 1) {
-            _sphere->SetPosition(UtilityDX::ToVector(rPos));
-          }else {
-            _sphere->SetPosition(UtilityDX::ToVector(lPos));
-          }
-          _sphere->Process();
-        }
-        // アニメーション終了でIdleへ移行
-        if (_modelAnim.GetMainAnimEnd() && !_modelAnim.IsBlending()) {
-          _enemyState = EnemyState::Idle;
-          _iMove = false;
-        }
+        _enemyState = EnemyState::Idle;
+        _iMove = false;
       }
     }
 

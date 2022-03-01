@@ -61,6 +61,12 @@ namespace Gyro {
       _appMain.GetStageComponent().Init("stage");
       // 重力加速度をセットする
       AppMath::GravityBase::SetScale(GravityScale);
+      VECTOR light_dir = VGet(-1.0f, -1.0f, -1.0f);
+      auto light_handle = CreateDirLightHandle(light_dir);
+      // 並行光源を 1 つ追加する
+      VECTOR left_dir = VGet(1.0f, -1.0f, 1.0f);
+      auto left_handle = CreateDirLightHandle(left_dir);
+      SetLightEnable(false);
       return true;
     }
 
@@ -118,6 +124,8 @@ namespace Gyro {
       _appMain.GetObjectServer().Draw();
       // エフェクトの描画
       _appMain.GetEffect().Draw();
+      // 並行光源を 1 つ追加する
+      SetUseLighting(true);
       return true;
     }
 
@@ -159,7 +167,7 @@ namespace Gyro {
         // 引数2:ローカル座標
         // 引数3:向き
         // 引数4:スケール
-        { Object::TypePlayer, {0.0f, 200.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}},
+        { Object::TypePlayer, {0.0f, 200.0f, -200.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}},
         { Object::TypeSkySphere, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}}
       };
       // エネミーテーブル

@@ -35,6 +35,17 @@ namespace Gyro {
     class EnemyBase : public Object::ObjectBase {
     public:
       /**
+       * @enum class  EnemyState
+       * @brief  “G‚Ìó‘Ô‘JˆÚ—p’è”
+       */
+      enum class EnemyState {
+        Idle,    //!< ‘Ò‹@
+        Move,    //!< ˆÚ“®
+        Attack,  //!< UŒ‚
+        Damage,  //!< ”íƒ_ƒ
+        Dead     //!< €–S
+      };
+      /**
        * @brief  ƒRƒ“ƒXƒgƒ‰ƒNƒ^
        */
       EnemyBase(Application::ApplicationMain& app);
@@ -93,19 +104,14 @@ namespace Gyro {
       inline bool Equals(const int handle) const {
         return _mHandle == handle;
       }
-
-    protected:
       /**
-       * @enum class  EnemyState
-       * @brief  “G‚Ìó‘Ô‘JˆÚ—p’è”
+       * @brief  ó‘Ô‚Ìæ“¾
+       * @return ó‘Ô
        */
-      enum class EnemyState {
-          Idle,    //!< ‘Ò‹@
-          Move,    //!< ˆÚ“®
-          Attack,  //!< UŒ‚
-          Damage,  //!< ”íƒ_ƒ
-          Dead     //!< €–S
-      };
+      EnemyState GetEnemyState() const {
+        return _enemyState;
+      }
+    protected:
       /**
        * @brief  ƒ‚ƒfƒ‹‚Ì“Ç‚İ‚İ
        */
@@ -163,13 +169,6 @@ namespace Gyro {
        *         false:°‚É—§‚Á‚Ä‚¢‚È‚¢
        */
       bool IsStand() override;
-      /**
-       * @brief  ó‘Ô‚Ìæ“¾
-       * @return ó‘Ô
-       */
-      EnemyState GetEnemyState() const {
-        return _enemyState;
-      }
       /**
        * @brief  ó‘Ô‘JˆÚ‚µ‚½‚©
        * @param  ‘O‚Ìó‘Ô

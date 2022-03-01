@@ -15,6 +15,7 @@
 #include "GaugeHP.h"
 #include "GaugeTrick.h"
 #include "JumpComponent.h"
+#include "KnockBackComponent.h"
 #include "MoveComponent.h"
 #include "WireComponent.h"
 #include "AttackComponent.h"
@@ -25,6 +26,12 @@
  * @brief ゲームベース
  */
 namespace Gyro {
+  /**
+   * @brief エネミークラス
+   */
+  namespace Enemy {
+    class EnemyBase;
+  }
   /**
    * @brief オブジェクトベース
    */
@@ -56,7 +63,7 @@ namespace Gyro {
         Attack1,    //!< 攻撃1
         Attack2,    //!< 攻撃2
         Attack3,    //!< 攻撃3
-        Jump        //!< ジャンプ
+        Jump,       //!< ジャンプ
       };
       /**
        * @brief コンストラクタ
@@ -109,6 +116,7 @@ namespace Gyro {
       int _model;
       //!< 歩き・ダッシュモーションの再生速度
       float _animSpeed;
+      int _playerHP{ 0 };  //!< 自機体力
       //!< AnimComponent
       ModelAnim::ModelAnimComponent _modelAnim;
       //!< HPゲージ
@@ -234,6 +242,10 @@ namespace Gyro {
        */
       bool IsAttackState() const;
       /**
+       * @brief ダメージ処理
+       */
+      void IsDamage();
+      /**
        * @brief  キーの設定
        * @return 現在の状態に対応するジョイパッドキーを返す
        *         最終コンボの場合は-1を返す
@@ -262,6 +274,8 @@ namespace Gyro {
       static inline std::string _modelKey{"player"};
       //!< ジャンプコンポーネント
       std::unique_ptr<JumpComponent> _jump;
+      //!< ノックバックコンポーネント
+      std::unique_ptr<Object::KnockBackComponent> _knockBack;
       //!< ムーブコンポーネント
       std::unique_ptr<Object::MoveComponent> _move;
       //!< ワイヤーコンポーネント

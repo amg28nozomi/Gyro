@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\InteriorBase.cpp" />
+    <ClCompile Include="source\KnockBackComponent.cpp" />
     <ClCompile Include="source\ModeAMG.cpp" />
     <ClCompile Include="source\ModeCredit.cpp" />
     <ClCompile Include="source\ModeGameOver.cpp" />
@@ -77,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\InteriorBase.h" />
+    <ClInclude Include="source\KnockBackComponent.h" />
     <ClInclude Include="source\ModeAMG.h" />
     <ClInclude Include="source\ModeCredit.h" />
     <ClInclude Include="source\ModeGameOver.h" />

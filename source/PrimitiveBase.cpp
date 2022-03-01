@@ -28,7 +28,8 @@ namespace Gyro {
     bool PrimitiveBase::Load(const TCHAR* fileName) {
       UnLoad();
 
-      _handle = LoadGraph("res/Primitive/コンポ 1 (00000).png");
+      _handle = LoadGraph("res/Primitive/コンポ 1 (00000)_1.png");
+      //_handle = LoadGraph("res/Primitive/コンポ 1 (00000).png");
       _handle2 = LoadGraph("res/Primitive/コンポ 1 (00010).png");
       _handle3 = LoadGraph("res/Primitive/コンポ 1 (00020).png");
       _handle4 = LoadGraph("res/Primitive/コンポ 1 (00030).png");
@@ -67,7 +68,8 @@ namespace Gyro {
 
       auto _polygonNum = _indexNum / 3;
 
-      if (_cnt < _interval) {
+      DrawPolygonIndexed3D(_vertex->data(), _vertexNum, _index->data(), _polygonNum, _handle, FALSE);
+      /*if (_cnt < _interval) {
         DrawPolygonIndexed3D(_vertex->data(), _vertexNum, _index->data(), _polygonNum, _handle, FALSE);
       }else if (_cnt < _interval * 2) {
         DrawPolygonIndexed3D(_vertex->data(), _vertexNum, _index->data(), _polygonNum, _handle2, FALSE);
@@ -79,7 +81,7 @@ namespace Gyro {
         DrawPolygonIndexed3D(_vertex->data(), _vertexNum, _index->data(), _polygonNum, _handle5, FALSE);
       }else if (_cnt <= _interval * 6) {
         DrawPolygonIndexed3D(_vertex->data(), _vertexNum, _index->data(), _polygonNum, _handle6, FALSE);
-      }
+      }*/
 
       return true;
     }

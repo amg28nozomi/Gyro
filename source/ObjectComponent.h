@@ -29,6 +29,7 @@ namespace Gyro {
         Jump,       //!< ジャンプ
         Wire,       //!< ワイヤー
         Move,       //!< 移動処理
+        KnockBack,  //!< ノックバック
         Invincible, //!< 無敵時間
         State       //!< ステート管理
       };
