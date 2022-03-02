@@ -9,7 +9,7 @@
 #include "appframe.h"
 #include <EffekseerForDXLib.h>
 #include "Camera.h"
-#include "EffectServer.h"
+#include "EffectLoadServer.h"
 #include "EffectComponent.h"
 
  /**
@@ -35,8 +35,8 @@ namespace Gyro {
    */
   namespace Effect {
     // 前方宣言
-    class EffectServer;     //!< エフェクトサーバ
-    class EffectComponent;  //!< エフェクト
+    class EffectLoadServer;  //!< エフェクトサーバ
+    class EffectComponent;   //!< エフェクト
   } // namespace Effect
   /**
    * @brief アプリケーション
@@ -98,8 +98,8 @@ namespace Gyro {
        * @brief  エフェクトサーバの取得
        * @return エフェクトサーバの参照
        */
-      Effect::EffectServer& GetEffectServer() {
-        return *_effectServer;
+      Effect::EffectLoadServer& GetEffectLoadServer() {
+        return *_effectLoadServer;
       }
       /**
        * @brief  エフェクトの取得
@@ -123,7 +123,7 @@ namespace Gyro {
       //!< カメラ
       std::unique_ptr<Camera::Camera> _camera{ nullptr };
       //!< エフェクトサーバ
-      std::unique_ptr<Effect::EffectServer> _effectServer{ nullptr };
+      std::unique_ptr<Effect::EffectLoadServer> _effectLoadServer{ nullptr };
       //! エフェクト
       std::unique_ptr<Effect::EffectComponent> _effect{ nullptr };
       //!< ステージコンポーネント

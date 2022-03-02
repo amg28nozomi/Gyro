@@ -233,9 +233,6 @@
     <ClCompile Include="source\EffectComponent.cpp">
       <Filter>ソース ファイル\Effect</Filter>
     </ClCompile>
-    <ClCompile Include="source\EffectServer.cpp">
-      <Filter>ソース ファイル\Effect</Filter>
-    </ClCompile>
     <ClCompile Include="source\EnemyBase.cpp">
       <Filter>ソース ファイル\Enemy</Filter>
     </ClCompile>
@@ -292,6 +289,9 @@
     </ClCompile>
     <ClCompile Include="source\KnockBackComponent.cpp">
       <Filter>ソース ファイル\Object\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="source\EffectLoadServer.cpp">
+      <Filter>ソース ファイル\Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -403,9 +403,6 @@
     <ClInclude Include="source\EffectComponent.h">
       <Filter>ヘッダー ファイル\Effect</Filter>
     </ClInclude>
-    <ClInclude Include="source\EffectServer.h">
-      <Filter>ヘッダー ファイル\Effect</Filter>
-    </ClInclude>
     <ClInclude Include="source\EnemyBase.h">
       <Filter>ヘッダー ファイル\Enemy</Filter>
     </ClInclude>
@@ -465,6 +462,9 @@
     </ClInclude>
     <ClInclude Include="source\KnockBackComponent.h">
       <Filter>ヘッダー ファイル\Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="source\EffectLoadServer.h">
+      <Filter>ヘッダー ファイル\Effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

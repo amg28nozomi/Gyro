@@ -74,6 +74,7 @@ namespace Gyro {
     constexpr std::string_view pAirHeavyAttack2 = "P_AirHeavyAttack2";  //!< プレイヤー空中弱攻撃1
     constexpr std::string_view pUltActivate = "P_Ult_Activate";         //!< プレイヤー必殺
     constexpr std::string_view pUltSlash = "P_Ult_Slash";               //!< プレイヤー必殺
+    constexpr std::string_view pJump = "P_Jump";                        //!< プレイヤージャンプ
     constexpr std::string_view pHit = "P_Hit";                          //!< プレイヤー被ダメ
     // 敵
     constexpr std::string_view eEyeLight = "E_EyeLight";          //!< 敵発見

@@ -39,9 +39,9 @@ namespace {
   constexpr auto GroundLightAttack2 = "GyroLaw2";              //!< ’nãŽãUŒ‚2
   constexpr auto GroundLightAttack3 = "GyroLaw3";              //!< ’nãŽãUŒ‚3
   constexpr auto GroundLightAttackEX = "GyroLawEx";            //!< ’nãEXUŒ‚(Žã‚ÌY)
-  constexpr auto GroundHeavyAttack1 = "Gyro High1";            //!< ’nã‹­UŒ‚1
-  constexpr auto GroundHeavyAttack2 = "GyroHigh2";             //!< ’nã‹­UŒ‚2
-  constexpr auto GroundHeavyAttack3 = "GyroHigh3";             //!< ’nã‹­UŒ‚3
+  constexpr auto GroundHeavyAttack1 = "Gyrohigh1";             //!< ’nã‹­UŒ‚1
+  constexpr auto GroundHeavyAttack2 = "Gyrohigh2";             //!< ’nã‹­UŒ‚2
+  constexpr auto GroundHeavyAttack3 = "Gyrohigh3";             //!< ’nã‹­UŒ‚3
   constexpr auto AirLightAttack1 = "GyroJLaw1";                //!< ‹ó’†ŽãUŒ‚1
   constexpr auto AirLightAttack2 = "GyroJLaw2";                //!< ‹ó’†ŽãUŒ‚2
   constexpr auto AirLightAttack3 = "GyroJLaw3";                //!< ‹ó’†ŽãUŒ‚3
@@ -103,19 +103,19 @@ namespace Gyro {
       // ‘–‚è
       {StateNumberRun, {Run, 10.0f, 1.0f, true}},
       // ƒWƒƒƒ“ƒv
-      {StateNumberJump, {JumpUp, 10.0f, 1.0f, false}},
+      {StateNumberJump, {JumpUp, 10.0f, 1.0f, false, Effect::pJump}},
       // ŽãUŒ‚1
       {StateNumberLight1, {GroundLightAttack1, 10.0f, 1.3f, false, Effect::pWeakAttack1}},
       // ŽãUŒ‚2
       {StateNumberLight2, {GroundLightAttack2, 10.0f, 1.3f, false, Effect::pWeakAttack2}},
       // ŽãUŒ‚3
-      {StateNumberLight3, {GroundLightAttack3, 10.0f, 1.0f, false}},
+      {StateNumberLight3, {GroundLightAttack3, 10.0f, 1.0f, false, Effect::pWeakAttack3}},
       // ‹­UŒ‚1
       {StateNumberHeavy1 ,{GroundHeavyAttack1, 10.0f, 1.0f, false, Effect::pHeavyAttack1}},
       // ‹­UŒ‚2
       {StateNumberHeavy2 ,{GroundHeavyAttack2, 10.0f, 1.0f, false}},
       // ‹­UŒ‚3
-      {StateNumberHeavy3 ,{GroundHeavyAttack3, 10.0f, 1.0f, false}}
+      {StateNumberHeavy3 ,{GroundHeavyAttack3, 10.0f, 1.0f, false, Effect::pHeavyAttack3}}
     };
 
     Player::Player(Application::ApplicationMain& app) : ObjectBase(app), _gaugeHp(app), _gaugeTrick(app) {
