@@ -29,6 +29,8 @@ namespace Gyro {
     bool ModeResult::Enter() {
       // リソース読み込み
       LoadResource();
+      // 変数初期化
+      _backTitle = false;
       // スタジオ生成
       _studio = std::make_unique<Studio::Studio>(_appMain);
       // BGMの再生開始

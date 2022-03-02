@@ -30,6 +30,8 @@ namespace Gyro {
     bool ModeTitle::Enter() {
       // リソース読み込み
       LoadResource();
+      // 変数初期化
+      _start = false;
       // スタジオ生成
       _studio = std::make_unique<Studio::Studio>(_appMain);
       // BGMの再生開始
@@ -114,8 +116,12 @@ namespace Gyro {
     void ModeTitle::ChangeMode() {
       // モードタイトルの削除
       _appMain.GetModeServer().PopBuck();
-      // モードゲームの登録
-      _appMain.GetModeServer().AddMode("Game", std::make_shared<Mode::ModeGame>(_appMain));
+      // キーが登録されているか
+      bool key = _app.GetModeServer().Contains("Game");
+      if (!key) {
+        // モードゲームの登録
+        _appMain.GetModeServer().AddMode("Game", std::make_shared<Mode::ModeGame>(_appMain));
+      }
       // モードゲーム遷移
       _appMain.GetModeServer().TransionToMode("Game");
       // BGMの再生を停止する

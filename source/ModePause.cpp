@@ -24,6 +24,10 @@ namespace Gyro {
     bool ModePause::Enter() {
       // ƒŠƒ\[ƒX“Ç‚İ‚İ
       LoadResource();
+      // •Ï”‰Šú‰»
+      _continue = 0;
+      _quitGame = 0;
+      _decision = false;
       return true;
     }
 

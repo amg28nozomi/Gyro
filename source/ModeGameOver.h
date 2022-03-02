@@ -77,7 +77,7 @@ namespace Gyro {
       int _gameOverHandle{ -1 };          //!< ゲームオーバー画像
       int _retryHandle[2]{ -1, -1 };      //!< リトライ画像
       int _backTitleHandle[2]{ -1, -1 };  //!< タイトルバック画像
-      int _retry{ 1 };                    //!< リトライ
+      int _retry{ 0 };                    //!< リトライ
       int _backTitle{ 0 };                //!< タイトルバック
       bool _decision{ false };            //!< 選択決定
       //!< アプリケーションメインの参照

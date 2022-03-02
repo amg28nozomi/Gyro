@@ -77,7 +77,7 @@ namespace Gyro {
       int _pauseHandle{ -1 };            //!< ポーズ画像
       int _continueHandle[2]{ -1, -1 };  //!< コンティニュー画像
       int _quitGameHandle[2]{ -1, -1 };  //!< ゲーム終了画像
-      int _continue{ 1 };                //!< コンテニュー
+      int _continue{ 0 };                //!< コンテニュー
       int _quitGame{ 0 };                //!< ゲーム終了
       bool _decision{ false };           //!< 選択決定
       //!< アプリケーションメインの参照
