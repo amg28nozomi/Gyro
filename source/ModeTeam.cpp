@@ -24,8 +24,16 @@ namespace Gyro {
     }
 
     bool ModeTeam::Init() {
+      return true;
+    }
+
+    bool ModeTeam::Enter() {
       // リソース読み込み
       LoadResource();
+      return true;
+    }
+
+    bool ModeTeam::Exit() {
       return true;
     }
 
@@ -41,13 +49,19 @@ namespace Gyro {
 
     bool ModeTeam::Draw() const {
       // チーム描画
-      //DrawGraph(0, 0, _teamHandle, false);
+      DrawGraph(0, 0, _teamHandle, false);
       return true;
     }
 
     void ModeTeam::LoadResource() {
+      // リソースの読み込みは行われているか
+      if (_isLoad) {
+        return; // 読み込み済み
+      }
       // チーム読み込み
-      //_teamHandle = LoadGraph("res/Logo/.png");
+      _teamHandle = LoadGraph("res/Logo/.png");
+      // 読み込み完了
+      _isLoad = true;
     }
 
     void ModeTeam::ChangeMode() {
@@ -55,6 +69,7 @@ namespace Gyro {
       _appMain.GetModeServer().PopBuck();
       // モードタイトルの登録
       _appMain.GetModeServer().AddMode("Title", std::make_shared<Mode::ModeTitle>(_appMain));
+      // モードタイトル遷移
       _appMain.GetModeServer().TransionToMode("Title");
     }
   }

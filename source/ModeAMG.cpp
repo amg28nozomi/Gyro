@@ -24,8 +24,16 @@ namespace Gyro {
     }
 
     bool ModeAMG::Init() {
+      return true;
+    }
+
+    bool ModeAMG::Enter() {
       // リソース読み込み
       LoadResource();
+      return true;
+    }
+
+    bool ModeAMG::Exit() {
       return true;
     }
 
@@ -46,15 +54,22 @@ namespace Gyro {
     }
 
     void ModeAMG::LoadResource() {
+      // リソースの読み込みは行われているか
+      if (_isLoad) {
+        return; // 読み込み済み
+      }
       // AMG読み込み
       _amgHandle = LoadGraph("res/Logo/amglogo.png");
+      // 読み込み完了
+      _isLoad = true;
     }
 
     void ModeAMG::ChangeMode() {
       // モードAMGの削除
       _appMain.GetModeServer().PopBuck();
-      // モードチームの登録
+      // 未登録のためモードチームの登録
       _appMain.GetModeServer().AddMode("Title", std::make_shared<Mode::ModeTitle>(_appMain));
+      // モードチーム遷移
       _appMain.GetModeServer().TransionToMode("Title");
     }
   }

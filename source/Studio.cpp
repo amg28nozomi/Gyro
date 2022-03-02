@@ -24,7 +24,8 @@ namespace {
 namespace Gyro {
   namespace Studio {
     Studio::Studio(Application::ApplicationMain& app) : _app(app) {
-
+      // 初期化
+      Init();
     }
 
     Studio::~Studio() {
@@ -44,6 +45,8 @@ namespace Gyro {
       _studioHandle = -1;
       _gyroHandle = -1;
       _skyHandle = -1;
+      // カメラ初期化
+      _app.GetCamera().Init();
       // モデルアニメ解放
       _modelAnim.Release();
     }

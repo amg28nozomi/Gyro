@@ -18,12 +18,12 @@ namespace Gyro {
     }
 
     bool ModeCredit::Init() {
-      // リソース読み込み
-      LoadResource();
       return true;
     }
 
     bool ModeCredit::Enter() {
+      // リソース読み込み
+      LoadResource();
       return true;
     }
 
@@ -44,7 +44,12 @@ namespace Gyro {
     }
 
     void ModeCredit::LoadResource() {
-
+      // リソースの読み込みは行われているか
+      if (_isLoad) {
+        return; // 読み込み済み
+      }
+      // 読み込み完了
+      _isLoad = true;
     }
 
     void ModeCredit::ChangeMode() {

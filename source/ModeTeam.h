@@ -38,6 +38,16 @@ namespace Gyro {
        */
       bool Init() override;
       /**
+       * @brief  “üŒûˆ—
+       * @return true
+       */
+      bool Enter() override;
+      /**
+       * @brief  I—¹ˆ—
+       * @return true
+       */
+      bool Exit() override;
+      /**
        * @brief  XVˆ—
        * @return true
        */

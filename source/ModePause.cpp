@@ -18,12 +18,12 @@ namespace Gyro {
     }
 
     bool ModePause::Init() {
-      // リソース読み込み
-      LoadResource();
       return true;
     }
 
     bool ModePause::Enter() {
+      // リソース読み込み
+      LoadResource();
       return true;
     }
 
@@ -73,12 +73,18 @@ namespace Gyro {
     }
 
     void ModePause::LoadResource() {
+      // リソースの読み込みは行われているか
+      if (_isLoad) {
+        return; // 読み込み済み
+      }
       // 画像読み込み
       _pauseHandle = LoadGraph("res/Pause/pause.png");
       _continueHandle[0] = LoadGraph("res/Pause/continue0.png");
       _continueHandle[1] = LoadGraph("res/Pause/continue1.png");
       _quitGameHandle[0] = LoadGraph("res/Pause/quitgame0.png");
       _quitGameHandle[1] = LoadGraph("res/Pause/quitgame1.png");
+      // 読み込み完了
+      _isLoad = true;
     }
 
     void ModePause::ChangeMode() {

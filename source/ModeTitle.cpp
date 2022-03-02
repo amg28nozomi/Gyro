@@ -24,15 +24,14 @@ namespace Gyro {
     }
 
     bool ModeTitle::Init() {
-      // リソース読み込み
-      LoadResource();
-      // スタジオ初期化
-      _studio = std::make_unique<Studio::Studio>(_appMain);
-      _studio->Init();
       return true;
     }
 
     bool ModeTitle::Enter() {
+      // リソース読み込み
+      LoadResource();
+      // スタジオ生成
+      _studio = std::make_unique<Studio::Studio>(_appMain);
       // BGMの再生開始
       _appMain.GetSoundComponent().PlayLoop("title");
       // 再生音量の設定
@@ -41,8 +40,6 @@ namespace Gyro {
     }
 
     bool ModeTitle::Exit() {
-      // カメラの初期化
-      _appMain.GetCamera().Init();
       // スタジオ解放
       _studio->Release();
       return true;
@@ -88,6 +85,10 @@ namespace Gyro {
     }
 
     void ModeTitle::LoadResource() {
+      // リソースの読み込みは行われているか
+      if (_isLoad) {
+        return; // 読み込み済み
+      }
       // タイトル読み込み
       _titleHandle = LoadGraph("res/Title/GYROtitle.png");
       // 各種モデルハンドルの読み込み
@@ -106,6 +107,8 @@ namespace Gyro {
       };
       // サウンドサーバに登録
       _appMain.GetSoundServer().AddSounds(soundMap);
+      // 読み込み完了
+      _isLoad = true;
     }
 
     void ModeTitle::ChangeMode() {
@@ -113,6 +116,7 @@ namespace Gyro {
       _appMain.GetModeServer().PopBuck();
       // モードゲームの登録
       _appMain.GetModeServer().AddMode("Game", std::make_shared<Mode::ModeGame>(_appMain));
+      // モードゲーム遷移
       _appMain.GetModeServer().TransionToMode("Game");
       // BGMの再生を停止する
       _appMain.GetSoundComponent().StopSound("title");

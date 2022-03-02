@@ -19,12 +19,12 @@ namespace Gyro {
     }
 
     bool ModeGameOver::Init() {
-      // リソース読み込み
-      LoadResource();
       return true;
     }
 
     bool ModeGameOver::Enter() {
+      // リソース読み込み
+      LoadResource();
       return true;
     }
 
@@ -74,12 +74,18 @@ namespace Gyro {
     }
 
     void ModeGameOver::LoadResource() {
+      // リソースの読み込みは行われているか
+      if (_isLoad) {
+        return; // 読み込み済み
+      }
       // 画像読み込み
       _gameOverHandle = LoadGraph("res/GameOver/gameover.png");
       _retryHandle[0] = LoadGraph("res/GameOver/retry0.png");
       _retryHandle[1] = LoadGraph("res/GameOver/retry1.png");
       _backTitleHandle[0] = LoadGraph("res/GameOver/backtitle0.png");
       _backTitleHandle[1] = LoadGraph("res/GameOver/backtitle1.png");
+      // 読み込み完了
+      _isLoad = true;
     }
 
     void ModeGameOver::ChangeMode() {
@@ -87,8 +93,7 @@ namespace Gyro {
       _appMain.GetModeServer().PopBuck();
       // タイトルバック選択時
       if (_backTitle == 1) {
-        // モードタイトルの登録
-        _appMain.GetModeServer().AddMode("Title", std::make_shared<Mode::ModeTitle>(_appMain));
+        // モードタイトル遷移
         _appMain.GetModeServer().TransionToMode("Title");
       }
     }
