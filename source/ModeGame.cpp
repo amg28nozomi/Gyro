@@ -59,8 +59,6 @@ namespace Gyro {
       SetLightEnable(true);
       // 生成したオブジェクトを削除
       _appMain.GetObjectServer().Release();
-      // 登録されているエフェクトを削除
-      _appMain.GetEffectLoadServer().Release();
       return true;
     }
 
