@@ -23,6 +23,8 @@ namespace Gyro {
     }
 
     bool ModeResult::Init() {
+      // スタジオ生成
+      _studio = std::make_unique<Studio::Studio>(_appMain);
       return true;
     }
 
@@ -31,8 +33,8 @@ namespace Gyro {
       LoadResource();
       // 変数初期化
       _backTitle = false;
-      // スタジオ生成
-      _studio = std::make_unique<Studio::Studio>(_appMain);
+      // スタジオ初期化
+      _studio->Init();
       // BGMの再生開始
       _appMain.GetSoundComponent().PlayLoop("result");
       // 再生音量の設定

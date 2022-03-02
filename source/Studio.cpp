@@ -24,8 +24,7 @@ namespace {
 namespace Gyro {
   namespace Studio {
     Studio::Studio(Application::ApplicationMain& app) : _app(app) {
-      // 初期化
-      Init();
+
     }
 
     Studio::~Studio() {
@@ -88,7 +87,7 @@ namespace Gyro {
       MV1SetPosition(_studioHandle, UtilityDX::ToVECTOR(StudioPos));
       // ジャイロ設定
       MV1SetPosition(_gyroHandle, UtilityDX::ToVECTOR(GyroPos));
-      _modelAnim.SetMainAttach(_gyroHandle, "GyroIdle", AnimSpeed, true);
+      _modelAnim.SetMainAttach(_gyroHandle, "GyroTitleSleeper", AnimSpeed, true);
       // スカイ設定
       MV1SetPosition(_skyHandle, UtilityDX::ToVECTOR(SkyPos));
       // カメラ設定

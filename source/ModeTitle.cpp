@@ -24,6 +24,8 @@ namespace Gyro {
     }
 
     bool ModeTitle::Init() {
+      // スタジオ生成
+      _studio = std::make_unique<Studio::Studio>(_appMain);
       return true;
     }
 
@@ -32,8 +34,8 @@ namespace Gyro {
       LoadResource();
       // 変数初期化
       _start = false;
-      // スタジオ生成
-      _studio = std::make_unique<Studio::Studio>(_appMain);
+      // スタジオ初期化
+      _studio->Init();
       // BGMの再生開始
       _appMain.GetSoundComponent().PlayLoop("title");
       // 再生音量の設定
@@ -51,12 +53,16 @@ namespace Gyro {
       // 入力状態の取得
       auto device = input.GetXBoxState();
       namespace App = AppFrame::Application;
+      // STARTボタンが押された場合、アプリケーションを終了する(デバッグ用)
+      if (device.GetButton(XINPUT_BUTTON_START, App::InputTrigger)) {
+        _appMain.RequestTerminate(); // アプリケーションの終了処理を呼び出し
+      }
       // Aボタンが押された場合、ゲーム開始
       if (device.GetButton(XINPUT_BUTTON_A, App::InputTrigger)) {
         if (_start == false) {
           _start = true;
           // ジャイロアニメ変更
-          _studio->GyroChangeAnim("GyroExciteTrickActive");
+          _studio->GyroChangeAnim("Gyro_Title_Start");
         }
       }
       return true;
@@ -96,9 +102,9 @@ namespace Gyro {
       // 各種モデルハンドルの読み込み
       using ModelServer = AppFrame::Model::ModelServer;
       const ModelServer::ModelDatas mv1Models{
-        {"studio", "res/Stage/Studio_GEO.mv1"},          // スタジオ
-        {"player", "res/Player/Gyro Multimotion8.mv1"},  // 自機(ジャイロ)
-        {"sky", "res/SkySphere/skysphere.mv1"},          // スカイスフィア
+        {"studio", "res/Stage/Studio_GEO.mv1"},           // スタジオ
+        {"player", "res/Player/Gyro Multimotion10.mv1"},  // 自機(ジャイロ)
+        {"sky", "res/SkySphere/skysphere.mv1"},           // スカイスフィア
       };
       // モデルサーバで読み取りを行う
       _appMain.GetModelServer().AddMV1Model(mv1Models);
