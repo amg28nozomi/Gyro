@@ -171,6 +171,41 @@ namespace Gyro {
       _isLoad = true;
     }
 
+    void ModeGame::LoadEffectResource() {
+      // リソースの読み込みは行われているか
+      if (_isEffectLoad) {
+        return; // 読み込み済み
+      }
+      using EffectLoadServer = Effect::EffectLoadServer;
+      // エフェクトハンドルの読み込み
+      const EffectLoadServer::EffectMap effectMap{
+        {Effect::pWeakAttack1, "res/Effect/Player/WeakAttack1/player_weakattack_1.efkefc", 5.0f},
+        {Effect::pWeakAttack2, "res/Effect/Player/WeakAttack2/player_weakattack_2.efkefc", 5.0f},
+        {Effect::pWeakAttack3, "res/Effect/Player/WeakAttack3/player_weakattack_3.efkefc", 5.0f},
+        {Effect::pWeakAttackEX, "res/Effect/Player/WeakAttackEX/player_weakattack_EX.efkefc", 5.0f},
+        {Effect::pHeavyAttack1, "res/Effect/Player/HeavyAttack1/HeavyAttack1.efkefc", 20.0f},
+        {Effect::pHeavyAttack3, "res/Effect/Player/HeavyAttack3/HeavyAttack3.efkefc", 20.0f},
+        {Effect::pAirWeakAttack1, "res/Effect/Player/AirWeakAttack1/Player_attack_air_normal_01.efkefc", 5.0f},
+        {Effect::pAirWeakAttack2, "res/Effect/Player/AirWeakAttack2/Player_attack_air_normal_02.efkefc", 5.0f},
+        {Effect::pAirWeakAttack3, "res/Effect/Player/AirWeakAttack3/Player_attack_air_normal_03.efkefc", 5.0f},
+        {Effect::pAirHeavyAttack1, "res/Effect/Player/AirHeavyAttack1/Player_attack_air_heavy_01.efkefc", 5.0f},
+        {Effect::pAirHeavyAttack2, "res/Effect/Player/AirHeavyAttack2/Player_attack_air_heavy_02.efkefc", 5.0f},
+        {Effect::pUltActivate, "res/Effect/Player/Ult_Activate/Player_ult_activate.efkefc", 5.0f},
+        {Effect::pUltSlash, "res/Effect/Player/Ult_Slash/Player_ult_slash.efkefc", 5.0f},
+        {Effect::pJump, "res/Effect/Player/Jump/jump.efkefc", 5.0f},
+        {Effect::pHit, "res/Effect/Player/Hit/Hit.efkefc", 5.0f},
+        {Effect::eEyeLight, "res/Effect/Enemy/EyeLight/Enemy_EyeLight.efkefc", 20.0f},
+        {Effect::eGroundAttack, "res/Effect/Enemy/GroundAttack/Enemy_ground_attack.efkefc", 10.0f},
+        {Effect::eHit, "res/Effect/Enemy/Hit/Enemy_Hit.efkefc", 20.0f},
+        {Effect::eExprosion, "res/Effect/Enemy/Exprosion/Enemy_Exprosion.efkefc", 10.0f},
+        {Effect::stageBarrier, "res/Effect/stage_barrier/stage_barrier.efkefc", 5.0f}
+      };
+      // エフェクトサーバに登録
+      _appMain.GetEffectLoadServer().AddEffects(effectMap);
+      // 読み込み完了
+      _isEffectLoad = true;
+    }
+
     void ModeGame::SetSpawn() {
       // スポーン情報の設定
       const Object::SpawnTable normal {
@@ -207,35 +242,6 @@ namespace Gyro {
 #endif
       // 指定したスポーン情報を基にオブジェクトを生成する
       _appMain.GetSpawnServer().Spawn(0);
-    }
-
-    void ModeGame::LoadEffectResource() const {
-      using EffectLoadServer = Effect::EffectLoadServer;
-      // エフェクトハンドルの読み込み
-      const EffectLoadServer::EffectMap effectMap {
-        {Effect::pWeakAttack1, "res/Effect/Player/WeakAttack1/player_weakattack_1.efkefc", 5.0f},
-        {Effect::pWeakAttack2, "res/Effect/Player/WeakAttack2/player_weakattack_2.efkefc", 5.0f},
-        {Effect::pWeakAttack3, "res/Effect/Player/WeakAttack3/player_weakattack_3.efkefc", 5.0f},
-        {Effect::pWeakAttackEX, "res/Effect/Player/WeakAttackEX/player_weakattack_EX.efkefc", 5.0f},
-        {Effect::pHeavyAttack1, "res/Effect/Player/HeavyAttack1/HeavyAttack1.efkefc", 20.0f},
-        {Effect::pHeavyAttack3, "res/Effect/Player/HeavyAttack3/HeavyAttack3.efkefc", 20.0f},
-        {Effect::pAirWeakAttack1, "res/Effect/Player/AirWeakAttack1/Player_attack_air_normal_01.efkefc", 5.0f},
-        {Effect::pAirWeakAttack2, "res/Effect/Player/AirWeakAttack2/Player_attack_air_normal_02.efkefc", 5.0f},
-        {Effect::pAirWeakAttack3, "res/Effect/Player/AirWeakAttack3/Player_attack_air_normal_03.efkefc", 5.0f},
-        {Effect::pAirHeavyAttack1, "res/Effect/Player/AirHeavyAttack1/Player_attack_air_heavy_01.efkefc", 5.0f},
-        {Effect::pAirHeavyAttack2, "res/Effect/Player/AirHeavyAttack2/Player_attack_air_heavy_02.efkefc", 5.0f},
-        {Effect::pUltActivate, "res/Effect/Player/Ult_Activate/Player_ult_activate.efkefc", 5.0f},
-        {Effect::pUltSlash, "res/Effect/Player/Ult_Slash/Player_ult_slash.efkefc", 5.0f},
-        {Effect::pJump, "res/Effect/Player/Jump/jump.efkefc", 5.0f},
-        {Effect::pHit, "res/Effect/Player/Hit/Hit.efkefc", 5.0f},
-        {Effect::eEyeLight, "res/Effect/Enemy/EyeLight/Enemy_EyeLight.efkefc", 20.0f},
-        {Effect::eGroundAttack, "res/Effect/Enemy/GroundAttack/Enemy_ground_attack.efkefc", 10.0f},
-        {Effect::eHit, "res/Effect/Enemy/Hit/Enemy_Hit.efkefc", 20.0f},
-        {Effect::eExprosion, "res/Effect/Enemy/Exprosion/Enemy_Exprosion.efkefc", 10.0f},
-        {Effect::stageBarrier, "res/Effect/stage_barrier/stage_barrier.efkefc", 5.0f}
-      };
-      // エフェクトサーバに登録
-      _appMain.GetEffectLoadServer().AddEffects(effectMap);
     }
 
     void ModeGame::GameOver() {

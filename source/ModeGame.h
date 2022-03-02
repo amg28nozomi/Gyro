@@ -75,6 +75,7 @@ namespace Gyro {
        */
       Application::ApplicationMain& GetAppMain();
     private:
+      bool _isEffectLoad{ false };  //!< エフェクト読み込みフラグ
       //!< アプリケーションメインの参照
       Application::ApplicationMain& _appMain;
       //!< 床
@@ -84,13 +85,13 @@ namespace Gyro {
        */
       void LoadResource();
       /**
+       * @brief エフェクトリソースの読み取り
+       */
+      void LoadEffectResource();
+      /**
        * @brief スポーン情報の設定
        */
       void SetSpawn();
-      /**
-       * @brief エフェクトリソースの読み取り
-       */
-      void LoadEffectResource() const;
       /**
        * @brief ゲームオーバー切り替え
        */
