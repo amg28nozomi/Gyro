@@ -103,19 +103,19 @@ namespace Gyro {
       // ‘–‚è
       {StateNumberRun, {Run, 10.0f, 1.0f, true}},
       // ƒWƒƒƒ“ƒv
-      {StateNumberJump, {JumpUp, 10.0f, 1.0f, false, Effect::pJump}},
+      {StateNumberJump, {JumpUp, 10.0f, 1.0f, false, Effect::PlayerJump}},
       // ãUŒ‚1
-      {StateNumberLight1, {GroundLightAttack1, 10.0f, 1.3f, false, Effect::pWeakAttack1}},
+      {StateNumberLight1, {GroundLightAttack1, 10.0f, 1.3f, false, Effect::PlayerWeakAttack1}},
       // ãUŒ‚2
-      {StateNumberLight2, {GroundLightAttack2, 10.0f, 1.3f, false, Effect::pWeakAttack2}},
+      {StateNumberLight2, {GroundLightAttack2, 10.0f, 1.3f, false, Effect::PlayerWeakAttack2}},
       // ãUŒ‚3
-      {StateNumberLight3, {GroundLightAttack3, 10.0f, 1.0f, false, Effect::pWeakAttack3}},
+      {StateNumberLight3, {GroundLightAttack3, 10.0f, 1.0f, false, Effect::PlayerWeakAttack3}},
       // ‹­UŒ‚1
-      {StateNumberHeavy1 ,{GroundHeavyAttack1, 10.0f, 1.0f, false, Effect::pHeavyAttack1}},
+      {StateNumberHeavy1 ,{GroundHeavyAttack1, 10.0f, 1.0f, false, Effect::PlayerHeavyAttack1}},
       // ‹­UŒ‚2
       {StateNumberHeavy2 ,{GroundHeavyAttack2, 10.0f, 1.0f, false}},
       // ‹­UŒ‚3
-      {StateNumberHeavy3 ,{GroundHeavyAttack3, 10.0f, 1.0f, false, Effect::pHeavyAttack3}}
+      {StateNumberHeavy3 ,{GroundHeavyAttack3, 10.0f, 1.0f, false, Effect::PlayerHeavyAttack3}}
     };
 
     Player::Player(Application::ApplicationMain& app) : ObjectBase(app), _gaugeHp(app), _gaugeTrick(app) {

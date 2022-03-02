@@ -283,18 +283,18 @@ namespace Gyro {
         break;
       case EnemyState::Move:    //!< ˆÚ“®
         ePos.AddY(135.0f);
-        effect.PlayEffect(Effect::eEyeLight, ePos, eRad);
+        effect.PlayEffect(Effect::EnemyEyeLight, ePos, eRad);
         break;
       case EnemyState::Attack:  //!< UŒ‚
-        effect.PlayEffect(Effect::eGroundAttack, ePos, eRad);
+        effect.PlayEffect(Effect::EnemyGroundAttack, ePos, eRad);
         break;
       case EnemyState::Damage:  //!< ”íƒ_ƒ
         ePos.AddY(100.0f);
-        effect.PlayEffect(Effect::eHit, ePos, eRad);
+        effect.PlayEffect(Effect::EnemyHit, ePos, eRad);
         break;
       case EnemyState::Dead:    //!< Ž€–S
         ePos.AddY(100.0f);
-        effect.PlayEffect(Effect::eExprosion, ePos, eRad);
+        effect.PlayEffect(Effect::EnemyExprosion, ePos, eRad);
         break;
       default:
         break;
