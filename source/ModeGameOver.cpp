@@ -6,6 +6,7 @@
  * @date    February 2022
  *********************************************************************/
 #include "ModeGameOver.h"
+#include "ModeGame.h"
 #include "ModeTitle.h"
 
 namespace Gyro {
@@ -91,6 +92,11 @@ namespace Gyro {
     void ModeGameOver::ChangeMode() {
       // モードゲームオーバーの削除
       _appMain.GetModeServer().PopBuck();
+      // リトライ選択時
+      if (_retry == 1) {
+        // モードゲーム遷移
+        _appMain.GetModeServer().TransionToMode("Game");
+      }
       // タイトルバック選択時
       if (_backTitle == 1) {
         // モードタイトル遷移

@@ -91,6 +91,10 @@ namespace Gyro {
        * @brief エフェクトリソースの読み取り
        */
       void LoadEffectResource() const;
+      /**
+       * @brief ゲームオーバー切り替え
+       */
+      void GameOver();
     };
   } // namespace Mode
 } // namespace Gyro

@@ -14,6 +14,7 @@
 #include "PrimitivePlane.h"
 #include "ObjectServer.h"
 #include "StageComponent.h"
+#include "ModeGameOver.h"
 
 namespace {
     constexpr auto TEXTURE = _T("res/Stage/water.png");
@@ -41,10 +42,21 @@ namespace Gyro {
       _app.GetSoundComponent().PlayLoop("bgm");
       // 再生音量の設定
       _app.GetSoundComponent().SetVolume("bgm", BgmVolume);
+      // カメラの初期化
+      _appMain.GetCamera().Init();
+      // ライトの設定
+      VECTOR light_dir = VGet(-1.0f, -1.0f, -1.0f);
+      auto light_handle = CreateDirLightHandle(light_dir);
+      VECTOR left_dir = VGet(1.0f, -1.0f, 1.0f);
+      auto left_handle = CreateDirLightHandle(left_dir);
+      SetLightEnable(false);
       return true;
     }
 
     bool ModeGame::Exit() {
+      // ライトをデフォルトに戻す
+      DeleteLightHandleAll();
+      SetLightEnable(true);
       // 生成したオブジェクトを削除
       _appMain.GetObjectServer().Release();
       // 登録されているエフェクトを削除
@@ -61,12 +73,6 @@ namespace Gyro {
       _appMain.GetStageComponent().Init("stage");
       // 重力加速度をセットする
       AppMath::GravityBase::SetScale(GravityScale);
-      VECTOR light_dir = VGet(-1.0f, -1.0f, -1.0f);
-      auto light_handle = CreateDirLightHandle(light_dir);
-      // 並行光源を 1 つ追加する
-      VECTOR left_dir = VGet(1.0f, -1.0f, 1.0f);
-      auto left_handle = CreateDirLightHandle(left_dir);
-      SetLightEnable(false);
       return true;
     }
 
@@ -106,6 +112,12 @@ namespace Gyro {
     bool ModeGame::Process() {
       // モードゲームの入力処理
       Input(_app.GetOperation());
+      // ゲームオーバー判定
+      bool gameover = _appMain.GetObjectServer().GetPlayer()->GetGameOver();
+      if (gameover) {
+        GameOver();
+        return true;
+      }
       // オブジェクトサーバの更新処理
       _appMain.GetObjectServer().Process();
       // エフェクトの更新処理
@@ -245,6 +257,21 @@ namespace Gyro {
       };
       // エフェクトサーバに登録
       _appMain.GetEffectServer().AddEffects(effectMap, effectMagniMap);
+    }
+
+    void ModeGame::GameOver() {
+      // モードゲームの削除
+      _appMain.GetModeServer().PopBuck();
+      // キーが登録されているか
+      bool key = _app.GetModeServer().Contains("GameOver");
+      if (!key) {
+        // モードゲームオーバーの登録
+        _appMain.GetModeServer().AddMode("GameOver", std::make_shared<Mode::ModeGameOver>(_appMain));
+      }
+      // モードゲームオーバー遷移
+      _appMain.GetModeServer().TransionToMode("GameOver");
+      // BGMの再生を停止する
+      _appMain.GetSoundComponent().StopSound("bgm");
     }
   } // namespace Mode
 } // namespace Gyro

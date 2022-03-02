@@ -98,6 +98,13 @@ namespace Gyro {
         return _handleMap;
       }
       /**
+       * @brief  ゲームオーバーの取得
+       * @return ゲームオーバー
+       */
+      bool GetGameOver() const {
+        return _gameOver;
+      }
+      /**
        * @brief  アタックコンポーネントの取得
        * @return アタックコンポーネントの参照
        */
@@ -290,6 +297,8 @@ namespace Gyro {
       std::string _animationKey;
       //!< 重力リセット処理
       bool _gravityReset{false};
+      //!< ゲームオーバー
+      bool _gameOver{ false };
     };
   } // namespace Player
 } // namespace Gyro

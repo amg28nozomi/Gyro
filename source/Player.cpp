@@ -635,7 +635,8 @@ namespace Gyro {
           _playerHP -= 100;
           _gaugeHp.Sub(100);
           if (_playerHP <= 0) {
-            // ここにGameOver処理
+            // ゲームオーバー
+            _gameOver = true;
           }
           // 無敵時間を開始する
           _invincible->Start();
