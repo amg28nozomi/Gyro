@@ -21,6 +21,7 @@ namespace Gyro {
     class ObjectBase;
     class CollisionBase;
     namespace AppMath = AppFrame::Math;
+    constexpr auto DefaultSpeed = 10.0f;
     /**
      * @class AttackComponent
      * @brief 攻撃用コンポーネント
@@ -33,6 +34,7 @@ namespace Gyro {
       enum class AttackState {
         NonActive, // ノーアクション
         Active,    // 活動状態
+        Interval   // インターバル
       };
       /**
        * @brief  コンストラクタ
@@ -82,6 +84,12 @@ namespace Gyro {
       void Draw() const;
 #endif
       /**
+       * @brief  インターバル時間の設定
+       * @param  time  インターバル時間
+       * @param  speed 経過時間(デフォルトだと10.0f)
+       */
+      void SetInterval(const float time, const float speed = DefaultSpeed);
+      /**
        * @brief  攻撃状態の取得
        * @return 攻撃状態
        */
@@ -109,6 +117,20 @@ namespace Gyro {
       inline bool IsAttack() const {
         return _state == AttackState::Active;
       }
+      /**
+       * @brief  インターバル状態かの判定
+       * @return true:インターバル状態 false:それ以外の状態
+       */
+      inline bool IsInterval() const {
+        return _state == AttackState::Interval;
+      }
+      /**
+       * @brief  攻撃状態に遷移できるかの判定
+       * @return true:遷移可能 false:不可
+       */
+      inline bool ToAttack() const {
+        return _state == AttackState::NonActive;
+      }
     protected:
       //!< オブジェクトの所有者
       ObjectBase& _owner;
@@ -120,12 +142,18 @@ namespace Gyro {
       std::vector<std::shared_ptr<CollisionBase>> _collision;
       //!< ワールド座標を格納するためのコンテナ
       std::vector<int> _indexs;
-      //!< 攻撃判定時間
+      //!< インターバル時間
       float _time{0.0f};
+      //!< 経過時間
+      float _speed{0.0f};
       /**
        * @brief ローカル座標をワールド座標に変換する
        */
       AppMath::Matrix44 LocalToWorld(const AppMath::Vector4& local) const;
+      /**
+       * @brief インターバル処理
+       */
+      void Interval();
     };
   } // mamespace Object
 } // namespace Gyro

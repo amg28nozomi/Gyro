@@ -74,6 +74,9 @@ namespace {
   constexpr auto StateNumberHeavy2 = 7;  //!< 強攻撃2
   constexpr auto StateNumberHeavy3 = 9;  //!< 強攻撃3
   constexpr auto StateNumberExcite = 10; //!< エキサイトトリック
+  constexpr auto StateNumberDash = 11;   //!< ダッシュ
+
+  constexpr auto AttackInterval = 150.0f; //!< 攻撃用インターバル
 }
 
 namespace Gyro {
@@ -274,37 +277,41 @@ namespace Gyro {
         if (_modelAnim.GetMainAnimEnd()) {
           _playerState = PlayerState::Idle;
           _attack->Finish();
+          _attack->SetInterval(150.0f);
           _stateComponent->Finish();
         }
         return true;
       }
       // 攻撃状態に遷移するかの判定？
       if (_playerState == PlayerState::Idle || _playerState == PlayerState::Run || _playerState == PlayerState::Walk) {
-        // Yボタンの入力があった場合
-        if (input.GetButton(XINPUT_BUTTON_Y, false)) {
-          // 強攻撃に遷移する
-          SetStateParam(PlayerState::Attack1);
-          // 攻撃判定で使用するフレーム番号の取得
-          auto frames = attackMap.at(PlayerStateToNumber());
-          // フレームとコリジョン情報の設定
-          _attack->SetFrame(frames, AddSpheres(static_cast<int>(frames.size())));
-          _stateComponent->Start();
-          _attack->Start();
-          _attackFlag = true;
-          return true; // 遷移する
-        }
-        // Xボタンの入力があった場合
-        if (input.GetButton(XINPUT_BUTTON_X, false)) {
-          // 弱攻撃に遷移する
-          SetStateParam(PlayerState::Attack1);
-          // 攻撃判定で使用するフレーム番号の取得
-          auto frames = attackMap.at(PlayerStateToNumber());
-          // フレームとコリジョン情報の設定
-          _attack->SetFrame(frames, AddSpheres(static_cast<int>(frames.size())));
-          _stateComponent->Start();
-          _attack->Start();
-          _attackFlag = false;
-          return true; // 遷移する
+        // 攻撃状態に遷移できるか
+        if (_attack->ToAttack()) {
+          // Yボタンの入力があった場合
+          if (input.GetButton(XINPUT_BUTTON_Y, false)) {
+            // 強攻撃に遷移する
+            SetStateParam(PlayerState::Attack1);
+            // 攻撃判定で使用するフレーム番号の取得
+            auto frames = attackMap.at(PlayerStateToNumber());
+            // フレームとコリジョン情報の設定
+            _attack->SetFrame(frames, AddSpheres(static_cast<int>(frames.size())));
+            _stateComponent->Start();
+            _attack->Start();
+            _attackFlag = true;
+            return true; // 遷移する
+          }
+          // Xボタンの入力があった場合
+          if (input.GetButton(XINPUT_BUTTON_X, false)) {
+            // 弱攻撃に遷移する
+            SetStateParam(PlayerState::Attack1);
+            // 攻撃判定で使用するフレーム番号の取得
+            auto frames = attackMap.at(PlayerStateToNumber());
+            // フレームとコリジョン情報の設定
+            _attack->SetFrame(frames, AddSpheres(static_cast<int>(frames.size())));
+            _stateComponent->Start();
+            _attack->Start();
+            _attackFlag = false;
+            return true; // 遷移する
+          }
         }
         // Aボタンの入力があった場合はジャンプ状態に遷移
         if (input.GetButton(XINPUT_BUTTON_A, false)) {
@@ -629,11 +636,10 @@ namespace Gyro {
     }
 
     void Player::Attack() {
-      using AttackState = Object::AttackComponent::AttackState;
       // 攻撃状態でない場合は処理を行わない
-      if (!_attack->IsAttack()) {
-        return;
-      }
+      //if (!_attack->IsAttack()) {
+      //  return;
+      //}
       // アニメーションから指定したボーンのローカル座標を取得
       //auto attachIndex = _modelAnim.GetMainAttachIndex();
       //auto pos = MV1GetFramePosition(_model, 15);
@@ -732,6 +738,12 @@ namespace Gyro {
       case PlayerState::Attack3:
         number = StateNumberLight3;
         break;
+        // エキサイトトリック
+      case PlayerState::ExciteTrick:
+        return StateNumberExcite;
+        // ダッシュ
+      case PlayerState::Dash:
+        return StateNumberDash;
       default:
         return -1;
       }

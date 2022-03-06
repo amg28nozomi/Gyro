@@ -55,7 +55,7 @@ namespace Gyro {
       auto inputX = (x / deadZone);
       auto inputZ = (z / deadZone);
       // auto moveForward = Vector4::Normalize(Vector4::Scale(cameraForward ,Vector4(x / 30000.0f, 0.0f, z / 30000.0f)));
-      auto moveForward = Vector4(inputX * _speed, 0.0f, inputZ * _speed) * f;
+      _move = Vector4(inputX * _speed, 0.0f, inputZ * _speed) * f;
       //// デッドゾーンの取得
       //const auto xState= _owner.GetApplicaton().GetOperation().GetXBoxState();
       //auto deadZone = static_cast<float>(xState.GetDeadZoneMax());
@@ -65,7 +65,7 @@ namespace Gyro {
       //// auto moveForward = Vector4::Normalize(Vector4::Scale(cameraForward ,Vector4(x / 30000.0f, 0.0f, z / 30000.0f)));
       //auto moveForward = Vector4::Normalize(Vector4::Scale(cameraForward, Vector4(inputX , 0.0f, inputZ)));
       // 移動量の算出
-      _move = moveForward * _speed;
+      // _move = moveForward * _speed;
       // _move = Vector4::Scale(move, moveForward);
       // Y座標の情報は無視する
       // _move.SetY(0.0f);

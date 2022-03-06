@@ -17,6 +17,7 @@ namespace Gyro {
       _state = AttackState::NonActive;
       // 攻撃判定用のコリジョン情報をセット
       _collision.emplace_back(std::move(collision));
+      _speed = 10.0f;
     }
 
     AttackComponent::AttackComponent(ObjectBase& owner, std::vector<std::shared_ptr<CollisionBase>> collisions) : _owner(owner) {
@@ -49,8 +50,12 @@ namespace Gyro {
     }
 
     bool AttackComponent::Process() {
-      // モーション中以外は当たり判定の更新を行わない
-      if (_state == AttackState::NonActive) {
+      // 活動状態か
+      if (_state != AttackState::Active) {
+        // インターバル中の場合は処理を行う
+        if (IsInterval()) {
+          Interval();
+        }
         return false;
       }
       // セットされたフレーム回分判定を行う
@@ -81,6 +86,17 @@ namespace Gyro {
     }
 #endif
 
+    void AttackComponent::SetInterval(const float time, const float speed) {
+      // 時間が一定未満の場合は設定しない
+      if (time <= 0.0f) {
+        return;
+      }
+      // インターバル状態に遷移
+      _state = AttackState::Interval;
+      _time = time;
+      _speed = speed;
+    }
+
     AppFrame::Math::Matrix44 AttackComponent::LocalToWorld(const AppFrame::Math::Vector4& local) const {
       auto position = _owner.GetPosition() + local;
       // ワールド変換行列の取得
@@ -89,6 +105,18 @@ namespace Gyro {
 #else
       return AppMath::Utility::ToWorldMatrix(position, _owner.GetRotation(), AppMath::Vector4(1.0f, 1.0f, 1.0f), AppMath::Degree);
 #endif
+    }
+
+    void AttackComponent::Interval() {
+      // インターバル処理を終了するかの判定
+      if (_time <= 0.0f) {
+        // 通常状態に遷移してい処理を終了する
+        _state = AttackState::NonActive;
+        _time = 0.0f;
+        return;
+      }
+      // インターバル時間を経過させる
+      _time -= _speed;
     }
   } // mamespace Object
 } // namespace Gyro

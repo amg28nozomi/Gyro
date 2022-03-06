@@ -121,7 +121,7 @@ namespace Gyro {
        * @param  skysphere
        * @return 
        */
-      void AddSkySphere(std::shared_ptr<SkySphere> skysphere) const;
+      void AddSkySphere(std::shared_ptr<SkySphere> skysphere);
       /**
        * @brief  自機の生成
        * @param  spawn スポーン情報

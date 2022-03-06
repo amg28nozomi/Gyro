@@ -12,6 +12,7 @@
 #include "Player.h"
 #include "EnemyWheel.h"
 #include "SkySphere.h"
+#include "StageComponent.h"
 
 namespace Gyro {
   namespace Object {
@@ -164,9 +165,9 @@ namespace Gyro {
 #endif
     }
 
-    void SpawnServer::AddSkySphere(std::shared_ptr<SkySphere> skysphere) const {
+    void SpawnServer::AddSkySphere(std::shared_ptr<SkySphere> skysphere) {
       // ÉXÉeÅ[ÉWÇ…ìoò^Ç∑ÇÈ
-
+      _appMain.GetStageComponent().SetSkySphere(skysphere);
     }
 
     std::shared_ptr<Player::Player> SpawnServer::Player(std::shared_ptr<SpawnBase>& spawn) const {

@@ -137,5 +137,10 @@ namespace Gyro {
 
       return true;
     }
+
+    void StageComponent::SetSkySphere(std::shared_ptr<Object::SkySphere> skySphere) {
+      // スカイスフィアをセットする
+      _skySphere = std::move(skySphere);
+    }
   } // namespace Stage
 } // namespace Gyro

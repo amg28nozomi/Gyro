@@ -7,10 +7,9 @@
  *********************************************************************/
 #pragma once
 #include "StageData.h"
-#include "appframe.h"
+#include <appframe.h>
 #include <string>
 #include <unordered_map>
-#include "appframe.h"
 /**
  * @brief ゲームベース
  */
@@ -21,6 +20,10 @@ namespace Gyro {
   namespace Application {
     class ApplicationMain; //!< 前方宣言
   } // namespace Application
+
+  namespace Object {
+    class SkySphere;
+  } // namespace Object
   /**
    * @brief ステージ
    */
@@ -81,12 +84,19 @@ namespace Gyro {
       std::vector<int> GetStageModel() const {
           return _model;
       }
+      /**
+       * @brief スカイスフィアの登録
+       * @param skySphere スカイスフィアのシェアードポインタ
+       */
+      void SetSkySphere(std::shared_ptr<Object::SkySphere> skySphere);
     private:
       /**
        * @brief 文字列をキーとしてステージ情報を管理する連想配列
        */
       std::unordered_map<std::string, std::vector<std::pair<int, StageData>>> _stageModelMap;
       std::vector<int> _model{ -1 }; //!< モデルハンドル格納用コンテナ
+      //!< スカイスフィアのポインタ
+      std::shared_ptr<Object::SkySphere> _skySphere;
     };
   } //namespace Stage
 } // namespace Gyro
