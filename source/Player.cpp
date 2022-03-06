@@ -638,16 +638,17 @@ namespace Gyro {
     }
 
     void Player::Attack() {
-      // 攻撃状態でない場合は処理を行わない
-      //if (!_attack->IsAttack()) {
-      //  return;
-      //}
-      // アニメーションから指定したボーンのローカル座標を取得
-      //auto attachIndex = _modelAnim.GetMainAttachIndex();
-      //auto pos = MV1GetFramePosition(_model, 15);
       // ローカル座標を攻撃座標にセットする
       _attack->Process();
     }
+
+    AppMath::Vector4 Player::Dash() {
+      // 移動量
+      auto move = AppMath::Vector4();
+      _dash->Process(move);
+      return move;
+    }
+
 
     void Player::IsDamage() {
       auto objects = _app.GetObjectServer().GetObjects(); // オブジェクトのコピー

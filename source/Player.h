@@ -255,6 +255,11 @@ namespace Gyro {
        */
       void Attack();
       /**
+       * @brief  ƒ_ƒbƒVƒ…ˆ—
+       * @return ˆÚ“®—Ê
+       */
+      AppMath::Vector4 Dash();
+      /**
        * @brief  UŒ‚ó‘Ô‚©‚Ì”»’è
        * @return true:UŒ‚ó‘Ô false:UŒ‚ó‘Ô‚Å‚Í‚È‚¢
        */
