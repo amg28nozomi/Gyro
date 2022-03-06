@@ -58,6 +58,10 @@ namespace Gyro {
        */
       void Finish() override;
       /**
+       * @brief  無敵処理(無制限)の開始
+       */
+      void InvincibleStart();
+      /**
        * @brief  更新処理
        * @param  speed 経過時間(デフォルトは1)
        */
@@ -69,6 +73,13 @@ namespace Gyro {
       bool Invincible() const {
         return _invincible == InvincibleState::Invincible;
       }
+      /**
+       * @brief  無制限状態かの判定
+       * @return true:無制限 false:有限
+       */
+      bool Infinity() const {
+        return _infinity;
+      }
     protected:
       //!< アプリケーションの参照
       Application::ApplicationMain& _app;
@@ -78,6 +89,8 @@ namespace Gyro {
       int _limit;
       //!< 無敵時間
       int _time;
+      //!< 無敵時間を無制限にするかのフラグ
+      bool _infinity;
       /**
        * @brief  無敵時間を超過したかの判定
        * @param  speed 時間

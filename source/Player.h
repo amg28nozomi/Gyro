@@ -37,6 +37,7 @@ namespace Gyro {
    */
   namespace Object {
     class CollisionCapsule; //!< 前方宣言
+    class DashComponent;
   } // namespace Object
   /**
    * @brief プレイヤーベース
@@ -314,6 +315,8 @@ namespace Gyro {
       std::unique_ptr<Object::InvincibleComponent> _invincible;
       //!< ステートコンポーネント
       std::unique_ptr<Object::StateComponent> _stateComponent;
+      //!< ダッシュコンポーネントクラ
+      std::unique_ptr<Object::DashComponent> _dash;
       //!< アニメーション名を保持する文字列
       std::string _animationKey;
       //!< 重力リセット処理

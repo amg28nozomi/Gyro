@@ -7,6 +7,7 @@
  *********************************************************************/
 #include "Player.h"
 #include "ApplicationMain.h"
+#include "DashComponent.h"
 #include "UtilityDX.h"
 #include "ObjectServer.h"
 #include "EnemyBase.h"
@@ -158,9 +159,10 @@ namespace Gyro {
       _invincible = std::make_unique<Object::InvincibleComponent>(_app);
       // ステートコンポーネントの設定
       _stateComponent = std::make_unique<Object::StateComponent>();
+      // ダッシュコンポーネントの設定
+      _dash = std::make_unique<Object::DashComponent>();
       // アニメーションの設定
       _modelAnim.SetMainAttach(_model, Idle, 1.0f, true);
-      
       return true;
     }
 

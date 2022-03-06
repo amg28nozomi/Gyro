@@ -16,11 +16,13 @@ namespace Gyro {
       _type = ComponentType::Invincible;
       _limit = 0;
       _time = 0;
+      _infinity = false;
     }
 
     void InvincibleComponent::Init() {
       // 各種パラメータの初期化
       _time = 0;
+      _infinity = false;
     }
 
     void InvincibleComponent::Start() {
@@ -35,6 +37,12 @@ namespace Gyro {
       Init();
     }
 
+    void InvincibleComponent::InvincibleStart() {
+      // 無敵状態に遷移
+      _invincible = InvincibleState::Invincible;
+      _infinity = true;
+    }
+
     void InvincibleComponent::Process(const int speed) {
       // 無敵時間を終えたか
       if (TimeEnd(speed)) {
@@ -43,6 +51,10 @@ namespace Gyro {
     }
 
     bool InvincibleComponent::TimeEnd(const int speed) {
+      // 無制限フラグが立っているか
+      if (_infinity) {
+        return false;
+      }
       _time += speed; // タイムに加速度を加算する
       // 経過時間は上限を超過したか
       return _limit <= _time;
