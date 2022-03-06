@@ -293,6 +293,9 @@
     <ClCompile Include="source\EffectLoadServer.cpp">
       <Filter>ソース ファイル\Effect</Filter>
     </ClCompile>
+    <ClCompile Include="source\DashComponent.cpp">
+      <Filter>ソース ファイル\Object\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\ApplicationMain.h">
@@ -465,6 +468,9 @@
     </ClInclude>
     <ClInclude Include="source\EffectLoadServer.h">
       <Filter>ヘッダー ファイル\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="source\DashComponent.h">
+      <Filter>ヘッダー ファイル\Object\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

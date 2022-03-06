@@ -31,7 +31,8 @@ namespace Gyro {
         Move,       //!< 移動処理
         KnockBack,  //!< ノックバック
         Invincible, //!< 無敵時間
-        State       //!< ステート管理
+        State,      //!< ステート管理
+        Dash        //!< ダッシュ
       };
       /**
        * @brief コンストラクタ
