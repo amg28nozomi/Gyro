@@ -91,6 +91,19 @@ namespace Gyro {
       {Player::PlayerState::Attack2, Player::PlayerState::Attack3},
       {Player::PlayerState::Attack3, Player::PlayerState::Idle}
     };
+    /**
+     * @brief コリジョンに使用するフレーム番号を管理する連想配列
+     */
+    const std::unordered_map<int, std::vector<int>> attackMap{
+      // 弱攻撃
+      {StateNumberLight1, {15}},
+      {StateNumberLight2, {0}},
+      {StateNumberLight3, {0}},
+      // 強攻撃
+      {StateNumberHeavy1 ,{0}},
+      {StateNumberHeavy2 ,{0}},
+      {StateNumberHeavy3 ,{0}}
+    };
 
     /**
      * @brief 状態番号をキーとして、モーションブレンド情報を保持する連想配列
@@ -235,6 +248,12 @@ namespace Gyro {
       _capsule = std::make_unique<Object::CollisionCapsule>(*this, _position, 150.0f, 20.0f);
     }
 
+    AppMath::Vector4 Player::GetFramePosition(int frame) {
+      // 取得した座標をVectorクラスに変換して返す
+      auto position = MV1GetFramePosition(_model, frame);
+      return UtilityDX::ToVector(position);
+    }
+
     bool Player::StateChanege(const AppFrame::Application::XBoxState& input) {
       // 既に攻撃状態か
       if (IsAttackState()) {
@@ -243,6 +262,7 @@ namespace Gyro {
         if (key != -1) {
           // 攻撃状態の場合は遷移フラグの判定を行う
           if (input.GetButton(key, false) && _stateComponent->Process(_modelAnim.GetMainPlayTime())) {
+            // 現在の攻撃処理を終了
             _attack->Finish();
             // 条件を満たしたので更新を行う
             SetStateParam(stateMap.at(_playerState));
@@ -263,8 +283,12 @@ namespace Gyro {
         if (input.GetButton(XINPUT_BUTTON_Y, false)) {
           // 強攻撃に遷移する
           SetStateParam(PlayerState::Attack1);
-          _attack->Start();
+          // 攻撃判定で使用するフレーム番号の取得
+          auto frames = attackMap.at(PlayerStateToNumber());
+          // フレームとコリジョン情報の設定
+          _attack->SetFrame(frames, AddSpheres(static_cast<int>(frames.size())));
           _stateComponent->Start();
+          _attack->Start();
           _attackFlag = true;
           return true; // 遷移する
         }
@@ -272,6 +296,10 @@ namespace Gyro {
         if (input.GetButton(XINPUT_BUTTON_X, false)) {
           // 弱攻撃に遷移する
           SetStateParam(PlayerState::Attack1);
+          // 攻撃判定で使用するフレーム番号の取得
+          auto frames = attackMap.at(PlayerStateToNumber());
+          // フレームとコリジョン情報の設定
+          _attack->SetFrame(frames, AddSpheres(static_cast<int>(frames.size())));
           _stateComponent->Start();
           _attack->Start();
           _attackFlag = false;
@@ -608,15 +636,14 @@ namespace Gyro {
     void Player::Attack() {
       using AttackState = Object::AttackComponent::AttackState;
       // 攻撃状態でない場合は処理を行わない
-      if (_attack->GetState() == AttackState::NonActive) {
+      if (!_attack->IsAttack()) {
         return;
       }
       // アニメーションから指定したボーンのローカル座標を取得
-      // 全ての成分が-1のベクトルが返ってくる
-      auto attachIndex = _modelAnim.GetMainAttachIndex();
-      auto pos = MV1GetFramePosition(_model, 15);
+      //auto attachIndex = _modelAnim.GetMainAttachIndex();
+      //auto pos = MV1GetFramePosition(_model, 15);
       // ローカル座標を攻撃座標にセットする
-      _attack->Process(UtilityDX::ToVector(pos));
+      _attack->Process();
     }
 
     void Player::IsDamage() {
@@ -675,6 +702,10 @@ namespace Gyro {
       // 切り替え状態を設定する
       _stateComponent->Set(_modelAnim.GetMainPlayTime(), start, end);
       _stateComponent->Start();
+      // 攻撃判定で使用するフレーム番号の取得
+      auto frames = attackMap.at(PlayerStateToNumber());
+      // フレームとコリジョン情報の設定
+      _attack->SetFrame(frames, AddSpheres(static_cast<int>(frames.size())));
       return true; // 切り替えを完了
     }
 
@@ -715,6 +746,17 @@ namespace Gyro {
       };
       // 攻撃番号
       return number + IsHevyLight(_attackFlag);
+    }
+
+    std::vector<std::shared_ptr<Object::CollisionBase>> Player::AddSpheres(const int num, float radius) {
+      // 当たり判定を格納するコンテナ
+      std::vector<std::shared_ptr<Object::CollisionBase>> collision;
+      collision.clear();
+      for (auto number = 0; number <= num; ++number) {
+        // 生成した当たり判定を登録
+        collision.emplace_back(std::make_shared<Object::CollisionSphere>(*this, _position, radius));
+      }
+      return collision;
     }
 
   } // namespace Player

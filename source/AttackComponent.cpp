@@ -8,7 +8,7 @@
 #include "AttackComponent.h"
 #include "ObjectBase.h"
 #include "CollisionBase.h"
-#include "CollisionCapsule.h"
+#include "ApplicationMain.h"
 
 namespace Gyro {
   namespace Object {
@@ -19,7 +19,7 @@ namespace Gyro {
       _collision.emplace_back(std::move(collision));
     }
 
-    AttackComponent(ObjectBase& owner, std::vector<std::shared_ptr<CollisionBase>> collisions) : _owner(owner) {
+    AttackComponent::AttackComponent(ObjectBase& owner, std::vector<std::shared_ptr<CollisionBase>> collisions) : _owner(owner) {
       _state = AttackState::NonActive;
       // 攻撃判定用のコリジョン情報をセット
       _collision = collisions;
@@ -27,34 +27,61 @@ namespace Gyro {
 
     void AttackComponent::Finish() {
       _state = AttackState::NonActive;
-      _collision->SetPosition(_owner.GetPosition());
+      // 攻撃判定を修正する
+      for (auto collision : _collision) {
+        collision->SetPosition(_owner.GetPosition());
+      }
+      _indexs.clear(); // フレーム情報の削除
     }
 
-    bool AttackComponent::Process(const AppMath::Vector4& localPosition) {
+    bool AttackComponent::Process(const AppFrame::Math::Vector4& localPosition) {
       // モーション中以外は当たり判定の更新を行わない
       if (_state == AttackState::NonActive) {
         return false;
       }
       auto pos = localPosition;
       // 座標更新
-      // auto pos = LocalToWorld(_owner.GetPosition()) * localPosition;
       // 移動量分、当たり判定の更新を行う
-      _collision->SetPosition(pos);
+      _collision.front()->SetPosition(pos);
       // 当たり判定情報の更新
-      _collision->Process();
+      _collision.front()->Process();
       return true;
+    }
+
+    bool AttackComponent::Process() {
+      // モーション中以外は当たり判定の更新を行わない
+      if (_state == AttackState::NonActive) {
+        return false;
+      }
+      // セットされたフレーム回分判定を行う
+      for (auto num = 0; auto frame : _indexs) {
+        // 当たり判定座標をセットする
+        _collision.at(num)->SetPosition(_owner.GetFramePosition(frame));
+        // コリジョンの更新
+        _collision.at(num)->Process();
+      }
+      return true; // 正常終了
+    }
+
+    void AttackComponent::SetFrame(std::vector<int> frames, std::vector<std::shared_ptr<CollisionBase>> collisions) {
+      // フレーム番号の切り替え
+      _indexs = frames;
+      // コリジョン情報の切り替え
+      _collision = collisions;
     }
 
 #ifdef _DEBUG
     void AttackComponent::Draw() const {
       // 攻撃判定中のみ当たり判定の描画を実行する
       if (_state == AttackState::Active) {
-        _collision->Draw();
+        for (auto collision : _collision) {
+          collision->Draw();
+        }
       }
     }
 #endif
 
-    AppMath::Matrix44 AttackComponent::LocalToWorld(const AppMath::Vector4& local) const {
+    AppFrame::Math::Matrix44 AttackComponent::LocalToWorld(const AppFrame::Math::Vector4& local) const {
       auto position = _owner.GetPosition() + local;
       // ワールド変換行列の取得
 #ifndef _DEBUG

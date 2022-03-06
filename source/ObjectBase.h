@@ -78,9 +78,20 @@ namespace Gyro {
       virtual inline void GravitySet(const bool flag) {
         _gravity = flag;
       }
-
+      /**
+       * @brief 向きベクトルの設定
+       * @param forward 向きベクトル
+       */
       inline void SetForward(AppMath::Vector4 forward) {
         _forward = forward;
+      }
+      /**
+       * @brief  指定したフレームのワールド座標を取得
+       * @param  frame フレーム番号
+       * @return 空のベクトルを返す
+       */
+      virtual AppMath::Vector4 GetFramePosition(int frame) {
+        return AppMath::Vector4();
       }
       /**
        * @brief  識別番号の取得

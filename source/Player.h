@@ -46,6 +46,7 @@ namespace Gyro {
      * @brief 名前空間の省略
      */
     namespace AppMath = AppFrame::Math;
+    constexpr auto DefaultRadius = 30.0f; //!< デフォルトの半径
     class JumpComponent; //!< ジャンプコンポーネント
     /**
      * @class Player
@@ -57,13 +58,14 @@ namespace Gyro {
        * @brief 自機の状態を表す列挙型クラス
        */
       enum class PlayerState {
-        Idle,       //!< 待機
-        Walk,       //!< 歩き
-        Run,        //!< 移動
-        Attack1,    //!< 攻撃1
-        Attack2,    //!< 攻撃2
-        Attack3,    //!< 攻撃3
-        Jump,       //!< ジャンプ
+        Idle,        //!< 待機
+        Walk,        //!< 歩き
+        Run,         //!< 移動
+        Attack1,     //!< 攻撃1
+        Attack2,     //!< 攻撃2
+        Attack3,     //!< 攻撃3
+        ExciteTrick, //!< エキサイトトリック
+        Jump         //!< ジャンプ
       };
       /**
        * @brief コンストラクタ
@@ -104,6 +106,13 @@ namespace Gyro {
       bool GetGameOver() const {
         return _gameOver;
       }
+      /**
+       * @brief  指定したフレームのワールド座標を取得
+       * @param  frame フレーム番号
+       * @return 取得に成功した場合はワールド座標を返す
+       *         失敗した場合は空のベクトルを返す
+       */
+      AppMath::Vector4 GetFramePosition(int frame) override;
       /**
        * @brief  アタックコンポーネントの取得
        * @return アタックコンポーネントの参照
@@ -275,7 +284,13 @@ namespace Gyro {
        * @return プレイヤー状態に対応した
        */
       int PlayerStateToNumber() const;
-
+      /**
+       * @brief  コリジョンを生成する
+       * @param  num    生成する数
+       * @param  radius 半径
+       * @return コリジョン情報が格納された動的配列
+       */
+      std::vector<std::shared_ptr<Object::CollisionBase>> AddSpheres(const int num, float daius = DefaultRadius);
     private:
       //!< モデルサーバに紐づけられた文字列
       static inline std::string _modelKey{"player"};

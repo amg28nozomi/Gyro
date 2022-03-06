@@ -7,6 +7,9 @@
  *********************************************************************/
 #pragma once
 #include "ObjectComponent.h"
+#include <memory>
+#include <vector>
+#include <appframe.h>
 /**
  * @brief ゲームベース
  */
@@ -17,6 +20,7 @@ namespace Gyro {
   namespace Object {
     class ObjectBase;
     class CollisionBase;
+    namespace AppMath = AppFrame::Math;
     /**
      * @class AttackComponent
      * @brief 攻撃用コンポーネント
@@ -39,11 +43,11 @@ namespace Gyro {
       AttackComponent(ObjectBase& owner, std::shared_ptr<CollisionBase> collision);
       /**
        * @brief  コンストラクタ
-       * @param  owner      所有者の参照
-       * @param  key        モデルサーバに紐づけられた所有者の
-       * @param  collisions 当たり判定を格納した動的配列
+       * @param  owner     所有者の参照
+       * @param  key       モデルサーバに紐づけられた所有者の
+       * @param  collision 当たり判定を格納した動的配列
        */
-      AttackComponent(ObjectBase& owner, std::vector<std::shared_ptr<CollisionBase>> collisions);
+      AttackComponent(ObjectBase& owner, std::vector<std::shared_ptr<CollisionBase>> collision);
       /**
        * @brief 攻撃判定の開始
        */
@@ -60,6 +64,17 @@ namespace Gyro {
        * @return true:正常終了 false:攻撃状態ではない
        */
       virtual bool Process(const AppMath::Vector4& localPosition);
+      /**
+       * @brief  攻撃判定の修正処理
+       * @return true:正常終了 false:問題発生
+       */
+      virtual bool Process();
+      /**
+       * @brief  当たり判定に使用するフレームの設定
+       * @param  frames     フレーム番号
+       * @param  collisions コリジョン情報
+       */
+      void SetFrame(std::vector<int> frames, std::vector<std::shared_ptr<CollisionBase>> collisions);
 #ifdef _DEBUG
       /**
        * @brief 当たり判定の描画処理(デバッグ専用)
@@ -87,8 +102,15 @@ namespace Gyro {
       const std::vector<std::shared_ptr<CollisionBase>>& GetCollisions() {
         return _collision;
       }
+      /**
+       * @brief  攻撃状態かの判定
+       * @return true:攻撃状態 false:非攻撃状態
+       */
+      inline bool IsAttack() const {
+        return _state == AttackState::Active;
+      }
     protected:
-      //!< 所有者の参照
+      //!< オブジェクトの所有者
       ObjectBase& _owner;
       //!< オブジェトキー
       std::string _objectKey;
@@ -96,6 +118,8 @@ namespace Gyro {
       AttackState _state;
       //!< 攻撃判定用のコリジョン情報を格納した動的配列
       std::vector<std::shared_ptr<CollisionBase>> _collision;
+      //!< ワールド座標を格納するためのコンテナ
+      std::vector<int> _indexs;
       //!< 攻撃判定時間
       float _time{0.0f};
       /**
