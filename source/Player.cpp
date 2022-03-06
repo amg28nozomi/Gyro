@@ -63,16 +63,17 @@ namespace {
   constexpr auto RunPower = 3.8f;
 
   // 状態を表すキー
-  constexpr auto StateNumberIdle = 0;   //!< 待機
-  constexpr auto StateNumberWalk = 1;   //!< 歩き
-  constexpr auto StateNumberRun = 2;    //!< 走り
-  constexpr auto StateNumberJump = 3;   //!< ジャンプ
-  constexpr auto StateNumberLight1 = 4; //!< 弱攻撃1
-  constexpr auto StateNumberLight2 = 6; //!< 弱攻撃2
+  constexpr auto StateNumberIdle = 0;    //!< 待機
+  constexpr auto StateNumberWalk = 1;    //!< 歩き
+  constexpr auto StateNumberRun = 2;     //!< 走り
+  constexpr auto StateNumberJump = 3;    //!< ジャンプ
+  constexpr auto StateNumberLight1 = 4;  //!< 弱攻撃1
+  constexpr auto StateNumberLight2 = 6;  //!< 弱攻撃2
   constexpr auto StateNumberLight3 = 8;  //!< 弱攻撃3
-  constexpr auto StateNumberHeavy1 = 5; //!< 強攻撃1
-  constexpr auto StateNumberHeavy2 = 7; //!< 強攻撃2
-  constexpr auto StateNumberHeavy3 = 9; //!< 強攻撃3
+  constexpr auto StateNumberHeavy1 = 5;  //!< 強攻撃1
+  constexpr auto StateNumberHeavy2 = 7;  //!< 強攻撃2
+  constexpr auto StateNumberHeavy3 = 9;  //!< 強攻撃3
+  constexpr auto StateNumberExcite = 10; //!< エキサイトトリック
 }
 
 namespace Gyro {
@@ -97,12 +98,12 @@ namespace Gyro {
     const std::unordered_map<int, std::vector<int>> attackMap{
       // 弱攻撃
       {StateNumberLight1, {15}},
-      {StateNumberLight2, {0}},
-      {StateNumberLight3, {0}},
+      {StateNumberLight2, {15}},
+      {StateNumberLight3, {15}},
       // 強攻撃
-      {StateNumberHeavy1 ,{0}},
-      {StateNumberHeavy2 ,{0}},
-      {StateNumberHeavy3 ,{0}}
+      {StateNumberHeavy1 ,{15}},
+      {StateNumberHeavy2 ,{15}},
+      {StateNumberHeavy3 ,{15}}
     };
 
     /**
@@ -444,13 +445,7 @@ namespace Gyro {
       _modelAnim.SetBlendAttach(key.data(), frame, speed, loop);
       // エフェクトが登録されている場合は再生する
       if (!modelAnim.Effect().empty()) {
-#ifndef _DEBUG
-        auto eRad = -_rotation.GetY();
-#else
-        auto eRad = -AppMath::Utility::DegreeToRadian(_rotation.GetY());
-#endif
-        // エフェクトの再生
-        _app.GetEffect().PlayEffect(modelAnim.Effect(), _position, eRad);
+        PlayEffect();
       }
     }
 
@@ -746,6 +741,18 @@ namespace Gyro {
       };
       // 攻撃番号
       return number + IsHevyLight(_attackFlag);
+    }
+
+    bool Player::PlayEffect() const {
+      auto modelAnim = animMap.at(PlayerStateToNumber());
+#ifndef _DEBUG
+      auto eRad = -_rotation.GetY();
+#else
+      auto eRad = -AppMath::Utility::DegreeToRadian(_rotation.GetY());
+#endif
+      // エフェクトの再生
+      _app.GetEffect().PlayEffect(modelAnim.Effect(), _position, eRad);
+      return true;
     }
 
     std::vector<std::shared_ptr<Object::CollisionBase>> Player::AddSpheres(const int num, float radius) {

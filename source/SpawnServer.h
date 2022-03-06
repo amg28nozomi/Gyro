@@ -117,6 +117,12 @@ namespace Gyro {
        */
       bool AddObject(std::shared_ptr<ObjectBase> object) const;
       /**
+       * @brief
+       * @param  skysphere
+       * @return 
+       */
+      void AddSkySphere(std::shared_ptr<SkySphere> skysphere) const;
+      /**
        * @brief  自機の生成
        * @param  spawn スポーン情報
        * @return 自機のシェアードポインタ

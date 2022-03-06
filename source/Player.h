@@ -285,6 +285,11 @@ namespace Gyro {
        */
       int PlayerStateToNumber() const;
       /**
+       * @brief  エフェクトの再生処理
+       * @return true:再生 false:問題発生
+       */
+      bool PlayEffect() const;
+      /**
        * @brief  コリジョンを生成する
        * @param  num    生成する数
        * @param  radius 半径

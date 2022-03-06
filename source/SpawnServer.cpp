@@ -129,7 +129,7 @@ namespace Gyro {
           // スカイスフィア
         case SpawnBase::ObjectType::SkySphere:
           // スカイスフィアの生成・登録を行う
-          AddObject(Skysphere(spawn));
+          AddSkySphere(Skysphere(spawn));
           break;
           // オブジェクトタイプの該当がない場合
         case SpawnBase::ObjectType::None:
@@ -162,6 +162,11 @@ namespace Gyro {
       }
       return flag;
 #endif
+    }
+
+    void SpawnServer::AddSkySphere(std::shared_ptr<SkySphere> skysphere) const {
+      // ステージに登録する
+
     }
 
     std::shared_ptr<Player::Player> SpawnServer::Player(std::shared_ptr<SpawnBase>& spawn) const {

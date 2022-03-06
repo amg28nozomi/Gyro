@@ -44,9 +44,9 @@ namespace Gyro {
       // ラジアンで算出
       auto f = std::acos(cos);
       // カメラ向きの取得
-      auto cameraForward = cameraPos.Direction(_owner.GetPosition());
+      // auto cameraForward = cameraPos.Direction(_owner.GetPosition());
       // カメラ向きの取得(y軸は無視する)
-      cameraForward = Vector4::Normalize(Vector4::Scale(cameraForward, Vector4(1.0f, 0.0f, 1.0f)));
+      // cameraForward = Vector4::Normalize(Vector4::Scale(cameraForward, Vector4(1.0f, 0.0f, 1.0f)));
 
       // デッドゾーンの取得
       const auto xState = _owner.GetApplicaton().GetOperation().GetXBoxState();
@@ -65,7 +65,7 @@ namespace Gyro {
       //// auto moveForward = Vector4::Normalize(Vector4::Scale(cameraForward ,Vector4(x / 30000.0f, 0.0f, z / 30000.0f)));
       //auto moveForward = Vector4::Normalize(Vector4::Scale(cameraForward, Vector4(inputX , 0.0f, inputZ)));
       // 移動量の算出
-      // _move = moveForward * _speed;
+      _move = moveForward * _speed;
       // _move = Vector4::Scale(move, moveForward);
       // Y座標の情報は無視する
       // _move.SetY(0.0f);
