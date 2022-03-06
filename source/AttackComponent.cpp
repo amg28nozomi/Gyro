@@ -7,6 +7,7 @@
  *********************************************************************/
 #include "AttackComponent.h"
 #include "ObjectBase.h"
+#include "CollisionBase.h"
 #include "CollisionCapsule.h"
 
 namespace Gyro {
@@ -15,7 +16,13 @@ namespace Gyro {
     AttackComponent::AttackComponent(ObjectBase& owner, std::shared_ptr<CollisionBase> collision) : _owner(owner) {
       _state = AttackState::NonActive;
       // 攻撃判定用のコリジョン情報をセット
-      _collision = std::move(collision);
+      _collision.emplace_back(std::move(collision));
+    }
+
+    AttackComponent(ObjectBase& owner, std::vector<std::shared_ptr<CollisionBase>> collisions) : _owner(owner) {
+      _state = AttackState::NonActive;
+      // 攻撃判定用のコリジョン情報をセット
+      _collision = collisions;
     }
 
     void AttackComponent::Finish() {

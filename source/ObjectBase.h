@@ -6,7 +6,7 @@
  * @date   January 2022
  *********************************************************************/
 #pragma once
-#include "appframe.h"
+#include <appframe.h>
 /**
  * @brief ゲームベース
  */

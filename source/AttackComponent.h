@@ -7,8 +7,6 @@
  *********************************************************************/
 #pragma once
 #include "ObjectComponent.h"
-#include "CollisionBase.h"
-
 /**
  * @brief ゲームベース
  */
@@ -17,7 +15,8 @@ namespace Gyro {
    * @brief オブジェクトベース
    */
   namespace Object {
-    class ObjectBase; //!< オブジェクトベース
+    class ObjectBase;
+    class CollisionBase;
     /**
      * @class AttackComponent
      * @brief 攻撃用コンポーネント
@@ -38,6 +37,13 @@ namespace Gyro {
        * @param  collision 当たり判定のシェアードポインタ
        */
       AttackComponent(ObjectBase& owner, std::shared_ptr<CollisionBase> collision);
+      /**
+       * @brief  コンストラクタ
+       * @param  owner      所有者の参照
+       * @param  key        モデルサーバに紐づけられた所有者の
+       * @param  collisions 当たり判定を格納した動的配列
+       */
+      AttackComponent(ObjectBase& owner, std::vector<std::shared_ptr<CollisionBase>> collisions);
       /**
        * @brief 攻撃判定の開始
        */
@@ -72,14 +78,14 @@ namespace Gyro {
        * @return 当たり判定情報
        */
       const std::shared_ptr<CollisionBase>& GetCollision()  {
-        return _collision;
+        return _collision.front();
       }
       /**
        * @brief  当たり判定情報の取得
        * @return 当たり判定が格納されたコンテナを返す
        */
       const std::vector<std::shared_ptr<CollisionBase>>& GetCollisions() {
-        return _collisions;
+        return _collision;
       }
     protected:
       //!< 所有者の参照
@@ -88,10 +94,8 @@ namespace Gyro {
       std::string _objectKey;
       //!< 攻撃状態
       AttackState _state;
-      //!< 攻撃用当たり判定情報
       //!< 攻撃判定用のコリジョン情報を格納した動的配列
-      std::vector<std::shared_ptr<CollisionBase>> _collisions;
-      std::shared_ptr<CollisionBase> _collision;
+      std::vector<std::shared_ptr<CollisionBase>> _collision;
       //!< 攻撃判定時間
       float _time{0.0f};
       /**
