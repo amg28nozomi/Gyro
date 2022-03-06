@@ -10,18 +10,18 @@
 namespace Gyro {
   namespace ModelAnim {
     ModelAnimComponent::ModelAnimComponent() {
-      // 初期化
-      Init();
+
     }
 
     ModelAnimComponent::~ModelAnimComponent() {
+      // 解放
+      Release();
+    }
+
+    void ModelAnimComponent::Release() {
       // アニメーションデタッチ
       SetDetach(_main);
       SetDetach(_blend);
-    }
-
-    void ModelAnimComponent::Init() {
-
     }
 
     void ModelAnimComponent::Process() {
@@ -51,7 +51,7 @@ namespace Gyro {
     void ModelAnimComponent::SetBlendAttach(const std::string_view key, const float flame, const float speed, const bool loop) {
       // アタッチ済の場合デタッチ
       if (IsAttachIndex(_blend)) {
-          SetDetach(_blend);
+        SetDetach(_blend);
       }
       // アニメーションアタッチ
       SetAttach(_blend, key, speed, loop);
@@ -96,7 +96,7 @@ namespace Gyro {
     void ModelAnimComponent::SetDetach(ModelAnimInfo& motion) {
       // 未アタッチの場合中断
       if (!IsAttachIndex(motion)) {
-          return;
+        return;
       }
       // アニメーションデタッチ
       MV1DetachAnim(_mHandle, motion.GetAttachIndex());
@@ -107,7 +107,7 @@ namespace Gyro {
     void ModelAnimComponent::PlayAnim(ModelAnimInfo& motion) {
       // 未アタッチの場合中断
       if (!IsAttachIndex(motion)) {
-          return;
+        return;
       }
       // アニメーション再生
       MV1SetAttachAnimTime(_mHandle, motion.GetAttachIndex(), motion.GetPlayTime());

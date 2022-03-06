@@ -16,11 +16,6 @@ namespace Gyro {
   namespace Primitive {
 
     PrimitiveBase::PrimitiveBase() {
-      _handle = -1;
-      _vertexNum = 0;
-      _indexNum = 0;
-      _polygonNum = 0;
-
       _vertex.reset(new std::vector<VERTEX3D>());
       _index.reset(new std::vector<unsigned short>());
     }
@@ -33,7 +28,13 @@ namespace Gyro {
     bool PrimitiveBase::Load(const TCHAR* fileName) {
       UnLoad();
 
-      _handle = LoadGraph(fileName);
+      _handle = LoadGraph("res/Primitive/コンポ 1 (00000)_1.png");
+      //_handle = LoadGraph("res/Primitive/コンポ 1 (00000).png");
+      _handle2 = LoadGraph("res/Primitive/コンポ 1 (00010).png");
+      _handle3 = LoadGraph("res/Primitive/コンポ 1 (00020).png");
+      _handle4 = LoadGraph("res/Primitive/コンポ 1 (00030).png");
+      _handle5 = LoadGraph("res/Primitive/コンポ 1 (00040).png");
+      _handle6 = LoadGraph("res/Primitive/コンポ 1 (00050).png");
 
       return (-1 != _handle);
     }
@@ -50,6 +51,10 @@ namespace Gyro {
       _vertexNum = static_cast<int>(_vertex->size());
       _indexNum = static_cast<int>(_index->size());
       _polygonNum = _indexNum / 3;
+      _cnt++;
+      if (_cnt > _interval * 6) {
+        _cnt = 0;
+      }
     }
 
     bool PrimitiveBase::Draw() const {
@@ -62,9 +67,21 @@ namespace Gyro {
       }
 
       auto _polygonNum = _indexNum / 3;
-      auto useHandle = (_handle == -1) ? DX_NONE_GRAPH : _handle;
 
-      DrawPolygonIndexed3D(_vertex->data(), _vertexNum, _index->data(), _polygonNum, useHandle, FALSE);
+      DrawPolygonIndexed3D(_vertex->data(), _vertexNum, _index->data(), _polygonNum, _handle, FALSE);
+      /*if (_cnt < _interval) {
+        DrawPolygonIndexed3D(_vertex->data(), _vertexNum, _index->data(), _polygonNum, _handle, FALSE);
+      }else if (_cnt < _interval * 2) {
+        DrawPolygonIndexed3D(_vertex->data(), _vertexNum, _index->data(), _polygonNum, _handle2, FALSE);
+      }else if (_cnt < _interval * 3) {
+        DrawPolygonIndexed3D(_vertex->data(), _vertexNum, _index->data(), _polygonNum, _handle3, FALSE);
+      }else if (_cnt < _interval * 4) {
+        DrawPolygonIndexed3D(_vertex->data(), _vertexNum, _index->data(), _polygonNum, _handle4, FALSE);
+      }else if (_cnt < _interval * 5) {
+        DrawPolygonIndexed3D(_vertex->data(), _vertexNum, _index->data(), _polygonNum, _handle5, FALSE);
+      }else if (_cnt <= _interval * 6) {
+        DrawPolygonIndexed3D(_vertex->data(), _vertexNum, _index->data(), _polygonNum, _handle6, FALSE);
+      }*/
 
       return true;
     }

@@ -19,7 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="source\EffectLoadServer.cpp" />
     <ClCompile Include="source\InteriorBase.cpp" />
+    <ClCompile Include="source\KnockBackComponent.cpp" />
+    <ClCompile Include="source\ModeAMG.cpp" />
+    <ClCompile Include="source\ModeCredit.cpp" />
+    <ClCompile Include="source\ModeGameOver.cpp" />
     <ClCompile Include="source\ModelAnimData.cpp" />
     <ClCompile Include="source\ApplicationMain.cpp" />
     <ClCompile Include="source\AttackComponent.cpp" />
@@ -31,7 +36,6 @@
     <ClCompile Include="source\CollisionOBB.cpp" />
     <ClCompile Include="source\CollisionSphere.cpp" />
     <ClCompile Include="source\EffectComponent.cpp" />
-    <ClCompile Include="source\EffectServer.cpp" />
     <ClCompile Include="source\EnemyBase.cpp" />
     <ClCompile Include="source\EnemyWheel.cpp" />
     <ClCompile Include="source\GaugeBase.cpp" />
@@ -44,6 +48,10 @@
     <ClCompile Include="source\ModeGame.cpp" />
     <ClCompile Include="source\ModelAnimComponent.cpp" />
     <ClCompile Include="source\ModelAnimInfo.cpp" />
+    <ClCompile Include="source\ModePause.cpp" />
+    <ClCompile Include="source\ModeResult.cpp" />
+    <ClCompile Include="source\ModeTeam.cpp" />
+    <ClCompile Include="source\ModeTitle.cpp" />
     <ClCompile Include="source\MoveComponent.cpp" />
     <ClCompile Include="source\ObjectBase.cpp" />
     <ClCompile Include="source\ObjectServer.cpp" />
@@ -63,12 +71,18 @@
     <ClCompile Include="source\SpawnServer.cpp" />
     <ClCompile Include="source\StageComponent.cpp" />
     <ClCompile Include="source\StateComponent.cpp" />
+    <ClCompile Include="source\Studio.cpp" />
     <ClCompile Include="source\UtilityDX.cpp" />
     <ClCompile Include="source\WireComponent.cpp" />
     <ClCompile Include="source\WirePoint.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="source\EffectLoadServer.h" />
     <ClInclude Include="source\InteriorBase.h" />
+    <ClInclude Include="source\KnockBackComponent.h" />
+    <ClInclude Include="source\ModeAMG.h" />
+    <ClInclude Include="source\ModeCredit.h" />
+    <ClInclude Include="source\ModeGameOver.h" />
     <ClInclude Include="source\ModelAnimData.h" />
     <ClInclude Include="source\ApplicationMain.h" />
     <ClInclude Include="source\AttackComponent.h" />
@@ -80,7 +94,6 @@
     <ClInclude Include="source\CollisionOBB.h" />
     <ClInclude Include="source\CollisionSphere.h" />
     <ClInclude Include="source\EffectComponent.h" />
-    <ClInclude Include="source\EffectServer.h" />
     <ClInclude Include="source\EnemyBase.h" />
     <ClInclude Include="source\EnemyWheel.h" />
     <ClInclude Include="source\GaugeBase.h" />
@@ -93,6 +106,10 @@
     <ClInclude Include="source\ModeGame.h" />
     <ClInclude Include="source\ModelAnimComponent.h" />
     <ClInclude Include="source\ModelAnimInfo.h" />
+    <ClInclude Include="source\ModePause.h" />
+    <ClInclude Include="source\ModeResult.h" />
+    <ClInclude Include="source\ModeTeam.h" />
+    <ClInclude Include="source\ModeTitle.h" />
     <ClInclude Include="source\MoveComponent.h" />
     <ClInclude Include="source\ObjectBase.h" />
     <ClInclude Include="source\ObjectServer.h" />
@@ -113,6 +130,7 @@
     <ClInclude Include="source\StageComponent.h" />
     <ClInclude Include="source\StageData.h" />
     <ClInclude Include="source\StateComponent.h" />
+    <ClInclude Include="source\Studio.h" />
     <ClInclude Include="source\UtilityDX.h" />
     <ClInclude Include="source\WireComponent.h" />
     <ClInclude Include="source\WirePoint.h" />

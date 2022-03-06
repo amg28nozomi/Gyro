@@ -64,10 +64,17 @@ namespace Gyro {
       const std::shared_ptr<std::vector<unsigned short>>& GetIndex() const { return _index; }
 
     protected:
-      int _handle;        //!< 画像ハンドル
-      int _vertexNum;     //!< 頂点の数
-      int _indexNum;      //!< 要素の数
-      int _polygonNum;    //!< ポリゴンの数
+      int _handle{ 0 };        //!< 画像ハンドル
+      int _handle2{ 0 };       //!< 画像ハンドル
+      int _handle3{ 0 };       //!< 画像ハンドル
+      int _handle4{ 0 };       //!< 画像ハンドル
+      int _handle5{ 0 };       //!< 画像ハンドル
+      int _handle6{ 0 };       //!< 画像ハンドル
+      int _vertexNum{ 0 };     //!< 頂点の数
+      int _indexNum{ 0 };      //!< 要素の数
+      int _polygonNum{ 0 };    //!< ポリゴンの数
+      int _cnt{ 0 };           //!< カウント
+      int _interval{ 40 };     //!< フレーム間隔
 
       std::shared_ptr<std::vector<VERTEX3D>> _vertex;         //!< 頂点
       std::shared_ptr<std::vector<unsigned short>> _index;    //!< 要素

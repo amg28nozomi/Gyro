@@ -35,6 +35,17 @@ namespace Gyro {
     class EnemyBase : public Object::ObjectBase {
     public:
       /**
+       * @enum class  EnemyState
+       * @brief  “G‚Ìó‘Ô‘JˆÚ—p’è”
+       */
+      enum class EnemyState {
+        Idle,    //!< ‘Ò‹@
+        Move,    //!< ˆÚ“®
+        Attack,  //!< UŒ‚
+        Damage,  //!< ”íƒ_ƒ
+        Dead     //!< €–S
+      };
+      /**
        * @brief  ƒRƒ“ƒXƒgƒ‰ƒNƒ^
        */
       EnemyBase(Application::ApplicationMain& app);
@@ -93,19 +104,14 @@ namespace Gyro {
       inline bool Equals(const int handle) const {
         return _mHandle == handle;
       }
-
-    protected:
       /**
-       * @enum class  EnemyState
-       * @brief  “G‚Ìó‘Ô‘JˆÚ—p’è”
+       * @brief  ó‘Ô‚Ìæ“¾
+       * @return ó‘Ô
        */
-      enum class EnemyState {
-          Idle,    //!< ‘Ò‹@
-          Move,    //!< ˆÚ“®
-          Attack,  //!< UŒ‚
-          Damage,  //!< ”íƒ_ƒ
-          Dead     //!< €–S
-      };
+      EnemyState GetEnemyState() const {
+        return _enemyState;
+      }
+    protected:
       /**
        * @brief  ƒ‚ƒfƒ‹‚Ì“Ç‚İ‚İ
        */
@@ -127,10 +133,15 @@ namespace Gyro {
        */
       virtual void Attack();
       /**
-       * @brief ’Tõˆ—
-       * @param radius ‰~‚Ì”¼Œa(õ“G”ÍˆÍ)
+       * @brief  ƒmƒbƒNƒoƒbƒNˆ—
+       * @author “y‹´‹¬‰î
        */
-      virtual void Sercth(const float radius);
+      virtual void NockBack();
+      /**
+       * @brief  ’Tõˆ—
+       * @author “y‹´‹¬‰î
+       */
+      virtual void Sercth();
       /**
        * @brief  Õ“Ëˆ—
        */
@@ -171,7 +182,8 @@ namespace Gyro {
       int _cnt{ 0 };        //!< ƒJƒEƒ“ƒg
       int _mHandle{ -1 };   //!< ƒ‚ƒfƒ‹ƒnƒ“ƒhƒ‹
       int _enemyHP{ 0 };    //!< “G‘Ì—Í
-      float _radius{ 0.0f }; //!< ”¼Œa
+      float _serchRadius{ 0.0f }; //!< õ“G”ÍˆÍ(‰~)‚Ì”¼Œa
+      float _attackRadius{ 0.0f }; //!< UŒ‚”ÍˆÍ(‰~)‚Ì”¼Œa
        //!< ‹…‚Ì“–‚½‚è”»’è
       std::unique_ptr<Object::CollisionSphere> _sphere{ nullptr };
       //!< ƒJƒvƒZƒ‹“–‚½‚è”»’è
@@ -181,7 +193,7 @@ namespace Gyro {
       //!< “G‚Ìó‘Ô•Û•Ï”
       EnemyState _enemyState;
       //!< ‘Ì—ÍƒQ[ƒW
-      Gauge::GaugeEnemy _gaugeHp;
+      std::shared_ptr<Gauge::GaugeEnemy> _gaugeHp{ nullptr };
       //!< ƒ‚ƒfƒ‹ƒAƒjƒ
       ModelAnim::ModelAnimComponent _modelAnim;
     };

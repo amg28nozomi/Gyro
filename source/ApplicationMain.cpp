@@ -9,7 +9,7 @@
 #include "appframe.h"
 #include <DxLib.h>
 #include "ObjectServer.h"
-#include "ModeGame.h"
+#include "ModeAMG.h"
 #include "SpawnServer.h"
 #include "StageComponent.h"
 
@@ -27,33 +27,32 @@ namespace Gyro {
         }
 
         bool ApplicationMain::Init() {
-          if (!ApplicationBase::Init()) {
-              return false; // 初期化失敗
-          }
-          // Effekseerの設定
-          if (!Effekseer()) {
-              return false; // 設定失敗
-          }
-          // オブジェクトサーバの生成
-          _objectServer = std::make_unique<Object::ObjectServer>();
-          _objectServer->Init();
-          // スポーンサーバの生成
-          _spawnServer = std::make_unique<Object::SpawnServer>(*this);
-          _spawnServer->Init();
-          // カメラの生成
-          _camera = std::make_unique<Camera::Camera>();
-          _camera->Init();
-          // エフェクトサーバの生成
-          _effectServer = std::make_unique<Effect::EffectServer>();
-          // エフェクトの生成
-          _effect = std::make_unique<Effect::EffectComponent>(*this);
-          // ステージコンポーネントの生成
-          _stage = std::make_unique<Stage::StageComponent>(*this);
-          // 各種モードの登録
-          _modeServer->AddMode("Game", std::make_shared<Mode::ModeGame>(*this));
-          // 最初に遷移するモードを設定
-          _modeServer->TransionToMode("Game");
-          return true;
+            if (!ApplicationBase::Init()) {
+                return false; // 初期化失敗
+            }
+            // Effekseerの設定
+            if (!Effekseer()) {
+                return false; // 設定失敗
+            }
+            // オブジェクトサーバの生成
+            _objectServer = std::make_unique<Object::ObjectServer>();
+            _objectServer->Init();
+            // スポーンサーバの生成
+            _spawnServer = std::make_unique<Object::SpawnServer>(*this);
+            _spawnServer->Init();
+            // カメラの生成
+            _camera = std::make_unique<Camera::Camera>();
+            _camera->Init();
+            // エフェクトサーバの生成
+            _effectLoadServer = std::make_unique<Effect::EffectLoadServer>();
+            // エフェクトの生成
+            _effect = std::make_unique<Effect::EffectComponent>(*this);
+            // ステージコンポーネントの生成
+            _stage = std::make_unique<Stage::StageComponent>(*this);
+            // モードゲームの登録
+            _modeServer->AddMode("AMG", std::make_shared<Mode::ModeAMG>(*this));
+            _modeServer->TransionToMode("AMG");
+            return true;
         }
 
         bool ApplicationMain::Input() {

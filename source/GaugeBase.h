@@ -31,9 +31,10 @@ namespace Gyro {
       ~GaugeBase() = default;
       /**
        * @brief  初期化処理
+       * @param  value ゲージの最大値
        * @return true
        */
-      virtual bool Init();
+      virtual bool Init(float value);
       /**
        * @brief  更新処理
        * @return true
@@ -49,6 +50,11 @@ namespace Gyro {
        * @param value 値
        */
       void Add(float value);
+      /**
+       * @brief ゲージの減少
+       * @param value 値
+       */
+      void Sub(float value);
       /**
        * @brief  対象ゲージとの比較
        * @param  gauge 比較対象

@@ -13,12 +13,13 @@ namespace Gyro {
     GaugeBase::GaugeBase(Application::ApplicationMain& app) : _app(app) {
     }
 
-    bool GaugeBase::Init() {
+    bool GaugeBase::Init(float value) {
       return true;
     }
 
     bool GaugeBase::Process() {
-      _point = (_maxW - 5) - ((_maxW - 5) / _maxGauge) * _value;
+      // 描画用に使う値の計算処理
+      _point = ((_maxW - 5) / _maxGauge) * _value;
 
       return true;
     }
@@ -29,6 +30,10 @@ namespace Gyro {
 
     void GaugeBase::Add(float value) {
       _value += value;
+    }
+
+    void GaugeBase::Sub(float value) {
+      _value -= value;
     }
   } // namespace Gauge
 } // namespace Gyro

@@ -30,9 +30,11 @@ namespace Gyro {
        */
       ~GaugeTrick();
       /**
-       * @brief 初期化
-       */
-      bool Init() override;
+      * @brief  初期化処理
+      * @param  value ゲージの最大値
+      * @return true
+      */
+      bool Init(float value) override;
       /**
        * @brief 更新
        */

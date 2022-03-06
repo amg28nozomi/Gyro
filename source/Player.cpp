@@ -14,6 +14,7 @@
 #include "SpawnBase.h"
 #include "StageComponent.h"
 #include "ModelAnimData.h"
+#include "EnemyBase.h"
 
 namespace {
   constexpr auto NoAnimation = -1; //!< アニメーションはアタッチされていない
@@ -38,9 +39,9 @@ namespace {
   constexpr auto GroundLightAttack2 = "GyroLaw2";              //!< 地上弱攻撃2
   constexpr auto GroundLightAttack3 = "GyroLaw3";              //!< 地上弱攻撃3
   constexpr auto GroundLightAttackEX = "GyroLawEx";            //!< 地上EX攻撃(弱の〆)
-  constexpr auto GroundHeavyAttack1 = "Gyro High1";            //!< 地上強攻撃1
-  constexpr auto GroundHeavyAttack2 = "GyroHigh2";             //!< 地上強攻撃2
-  constexpr auto GroundHeavyAttack3 = "GyroHigh3";             //!< 地上強攻撃3
+  constexpr auto GroundHeavyAttack1 = "Gyrohigh1";             //!< 地上強攻撃1
+  constexpr auto GroundHeavyAttack2 = "Gyrohigh2";             //!< 地上強攻撃2
+  constexpr auto GroundHeavyAttack3 = "Gyrohigh3";             //!< 地上強攻撃3
   constexpr auto AirLightAttack1 = "GyroJLaw1";                //!< 空中弱攻撃1
   constexpr auto AirLightAttack2 = "GyroJLaw2";                //!< 空中弱攻撃2
   constexpr auto AirLightAttack3 = "GyroJLaw3";                //!< 空中弱攻撃3
@@ -51,6 +52,10 @@ namespace {
   constexpr auto ExciteTrick2 = "GyroExciteTrickDirect2";      //!< 必殺技
   constexpr auto Damage1 = "GyroDamage1";                      //!< 小ダメージ
   constexpr auto Damage2 = "GyroDamage2";                      //!< 大ダメージ
+  // プレイヤーのHP
+  constexpr int GyroHP = 1000;
+  // トリックゲージの設定
+  constexpr auto TrickMax = 30000;
   // ジャンプフラグ
   constexpr auto JumpPowe = 3.0f;
   constexpr auto JumpMax = 300.0f;
@@ -98,19 +103,19 @@ namespace Gyro {
       // 走り
       {StateNumberRun, {Run, 10.0f, 1.0f, true}},
       // ジャンプ
-      {StateNumberJump, {JumpUp, 10.0f, 1.0f, false}},
+      {StateNumberJump, {JumpUp, 10.0f, 1.0f, false, Effect::PlayerJump}},
       // 弱攻撃1
-      {StateNumberLight1, {GroundLightAttack1, 10.0f, 1.3f, false, Effect::pWeakAttack1}},
+      {StateNumberLight1, {GroundLightAttack1, 10.0f, 1.3f, false, Effect::PlayerWeakAttack1}},
       // 弱攻撃2
-      {StateNumberLight2, {GroundLightAttack2, 10.0f, 1.3f, false, Effect::pWeakAttack2}},
+      {StateNumberLight2, {GroundLightAttack2, 10.0f, 1.3f, false, Effect::PlayerWeakAttack2}},
       // 弱攻撃3
-      {StateNumberLight3, {GroundLightAttack3, 10.0f, 1.0f, false}},
+      {StateNumberLight3, {GroundLightAttack3, 10.0f, 1.0f, false, Effect::PlayerWeakAttack3}},
       // 強攻撃1
-      {StateNumberHeavy1 ,{GroundHeavyAttack1, 10.0f, 1.0f, false, Effect::pHeavyAttack1}},
+      {StateNumberHeavy1 ,{GroundHeavyAttack1, 10.0f, 1.0f, false, Effect::PlayerHeavyAttack1}},
       // 強攻撃2
       {StateNumberHeavy2 ,{GroundHeavyAttack2, 10.0f, 1.0f, false}},
       // 強攻撃3
-      {StateNumberHeavy3 ,{GroundHeavyAttack3, 10.0f, 1.0f, false}}
+      {StateNumberHeavy3 ,{GroundHeavyAttack3, 10.0f, 1.0f, false, Effect::PlayerHeavyAttack3}}
     };
 
     Player::Player(Application::ApplicationMain& app) : ObjectBase(app), _gaugeHp(app), _gaugeTrick(app) {
@@ -125,6 +130,8 @@ namespace Gyro {
       // ジャンプコンポーネントの設定
       _jump = std::make_unique<JumpComponent>();
       _jump->Set(300.0f, 120); // ジャンプの設定
+      // ノックバックコンポーネントの設定
+      _knockBack = std::make_unique<Object::KnockBackComponent>(*this, _app);
       // ワイヤーコンポーネントの設定
       _wire = std::make_unique<WireComponent>(*this);
       // アタックコンポーネントの設定
@@ -136,9 +143,7 @@ namespace Gyro {
       _stateComponent = std::make_unique<Object::StateComponent>();
       // アニメーションの設定
       _modelAnim.SetMainAttach(_model, Idle, 1.0f, true);
-      // ゲージの設定
-      _gaugeHp.Init();
-      _gaugeTrick.Init();
+      
       return true;
     }
 
@@ -183,6 +188,20 @@ namespace Gyro {
       _capsule->Process(move); // カプセルの更新
       //衝突判定
       Hit();
+      if (_knockBack->GetState() != Object::KnockBackComponent::KnockBackState::NonActive) {
+        _knockBack->Process();
+        move = _knockBack->MoveVector();
+        _position.Add(move);
+      }
+      // 無敵状態か
+      if (_invincible->Invincible()) {
+        // 無敵時間の経過処理を呼び出し
+        _invincible->Process();
+      }
+      // 無敵状態ではない場合、ダメージ判定を行う
+      if (!_invincible->Invincible()) {
+        IsDamage();
+      }
       // カメラの更新
       _app.GetCamera().Process(AppMath::Vector4(rightX, rightY), _position, move);
       // ワールド座標の設定
@@ -333,6 +352,11 @@ namespace Gyro {
       auto b = Vector(-100.0f, 0.0f, -100.0f);
       auto c = Vector(100.0f, 0.0f, -100.0f);
       _plane = std::make_unique<AppFrame::Math::Plane>(a, b, c);
+      // HPの設定
+      _playerHP = GyroHP;
+      // ゲージの設定
+      _gaugeHp.Init(GyroHP);
+      _gaugeTrick.Init(TrickMax);
     }
 
     void Player::CameraUpdate(const AppFrame::Math::Vector4 stick) {
@@ -494,6 +518,7 @@ namespace Gyro {
 
     void Player::Hit() {
       auto objects = _app.GetObjectServer().GetObjects(); // オブジェクトのコピー
+      std::shared_ptr<Enemy::EnemyBase> enemy;
       // 衝突判定を行う
       for (auto obj : objects) {
         // 敵の場合のみ処理を行う
@@ -592,6 +617,31 @@ namespace Gyro {
       auto pos = MV1GetFramePosition(_model, 15);
       // ローカル座標を攻撃座標にセットする
       _attack->Process(UtilityDX::ToVector(pos));
+    }
+
+    void Player::IsDamage() {
+      auto objects = _app.GetObjectServer().GetObjects(); // オブジェクトのコピー
+      std::shared_ptr<Enemy::EnemyBase> enemy;
+      // 衝突判定を行う
+      for (auto obj : objects) {
+        // 敵の場合のみ処理を行う
+        if (obj->GetId() != ObjectId::Enemy) continue;
+        // 敵が攻撃状態の場合ダメージ判定に進む
+        enemy = std::dynamic_pointer_cast<Enemy::EnemyBase>(obj);
+        if (enemy->GetEnemyState() != Enemy::EnemyBase::EnemyState::Attack) continue;
+        // 球と球の衝突判定
+        if (_capsule->IntersectSphere(std::dynamic_pointer_cast<Enemy::EnemyBase>(obj)->GetCollision())) {
+          _knockBack->Start();
+          _playerHP -= 100;
+          _gaugeHp.Sub(100);
+          if (_playerHP <= 0) {
+            // ゲームオーバー
+            _gameOver = true;
+          }
+          // 無敵時間を開始する
+          _invincible->Start();
+        }
+      }
     }
 
     void Player::ChangeState(const PlayerState& state, std::string_view animName) {

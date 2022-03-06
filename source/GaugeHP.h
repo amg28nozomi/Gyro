@@ -30,9 +30,11 @@ namespace Gyro {
        */
       ~GaugeHP();
       /**
-       * @brief 初期化
+       * @brief  初期化
+       * @param  ゲージの最大値
+       * @return true
        */
-      bool Init() override;
+      bool Init(float value) override;
       /**
        * @brief 更新
        */

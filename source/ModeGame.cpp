@@ -14,6 +14,7 @@
 #include "PrimitivePlane.h"
 #include "ObjectServer.h"
 #include "StageComponent.h"
+#include "ModeGameOver.h"
 
 namespace {
     constexpr auto TEXTURE = _T("res/Stage/water.png");
@@ -41,20 +42,29 @@ namespace Gyro {
       _app.GetSoundComponent().PlayLoop("bgm");
       // 再生音量の設定
       _app.GetSoundComponent().SetVolume("bgm", BgmVolume);
+      // カメラの初期化
+      _appMain.GetCamera().Init();
+      // ライトの設定
+      VECTOR light_dir = VGet(-1.0f, -1.0f, -1.0f);
+      auto light_handle = CreateDirLightHandle(light_dir);
+      VECTOR left_dir = VGet(1.0f, -1.0f, 1.0f);
+      auto left_handle = CreateDirLightHandle(left_dir);
+      SetLightEnable(false);
       return true;
     }
 
     bool ModeGame::Exit() {
+      // ライトをデフォルトに戻す
+      DeleteLightHandleAll();
+      SetLightEnable(true);
       // 生成したオブジェクトを削除
       _appMain.GetObjectServer().Release();
-      // 登録されているエフェクトを削除
-      _appMain.GetEffectServer().Release();
       return true;
     }
 
     bool ModeGame::Init() {
       // 使用するデータの読み込みを記述する
-      _plane.Initialize(35000.0, 150);
+      _plane.Initialize(35840.0, 35);
       _plane.Load(TEXTURE);
       _plane.Create();
       // ステージコンポーネントの初期化
@@ -100,9 +110,15 @@ namespace Gyro {
     bool ModeGame::Process() {
       // モードゲームの入力処理
       Input(_app.GetOperation());
+      // ゲームオーバー判定
+      bool gameover = _appMain.GetObjectServer().GetPlayer()->GetGameOver();
+      if (gameover) {
+        GameOver();
+        return true;
+      }
       // オブジェクトサーバの更新処理
       _appMain.GetObjectServer().Process();
-      // エフェクトサーバの更新処理
+      // エフェクトの更新処理
       _appMain.GetEffect().Process();
       // 地形の更新処理
       _plane.Process();
@@ -110,14 +126,16 @@ namespace Gyro {
     }
 
     bool ModeGame::Draw() const {
-      // 各種描画処理
-      _appMain.GetObjectServer().Draw();
-      // エフェクトの描画
-      _appMain.GetEffect().Draw();
       // 各種ステージの描画
       _appMain.GetStageComponent().Draw();
       // 地形の描画
       _plane.Draw();
+      // 各種描画処理
+      _appMain.GetObjectServer().Draw();
+      // エフェクトの描画
+      _appMain.GetEffect().Draw();
+      // 並行光源を 1 つ追加する
+      SetUseLighting(true);
       return true;
     }
 
@@ -134,9 +152,7 @@ namespace Gyro {
       using ModelServer = AppFrame::Model::ModelServer;
       // 各種モデルハンドルの読み込み
       const ModelServer::ModelDatas mv1Models{
-        {"player", "res/Player/Gyro Multimotion8.mv1"},     // 自機
         {"enemy", "res/Enemy/Wheel/Enemy_multimotion.mv1"}, // 敵
-        {"sky", "res/SkySphere/skysphere.mv1"},             // スカイスフィア
         {"stage", "res/Stage/houseGEO_1.mv1"}               // ステージ
       };
       // モデルサーバで読み取りを行う
@@ -153,6 +169,42 @@ namespace Gyro {
       _isLoad = true;
     }
 
+    void ModeGame::LoadEffectResource() {
+      // リソースの読み込みは行われているか
+      if (_isEffectLoad) {
+        return; // 読み込み済み
+      }
+      using EffectLoadServer = Effect::EffectLoadServer;
+      // エフェクトハンドルの読み込み
+      const EffectLoadServer::EffectMap effectMap{
+        {Effect::PlayerWeakAttack1, "res/Effect/Player/WeakAttack1/player_weakattack_1.efkefc", 5.0f},
+        {Effect::PlayerWeakAttack2, "res/Effect/Player/WeakAttack2/player_weakattack_2.efkefc", 5.0f},
+        {Effect::PlayerWeakAttack3, "res/Effect/Player/WeakAttack3/player_weakattack_3.efkefc", 5.0f},
+        {Effect::PlayerWeakAttackEX, "res/Effect/Player/WeakAttackEX/player_weakattack_EX.efkefc", 5.0f},
+        {Effect::PlayerHeavyAttack1, "res/Effect/Player/HeavyAttack1/HeavyAttack1.efkefc", 20.0f},
+        {Effect::PlayerHeavyAttack3, "res/Effect/Player/HeavyAttack3/HeavyAttack3.efkefc", 20.0f},
+        {Effect::PlayerAirWeakAttack1, "res/Effect/Player/AirWeakAttack1/Player_attack_air_normal_01.efkefc", 5.0f},
+        {Effect::PlayerAirWeakAttack2, "res/Effect/Player/AirWeakAttack2/Player_attack_air_normal_02.efkefc", 5.0f},
+        {Effect::PlayerAirWeakAttack3, "res/Effect/Player/AirWeakAttack3/Player_attack_air_normal_03.efkefc", 5.0f},
+        {Effect::PlayerAirHeavyAttack1, "res/Effect/Player/AirHeavyAttack1/Player_attack_air_heavy_01.efkefc", 5.0f},
+        {Effect::PlayerAirHeavyAttack2, "res/Effect/Player/AirHeavyAttack2/Player_attack_air_heavy_02.efkefc", 5.0f},
+        {Effect::PlayerUltActivate, "res/Effect/Player/Ult_Activate/Player_ult_activate.efkefc", 5.0f},
+        {Effect::PlayerUltSlash, "res/Effect/Player/Ult_Slash/Player_ult_slash.efkefc", 5.0f},
+        {Effect::PlayerJump, "res/Effect/Player/Jump/jump.efkefc", 5.0f},
+        {Effect::PlayerHit, "res/Effect/Player/Hit/Hit.efkefc", 5.0f},
+        {Effect::EnemyEyeLight, "res/Effect/Enemy/EyeLight/Enemy_EyeLight.efkefc", 20.0f},
+        {Effect::EnemyGroundAttack, "res/Effect/Enemy/GroundAttack/Enemy_ground_attack.efkefc", 10.0f},
+        {Effect::EnemyHit, "res/Effect/Enemy/Hit/Enemy_Hit.efkefc", 20.0f},
+        {Effect::EnemyExprosion, "res/Effect/Enemy/Exprosion/Enemy_Exprosion.efkefc", 10.0f},
+        {Effect::StageBarrier, "res/Effect/Stage/stage_barrier/stage_barrier.efkefc", 5.0f},
+        {Effect::BoxDestroy, "res/Effect/Stage/Box_Destroy/Box_Destroy.efkefc", 5.0f}
+      };
+      // エフェクトサーバに登録
+      _appMain.GetEffectLoadServer().AddEffects(effectMap);
+      // 読み込み完了
+      _isEffectLoad = true;
+    }
+
     void ModeGame::SetSpawn() {
       // スポーン情報の設定
       const Object::SpawnTable normal {
@@ -161,7 +213,7 @@ namespace Gyro {
         // 引数2:ローカル座標
         // 引数3:向き
         // 引数4:スケール
-        { Object::TypePlayer, {0.0f, 200.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}},
+        { Object::TypePlayer, {0.0f, 200.0f, -200.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}},
         { Object::TypeSkySphere, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}}
       };
       // エネミーテーブル
@@ -191,54 +243,19 @@ namespace Gyro {
       _appMain.GetSpawnServer().Spawn(0);
     }
 
-    void ModeGame::LoadEffectResource() const {
-      using EffectServer = Effect::EffectServer;
-      // エフェクトハンドルの読み込み
-      const EffectServer::EffectMap effectMap{
-        {Effect::pWeakAttack1, "res/Effect/Player/WeakAttack1/player_weakattack1_1.efkefc"},
-        {Effect::pWeakAttack2, "res/Effect/Player/WeakAttack2/player_weakattack2_2.efkefc"},
-        {Effect::pWeakAttack3, "res/Effect/Player/WeakAttack3/player_weakattack3.efkefc"},
-        {Effect::pWeakAttackEX, "res/Effect/Player/WeakAttackEX/player_weakattackEX.efkefc"},
-        {Effect::pHeavyAttack1, "res/Effect/Player/HeavyAttack1/HeavyAttack1.efkefc"},
-        {Effect::pHeavyAttack3, "res/Effect/Player/HeavyAttack3/HeavyAttack3.efkefc"},
-        {Effect::pAirWeakAttack1, "res/Effect/Player/AirWeakAttack1/Player_attack_air_normal_01.efkefc"},
-        {Effect::pAirWeakAttack2, "res/Effect/Player/AirWeakAttack2/Player_attack_air_normal_02.efkefc"},
-        {Effect::pAirWeakAttack3, "res/Effect/Player/AirWeakAttack3/Player_attack_air_normal_03.efkefc"},
-        {Effect::pAirHeavyAttack1, "res/Effect/Player/AirHeavyAttack1/Player_attack_air_heavy_01.efkefc"},
-        {Effect::pAirHeavyAttack2, "res/Effect/Player/AirHeavyAttack2/Player_attack_air_heavy_02.efkefc"},
-        {Effect::pUltActivate, "res/Effect/Player/Ult_Activate/Player_ult_activate.efkefc"},
-        {Effect::pUltSlash, "res/Effect/Player/Ult_Slash/Player_ult_slash.efkefc"},
-        {Effect::pHit, "res/Effect/Player/Hit/Hit.efkefc"},
-        {Effect::eEyeLight, "res/Effect/Enemy/EyeLight/Enemy_EyeLight.efkefc"},
-        {Effect::eGroundAttack, "res/Effect/Enemy/GroundAttack/Enemy_ground_attack.efkefc"},
-        {Effect::eHit, "res/Effect/Enemy/Hit/Enemy_Hit.efkefc"},
-        {Effect::eExprosion, "res/Effect/Enemy/Exprosion/Enemy_Exprosion.efkefc"},
-        {Effect::stageBarrier, "res/Effect/stage_barrier/stage_barrier.efkefc"}
-      };
-      // エフェクト拡大率の登録
-      const EffectServer::EffectMagniMap effectMagniMap{
-        {Effect::pWeakAttack1, 5.0f},
-        {Effect::pWeakAttack2, 5.0f},
-        {Effect::pWeakAttack3, 5.0f},
-        {Effect::pWeakAttackEX, 2.0f},
-        {Effect::pHeavyAttack1, 20.0f},
-        {Effect::pHeavyAttack3, 20.0f},
-        {Effect::pAirWeakAttack1, 10.0f},
-        {Effect::pAirWeakAttack2, 10.0f},
-        {Effect::pAirWeakAttack3, 10.0f},
-        {Effect::pAirHeavyAttack1, 10.0f},
-        {Effect::pAirHeavyAttack2, 10.0f},
-        {Effect::pUltActivate, 10.0f},
-        {Effect::pUltSlash, 10.0f},
-        {Effect::pHit, 20.0f},
-        {Effect::eEyeLight, 20.0f},
-        {Effect::eGroundAttack, 10.0f},
-        {Effect::eHit, 20.0f},
-        {Effect::eExprosion, 10.0f},
-        {Effect::stageBarrier, 20.0f}
-      };
-      // エフェクトサーバに登録
-      _appMain.GetEffectServer().AddEffects(effectMap, effectMagniMap);
+    void ModeGame::GameOver() {
+      // モードゲームの削除
+      _appMain.GetModeServer().PopBuck();
+      // キーが登録されているか
+      bool key = _app.GetModeServer().Contains("GameOver");
+      if (!key) {
+        // モードゲームオーバーの登録
+        _appMain.GetModeServer().AddMode("GameOver", std::make_shared<Mode::ModeGameOver>(_appMain));
+      }
+      // モードゲームオーバー遷移
+      _appMain.GetModeServer().TransionToMode("GameOver");
+      // BGMの再生を停止する
+      _appMain.GetSoundComponent().StopSound("bgm");
     }
   } // namespace Mode
 } // namespace Gyro

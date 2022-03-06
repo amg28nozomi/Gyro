@@ -32,9 +32,9 @@ namespace Gyro {
        */
       ~ModelAnimComponent();
       /**
-       * @brief  ‰Šú‰»
+       * @brief  ‰ğ•ú
        */
-      void Init();
+      void Release();
       /**
        * @brief  XV
        */

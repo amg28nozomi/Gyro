@@ -40,7 +40,6 @@ namespace Gyro {
       SetParameter();
       // アニメーションアタッチ
       _modelAnim.SetMainAttach(_mHandle, IdleKey, 1.0f, true);
-      _radius = 300.0f;
 
       return true;
     }
@@ -55,16 +54,20 @@ namespace Gyro {
       switch (_enemyState) {
         case Gyro::Enemy::EnemyBase::EnemyState::Move:
           Move();  //!< 移動
+          Sercth(); //!< 探索
           break;
         case Gyro::Enemy::EnemyBase::EnemyState::Attack:
           Attack();  //!< 攻撃
+          break;
+        case EnemyState::Damage:
+          NockBack(); //!< ノックバック
           break;
         case Gyro::Enemy::EnemyBase::EnemyState::Dead:
           Dead();  //!< 死亡
           break;
         default:
           _enemyState = EnemyState::Idle;
-          Sercth(_radius);
+          Sercth(); //!< 探索
           break;
       }
       // 衝突判定
@@ -86,7 +89,7 @@ namespace Gyro {
         PlayEffect();
       }
       // 体力ゲージの更新
-      _gaugeHp.Process();
+      _gaugeHp->Process();
       // モデルアニメの更新
       _modelAnim.Process();
 
@@ -97,14 +100,18 @@ namespace Gyro {
       // 基底側の描画
       EnemyBase::Draw();
       // 体力ゲージの描画
-      _gaugeHp.Draw();
+      _gaugeHp->Draw(_position);
 #ifdef _DEBUG
       // デバッグフラグがある場合のみ描画処理を行う
       if (_app.GetDebugFlag()) {
         // 当たり判定の描画
+        if (_enemyState == EnemyState::Attack) {
+          _sphere->Draw();
+        }
         _capsule->Draw();
         auto pos = _position.AddVectorY(10.0f);
-        DrawCone3D(UtilityDX::ToVECTOR(pos), UtilityDX::ToVECTOR(_position), _radius, 16, GetColor(0, 0, 255), GetColor(255, 255, 255), false);
+        DrawCone3D(UtilityDX::ToVECTOR(pos), UtilityDX::ToVECTOR(_position), _attackRadius, 16, GetColor(255, 0, 0), GetColor(255, 255, 255), false);
+        DrawCone3D(UtilityDX::ToVECTOR(pos), UtilityDX::ToVECTOR(_position), _serchRadius, 16, GetColor(0, 0, 255), GetColor(255, 255, 255), false);
       }
 #endif
       return true;
@@ -122,6 +129,11 @@ namespace Gyro {
     void EnemyWheel::SetParameter() {
       // 各種設定
       _enemyHP = WheelHP;
+      _gaugeHp = std::make_shared<Gauge::GaugeEnemy>(_app);
+      _gaugeHp->Init(WheelHP);
+      _serchRadius = 300.0f;
+      _attackRadius = 100.0f;
+      _gravity = false;
     }
 
     void EnemyWheel::SetCollision() {
@@ -138,9 +150,12 @@ namespace Gyro {
       auto prot = AppMath::Vector4();
       _app.GetObjectServer().GetPlayerTransForm(target, prot);
       auto forward = _position.Direction(target);
+      // 高さがいらないので分解してy以外を取り出す
+      auto [x, y, z] = forward.GetVector3();
+      auto efor = AppMath::Vector4(x, 0.0f, z);
       // 正規化
-      forward.Normalize();
-      auto move = forward * (WheelMoveSpead);
+      efor.Normalize();
+      auto move = efor * (WheelMoveSpead);
       // _sphere->Process();
       // ラジアンを生成(z軸は反転させる)
       auto radian = std::atan2(move.GetX(), -move.GetZ());
@@ -153,14 +168,48 @@ namespace Gyro {
       _rotation.SetY(AppMath::Utility::RadianToDegree(radian));
 #endif
       if (_modelAnim.GetMainAnimEnd() && !_modelAnim.IsBlending()) {
-        _enemyState = EnemyState::Attack;
+        _enemyState = EnemyState::Idle;
       }
     }
 
     void EnemyWheel::Attack() {
+      // アニメーションから指定したボーンのローカル座標を取得
+      auto attachIndex = _modelAnim.GetMainAttachIndex();
+      auto rPos = MV1GetFramePosition(_mHandle, 13);
+      //auto lPos = MV1GetFramePosition(_mHandle, 9);
+      /*for (auto i = 0; i < 2; i++) {
+        if (i < 1) {
+          _sphere->SetPosition(UtilityDX::ToVector(rPos));
+        }else {
+          _sphere->SetPosition(UtilityDX::ToVector(lPos));
+        }
+        _sphere->Process();
+      }*/
+      _sphere->SetPosition(UtilityDX::ToVector(rPos));
+      _sphere->Process();
+      _oldPosition = _position;
+      // アニメーション終了でIdleへ移行
       if (_modelAnim.GetMainAnimEnd() && !_modelAnim.IsBlending()) {
         _enemyState = EnemyState::Idle;
         _iMove = false;
+      }
+    }
+
+    void EnemyWheel::NockBack() {
+      if (_cnt > 0) {
+        // 自機の取得
+        const auto player = _app.GetObjectServer().GetPlayer();
+        // ノックバックベクトルを設定
+        auto knockBackVector = _position - player.get()->GetPosition();
+        // 高さがいらないのでｙ以外を分解して取り出す
+        auto [x, y, z] = knockBackVector.GetVector3();
+        auto knockBack = AppMath::Vector4(x, 0.0f, z);
+        knockBack.Normalize();
+        auto kB = knockBack * 10;
+        _position.Add(kB);
+        _capsule->SetPosition(_position);
+      }else {
+        _enemyState = EnemyState::Idle;
       }
     }
 
@@ -234,18 +283,18 @@ namespace Gyro {
         break;
       case EnemyState::Move:    //!< 移動
         ePos.AddY(135.0f);
-        effect.PlayEffect(Effect::eEyeLight, ePos, eRad);
+        effect.PlayEffect(Effect::EnemyEyeLight, ePos, eRad);
         break;
       case EnemyState::Attack:  //!< 攻撃
-        effect.PlayEffect(Effect::eGroundAttack, ePos, eRad);
+        effect.PlayEffect(Effect::EnemyGroundAttack, ePos, eRad);
         break;
       case EnemyState::Damage:  //!< 被ダメ
         ePos.AddY(100.0f);
-        effect.PlayEffect(Effect::eHit, ePos, eRad);
+        effect.PlayEffect(Effect::EnemyHit, ePos, eRad);
         break;
       case EnemyState::Dead:    //!< 死亡
         ePos.AddY(100.0f);
-        effect.PlayEffect(Effect::eExprosion, ePos, eRad);
+        effect.PlayEffect(Effect::EnemyExprosion, ePos, eRad);
         break;
       default:
         break;
@@ -271,11 +320,12 @@ namespace Gyro {
         std::dynamic_pointer_cast<Object::CollisionSphere>(attack.GetCollision())->HitOn();
 #endif
         _enemyHP -= 1000;
+        _gaugeHp->Sub(1000);
         if (_enemyHP <= 0) {
           _enemyState = EnemyState::Dead;
-        }
-        else {
+        }else {
           _enemyState = EnemyState::Damage;
+          _cnt = 20;
         }
         // 衝突フラグがある場合は無敵時間を開始する
         _invincible->Start();

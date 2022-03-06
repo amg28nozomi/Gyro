@@ -46,7 +46,7 @@ namespace Gyro {
     }
 
     int EffectComponent::GetEffectHandle(const std::string_view key) {
-      return _app.GetEffectServer().GetEffectHandle(key);
+      return _app.GetEffectLoadServer().GetEffectHandle(key);
     }
   } // namespace Effect
 } // namespace Gyro

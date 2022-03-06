@@ -1,8 +1,8 @@
 {
 "stage":[
 {"filename":"House_B_GEO","tx":-53.474,"ty":-789.993,"tz":-4104.399,"rx":-0,"ry":-0,"rz":0,"sx":1,"sy":1,"sz":1},
-{"filename":"House_GEO","tx":0,"ty":-1146.382,"tz":-2084.143,"rx":-0,"ry":-0,"rz":0,"sx":1,"sy":1,"sz":1},
-{"filename":"House_GEO","tx":0,"ty":-1271.393,"tz":-576.719,"rx":-0,"ry":-0,"rz":0,"sx":1,"sy":1,"sz":1},
+{"filename":"House_G_GEO","tx":0,"ty":-1146.382,"tz":-2084.143,"rx":-0,"ry":-0,"rz":0,"sx":1,"sy":1,"sz":1},
+{"filename":"House_G_GEO","tx":0,"ty":-1271.393,"tz":-576.719,"rx":-0,"ry":-0,"rz":0,"sx":1,"sy":1,"sz":1},
 {"filename":"House_R_GEO","tx":0,"ty":-666.011,"tz":-7317.942,"rx":-0,"ry":-0,"rz":0,"sx":1,"sy":1,"sz":1},
 {"filename":"Long_House_GEO","tx":1227.419,"ty":-897.842,"tz":-3046.117,"rx":-0,"ry":-0,"rz":0,"sx":1,"sy":1,"sz":1},
 {"filename":"Water_tank_GEO","tx":-619.159,"ty":835.641,"tz":-7288.627,"rx":-0,"ry":-0,"rz":0,"sx":1,"sy":1,"sz":1},
@@ -41,6 +41,9 @@
 {"filename":"Woodbox_GEO","tx":370.431,"ty":362.345,"tz":-2396.526,"rx":-0,"ry":-0,"rz":0,"sx":1,"sy":1,"sz":1},
 {"filename":"Woodbox_GEO","tx":250.619,"ty":362.345,"tz":-2376.893,"rx":-0,"ry":-0,"rz":0,"sx":1,"sy":1,"sz":1},
 {"filename":"Woodbox_GEO","tx":417.868,"ty":839.821,"tz":-7570.237,"rx":-0,"ry":-0,"rz":0,"sx":1,"sy":1,"sz":1},
-{"filename":"Woodbox_GEO","tx":537.68,"ty":839.821,"tz":-7589.87,"rx":-0,"ry":-0,"rz":0,"sx":1,"sy":1,"sz":1}
+{"filename":"Woodbox_GEO","tx":537.68,"ty":839.821,"tz":-7589.87,"rx":-0,"ry":-0,"rz":0,"sx":1,"sy":1,"sz":1},
+{"filename":"Canoe_GEO","tx":-1047.898,"ty":3.717,"tz":2468.591,"rx":-0,"ry":47.621,"rz":0,"sx":1,"sy":1,"sz":1},
+{"filename":"Woodbox_GEO","tx":-720.305,"ty":-19.869,"tz":2468.591,"rx":-0,"ry":47.621,"rz":0,"sx":1,"sy":1,"sz":1},
+{"filename":"Woodboard_GEO","tx":-766.682,"ty":30.022,"tz":1595.517,"rx":-0,"ry":47.621,"rz":0,"sx":1.596,"sy":1,"sz":1.596}
    ]
 }
