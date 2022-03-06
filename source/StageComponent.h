@@ -11,6 +11,9 @@
 #include <string>
 #include <unordered_map>
 #include "appframe.h"
+#include "SkySphere.h"
+#include "SpawnServer.h"
+#include "ObjectBase.h"
 /**
  * @brief ゲームベース
  */
@@ -60,6 +63,11 @@ namespace Gyro {
        */
       bool CreateStage(std::string key);
       /**
+       * @brief  更新
+       * @return true
+       */
+      bool Process();
+      /**
        * @brief 描画
        */
       bool Draw() const;
@@ -68,6 +76,7 @@ namespace Gyro {
        * @return true
        */
       bool ReleaseStageInfo();
+      void AddSky(std::shared_ptr<Object::SkySphere> sky);
       /**
        * @brief  ステージ情報の取得
        * @param  key 各ステージに関連づけた任意の文字列
@@ -81,12 +90,16 @@ namespace Gyro {
       std::vector<int> GetStageModel() const {
           return _model;
       }
+      std::vector<std::shared_ptr<Object::SkySphere>> GetSkySphere() {
+        return _skySphere;
+      }
     private:
       /**
        * @brief 文字列をキーとしてステージ情報を管理する連想配列
        */
       std::unordered_map<std::string, std::vector<std::pair<int, StageData>>> _stageModelMap;
       std::vector<int> _model{ -1 }; //!< モデルハンドル格納用コンテナ
+      std::vector<std::shared_ptr<Object::SkySphere>> _skySphere;
     };
   } //namespace Stage
 } // namespace Gyro

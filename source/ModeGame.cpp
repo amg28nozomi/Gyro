@@ -122,6 +122,8 @@ namespace Gyro {
       _appMain.GetEffect().Process();
       // 地形の更新処理
       _plane.Process();
+      // 各種ステージの描画
+      _appMain.GetStageComponent().Process();
       return true;
     }
 

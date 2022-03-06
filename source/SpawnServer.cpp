@@ -22,6 +22,7 @@ namespace Gyro {
       SetServerName("SpawnServer");
 #endif
       _stage.clear(); // ステージ名を削除
+      _stageCom = std::make_shared<Stage::StageComponent>(app);
     }
 
     bool SpawnServer::Release() {
@@ -166,7 +167,7 @@ namespace Gyro {
 
     void SpawnServer::AddSkySphere(std::shared_ptr<SkySphere> skysphere) const {
       // ステージに登録する
-
+      return _stageCom->AddSky(std::move(skysphere));
     }
 
     std::shared_ptr<Player::Player> SpawnServer::Player(std::shared_ptr<SpawnBase>& spawn) const {
