@@ -266,6 +266,7 @@ namespace Gyro {
           _attack->Start();
           _stateComponent->Start();
           _attackFlag = true;
+          _app.GetCamera().GoSpecial();
           return true; // ‘JˆÚ‚·‚é
         }
         // Xƒ{ƒ^ƒ“‚Ì“ü—Í‚ª‚ ‚Á‚½ê‡

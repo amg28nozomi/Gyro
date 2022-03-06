@@ -28,7 +28,7 @@ namespace Gyro {
     bool PrimitiveBase::Load(const TCHAR* fileName) {
       UnLoad();
 
-      _handle = LoadGraph("res/Primitive/コンポ 1 (00000)_1.png");
+      _handle = LoadGraph("res/Primitive/コンポ 1 (00000).jpg");
       //_handle = LoadGraph("res/Primitive/コンポ 1 (00000).png");
       _handle2 = LoadGraph("res/Primitive/コンポ 1 (00010).png");
       _handle3 = LoadGraph("res/Primitive/コンポ 1 (00020).png");

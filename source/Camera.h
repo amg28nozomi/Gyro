@@ -112,24 +112,40 @@ namespace Gyro {
       AppFrame::Math::Vector4 GetTarget() const {
         return _target;
       }
+      /**
+       * @brief  カメラの状態を取得
+       * @return カメラの状態
+       */
+      CameraState GetCamState() {
+        return _cameraState;
+      }
+      /**
+       * @brief  カメラの状態をスペシャルに移行
+       * @return 
+       */
+      CameraState GoSpecial() {
+        _cameraState = CameraState::SpecialMove;
+        _cnt = 20;
+        return _cameraState;
+      }
     private:
       AppFrame::Math::Vector4 _position{};    //!< カメラの座標
-      AppFrame::Math::Vector4 _target{};  //!< カメラの注視点(見ている座標)
+      AppFrame::Math::Vector4 _target{};      //!< カメラの注視点(見ている座標)
       CameraState _cameraState{ CameraState::Normal }; //!< カメラ状態
-
+      int _cnt;                               //!< カウント
       /**
        * @brief  Normal状態の処理
-       * @param  stick     右スティックの大きさ
-       * @param  target    プレイヤーの位置
-       * @param  move      プレイヤーの移動量
+       * @param  stick   右スティックの大きさ
+       * @param  target  プレイヤーの位置
+       * @param  move    プレイヤーの移動量
        */
       void Normal(const AppFrame::Math::Vector4 stick, const AppFrame::Math::Vector4 target, const AppFrame::Math::Vector4 move);
       /**
        * @brief  Special状態の処理
-       * @param  target    プレイヤーの位置
-       * @param  move      プレイヤーの移動量
+       * @param  target  プレイヤーの位置
+       * @param  move    プレイヤーの移動量
        */
-      void Special(const AppFrame::Math::Vector4 target, const AppFrame::Math::Vector4 move);
+      void Special(const AppFrame::Math::Vector4 stick, const AppFrame::Math::Vector4 target, const AppFrame::Math::Vector4 move);
       /**
        * @brief 状態の設定
        */

@@ -8,6 +8,7 @@
 #include "Camera.h"
 #include "ApplicationMain.h"
 #include "UtilityDX.h"
+#include <numbers>
 
 namespace {
   constexpr auto Near = 2.0f;             //!< 手前クリップ距離
@@ -37,8 +38,12 @@ namespace Gyro {
       switch (_cameraState) {
       case CameraState::Normal:
         Normal(stick, target, move);
+        break;
       case CameraState::SpecialMove:
-        Special(target, move);
+        Special(stick, target, move);
+        break;
+      default:
+        break;
       }
       
       return true;
@@ -107,12 +112,62 @@ namespace Gyro {
       }
       // 座標の設定
       _target.Set(target);
+      // 上方向ベクトルの設定
+      auto upVec = AppFrame::Math::Vector4(0.f, 1.f, 0.f);
       //カメラの位置更新
-      SetCameraPositionAndTarget_UpVecY(UtilityDX::ToVECTOR(_position), UtilityDX::ToVECTOR(target));
+      SetCameraPositionAndTargetAndUpVec(UtilityDX::ToVECTOR(_position), UtilityDX::ToVECTOR(target), UtilityDX::ToVECTOR(upVec));
     }
 
-    void Camera::Special(const AppFrame::Math::Vector4 target, const AppFrame::Math::Vector4 move) {
-        
+    void Camera::Special(const AppFrame::Math::Vector4 stick, const AppFrame::Math::Vector4 target, const AppFrame::Math::Vector4 move) {
+      // ターゲット座標までの向きを算出
+      auto direction = target.Direction(_position);
+      // 向きベクトルの各成分を取得
+      auto [dX, dY, dZ] = direction.GetVector3();
+      // 成分を基に角度と長さを算出
+      auto radian = atan2(dZ, dX);
+      auto length = AppFrame::Math::Arithmetic::Length(dZ, dX);
+      // X軸の入力具合に応じて向きを回す
+      if (stick.GetX() > InputMin) { radian -= 0.1f; }
+      if (stick.GetX() < -InputMin) { radian += 0.1f; }
+      // x,z位置
+      auto x = target.GetX() + move.GetX() + cos(radian) * length;
+      _position.SetX(x);
+      auto z = target.GetZ() + move.GetZ() + sin(radian) * length;
+      _position.SetZ(z);
+      // y位置
+      if (stick.GetY() > InputMin) {
+        auto py = _position.GetY() - 4.0f;
+        _position.SetY(py);
+      }
+      if (stick.GetY() < -InputMin) {
+        auto my = _position.GetY() + 4.0f;
+        _position.SetY(my);
+      }
+      if (_target.GetY() > target.GetY()) {
+        auto a = _target.GetY() - target.GetY();
+        auto py = _position.GetY() - a;
+        _position.SetY(py);
+      }
+      if (_target.GetY() < target.GetY()) {
+        auto a = target.GetY() - _target.GetY();
+        auto my = _position.GetY() + a;
+        _position.SetY(my);
+      }
+      // 座標の設定
+      _target.Set(target);
+      // 上方向の設定
+      auto roll = 0.0f;
+      auto upVec = AppFrame::Math::Vector4();
+      auto pi = std::numbers::pi;
+      if (_cnt > 0) {
+        roll += pi / 60.0f;
+        upVec.Set(sin(roll), cos(roll), 0.0f);
+        _cnt--;
+      }else {
+        _cameraState = CameraState::Normal;
+      }
+      //カメラの位置更新
+      SetCameraPositionAndTargetAndUpVec(UtilityDX::ToVECTOR(_position), UtilityDX::ToVECTOR(target), UtilityDX::ToVECTOR(upVec));
     }
   }// namespace Camera
 }// namespace Gyro
