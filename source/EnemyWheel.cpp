@@ -27,6 +27,7 @@ namespace Gyro {
     EnemyWheel::EnemyWheel(Application::ApplicationMain& app) : EnemyBase(app) {
       // 初期化
       Init();
+      _gravity = true;
     }
 
     EnemyWheel::~EnemyWheel() {
@@ -80,7 +81,16 @@ namespace Gyro {
       WorldMatrix();
       // ワールド座標の設定
       MV1SetMatrix(_mHandle, UtilityDX::ToMATRIX(_world));
-
+      // 地形との当たり判定
+      //IsStand();
+      // 場外に出た時死亡するようにする
+      if (_position.GetY() < -100.0f) {
+        _enemyHP -= 50000;
+        _gaugeHp->Sub(50000);
+      }
+      if (_enemyHP <= 0) {
+        _enemyState = EnemyState::Dead;
+      }
       // 状態遷移したか
       if (IsChangeState(oldEnemyState)) {
         // アニメーション変更
