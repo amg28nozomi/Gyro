@@ -72,6 +72,11 @@ namespace Gyro {
        */
       bool Draw() const override;
       /**
+       * @brief  ステージの設定
+       * @return true:正常終了 false:問題発生
+       */
+      bool StageChange(std::string_view key);
+      /**
        * @brief  アプリケーションメインの取得
        * @return アプリケーションメインの参照を返す
        */
@@ -86,6 +91,9 @@ namespace Gyro {
       std::unique_ptr<Light::Light> _light;
       //!< シャドウ
       std::unique_ptr<Shadow::Shadow> _shadow;
+      //!< 現在のステージキー
+      std::string _key;
+
       /**
        * @brief リソースの読み取り
        */

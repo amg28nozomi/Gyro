@@ -73,6 +73,7 @@
     <ClCompile Include="source\SpawnEnemy.cpp" />
     <ClCompile Include="source\SpawnServer.cpp" />
     <ClCompile Include="source\StageComponent.cpp" />
+    <ClCompile Include="source\StageTransition.cpp" />
     <ClCompile Include="source\StateComponent.cpp" />
     <ClCompile Include="source\Studio.cpp" />
     <ClCompile Include="source\UtilityDX.cpp" />
@@ -135,6 +136,7 @@
     <ClInclude Include="source\SpawnServer.h" />
     <ClInclude Include="source\StageComponent.h" />
     <ClInclude Include="source\StageData.h" />
+    <ClInclude Include="source\StageTransition.h" />
     <ClInclude Include="source\StateComponent.h" />
     <ClInclude Include="source\Studio.h" />
     <ClInclude Include="source\UtilityDX.h" />

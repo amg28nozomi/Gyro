@@ -36,6 +36,8 @@ namespace Gyro {
       LoadResource();
       // エフェクトリソースの読み取り
       LoadEffectResource();
+      // ステージの切り替え
+      StageChange("stage");
       // オブジェクトを生成
       SetSpawn();
       // BGMのループ再生開始
@@ -66,8 +68,6 @@ namespace Gyro {
       _plane.Initialize(35840.0, 35);
       _plane.Load(TEXTURE);
       _plane.Create();
-      // ステージコンポーネントの初期化
-      _appMain.GetStageComponent().Init("stage");
       // 重力加速度をセットする
       AppMath::GravityBase::SetScale(GravityScale);
       return true;
@@ -140,6 +140,20 @@ namespace Gyro {
       // エフェクトの描画
       _appMain.GetEffect().Draw();
       return true;
+    }
+
+    bool ModeGame::StageChange(std::string_view key) {
+      // ステージ素材の削除
+      _appMain.GetStageComponent().ReleaseStageInfo();
+      // ステージコンポーネントの初期化
+      if (!_appMain.GetStageComponent().Init(key.data())) {
+        return false;
+      }
+      // ステージキーを設定
+      _key = key.data();
+      // フェードイン・フェードアウトをセットする
+
+      return true; // 設定成功
     }
 
     Application::ApplicationMain& ModeGame::GetAppMain() {

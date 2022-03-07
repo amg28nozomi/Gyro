@@ -320,6 +320,9 @@
     <ClCompile Include="source\Shadow.cpp">
       <Filter>ソース ファイル\Shadow</Filter>
     </ClCompile>
+    <ClCompile Include="source\StageTransition.cpp">
+      <Filter>ソース ファイル\Stage</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\ApplicationMain.h">
@@ -504,6 +507,9 @@
     </ClInclude>
     <ClInclude Include="source\ModeGame.h">
       <Filter>ヘッダー ファイル\Mode</Filter>
+    </ClInclude>
+    <ClInclude Include="source\StageTransition.h">
+      <Filter>ヘッダー ファイル\Stage</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

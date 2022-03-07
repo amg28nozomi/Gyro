@@ -40,9 +40,13 @@ namespace Gyro {
       }
       catch (const std::logic_error& e) {
         OutputDebugString(e.what());
+        return false; // キーが不正
       }
 #endif
-
+      // ファイルが存在しない場合
+      if (reading.fail()) {
+        return false;
+      }
       nlohmann::json value;
       // ファイルの中身を取り出す
       reading >> value;
