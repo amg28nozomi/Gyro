@@ -123,9 +123,7 @@ namespace Gyro {
     }
 
     bool StageComponent::Process() {
-      for (auto sky : _skySphere) {
-        sky->Process();
-      }
+      _skySphere->Process();
 
       return true;
     }
@@ -135,9 +133,7 @@ namespace Gyro {
       for (auto ite : _model) {
         MV1DrawModel(ite);
       }
-      for (auto sky : _skySphere) {
-        sky->Draw();
-      }
+      _skySphere->Draw();
 
       return true;
     }
@@ -145,13 +141,13 @@ namespace Gyro {
     bool StageComponent::ReleaseStageInfo() {
       _stageModelMap.clear();
       _model.clear();
-      _skySphere.clear();
+      _skySphere.reset();
 
       return true;
     }
 
     void StageComponent::AddSky(std::shared_ptr<Object::SkySphere> sky) {
-      _skySphere.emplace_back(std::move(sky));
+      _skySphere = std::move(sky);
     }
   } // namespace Stage
 } // namespace Gyro

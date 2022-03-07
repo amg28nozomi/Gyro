@@ -112,7 +112,7 @@ namespace Gyro {
        * @brief  ステージコンポーネントの取得
        * @return ステージコンポーネントの参照
        */
-      Stage::StageComponent& GetStageComponent() {
+      Stage::StageComponent& GetStageComponent() const {
         return *_stage;
       }
     private:

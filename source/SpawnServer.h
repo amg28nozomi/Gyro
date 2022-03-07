@@ -151,7 +151,6 @@ namespace Gyro {
        * @return スカイスフィアのシェアードポインタ
        */
       std::shared_ptr<SkySphere> Skysphere(std::shared_ptr<SpawnBase>& spawn) const;
-      std::shared_ptr<Stage::StageComponent> _stageCom;
 #ifdef _DEBUG
       /**
        * @brief  スポーン失敗メッセージの生成
