@@ -167,7 +167,8 @@ namespace Gyro {
 
     void SpawnServer::AddSkySphere(std::shared_ptr<SkySphere> skysphere) {
       // ÉXÉeÅ[ÉWÇ…ìoò^Ç∑ÇÈ
-      _appMain.GetStageComponent().SetSkySphere(skysphere);
+      auto skySkysphere = skysphere;
+      return _appMain.GetStageComponent().AddSky(skySkysphere);
     }
 
     std::shared_ptr<Player::Player> SpawnServer::Player(std::shared_ptr<SpawnBase>& spawn) const {

@@ -9,6 +9,7 @@
 #include <appframe.h>
 #include "SpawnBase.h"
 #include "SpawnEnemy.h"
+#include "StageComponent.h"
 /**
  * @brief ゲームベース
  */
@@ -31,6 +32,9 @@ namespace Gyro {
   namespace Application {
     class ApplicationMain; //!< 前方宣言
   } // namespace Application
+  namespace Stage {
+    class StageComponent;
+  }
   /**
    * @brief オブジェクトベース
    */

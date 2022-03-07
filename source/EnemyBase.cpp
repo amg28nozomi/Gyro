@@ -11,7 +11,7 @@
 #include "ObjectServer.h"
 #include "SpawnEnemy.h"
 #include "Player.h"
-
+#include "StageComponent.h"
 namespace {
   // 無敵時間(フレーム)
   constexpr auto InvincibleTime = 120;
@@ -227,23 +227,31 @@ namespace Gyro {
       newCapsule.SetPosition(newPos);
       // 線分の取得
       auto [start, end] = newCapsule.LineSegment().GetVector();
-      // プレイヤーの取得
-      const auto player = _app.GetObjectServer().GetPlayer();
+
+      auto flag = false;
       // 地形(床)と線分の衝突判定
-      auto hit = MV1CollCheck_Line(player->StageHandle(), 2, UtilityDX::ToVECTOR(end), UtilityDX::ToVECTOR(start));
-      // 衝突フラグがない場合
-      if (hit.HitFlag == 0) {
+      for (int i = 0; i < _app.GetStageComponent().GetStageModel().size(); i++) {
+        auto handleMap = _app.GetStageComponent().GetStageModel()[i];
+        auto hit = MV1CollCheck_Line(handleMap, 2, UtilityDX::ToVECTOR(end), UtilityDX::ToVECTOR(start));
+        // 衝突フラグがない場合
+        if (hit.HitFlag == 0) {
+          continue;
+        }
+        // 衝突座標を座標に代入
+        _position = UtilityDX::ToVector(hit.HitPosition);
+        // 新しい座標をコリジョンに反映
+        _capsule->SetPosition(_position);
+        flag = true;
+        break;
+      }
+      // 衝突フラグがfalseの時落下
+      if (flag == false) {
         // 新しい座標をセット
         _position = newPos;
         // コリジョン情報に更新をかける
         _capsule->SetPosition(_position);
-        return false; // 床に立っていない
       }
-      // 衝突座標を座標に代入
-      _position = UtilityDX::ToVector(hit.HitPosition);
-      // 新しい座標をコリジョンに反映
-      _capsule->SetPosition(_position);
-      return true; // 床に立っている
+      return flag;
     }
   } // namespace Enemy
 } // namespace Gyro

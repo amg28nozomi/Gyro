@@ -129,6 +129,18 @@
     <Filter Include="ソース ファイル\Object\Player\Component">
       <UniqueIdentifier>{26e46269-b75a-482b-8296-d00967c0a962}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Light">
+      <UniqueIdentifier>{c09aac58-c13a-4ada-906d-a815e1c24d8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shadow">
+      <UniqueIdentifier>{f3e1b683-ba4a-4adc-8e64-197332f0c687}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Light">
+      <UniqueIdentifier>{5fc397e1-9114-4ce3-8917-75a47163a9e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Shadow">
+      <UniqueIdentifier>{47d2cfc9-30bb-4935-9d0f-b4d60922f9c1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\ApplicationMain.cpp">
@@ -301,6 +313,12 @@
     </ClCompile>
     <ClCompile Include="source\WireComponent.cpp">
       <Filter>ソース ファイル\Object\Player\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Light.cpp">
+      <Filter>ソース ファイル\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Shadow.cpp">
+      <Filter>ソース ファイル\Shadow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -477,6 +495,15 @@
     </ClInclude>
     <ClInclude Include="source\WirePoint.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Light.h">
+      <Filter>ヘッダー ファイル\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Shadow.h">
+      <Filter>ヘッダー ファイル\Shadow</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ModeGame.h">
+      <Filter>ヘッダー ファイル\Mode</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

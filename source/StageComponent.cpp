@@ -122,11 +122,18 @@ namespace Gyro {
       return true;
     }
 
+    bool StageComponent::Process() {
+      _skySphere->Process();
+
+      return true;
+    }
+
     bool StageComponent::Draw() const {
       // モデルハンドル格納コンテナを回して描画する
       for (auto ite : _model) {
         MV1DrawModel(ite);
       }
+      _skySphere->Draw();
 
       return true;
     }
@@ -134,13 +141,13 @@ namespace Gyro {
     bool StageComponent::ReleaseStageInfo() {
       _stageModelMap.clear();
       _model.clear();
+      _skySphere.reset();
 
       return true;
     }
 
-    void StageComponent::SetSkySphere(std::shared_ptr<Object::SkySphere> skySphere) {
-      // スカイスフィアをセットする
-      _skySphere = std::move(skySphere);
+    void StageComponent::AddSky(std::shared_ptr<Object::SkySphere> sky) {
+      _skySphere = std::move(sky);
     }
   } // namespace Stage
 } // namespace Gyro
