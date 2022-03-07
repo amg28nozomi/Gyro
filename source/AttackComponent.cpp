@@ -17,6 +17,7 @@ namespace Gyro {
       _state = AttackState::NonActive;
       // 攻撃判定用のコリジョン情報をセット
       _collision.emplace_back(std::move(collision));
+      _collision.clear();
       _speed = 10.0f;
     }
 
