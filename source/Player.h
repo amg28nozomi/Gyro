@@ -21,6 +21,7 @@
 #include "AttackComponent.h"
 #include "InvincibleComponent.h"
 #include "StateComponent.h"
+#include "DashComponent.h"
 
 /**
  * @brief ゲームベース
@@ -36,8 +37,7 @@ namespace Gyro {
    * @brief オブジェクトベース
    */
   namespace Object {
-    class CollisionCapsule; //!< 前方宣言
-    class DashComponent;
+    class CollisionCapsule; //!< 
   } // namespace Object
   /**
    * @brief プレイヤーベース
@@ -61,7 +61,7 @@ namespace Gyro {
       enum class PlayerState {
         Idle,        //!< 待機
         Walk,        //!< 歩き
-        Run,         //!< 移動
+        Run,         //!< 移動    
         Attack1,     //!< 攻撃1
         Attack2,     //!< 攻撃2
         Attack3,     //!< 攻撃3
@@ -129,6 +129,16 @@ namespace Gyro {
       std::string_view ModelKey() const override {
         return _modelKey;
       }
+      /**
+       * @brief  カメラの注視方向に合わせた自機の向きベクトルを取得する
+       * @return 
+       */
+      AppMath::Vector4 GetCameraForward() const;
+      /**
+       * @brief  向きの取得(ラジアン値)
+       * @return 向き(ラジアン値)
+       */
+      float GetRotationRadianY() const;
     private:
       //!< モデルハンドル
       int _model;
@@ -254,6 +264,11 @@ namespace Gyro {
        * @brief  攻撃処理
        */
       void Attack();
+      /**
+       * @brief  移動処理の開始
+       * @return true:正常終了 false:問題発生
+       */
+      bool DashStart();
       /**
        * @brief  ダッシュ処理
        * @return 移動量

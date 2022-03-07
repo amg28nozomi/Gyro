@@ -123,6 +123,12 @@
     <Filter Include="ヘッダー ファイル\Camera">
       <UniqueIdentifier>{80aa6526-8417-4724-b9db-7de0bc53a4cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Object\Player\Component">
+      <UniqueIdentifier>{ebce602d-ffc8-422d-8196-22f0cabee060}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Object\Player\Component">
+      <UniqueIdentifier>{26e46269-b75a-482b-8296-d00967c0a962}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\ApplicationMain.cpp">
@@ -191,23 +197,8 @@
     <ClCompile Include="source\CollisionComponent.cpp">
       <Filter>ソース ファイル\Object\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="source\JumpComponent.cpp">
-      <Filter>ソース ファイル\Object\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="source\WireComponent.cpp">
-      <Filter>ソース ファイル\Object\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="source\ObjectComponent.cpp">
-      <Filter>ソース ファイル\Object\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="source\MoveComponent.cpp">
-      <Filter>ソース ファイル\Object\Player</Filter>
-    </ClCompile>
     <ClCompile Include="source\WirePoint.cpp">
       <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="source\InvincibleComponent.cpp">
-      <Filter>ソース ファイル\Object\Player</Filter>
     </ClCompile>
     <ClCompile Include="source\AttackComponent.cpp">
       <Filter>ソース ファイル\Object\Player\Attack</Filter>
@@ -217,12 +208,6 @@
     </ClCompile>
     <ClCompile Include="source\LightAttack1.cpp">
       <Filter>ソース ファイル\Object\Player\Attack</Filter>
-    </ClCompile>
-    <ClCompile Include="source\StateComponent.cpp">
-      <Filter>ソース ファイル\Object\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="source\PlayerAttackData.cpp">
-      <Filter>ソース ファイル\Object\Player</Filter>
     </ClCompile>
     <ClCompile Include="source\StageComponent.cpp">
       <Filter>ソース ファイル\Stage</Filter>
@@ -287,14 +272,35 @@
     <ClCompile Include="source\Camera.cpp">
       <Filter>ソース ファイル\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="source\KnockBackComponent.cpp">
-      <Filter>ソース ファイル\Object\Player</Filter>
-    </ClCompile>
     <ClCompile Include="source\EffectLoadServer.cpp">
       <Filter>ソース ファイル\Effect</Filter>
     </ClCompile>
     <ClCompile Include="source\DashComponent.cpp">
-      <Filter>ソース ファイル\Object\Player</Filter>
+      <Filter>ソース ファイル\Object\Player\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="source\InvincibleComponent.cpp">
+      <Filter>ソース ファイル\Object\Player\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="source\JumpComponent.cpp">
+      <Filter>ソース ファイル\Object\Player\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="source\KnockBackComponent.cpp">
+      <Filter>ソース ファイル\Object\Player\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="source\MoveComponent.cpp">
+      <Filter>ソース ファイル\Object\Player\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="source\PlayerAttackData.cpp">
+      <Filter>ソース ファイル\Object\Player\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="source\ObjectComponent.cpp">
+      <Filter>ソース ファイル\Object\Player\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="source\StateComponent.cpp">
+      <Filter>ソース ファイル\Object\Player\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="source\WireComponent.cpp">
+      <Filter>ソース ファイル\Object\Player\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -361,21 +367,6 @@
     <ClInclude Include="source\CollisionComponent.h">
       <Filter>ヘッダー ファイル\Object\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="source\JumpComponent.h">
-      <Filter>ヘッダー ファイル\Object\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="source\WireComponent.h">
-      <Filter>ヘッダー ファイル\Object\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="source\ObjectComponent.h">
-      <Filter>ヘッダー ファイル\Object\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="source\MoveComponent.h">
-      <Filter>ヘッダー ファイル\Object\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="source\InvincibleComponent.h">
-      <Filter>ヘッダー ファイル\Object\Player</Filter>
-    </ClInclude>
     <ClInclude Include="source\AttackComponent.h">
       <Filter>ヘッダー ファイル\Object\Player\Attack</Filter>
     </ClInclude>
@@ -387,12 +378,6 @@
     </ClInclude>
     <ClInclude Include="source\LightAttack1.h">
       <Filter>ヘッダー ファイル\Object\Player\Attack</Filter>
-    </ClInclude>
-    <ClInclude Include="source\StateComponent.h">
-      <Filter>ヘッダー ファイル\Object\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="source\WirePoint.h">
-      <Filter>ソース ファイル\Object\Player</Filter>
     </ClInclude>
     <ClInclude Include="source\StageComponent.h">
       <Filter>ヘッダー ファイル\Stage</Filter>
@@ -420,9 +405,6 @@
     </ClInclude>
     <ClInclude Include="source\ModelAnimData.h">
       <Filter>ヘッダー ファイル\ModelAnim</Filter>
-    </ClInclude>
-    <ClInclude Include="source\ModeGame.h">
-      <Filter>ヘッダー ファイル\Object</Filter>
     </ClInclude>
     <ClInclude Include="source\PrimitiveBase.h">
       <Filter>ヘッダー ファイル\Primitive</Filter>
@@ -463,14 +445,38 @@
     <ClInclude Include="source\Camera.h">
       <Filter>ヘッダー ファイル\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="source\KnockBackComponent.h">
-      <Filter>ヘッダー ファイル\Object\Player</Filter>
-    </ClInclude>
     <ClInclude Include="source\EffectLoadServer.h">
       <Filter>ヘッダー ファイル\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="source\ModeGame.h">
+      <Filter>ヘッダー ファイル\Mode</Filter>
+    </ClInclude>
+    <ClInclude Include="source\JumpComponent.h">
+      <Filter>ヘッダー ファイル\Object\Player\Component</Filter>
+    </ClInclude>
     <ClInclude Include="source\DashComponent.h">
-      <Filter>ヘッダー ファイル\Object\Player</Filter>
+      <Filter>ヘッダー ファイル\Object\Player\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="source\InvincibleComponent.h">
+      <Filter>ヘッダー ファイル\Object\Player\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="source\KnockBackComponent.h">
+      <Filter>ヘッダー ファイル\Object\Player\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="source\MoveComponent.h">
+      <Filter>ヘッダー ファイル\Object\Player\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ObjectComponent.h">
+      <Filter>ヘッダー ファイル\Object\Player\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="source\StateComponent.h">
+      <Filter>ヘッダー ファイル\Object\Player\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="source\WireComponent.h">
+      <Filter>ヘッダー ファイル\Object\Player\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="source\WirePoint.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

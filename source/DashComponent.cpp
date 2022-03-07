@@ -6,17 +6,18 @@
  * @date   March 2022
  *********************************************************************/
 #include "DashComponent.h"
+#include "ObjectBase.h"
 
 namespace Gyro {
   namespace Object {
 
-    DashComponent::DashComponent() : ObjectComponent() {
+    DashComponent::DashComponent(ObjectBase& owner) : ObjectComponent(), _owner(owner) {
       // タイプの設定
-      _type = ComponentType::Jump;
+      _type = ComponentType::Dash;
     }
 
     void DashComponent::Init() {
-
+      // 初期化処理
     }
 
     void DashComponent::Start() {
@@ -30,6 +31,7 @@ namespace Gyro {
     }
 
     bool DashComponent::Process(AppMath::Vector4& move) {
+      // ダッシュ状態かの判定
       if (_dashState != DashState::Active) {
         // インターバル中か？
         if (IsInterval()) {
@@ -37,33 +39,42 @@ namespace Gyro {
         }
         return false;
       }
-      // 移動量を設定する
-      move = _move;
+      // 向きベクトルの取得
+      auto forward = _owner.GetForward();
+      // 力を算出
+      auto power = _power / _count;
+      // 別名定義
+      using Vector4 = AppMath::Vector4;
+      // y成分を無視して計算を行う
+      auto m = Vector4::Scale(forward, Vector4(1.0f, 0.0f, 1.0f));
+      // 向いている方向に進ませる
+      _move = m * power;
       return true;
     }
 
     void DashComponent::Interval() {
       // インターバルが終了したかの判定
-      if (_time <= 0.0f) {
+      if (_intervalTime <= 0.0f) {
         _dashState = DashState::NoActive;
-        _time = 0.0f;
+        _intervalTime = 0.0f;
         return;
       }
-      _time -= 10.0f; // インターバルタイムを経過させる
+      _intervalTime -= 10.0f; // インターバルタイムを経過させる
     }
 
-    void DashComponent::SetMove(const AppMath::Vector4& move, float time) {
-      if (time <= 0.0f) {
+    void DashComponent::SetDash(const float dashPower, float totalTime, float playSpeed) {
+      if (totalTime <= 0.0f) {
         return;
       }
-      // 設定
-      _length = move;
-      _move = move / time;
+      // 移動力の設定
+      _power = dashPower;
+      // 処理回数の設定
+      _count = static_cast<int>(totalTime / playSpeed);
     }
 
     void DashComponent::SetIniterval(const float interval) {
       // 時間を設定する
-      _time = interval;
+      _intervalTime = interval;
       _dashState = DashState::Interval;
     }
   } // namespace Object

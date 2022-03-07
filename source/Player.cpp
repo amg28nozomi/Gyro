@@ -78,6 +78,9 @@ namespace {
   constexpr auto StateNumberDash = 11;   //!< ダッシュ
 
   constexpr auto AttackInterval = 150.0f; //!< 攻撃用インターバル
+
+  constexpr auto DashTime = 600.0f;   //!< ダッシュ時間
+  constexpr auto DashPower = 300.0f;  //!< ダッシュの移動量
 }
 
 namespace Gyro {
@@ -94,7 +97,8 @@ namespace Gyro {
     const std::unordered_map<Player::PlayerState, Player::PlayerState> stateMap{
       {Player::PlayerState::Attack1, Player::PlayerState::Attack2},
       {Player::PlayerState::Attack2, Player::PlayerState::Attack3},
-      {Player::PlayerState::Attack3, Player::PlayerState::Idle}
+      {Player::PlayerState::Attack3, Player::PlayerState::Idle},
+      {Player::PlayerState::Dash, Player::PlayerState::Idle}
     };
     /**
      * @brief コリジョンに使用するフレーム番号を管理する連想配列
@@ -133,7 +137,9 @@ namespace Gyro {
       // 強攻撃2
       {StateNumberHeavy2 ,{GroundHeavyAttack2, 10.0f, 1.0f, false}},
       // 強攻撃3
-      {StateNumberHeavy3 ,{GroundHeavyAttack3, 10.0f, 1.0f, false, Effect::PlayerHeavyAttack3}}
+      {StateNumberHeavy3 ,{GroundHeavyAttack3, 10.0f, 1.0f, false, Effect::PlayerHeavyAttack3}},
+      // ダッシュ
+      {StateNumberDash, {Step, 10.0f, 1.0f, false}}
     };
 
     Player::Player(Application::ApplicationMain& app) : ObjectBase(app), _gaugeHp(app), _gaugeTrick(app) {
@@ -160,7 +166,7 @@ namespace Gyro {
       // ステートコンポーネントの設定
       _stateComponent = std::make_unique<Object::StateComponent>();
       // ダッシュコンポーネントの設定
-      _dash = std::make_unique<Object::DashComponent>();
+      _dash = std::make_unique<Object::DashComponent>(*this);
       // アニメーションの設定
       _modelAnim.SetMainAttach(_model, Idle, 1.0f, true);
       return true;
@@ -252,6 +258,51 @@ namespace Gyro {
       // 各種コリジョンの設定
       _sphere = std::make_unique<Object::CollisionSphere>(*this, m, 100.0f);
       _capsule = std::make_unique<Object::CollisionCapsule>(*this, _position, 150.0f, 20.0f);
+    }
+
+    AppMath::Vector4 Player::GetCameraForward() const {
+      // カメラの取得
+      const auto camera = _app.GetCamera();
+      // カメラ・注視座標の取得
+      auto cameraPosition = camera.GetPosition();
+      auto cameraTarget = camera.GetTarget();
+      // カメラから向きへのベクトル
+      using Vector4 = AppMath::Vector4;
+      using Matrix44 = AppMath::Matrix44;
+      // ビュー変換行列の取得
+
+      auto view = AppMath::Matrix44::CreateLookAt(cameraPosition, cameraTarget, Vector4(1.0f, 1.0f, 1.0f));
+      // 
+      // 逆行列
+      auto inverse = view.Inverse(view);
+      // 自機の向きを取得
+      auto rotation = GetRotationRadianY();
+      // 別名定義
+      using Vector4 = AppMath::Vector4;
+      // 向きベクトル
+      auto vector = Vector4(1.0f, 0.0f, -1.0f);
+
+
+      vector = vector * rotation;
+      // 二点間の距離を算出
+      auto l = cameraPosition.Direction(cameraTarget);
+      l.SetY(0.0f);
+      // 
+
+      auto direction = cameraPosition.Direction(cameraTarget);
+      // カメラ向きの算出
+      auto cameraForward = Vector4::Normalize(direction);
+
+      auto dot = Vector4::Dot(_position, l);
+      return Vector4::Up();
+    }
+
+    float Player::GetRotationRadianY() const {
+#ifndef _DEBUG
+      return  _rotation.GetY();
+#else
+      return AppMath::Utility::DegreeToRadian(_rotation.GetY());
+#endif
     }
 
     AppMath::Vector4 Player::GetFramePosition(int frame) {
@@ -350,15 +401,15 @@ namespace Gyro {
       if (_move->Move(leftX, leftY)) {
         // 移動量の取得
         move = _move->MoveVector();
-        // ラジアンを生成(z軸は反転させる)
-        auto radian = std::atan2(move.GetX(), -move.GetZ());
-#ifndef _DEBUG
-        // y軸の回転量をセットする
-        _rotation.SetY(radian);
-#else
-        // デグリー値をセットする(デバッグ用)
-        _rotation.SetY(AppMath::Utility::RadianToDegree(radian));
-#endif
+//        // ラジアンを生成(z軸は反転させる)
+//        auto radian = std::atan2(move.GetX(), -move.GetZ());
+//#ifndef _DEBUG
+//        // y軸の回転量をセットする
+//        _rotation.SetY(radian);
+//#else
+//        // デグリー値をセットする(デバッグ用)
+//        _rotation.SetY(AppMath::Utility::RadianToDegree(radian));
+//#endif
         _forward = AppMath::Vector4::Normalize(_position + move);
       }
       return move; // 移動量を返す
@@ -640,6 +691,12 @@ namespace Gyro {
     void Player::Attack() {
       // ローカル座標を攻撃座標にセットする
       _attack->Process();
+    }
+
+    bool Player::DashStart() {
+      // ダッシュを開始する
+      // _dash->SetDash(, 600.0f);
+      return true;
     }
 
     AppMath::Vector4 Player::Dash() {

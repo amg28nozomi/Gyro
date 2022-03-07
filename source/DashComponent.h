@@ -9,10 +9,16 @@
 #include "ObjectComponent.h"
 #include <appframe.h>
 
+/**
+ * @brief ゲームベース
+ */
 namespace Gyro {
+  /**
+   * @brief オブジェクトベース
+   */
   namespace Object {
     namespace AppMath = AppFrame::Math;
-    class ObjectBase;
+    class ObjectBase; //!< 前方宣言
     /**
      * @class DashComponent
      * @brief ダッシュコンポーネントクラス
@@ -29,8 +35,9 @@ namespace Gyro {
       };
       /**
        * @brief コンストラクタ
+       * @param owner 所有者の参照
        */
-      DashComponent();
+      DashComponent(ObjectBase& onwer);
       /**
        * @brief 初期化
        */
@@ -51,10 +58,11 @@ namespace Gyro {
       bool Process(AppMath::Vector4& move);
       /**
        * @brief ダッシュの設定
-       * @param move 総移動量
-       * @param time 総移動時間
+       * @param dashPower 総移動量
+       * @param totalTime ダッシュ時間
+       * @param playSpeed 再生速度
        */
-      void SetMove(const AppMath::Vector4& move, float time);
+      void SetDash(const float dashPower, float totalTime, float playSpeed);
       /**
        * @brief インターバルの設定
        */
@@ -63,6 +71,13 @@ namespace Gyro {
        * @brief インターバル処理
        */
       void Interval();
+      /**
+       * @brief  移動量の取得
+       * @return 移動量
+       */
+      AppMath::Vector4 GetMovePower() const {
+        return _move;
+      }
       /**
        * @brief  ダッシュ状態の取得
        * @return ダッシュ状態
@@ -78,14 +93,18 @@ namespace Gyro {
         return _dashState == DashState::Interval;
       }
     private:
+      //!< 所有者の参照
+      ObjectBase& _owner;
       //!< ダッシュ状態
       DashState _dashState{DashState::NoActive};
-      //!< 総移動量
-      AppMath::Vector4 _length{};
+      //!< 移動力
+      float _power{0.0f};
+      //!< インターバル時間
+      float _intervalTime{0.0f};
+      //!< 処理回数
+      int _count{0};
       //!< 移動量
       AppMath::Vector4 _move{};
-      //!< インターバル時間
-      float _time{0.0f};
     };
   } // namespace Object
 } // namespace Gyro

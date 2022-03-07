@@ -1,8 +1,21 @@
+/*****************************************************************//**
+ * @file   WirePoint.h
+ * @brief  ワイヤーアクションの基点情報クラス
+ * 
+ * @author 鈴木希海
+ * @date   March 2022
+ *********************************************************************/
 #pragma once
 #include <appframe.h>
 #include "CollisionAABB.h"
 
+/**
+ * @brief ゲームベース
+ */
 namespace Gyro {
+  /**
+   * @brief オブジェクトベース
+   */
   namespace Object {
     namespace AppMath = AppFrame::Math; //!< 名前空間の省略
     /**
