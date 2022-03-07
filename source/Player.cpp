@@ -105,13 +105,21 @@ namespace Gyro {
      */
     const std::unordered_map<int, std::vector<int>> attackMap{
       // ãUŒ‚
-      {StateNumberLight1, {15}},
-      {StateNumberLight2, {15}},
-      {StateNumberLight3, {15}},
+      {StateNumberLight1, {50, 75}},
+      {StateNumberLight2, {15, 17}},
+      {StateNumberLight3, {15, 17, 20, 22}},
+      //EX {15, 17, 20, 22}
       // ‹­UŒ‚
-      {StateNumberHeavy1 ,{15}},
-      {StateNumberHeavy2 ,{15}},
-      {StateNumberHeavy3 ,{15}}
+      {StateNumberHeavy1 ,{15, 17, 20, 22}},
+      {StateNumberHeavy2 ,{15, 17, 20, 22}},
+      {StateNumberHeavy3 ,{15, 17, 20, 22, 50, 75}}
+      //‹ó’†ãUŒ‚
+      // {20, 22}, {15, 17}, {15, 17, 20, 22}
+      //‹ó’†‹­UŒ‚
+      // {50, 75}, {15, 17}
+      // •KEcH
+      // 15:¶‘« 17:¶‘«yoyo 20:‰E‘« 22:‰E‘«yoyo 50:¶èyoyo 75:‰Eèyoyo
+      // ‹…‘å‚«‚­‚·‚é‚È‚ç‘«‚Í‚¢‚ç‚È‚¢
     };
 
     /**
