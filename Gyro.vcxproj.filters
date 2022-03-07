@@ -123,6 +123,18 @@
     <Filter Include="ヘッダー ファイル\Camera">
       <UniqueIdentifier>{80aa6526-8417-4724-b9db-7de0bc53a4cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Light">
+      <UniqueIdentifier>{c09aac58-c13a-4ada-906d-a815e1c24d8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shadow">
+      <UniqueIdentifier>{f3e1b683-ba4a-4adc-8e64-197332f0c687}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Light">
+      <UniqueIdentifier>{5fc397e1-9114-4ce3-8917-75a47163a9e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Shadow">
+      <UniqueIdentifier>{47d2cfc9-30bb-4935-9d0f-b4d60922f9c1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\ApplicationMain.cpp">
@@ -293,6 +305,12 @@
     <ClCompile Include="source\EffectLoadServer.cpp">
       <Filter>ソース ファイル\Effect</Filter>
     </ClCompile>
+    <ClCompile Include="source\Light.cpp">
+      <Filter>ソース ファイル\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Shadow.cpp">
+      <Filter>ソース ファイル\Shadow</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\ApplicationMain.h">
@@ -418,9 +436,6 @@
     <ClInclude Include="source\ModelAnimData.h">
       <Filter>ヘッダー ファイル\ModelAnim</Filter>
     </ClInclude>
-    <ClInclude Include="source\ModeGame.h">
-      <Filter>ヘッダー ファイル\Object</Filter>
-    </ClInclude>
     <ClInclude Include="source\PrimitiveBase.h">
       <Filter>ヘッダー ファイル\Primitive</Filter>
     </ClInclude>
@@ -465,6 +480,15 @@
     </ClInclude>
     <ClInclude Include="source\EffectLoadServer.h">
       <Filter>ヘッダー ファイル\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Light.h">
+      <Filter>ヘッダー ファイル\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Shadow.h">
+      <Filter>ヘッダー ファイル\Shadow</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ModeGame.h">
+      <Filter>ヘッダー ファイル\Mode</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

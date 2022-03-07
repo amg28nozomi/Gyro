@@ -11,6 +11,8 @@
 #include "PrimitiveBase.h"
 #include "PrimitivePlane.h"
 #include "SpawnServer.h"
+#include "Light.h"
+#include "Shadow.h"
 /**
  * @brief ゲームベース
  */
@@ -80,6 +82,10 @@ namespace Gyro {
       Application::ApplicationMain& _appMain;
       //!< 床
       Primitive::Plane _plane;
+      //!< ライト
+      std::unique_ptr<Light::Light> _light;
+      //!< シャドウ
+      std::unique_ptr<Shadow::Shadow> _shadow;
       /**
        * @brief リソースの読み取り
        */

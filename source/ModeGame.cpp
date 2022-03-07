@@ -45,11 +45,10 @@ namespace Gyro {
       // カメラの初期化
       _appMain.GetCamera().Init();
       // ライトの設定
-      VECTOR light_dir = VGet(-1.0f, -1.0f, -1.0f);
-      auto light_handle = CreateDirLightHandle(light_dir);
-      VECTOR left_dir = VGet(1.0f, -1.0f, 1.0f);
-      auto left_handle = CreateDirLightHandle(left_dir);
-      SetLightEnable(false);
+      _light = std::make_unique<Light::Light>();
+      // シャドウの設定
+      _shadow = std::make_unique<Shadow::Shadow>(_appMain);
+
       return true;
     }
 
@@ -128,16 +127,18 @@ namespace Gyro {
     }
 
     bool ModeGame::Draw() const {
+      // 影の描画
+      _shadow->Draw();
       // 各種ステージの描画
       _appMain.GetStageComponent().Draw();
       // 地形の描画
       _plane.Draw();
       // 各種描画処理
       _appMain.GetObjectServer().Draw();
+      // シャドウマップの設定解除
+      SetUseShadowMap(0, -1);
       // エフェクトの描画
       _appMain.GetEffect().Draw();
-      // 並行光源を 1 つ追加する
-      SetUseLighting(true);
       return true;
     }
 

@@ -22,6 +22,7 @@
     <ClCompile Include="source\EffectLoadServer.cpp" />
     <ClCompile Include="source\InteriorBase.cpp" />
     <ClCompile Include="source\KnockBackComponent.cpp" />
+    <ClCompile Include="source\Light.cpp" />
     <ClCompile Include="source\ModeAMG.cpp" />
     <ClCompile Include="source\ModeCredit.cpp" />
     <ClCompile Include="source\ModeGameOver.cpp" />
@@ -65,6 +66,7 @@
     <ClCompile Include="source\ScoreBonus.cpp" />
     <ClCompile Include="source\ScoreServer.cpp" />
     <ClCompile Include="source\ScoreSystem.cpp" />
+    <ClCompile Include="source\Shadow.cpp" />
     <ClCompile Include="source\SkySphere.cpp" />
     <ClCompile Include="source\SpawnBase.cpp" />
     <ClCompile Include="source\SpawnEnemy.cpp" />
@@ -80,6 +82,7 @@
     <ClInclude Include="source\EffectLoadServer.h" />
     <ClInclude Include="source\InteriorBase.h" />
     <ClInclude Include="source\KnockBackComponent.h" />
+    <ClInclude Include="source\Light.h" />
     <ClInclude Include="source\ModeAMG.h" />
     <ClInclude Include="source\ModeCredit.h" />
     <ClInclude Include="source\ModeGameOver.h" />
@@ -123,6 +126,7 @@
     <ClInclude Include="source\ScoreBonus.h" />
     <ClInclude Include="source\ScoreServer.h" />
     <ClInclude Include="source\ScoreSystem.h" />
+    <ClInclude Include="source\Shadow.h" />
     <ClInclude Include="source\SkySphere.h" />
     <ClInclude Include="source\SpawnBase.h" />
     <ClInclude Include="source\SpawnEnemy.h" />
