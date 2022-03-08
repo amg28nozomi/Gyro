@@ -1,9 +1,9 @@
 /*****************************************************************//**
- * @file   EnemyDrone.h
- * @brief  空中敵クラス
- * 
- * @author 土橋峡介
- * @date   March 2022
+ * @file    EnemyWheelBoss.h
+ * @brief   地上敵ボスクラス
+ *          
+ * @author  土橋峡介
+ * @date    March 2022
  *********************************************************************/
 #pragma once
 #include "EnemyBase.h"
@@ -17,33 +17,29 @@ namespace Gyro {
    */
   namespace Enemy {
     /**
-     * @class EnemyDrone
-     * @brief 空中敵クラス
+     * @class EnemyWheelBoss
+     * @brief 地上敵ボスクラス
      */
-    class EnemyDrone : public EnemyBase {
+    class EnemyWheelBoss : public EnemyBase {
     public:
       /**
-       * @brief コンストラクタ
-       * @param app アプリケーション
+       * @brief  コンストラクタ
        */
-      EnemyDrone(Application::ApplicationMain& app);
+      EnemyWheelBoss(Application::ApplicationMain& app);
       /**
-       * @brief デストラクタ
+       * @brief  デストラクタ
        */
-      ~EnemyDrone();
+      ~EnemyWheelBoss();
       /**
        * @brief  初期化
-       * @return true
        */
       bool Init() override;
       /**
        * @brief  更新
-       * @return true
        */
       bool Process() override;
       /**
        * @brief  描画
-       * @return true
        */
       bool Draw() const override;
       /**
@@ -56,6 +52,7 @@ namespace Gyro {
       unsigned short GetThis() const override {
         return _this;
       }
+
     private:
       /**
        * @brief  モデルの読み込み

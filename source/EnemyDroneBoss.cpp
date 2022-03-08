@@ -1,20 +1,21 @@
 /*****************************************************************//**
- * @file    EnemyDrone.cpp
- * @brief   空中敵クラス
+ * @file    EnemyDroneBoss.cpp
+ * @brief   空中敵ボスクラス
  *
  * @author  土橋峡介
  * @date    March 2022
  *********************************************************************/
-#include "EnemyDrone.h"
+#include "EnemyDroneBoss.h"
 #include "UtilityDX.h"
+#include "ApplicationMain.h"
 #include "ObjectServer.h"
 #include "Player.h"
 
 namespace {
   // 各種定数
-  constexpr int DroneHP = 8500;           //!< 地上敵最大体力
+  constexpr int DroneHP = 15000;          //!< 地上敵最大体力
   constexpr float DroneMoveSpead = 5.0f;  //!< 地上的移動速度
-  constexpr float Height = 380.0f;        //!< 高さ
+  constexpr float Height = 650.0f;        //!< 高さ
   // アニメーションキー
   constexpr std::string_view IdleKey = "Move";      //!< 待機
   constexpr std::string_view MoveKey = "Move";      //!< 移動
@@ -25,17 +26,17 @@ namespace {
 
 namespace Gyro {
   namespace Enemy {
-    EnemyDrone::EnemyDrone(Application::ApplicationMain& app) : EnemyBase(app) {
+    EnemyDroneBoss::EnemyDroneBoss(Application::ApplicationMain& app) : EnemyBase(app) {
       // 初期化
       Init();
       _gravity = true;
     }
 
-    EnemyDrone::~EnemyDrone() {
+    EnemyDroneBoss::~EnemyDroneBoss() {
 
     }
 
-    bool EnemyDrone::Init() {
+    bool EnemyDroneBoss::Init() {
       // モデル読み込み
       LoadModel();
       // パラメータの設定
@@ -46,7 +47,7 @@ namespace Gyro {
       return true;
     }
 
-    bool EnemyDrone::Process() {
+    bool EnemyDroneBoss::Process() {
       // 基底クラスの更新処理を呼び出し
       EnemyBase::Process();
       // 前フレームの状態
@@ -107,7 +108,7 @@ namespace Gyro {
       return true;
     }
 
-    bool EnemyDrone::Draw() const {
+    bool EnemyDroneBoss::Draw() const {
       // 基底側の描画
       EnemyBase::Draw();
       // 体力ゲージの描画
@@ -128,16 +129,16 @@ namespace Gyro {
       return true;
     }
 
-    void EnemyDrone::LoadModel() {
+    void EnemyDroneBoss::LoadModel() {
       // モデルハンドルの取得
-      auto [handle, key] = _app.GetModelServer().GetModel("enemyDrone", _number);
+      auto [handle, key] = _app.GetModelServer().GetModel("enemyDroneBoss", _number);
       // モデルデータ設定
       ++_number;
       _mHandle = handle;
       _this = key;
     }
 
-    void EnemyDrone::SetParameter() {
+    void EnemyDroneBoss::SetParameter() {
       // 各種設定
       _enemyHP = DroneHP;
       _gaugeHp = std::make_shared<Gauge::GaugeEnemy>(_app);
@@ -147,14 +148,14 @@ namespace Gyro {
       _gravity = false;
     }
 
-    void EnemyDrone::SetCollision() {
+    void EnemyDroneBoss::SetCollision() {
       // 球の当たり判定設定
       _sphere = std::make_unique<Object::CollisionSphere>(*this, _position.AddVectorY(100.0f), 50.0f);
       // カプセルコリジョンの設定
       _capsule = std::make_unique<Object::CollisionCapsule>(*this, _position, 200.0f, 30.0f);
     }
 
-    void EnemyDrone::Move() {
+    void EnemyDroneBoss::Move() {
       using Vector4 = AppMath::Vector4;
       // ターゲット座標
       auto target = Vector4();
@@ -183,7 +184,7 @@ namespace Gyro {
       }
     }
 
-    void EnemyDrone::Attack() {
+    void EnemyDroneBoss::Attack() {
       // アニメーションから指定したボーンのローカル座標を取得
       auto attachIndex = _modelAnim.GetMainAttachIndex();
       auto rPos = MV1GetFramePosition(_mHandle, 4);
@@ -197,7 +198,7 @@ namespace Gyro {
       }
     }
 
-    void EnemyDrone::NockBack() {
+    void EnemyDroneBoss::NockBack() {
       if (_cnt > 0) {
         // 自機の取得
         const auto player = _app.GetObjectServer().GetPlayer();
@@ -216,7 +217,7 @@ namespace Gyro {
       }
     }
 
-    void EnemyDrone::Hit() {
+    void EnemyDroneBoss::Hit() {
       // オブジェクトのコピー
       auto objects = _app.GetObjectServer().GetObjects();
       // 衝突判定を行う
@@ -250,7 +251,7 @@ namespace Gyro {
       }
     }
 
-    void EnemyDrone::ChangeAnim() {
+    void EnemyDroneBoss::ChangeAnim() {
       // 対応アニメーション切り替え
       switch (_enemyState) {
       case EnemyState::Idle:    //!< 待機
@@ -273,7 +274,7 @@ namespace Gyro {
       }
     }
 
-    void EnemyDrone::PlayEffect() {
+    void EnemyDroneBoss::PlayEffect() {
       // パラメータ設定
       auto effect = _app.GetEffect();
       auto ePos = _position;
@@ -306,7 +307,7 @@ namespace Gyro {
       }
     }
 
-    bool EnemyDrone::IsDamege() {
+    bool EnemyDroneBoss::IsDamege() {
       // 無敵状態かの判定
 
       // 自機の取得

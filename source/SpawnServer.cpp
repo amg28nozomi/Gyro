@@ -11,7 +11,9 @@
 #include "ObjectServer.h"
 #include "Player.h"
 #include "EnemyWheel.h"
+#include "EnemyWheelBoss.h"
 #include "EnemyDrone.h"
+#include "EnemyDroneBoss.h"
 #include "SkySphere.h"
 #include "StageComponent.h"
 
@@ -190,8 +192,12 @@ namespace Gyro {
       switch (enemy->GetEnemyType()) {
       case SpawnEnemy::EnemyType::Wheel: // 陸上型
         return EnemyWheel(*enemy.get());
+      case SpawnEnemy::EnemyType::WheelBoss: // 陸上型ボス
+        return EnemyWheelBoss(*enemy.get());
       case SpawnEnemy::EnemyType::Drone: // 空中型
         return EnemyDrone(*enemy.get());
+      case SpawnEnemy::EnemyType::DroneBoss: // 空中型ボス
+        return EnemyDroneBoss(*enemy.get());
       case SpawnEnemy::EnemyType::None:  // 該当なし
         return nullptr;  // 該当がない場合はnullptrを返す
       default:
@@ -206,11 +212,25 @@ namespace Gyro {
       return std::move(wheel); // 生成したシェアードポインタを返す
     }
 
+    std::shared_ptr<Enemy::EnemyWheelBoss> SpawnServer::EnemyWheelBoss(SpawnEnemy& enemy) const {
+      // 陸上型ボスエネミーの生成
+      auto wheelBoss = std::make_shared<Enemy::EnemyWheelBoss>(_appMain);
+      wheelBoss->Set(enemy);       // スポーン情報の設定
+      return std::move(wheelBoss); // 生成したシェアードポインタを返す
+    }
+
     std::shared_ptr<Enemy::EnemyDrone> SpawnServer::EnemyDrone(SpawnEnemy& enemy) const {
       // 空中型エネミーの生成
       auto drone = std::make_shared<Enemy::EnemyDrone>(_appMain);
       drone->Set(enemy);       // スポーン情報の設定
       return std::move(drone); // 生成したシェアードポインタを返す
+    }
+
+    std::shared_ptr<Enemy::EnemyDroneBoss> SpawnServer::EnemyDroneBoss(SpawnEnemy& enemy) const {
+      // 空中型ボスエネミーの生成
+      auto droneBoss = std::make_shared<Enemy::EnemyDroneBoss>(_appMain);
+      droneBoss->Set(enemy);       // スポーン情報の設定
+      return std::move(droneBoss); // 生成したシェアードポインタを返す
     }
 
     std::shared_ptr<SkySphere> SpawnServer::Skysphere(std::shared_ptr<SpawnBase>& spawn) const {

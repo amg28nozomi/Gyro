@@ -6,6 +6,7 @@
  * @date    January 2022
  *********************************************************************/
 #pragma once
+#include "ApplicationMain.h"
 #include "ObjectBase.h"
 #include "InvincibleComponent.h"
 #include "CollisionSphere.h"

@@ -22,6 +22,8 @@
     <ClCompile Include="source\DashComponent.cpp" />
     <ClCompile Include="source\EffectLoadServer.cpp" />
     <ClCompile Include="source\EnemyDrone.cpp" />
+    <ClCompile Include="source\EnemyDroneBoss.cpp" />
+    <ClCompile Include="source\EnemyWheelBoss.cpp" />
     <ClCompile Include="source\InteriorBase.cpp" />
     <ClCompile Include="source\KnockBackComponent.cpp" />
     <ClCompile Include="source\Light.cpp" />
@@ -85,6 +87,8 @@
     <ClInclude Include="source\DashComponent.h" />
     <ClInclude Include="source\EffectLoadServer.h" />
     <ClInclude Include="source\EnemyDrone.h" />
+    <ClInclude Include="source\EnemyDroneBoss.h" />
+    <ClInclude Include="source\EnemyWheelBoss.h" />
     <ClInclude Include="source\InteriorBase.h" />
     <ClInclude Include="source\KnockBackComponent.h" />
     <ClInclude Include="source\Light.h" />

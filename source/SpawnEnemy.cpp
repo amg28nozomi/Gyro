@@ -25,11 +25,15 @@ namespace Gyro{
 
     const SpawnEnemy::EnemyType SpawnEnemy::NumberToEnemyType(const int number) const {
       switch (number) {
-      case EnemyWheel: // 陸上型エネミー
+      case EnemyWheel:     // 陸上型エネミー
         return EnemyType::Wheel;
-      case EnemyDrone: // 空中型エネミー
+      case EnemyWheelBoss: // 陸上型ボスエネミー
+        return EnemyType::WheelBoss;
+      case EnemyDrone:     // 空中型エネミー
         return EnemyType::Drone;
-      default:         // 該当なし
+      case EnemyDroneBoss: // 空中型ボスエネミー
+        return EnemyType::DroneBoss;
+      default:             // 該当なし
         return EnemyType::None;
       }
     }

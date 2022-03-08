@@ -6,9 +6,7 @@
  * @date    January 2022
  *********************************************************************/
 #include "EnemyWheel.h"
-#include <DxLib.h>
 #include "UtilityDX.h"
-#include "ApplicationMain.h"
 #include "ObjectServer.h"
 #include "Player.h"
 
@@ -36,7 +34,6 @@ namespace Gyro {
     }
 
     EnemyWheel::~EnemyWheel() {
-
     }
 
     bool EnemyWheel::Init() {
