@@ -276,7 +276,6 @@ namespace Gyro {
 
     void EnemyDrone::PlayEffect() {
       // パラメータ設定
-      auto effect = _app.GetEffect();
       auto ePos = _position;
 #ifndef _DEBUG
       auto eRad = -_rotation.GetY();
@@ -288,19 +287,19 @@ namespace Gyro {
       case EnemyState::Idle:    //!< 待機
         break;
       case EnemyState::Move:    //!< 移動
-        ePos.AddY(135.0f);
-        effect.PlayEffect(Effect::EnemyEyeLight, ePos, eRad);
+        ePos.AddY(300.0f);
+        _app.GetEffectServer().MakeEffect(EffectNum::EnemyEyeLight, ePos, eRad);
         break;
       case EnemyState::Attack:  //!< 攻撃
-        effect.PlayEffect(Effect::EnemyGroundAttack, ePos, eRad);
+        _app.GetEffectServer().MakeEffect(EffectNum::EnemyGroundAttack, ePos, eRad);
         break;
       case EnemyState::Damage:  //!< 被ダメ
         ePos.AddY(100.0f);
-        effect.PlayEffect(Effect::EnemyHit, ePos, eRad);
+        _app.GetEffectServer().MakeEffect(EffectNum::EnemyHit, ePos, eRad);
         break;
       case EnemyState::Dead:    //!< 死亡
         ePos.AddY(100.0f);
-        effect.PlayEffect(Effect::EnemyExprosion, ePos, eRad);
+        _app.GetEffectServer().MakeEffect(EffectNum::EnemyExprosion, ePos, eRad);
         break;
       default:
         break;

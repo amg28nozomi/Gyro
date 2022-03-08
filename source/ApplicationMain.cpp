@@ -43,10 +43,10 @@ namespace Gyro {
             // カメラの生成
             _camera = std::make_unique<Camera::Camera>();
             _camera->Init();
-            // エフェクトサーバの生成
+            // エフェクト読み込みサーバの生成
             _effectLoadServer = std::make_unique<Effect::EffectLoadServer>();
-            // エフェクトの生成
-            _effect = std::make_unique<Effect::EffectComponent>(*this);
+            // エフェクトサーバの生成
+            _effectServer = std::make_unique<Effect::EffectServer>(*this);
             // ステージコンポーネントの生成
             _stage = std::make_unique<Stage::StageComponent>(*this);
             // モードゲームの登録

@@ -26,6 +26,7 @@ namespace Gyro {
     class EffectPlayerWeakAttack3;
     class EffectPlayerWeakAttackEX;
     class EffectPlayerHeavyAttack1;
+    class EffectPlayerHeavyAttack2;
     class EffectPlayerHeavyAttack3;
     class EffectPlayerAirWeakAttack1;
     class EffectPlayerAirWeakAttack2;
@@ -133,6 +134,13 @@ namespace Gyro {
        * @return プレイヤー強攻撃1のシェアードポインタ
        */
       std::shared_ptr<EffectPlayerHeavyAttack1> PlayerHeavyAttack1(const AppMath::Vector4 position, const float radian) const;
+      /**
+       * @brief  プレイヤー強攻撃2の生成
+       * @param  position エフェクト位置
+       * @param  radian エフェクト向き
+       * @return プレイヤー強攻撃2のシェアードポインタ
+       */
+      std::shared_ptr<EffectPlayerHeavyAttack2> PlayerHeavyAttack2(const AppMath::Vector4 position, const float radian) const;
       /**
        * @brief  プレイヤー強攻撃3の生成
        * @param  position エフェクト位置

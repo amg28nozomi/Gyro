@@ -14,6 +14,7 @@
 #include "EffectPlayerWeakAttack3.h"
 #include "EffectPlayerWeakAttackEX.h"
 #include "EffectPlayerHeavyAttack1.h"
+#include "EffectPlayerHeavyAttack2.h"
 #include "EffectPlayerHeavyAttack3.h"
 #include "EffectPlayerAirWeakAttack1.h"
 #include "EffectPlayerAirWeakAttack2.h"
@@ -103,6 +104,10 @@ namespace Gyro {
       case EffectNum::PlayerHeavyAttack1:
         // プレイヤー強攻撃1
         AddEffect(PlayerHeavyAttack1(position, radian));
+        break;
+      case EffectNum::PlayerHeavyAttack2:
+        // プレイヤー強攻撃2
+        AddEffect(PlayerHeavyAttack2(position, radian));
         break;
       case EffectNum::PlayerHeavyAttack3:
         // プレイヤー強攻撃3
@@ -237,6 +242,15 @@ namespace Gyro {
       playerHeavyAttack1->SetEffectParameter(position, radian);
       // 生成したシェアードポインタを返す
       return std::move(playerHeavyAttack1);
+    }
+
+    std::shared_ptr<EffectPlayerHeavyAttack2> EffectServer::PlayerHeavyAttack2(const AppMath::Vector4 position, const float radian) const {
+      // プレイヤー強攻撃2の生成
+      auto playerHeavyAttack2 = std::make_shared<EffectPlayerHeavyAttack2>(_app);
+      // 位置・向き設定
+      playerHeavyAttack2->SetEffectParameter(position, radian);
+      // 生成したシェアードポインタを返す
+      return std::move(playerHeavyAttack2);
     }
 
     std::shared_ptr<EffectPlayerHeavyAttack3> EffectServer::PlayerHeavyAttack3(const AppMath::Vector4 position, const float radian) const {

@@ -125,19 +125,19 @@ namespace Gyro {
       // 走り
       {StateNumberRun, {Run, 10.0f, 1.0f, true}},
       // ジャンプ
-      {StateNumberJump, {JumpUp, 10.0f, 1.0f, false, Effect::PlayerJump}},
+      {StateNumberJump, {JumpUp, 10.0f, 1.0f, false, EffectNum::PlayerJump}},
       // 弱攻撃1
-      {StateNumberLight1, {GroundLightAttack1, 10.0f, 1.3f, false, Effect::PlayerWeakAttack1}},
+      {StateNumberLight1, {GroundLightAttack1, 10.0f, 1.3f, false, EffectNum::PlayerWeakAttack1}},
       // 弱攻撃2
-      {StateNumberLight2, {GroundLightAttack2, 10.0f, 1.3f, false, Effect::PlayerWeakAttack2}},
+      {StateNumberLight2, {GroundLightAttack2, 10.0f, 1.3f, false, EffectNum::PlayerWeakAttack2}},
       // 弱攻撃3
-      {StateNumberLight3, {GroundLightAttack3, 10.0f, 1.0f, false, Effect::PlayerWeakAttack3}},
+      {StateNumberLight3, {GroundLightAttack3, 10.0f, 1.0f, false, EffectNum::PlayerWeakAttack3}},
       // 強攻撃1
-      {StateNumberHeavy1 ,{GroundHeavyAttack1, 10.0f, 1.0f, false, Effect::PlayerHeavyAttack1}},
+      {StateNumberHeavy1 ,{GroundHeavyAttack1, 10.0f, 1.0f, false, EffectNum::PlayerHeavyAttack1}},
       // 強攻撃2
-      {StateNumberHeavy2 ,{GroundHeavyAttack2, 10.0f, 1.0f, false}},
+      {StateNumberHeavy2 ,{GroundHeavyAttack2, 10.0f, 1.0f, false, EffectNum::PlayerHeavyAttack2}},
       // 強攻撃3
-      {StateNumberHeavy3 ,{GroundHeavyAttack3, 10.0f, 1.0f, false, Effect::PlayerHeavyAttack3}},
+      {StateNumberHeavy3 ,{GroundHeavyAttack3, 10.0f, 1.0f, false, EffectNum::PlayerHeavyAttack3}},
       // ダッシュ
       {StateNumberDash, {Step, 10.0f, 1.0f, false}}
     };
@@ -504,7 +504,7 @@ namespace Gyro {
       // アニメーションをセットする
       _modelAnim.SetBlendAttach(key.data(), frame, speed, loop);
       // エフェクトが登録されている場合は再生する
-      if (!modelAnim.Effect().empty()) {
+      if (!modelAnim.Effect() == 0) {
         PlayEffect();
       }
     }
@@ -823,7 +823,7 @@ namespace Gyro {
       auto eRad = -AppMath::Utility::DegreeToRadian(_rotation.GetY());
 #endif
       // エフェクトの再生
-      _app.GetEffect().PlayEffect(modelAnim.Effect(), _position, eRad);
+      _app.GetEffectServer().MakeEffect(modelAnim.Effect(), _position, eRad);
       return true;
     }
 

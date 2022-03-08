@@ -31,9 +31,9 @@ namespace Gyro {
        * @param  frame  ブレンドフレーム
        * @param  speed  再生速度
        * @param  loop   ループフラグ(デフォルトはfalse)
-       * @param  effect エフェクトキー(デフォルトはempty)
+       * @param  effect エフェクト識別番号(デフォルトは0)
        */
-      ModelAnimData(std::string_view name, const float frame, const float speed, bool loop = false, std::string_view effect = "");
+      ModelAnimData(std::string_view name, const float frame, const float speed, bool loop = false, int effect = 0);
       /**
        * @brief  アニメーション名の取得
        * @return アニメーション名
@@ -63,10 +63,10 @@ namespace Gyro {
         return _loop;
       }
       /**
-       * @brief  エフェクト名の取得
-       * @return エフェクト名
+       * @brief  エフェクト識別番号の取得
+       * @return エフェクト識別番号
        */
-      std::string Effect() const {
+      int Effect() const {
         return _effect;
       }
       /**
@@ -78,7 +78,7 @@ namespace Gyro {
       }
     protected:
       std::string _name;   //!< アニメーション名
-      std::string _effect; //!< エフェクト名
+      int _effect;         //!< エフェクト識別番号
       float _blendFrame;   //!< ブレンドフレーム
       float _speed;        //!< 再生速度
       bool _loop;          //!< ループフラグ(true:ループする false:ループしない)

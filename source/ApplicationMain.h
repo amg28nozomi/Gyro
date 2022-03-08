@@ -10,7 +10,7 @@
 #include <EffekseerForDXLib.h>
 #include "Camera.h"
 #include "EffectLoadServer.h"
-#include "EffectComponent.h"
+#include "EffectServer.h"
 
  /**
   * @brief ゲームスペース
@@ -36,7 +36,7 @@ namespace Gyro {
   namespace Effect {
     // 前方宣言
     class EffectLoadServer;  //!< エフェクトサーバ
-    class EffectComponent;   //!< エフェクト
+    class EffectServer;   //!< エフェクト
   } // namespace Effect
   /**
    * @brief アプリケーション
@@ -95,18 +95,18 @@ namespace Gyro {
         return *_camera;
       }
       /**
-       * @brief  エフェクトサーバの取得
-       * @return エフェクトサーバの参照
+       * @brief  エフェクト読み込みサーバの取得
+       * @return エフェクト読み込みサーバの参照
        */
       Effect::EffectLoadServer& GetEffectLoadServer() {
         return *_effectLoadServer;
       }
       /**
-       * @brief  エフェクトの取得
-       * @return エフェクトの参照
+       * @brief  エフェクトサーバの取得
+       * @return エフェクトサーバの参照
        */
-      Effect::EffectComponent& GetEffect() {
-        return *_effect;
+      Effect::EffectServer& GetEffectServer() {
+        return *_effectServer;
       }
       /**
        * @brief  ステージコンポーネントの取得
@@ -122,10 +122,10 @@ namespace Gyro {
       std::unique_ptr<Object::SpawnServer> _spawnServer{ nullptr };
       //!< カメラ
       std::unique_ptr<Camera::Camera> _camera{ nullptr };
-      //!< エフェクトサーバ
+      //!< エフェクト読み込みサーバ
       std::unique_ptr<Effect::EffectLoadServer> _effectLoadServer{ nullptr };
-      //! エフェクト
-      std::unique_ptr<Effect::EffectComponent> _effect{ nullptr };
+      //!< エフェクトサーバ
+      std::unique_ptr<Effect::EffectServer> _effectServer{ nullptr };
       //!< ステージコンポーネント
       std::unique_ptr<Stage::StageComponent> _stage{ nullptr };
       /**

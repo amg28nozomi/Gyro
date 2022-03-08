@@ -13,16 +13,16 @@ namespace Gyro {
     ModelAnimData::ModelAnimData() {
       // 各種パラメータの初期化
       _name.clear();
-      _effect.clear();
+      _effect = 0;
       _blendFrame = 0.0f;
       _speed = 0.0f;
       _loop = false;
     }
 
-    ModelAnimData::ModelAnimData(std::string_view name, const float frame, const float speed, bool loop, std::string_view effect) {
+    ModelAnimData::ModelAnimData(std::string_view name, const float frame, const float speed, bool loop, int effect) {
       // 各種パラメータの設定
       _name = name.data();
-      _effect = effect.data();
+      _effect = effect;
       _blendFrame = frame;
       _speed = speed;
       _loop = loop;
