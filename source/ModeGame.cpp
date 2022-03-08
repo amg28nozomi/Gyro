@@ -232,16 +232,16 @@ namespace Gyro {
         // 引数2:ローカル座標
         // 引数3:向き
         // 引数4:スケール
-        { Object::TypePlayer, {0.0f, 200.0f, -200.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}},
+        { Object::TypePlayer, {0.0f, 200.0f, -100.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}},
         { Object::TypeSkySphere, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}}
       };
       // エネミーテーブル
       const Object::EnemyTable enemy {
         // 陸上型エネミーの配置情報
-        { Object::EnemyWheel, { 100.0f, 250.0f, 100.0f}, {0.0f, 0.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
-        { Object::EnemyWheel, { -200.0f, 250.0f, 200.0f}, {0.0f, 0.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
-        { Object::EnemyWheel, { 300.0f, 250.0f, 200.0f}, {0.0f, 0.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
-        { Object::EnemyWheel, { -400.0f, 250.0f, 200.0f}, {0.0f, 0.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
+        { Object::EnemyWheel, { 100.0f, 250.0f, -680.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
+        { Object::EnemyWheel, { -200.0f, 250.0f, -680.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
+        { Object::EnemyWheel, { 300.0f, 250.0f, -680.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
+        { Object::EnemyWheel, { -400.0f, 250.0f, -680.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
         { Object::EnemyDrone, { 100.0f, 360.0f, -1800.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
         { Object::EnemyDrone, { -200.0f, 360.0f, -1800.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
         { Object::EnemyDrone, { 300.0f, 360.0f, -1800.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
