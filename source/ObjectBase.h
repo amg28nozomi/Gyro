@@ -177,6 +177,13 @@ namespace Gyro {
       inline AppMath::Vector4 Forward() const {
         return _forward;
       }
+      /**
+       * @brief  ソート用の値を取得
+       * @return ソート用の値
+       */
+      int GetSort() {
+        return _sort;
+      }
     protected:
       //!< アプリケーションの参照
       Application::ApplicationMain& _app;
@@ -194,6 +201,7 @@ namespace Gyro {
       AppMath::Vector4 _scale{0, 0, 0};
       //!< 向きベクトル
       AppMath::Vector4 _forward{0, 0, 0};
+      int _sort;            //!< ソート用
       bool _stand{false};   //!< 立ちフラグ(true:床に立っている false:床と接触していない)
       bool _gravity{false}; //!< 重力処理を行うか(true:重力処理を行う false:重力処理を行わない)
       float _mass{0.0f};    //!< 質量

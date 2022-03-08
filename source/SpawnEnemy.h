@@ -18,7 +18,9 @@ namespace Gyro {
    */
   namespace Object {
     constexpr auto EnemyWheel = 0; //!< 陸上型エネミー
-    constexpr auto EnemyDrone = 1; //!< 空中型エネミー
+    constexpr auto EnemyWheelBoss = 1; //!< 陸上型ボスエネミー
+    constexpr auto EnemyDrone = 2;     //!< 空中型エネミー
+    constexpr auto EnemyDroneBoss = 3; //!< 空中型ボスエネミー
     /**
      * @class SpawnEnemy
      * @brief エネミーのスポーン情報
@@ -31,7 +33,9 @@ namespace Gyro {
       enum class EnemyType {
         None,  // 該当なし
         Wheel, // 陸上型
-        Drone  // 空中型
+        WheelBoss, // 陸上型ボス
+        Drone,     // 空中型
+        DroneBoss, // 空中型ボス
       };
       /**
        * @brief  空のコンストラクタ

@@ -1,20 +1,20 @@
 /*****************************************************************//**
  * @file    EnemyWheel.cpp
- * @brief   地上敵クラス
+ * @brief   地上敵ボスクラス
  *
- * @author  宮澤耀生
- * @date    January 2022
+ * @author  土橋峡介
+ * @date    March 2022
  *********************************************************************/
-#include "EnemyWheel.h"
+#include "EnemyWheelBoss.h"
 #include "UtilityDX.h"
 #include "ObjectServer.h"
 #include "Player.h"
 
 namespace {
   // 各種定数
-  constexpr int WheelHP = 5000;           //!< 地上敵最大体力
+  constexpr int WheelHP = 10000;          //!< 地上敵最大体力
   constexpr float WheelMoveSpead = 5.0f;  //!< 地上的移動速度
-  constexpr float Height = 220.0f;        //!< 高さ
+  constexpr float Height = 530.0f;        //!< 高さ
   // アニメーションキー
   constexpr std::string_view IdleKey = "idle";      //!< 待機
   constexpr std::string_view MoveKey = "idle";      //!< 移動
@@ -27,17 +27,16 @@ namespace {
 
 namespace Gyro {
   namespace Enemy {
-    EnemyWheel::EnemyWheel(Application::ApplicationMain& app) : EnemyBase(app) {
+    EnemyWheelBoss::EnemyWheelBoss(Application::ApplicationMain& app) : EnemyBase(app) {
       // 初期化
       Init();
       _gravity = true;
     }
 
-    EnemyWheel::~EnemyWheel() {
-
+    EnemyWheelBoss::~EnemyWheelBoss() {
     }
 
-    bool EnemyWheel::Init() {
+    bool EnemyWheelBoss::Init() {
       // モデル読み込み
       LoadModel();
       // パラメータの設定
@@ -48,7 +47,7 @@ namespace Gyro {
       return true;
     }
 
-    bool EnemyWheel::Process() {
+    bool EnemyWheelBoss::Process() {
       // 基底クラスの更新処理を呼び出し
       EnemyBase::Process();
       // 前フレームの状態
@@ -56,23 +55,23 @@ namespace Gyro {
       // 索敵範囲に入ったら状態をMoveに変化
       // 状態もどき
       switch (_enemyState) {
-        case Gyro::Enemy::EnemyBase::EnemyState::Move:
-          Move();  //!< 移動
-          Sercth(); //!< 探索
-          break;
-        case Gyro::Enemy::EnemyBase::EnemyState::Attack:
-          Attack();  //!< 攻撃
-          break;
-        case EnemyState::Damage:
-          NockBack(); //!< ノックバック
-          break;
-        case Gyro::Enemy::EnemyBase::EnemyState::Dead:
-          Dead();  //!< 死亡
-          break;
-        default:
-          _enemyState = EnemyState::Idle;
-          Sercth(); //!< 探索
-          break;
+      case Gyro::Enemy::EnemyBase::EnemyState::Move:
+        Move();  //!< 移動
+        Sercth(); //!< 探索
+        break;
+      case Gyro::Enemy::EnemyBase::EnemyState::Attack:
+        Attack();  //!< 攻撃
+        break;
+      case EnemyState::Damage:
+        NockBack(); //!< ノックバック
+        break;
+      case Gyro::Enemy::EnemyBase::EnemyState::Dead:
+        Dead();  //!< 死亡
+        break;
+      default:
+        _enemyState = EnemyState::Idle;
+        Sercth(); //!< 探索
+        break;
       }
       // 衝突判定
       Hit();
@@ -109,11 +108,11 @@ namespace Gyro {
       return true;
     }
 
-    bool EnemyWheel::Draw() const {
+    bool EnemyWheelBoss::Draw() const {
       // 基底側の描画
       EnemyBase::Draw();
       // 体力ゲージの描画
-      _gaugeHp->Draw(_position,Height);
+      _gaugeHp->Draw(_position, Height);
 #ifdef _DEBUG
       // デバッグフラグがある場合のみ描画処理を行う
       if (_app.GetDebugFlag()) {
@@ -130,16 +129,16 @@ namespace Gyro {
       return true;
     }
 
-    void EnemyWheel::LoadModel() {
+    void EnemyWheelBoss::LoadModel() {
       // モデルハンドルの取得
-      auto [handle, key] = _app.GetModelServer().GetModel("enemyWheel", _number);
+      auto [handle, key] = _app.GetModelServer().GetModel("enemyWheelBoss", _number);
       // モデルデータ設定
       ++_number;
       _mHandle = handle;
       _this = key;
     }
 
-    void EnemyWheel::SetParameter() {
+    void EnemyWheelBoss::SetParameter() {
       // 各種設定
       _enemyHP = WheelHP;
       _gaugeHp = std::make_shared<Gauge::GaugeEnemy>(_app);
@@ -150,14 +149,14 @@ namespace Gyro {
       _gravity = false;
     }
 
-    void EnemyWheel::SetCollision() {
+    void EnemyWheelBoss::SetCollision() {
       // 球の当たり判定設定
       _sphere = std::make_unique<Object::CollisionSphere>(*this, _position.AddVectorY(100.0f), 50.0f);
       // カプセルコリジョンの設定
-      _capsule = std::make_unique<Object::CollisionCapsule>(*this, _position, 200.0f, 30.0f);
+      _capsule = std::make_unique<Object::CollisionCapsule>(*this, _position, 450.0f, 70.0f);
     }
 
-    void EnemyWheel::Move() {
+    void EnemyWheelBoss::Move() {
       using Vector4 = AppMath::Vector4;
       // ターゲット座標
       auto target = Vector4();
@@ -186,7 +185,7 @@ namespace Gyro {
       }
     }
 
-    void EnemyWheel::Attack() {
+    void EnemyWheelBoss::Attack() {
       // アニメーションから指定したボーンのローカル座標を取得
       auto attachIndex = _modelAnim.GetMainAttachIndex();
       auto rPos = MV1GetFramePosition(_mHandle, 13);
@@ -209,7 +208,7 @@ namespace Gyro {
       }
     }
 
-    void EnemyWheel::NockBack() {
+    void EnemyWheelBoss::NockBack() {
       if (_cnt > 0) {
         // 自機の取得
         const auto player = _app.GetObjectServer().GetPlayer();
@@ -222,12 +221,13 @@ namespace Gyro {
         auto kB = knockBack * 10;
         _position.Add(kB);
         _capsule->SetPosition(_position);
-      }else {
+      }
+      else {
         _enemyState = EnemyState::Idle;
       }
     }
 
-    void EnemyWheel::Hit() {
+    void EnemyWheelBoss::Hit() {
       // オブジェクトのコピー
       auto objects = _app.GetObjectServer().GetObjects();
       // 衝突判定を行う
@@ -261,7 +261,7 @@ namespace Gyro {
       }
     }
 
-    void EnemyWheel::ChangeAnim() {
+    void EnemyWheelBoss::ChangeAnim() {
       // 対応アニメーション切り替え
       switch (_enemyState) {
       case EnemyState::Idle:    //!< 待機
@@ -284,7 +284,7 @@ namespace Gyro {
       }
     }
 
-    void EnemyWheel::PlayEffect() {
+    void EnemyWheelBoss::PlayEffect() {
       // パラメータ設定
       auto ePos = _position;
 #ifndef _DEBUG
@@ -316,7 +316,7 @@ namespace Gyro {
       }
     }
 
-    bool EnemyWheel::IsDamege() {
+    bool EnemyWheelBoss::IsDamege() {
       // 無敵状態かの判定
 
       // 自機の取得
@@ -338,7 +338,8 @@ namespace Gyro {
         _gaugeHp->Sub(1000);
         if (_enemyHP <= 0) {
           _enemyState = EnemyState::Dead;
-        }else {
+        }
+        else {
           _enemyState = EnemyState::Damage;
           _cnt = 20;
         }

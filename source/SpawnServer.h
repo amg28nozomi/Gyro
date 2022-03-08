@@ -25,7 +25,9 @@ namespace Gyro {
    */
   namespace Enemy {
     class EnemyWheel; //!< 前方宣言
-    class EnemyDrone; //!< 前方宣言
+    class EnemyWheelBoss; //!< 前方宣言
+    class EnemyDrone;     //!< 前方宣言
+    class EnemyDroneBoss; //!< 前方宣言
   } // namespace 
   /**
    * @brief アプリケーションベース
@@ -147,11 +149,23 @@ namespace Gyro {
        */
       std::shared_ptr<Enemy::EnemyWheel> EnemyWheel(SpawnEnemy& spawn) const;
       /**
+       * @brief  陸上型敵ボスの生成
+       * @param  spawn スポーン情報
+       * @return 陸上型敵ボスのシェアードポインタ
+       */
+      std::shared_ptr<Enemy::EnemyWheelBoss> EnemyWheelBoss(SpawnEnemy& spawn) const;
+      /**
        * @brief  空中型敵の生成
        * @param  spawn スポーン情報
        * @return 空中型敵のシェアードポインタ
        */
       std::shared_ptr<Enemy::EnemyDrone> EnemyDrone(SpawnEnemy& spawn) const;
+      /**
+       * @brief  空中型敵ボスの生成
+       * @param  spawn スポーン情報
+       * @return 空中型敵ボスのシェアードポインタ
+       */
+      std::shared_ptr<Enemy::EnemyDroneBoss> EnemyDroneBoss(SpawnEnemy& spawn) const;
       /**
        * @brief  スカイスフィアの生成
        * @param  spawn スポーン情報

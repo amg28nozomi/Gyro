@@ -1,43 +1,42 @@
 /*****************************************************************//**
- * @file    EnemyWheel.cpp
- * @brief   地上敵クラス
+ * @file    EnemyDroneBoss.cpp
+ * @brief   空中敵ボスクラス
  *
- * @author  宮澤耀生
- * @date    January 2022
+ * @author  土橋峡介
+ * @date    March 2022
  *********************************************************************/
-#include "EnemyWheel.h"
+#include "EnemyDroneBoss.h"
 #include "UtilityDX.h"
+#include "ApplicationMain.h"
 #include "ObjectServer.h"
 #include "Player.h"
 
 namespace {
   // 各種定数
-  constexpr int WheelHP = 5000;           //!< 地上敵最大体力
-  constexpr float WheelMoveSpead = 5.0f;  //!< 地上的移動速度
-  constexpr float Height = 220.0f;        //!< 高さ
+  constexpr int DroneHP = 15000;          //!< 地上敵最大体力
+  constexpr float DroneMoveSpead = 5.0f;  //!< 地上的移動速度
+  constexpr float Height = 650.0f;        //!< 高さ
   // アニメーションキー
-  constexpr std::string_view IdleKey = "idle";      //!< 待機
-  constexpr std::string_view MoveKey = "idle";      //!< 移動
-  constexpr std::string_view AttackKey = "attack";  //!< 攻撃
-  constexpr std::string_view AttackReadyKey = "attack_ready";  //!< 攻撃準備
-  constexpr std::string_view AttackFinishKey = "attack_finish"; //!< 攻撃終了
-  constexpr std::string_view DamageKey = "damage";  //!< ダメージ
-  constexpr std::string_view DeadKey = "dead";      //!< 死亡
+  constexpr std::string_view IdleKey = "Move";      //!< 待機
+  constexpr std::string_view MoveKey = "Move";      //!< 移動
+  constexpr std::string_view AttackKey = "Attack";  //!< 攻撃
+  constexpr std::string_view DamageKey = "Damage";  //!< ダメージ
+  constexpr std::string_view DeadKey = "Destroy1";  //!< 死亡
 }
 
 namespace Gyro {
   namespace Enemy {
-    EnemyWheel::EnemyWheel(Application::ApplicationMain& app) : EnemyBase(app) {
+    EnemyDroneBoss::EnemyDroneBoss(Application::ApplicationMain& app) : EnemyBase(app) {
       // 初期化
       Init();
       _gravity = true;
     }
 
-    EnemyWheel::~EnemyWheel() {
+    EnemyDroneBoss::~EnemyDroneBoss() {
 
     }
 
-    bool EnemyWheel::Init() {
+    bool EnemyDroneBoss::Init() {
       // モデル読み込み
       LoadModel();
       // パラメータの設定
@@ -48,7 +47,7 @@ namespace Gyro {
       return true;
     }
 
-    bool EnemyWheel::Process() {
+    bool EnemyDroneBoss::Process() {
       // 基底クラスの更新処理を呼び出し
       EnemyBase::Process();
       // 前フレームの状態
@@ -56,23 +55,23 @@ namespace Gyro {
       // 索敵範囲に入ったら状態をMoveに変化
       // 状態もどき
       switch (_enemyState) {
-        case Gyro::Enemy::EnemyBase::EnemyState::Move:
-          Move();  //!< 移動
-          Sercth(); //!< 探索
-          break;
-        case Gyro::Enemy::EnemyBase::EnemyState::Attack:
-          Attack();  //!< 攻撃
-          break;
-        case EnemyState::Damage:
-          NockBack(); //!< ノックバック
-          break;
-        case Gyro::Enemy::EnemyBase::EnemyState::Dead:
-          Dead();  //!< 死亡
-          break;
-        default:
-          _enemyState = EnemyState::Idle;
-          Sercth(); //!< 探索
-          break;
+      case Gyro::Enemy::EnemyBase::EnemyState::Move:
+        Move();  //!< 移動
+        Sercth(); //!< 探索
+        break;
+      case Gyro::Enemy::EnemyBase::EnemyState::Attack:
+        Attack();  //!< 攻撃
+        break;
+      case EnemyState::Damage:
+        NockBack(); //!< ノックバック
+        break;
+      case Gyro::Enemy::EnemyBase::EnemyState::Dead:
+        Dead();  //!< 死亡
+        break;
+      default:
+        _enemyState = EnemyState::Idle;
+        Sercth(); //!< 探索
+        break;
       }
       // 衝突判定
       Hit();
@@ -109,11 +108,11 @@ namespace Gyro {
       return true;
     }
 
-    bool EnemyWheel::Draw() const {
+    bool EnemyDroneBoss::Draw() const {
       // 基底側の描画
       EnemyBase::Draw();
       // 体力ゲージの描画
-      _gaugeHp->Draw(_position,Height);
+      _gaugeHp->Draw(_position, Height);
 #ifdef _DEBUG
       // デバッグフラグがある場合のみ描画処理を行う
       if (_app.GetDebugFlag()) {
@@ -130,34 +129,34 @@ namespace Gyro {
       return true;
     }
 
-    void EnemyWheel::LoadModel() {
+    void EnemyDroneBoss::LoadModel() {
       // モデルハンドルの取得
-      auto [handle, key] = _app.GetModelServer().GetModel("enemyWheel", _number);
+      auto [handle, key] = _app.GetModelServer().GetModel("enemyDroneBoss", _number);
       // モデルデータ設定
       ++_number;
       _mHandle = handle;
       _this = key;
     }
 
-    void EnemyWheel::SetParameter() {
+    void EnemyDroneBoss::SetParameter() {
       // 各種設定
-      _enemyHP = WheelHP;
+      _enemyHP = DroneHP;
       _gaugeHp = std::make_shared<Gauge::GaugeEnemy>(_app);
-      _gaugeHp->Init(WheelHP);
+      _gaugeHp->Init(DroneHP);
       _serchRadius = 300.0f;
       _attackRadius = 100.0f;
       _sort = 0;
       _gravity = false;
     }
 
-    void EnemyWheel::SetCollision() {
+    void EnemyDroneBoss::SetCollision() {
       // 球の当たり判定設定
       _sphere = std::make_unique<Object::CollisionSphere>(*this, _position.AddVectorY(100.0f), 50.0f);
       // カプセルコリジョンの設定
-      _capsule = std::make_unique<Object::CollisionCapsule>(*this, _position, 200.0f, 30.0f);
+      _capsule = std::make_unique<Object::CollisionCapsule>(*this, _position, 550.0f, 75.0f);
     }
 
-    void EnemyWheel::Move() {
+    void EnemyDroneBoss::Move() {
       using Vector4 = AppMath::Vector4;
       // ターゲット座標
       auto target = Vector4();
@@ -169,7 +168,7 @@ namespace Gyro {
       auto efor = AppMath::Vector4(x, 0.0f, z);
       // 正規化
       efor.Normalize();
-      auto move = efor * (WheelMoveSpead);
+      auto move = efor * (DroneMoveSpead);
       // _sphere->Process();
       // ラジアンを生成(z軸は反転させる)
       auto radian = std::atan2(move.GetX(), -move.GetZ());
@@ -186,19 +185,10 @@ namespace Gyro {
       }
     }
 
-    void EnemyWheel::Attack() {
+    void EnemyDroneBoss::Attack() {
       // アニメーションから指定したボーンのローカル座標を取得
       auto attachIndex = _modelAnim.GetMainAttachIndex();
-      auto rPos = MV1GetFramePosition(_mHandle, 13);
-      //auto lPos = MV1GetFramePosition(_mHandle, 9);
-      /*for (auto i = 0; i < 2; i++) {
-        if (i < 1) {
-          _sphere->SetPosition(UtilityDX::ToVector(rPos));
-        }else {
-          _sphere->SetPosition(UtilityDX::ToVector(lPos));
-        }
-        _sphere->Process();
-      }*/
+      auto rPos = MV1GetFramePosition(_mHandle, 4);
       _sphere->SetPosition(UtilityDX::ToVector(rPos));
       _sphere->Process();
       _oldPosition = _position;
@@ -209,7 +199,7 @@ namespace Gyro {
       }
     }
 
-    void EnemyWheel::NockBack() {
+    void EnemyDroneBoss::NockBack() {
       if (_cnt > 0) {
         // 自機の取得
         const auto player = _app.GetObjectServer().GetPlayer();
@@ -222,12 +212,13 @@ namespace Gyro {
         auto kB = knockBack * 10;
         _position.Add(kB);
         _capsule->SetPosition(_position);
-      }else {
+      }
+      else {
         _enemyState = EnemyState::Idle;
       }
     }
 
-    void EnemyWheel::Hit() {
+    void EnemyDroneBoss::Hit() {
       // オブジェクトのコピー
       auto objects = _app.GetObjectServer().GetObjects();
       // 衝突判定を行う
@@ -261,7 +252,7 @@ namespace Gyro {
       }
     }
 
-    void EnemyWheel::ChangeAnim() {
+    void EnemyDroneBoss::ChangeAnim() {
       // 対応アニメーション切り替え
       switch (_enemyState) {
       case EnemyState::Idle:    //!< 待機
@@ -284,7 +275,7 @@ namespace Gyro {
       }
     }
 
-    void EnemyWheel::PlayEffect() {
+    void EnemyDroneBoss::PlayEffect() {
       // パラメータ設定
       auto ePos = _position;
 #ifndef _DEBUG
@@ -297,7 +288,7 @@ namespace Gyro {
       case EnemyState::Idle:    //!< 待機
         break;
       case EnemyState::Move:    //!< 移動
-        ePos.AddY(135.0f);
+        ePos.AddY(300.0f);
         _app.GetEffectServer().MakeEffect(EffectNum::EnemyEyeLight, ePos, eRad);
         break;
       case EnemyState::Attack:  //!< 攻撃
@@ -316,7 +307,7 @@ namespace Gyro {
       }
     }
 
-    bool EnemyWheel::IsDamege() {
+    bool EnemyDroneBoss::IsDamege() {
       // 無敵状態かの判定
 
       // 自機の取得
@@ -338,7 +329,8 @@ namespace Gyro {
         _gaugeHp->Sub(1000);
         if (_enemyHP <= 0) {
           _enemyState = EnemyState::Dead;
-        }else {
+        }
+        else {
           _enemyState = EnemyState::Damage;
           _cnt = 20;
         }

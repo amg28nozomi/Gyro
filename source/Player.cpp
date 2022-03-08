@@ -443,6 +443,8 @@ namespace Gyro {
       _plane = std::make_unique<AppFrame::Math::Plane>(a, b, c);
       // HPの設定
       _playerHP = GyroHP;
+      // ソートの設定
+      _sort = 2;
       // ゲージの設定
       _gaugeHp.Init(GyroHP);
       _gaugeTrick.Init(TrickMax);

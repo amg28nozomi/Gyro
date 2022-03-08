@@ -46,6 +46,8 @@
     <ClCompile Include="source\EffectStageBarrier.cpp" />
     <ClCompile Include="source\EffectStageBoxDestroy.cpp" />
     <ClCompile Include="source\EnemyDrone.cpp" />
+    <ClCompile Include="source\EnemyDroneBoss.cpp" />
+    <ClCompile Include="source\EnemyWheelBoss.cpp" />
     <ClCompile Include="source\InteriorBase.cpp" />
     <ClCompile Include="source\KnockBackComponent.cpp" />
     <ClCompile Include="source\Light.cpp" />
@@ -132,6 +134,8 @@
     <ClInclude Include="source\EffectStageBarrier.h" />
     <ClInclude Include="source\EffectStageBoxDestroy.h" />
     <ClInclude Include="source\EnemyDrone.h" />
+    <ClInclude Include="source\EnemyDroneBoss.h" />
+    <ClInclude Include="source\EnemyWheelBoss.h" />
     <ClInclude Include="source\InteriorBase.h" />
     <ClInclude Include="source\KnockBackComponent.h" />
     <ClInclude Include="source\Light.h" />

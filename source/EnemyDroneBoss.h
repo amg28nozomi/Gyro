@@ -1,6 +1,6 @@
 /*****************************************************************//**
- * @file   EnemyDrone.h
- * @brief  空中敵クラス
+ * @file   EnemyDroneBoss.h
+ * @brief  空中敵ボスクラス
  * 
  * @author 土橋峡介
  * @date   March 2022
@@ -17,20 +17,20 @@ namespace Gyro {
    */
   namespace Enemy {
     /**
-     * @class EnemyDrone
-     * @brief 空中敵クラス
+     * @class EnemyDroneBoss
+     * @brief 空中敵ボスクラス
      */
-    class EnemyDrone : public EnemyBase {
+    class EnemyDroneBoss : public EnemyBase {
     public:
       /**
        * @brief コンストラクタ
        * @param app アプリケーション
        */
-      EnemyDrone(Application::ApplicationMain& app);
+      EnemyDroneBoss(Application::ApplicationMain& app);
       /**
        * @brief デストラクタ
        */
-      ~EnemyDrone();
+      ~EnemyDroneBoss();
       /**
        * @brief  初期化
        * @return true

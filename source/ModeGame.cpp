@@ -171,9 +171,10 @@ namespace Gyro {
       using ModelServer = AppFrame::Model::ModelServer;
       // 各種モデルハンドルの読み込み
       const ModelServer::ModelDatas mv1Models{
-        {"enemyWheel", "res/Enemy/Wheel/enemy1_set.mv1"}, // 地上敵
-        {"enemyDrone", "res/Enemy/Drone/enemy2 Multimotion fin.mv1"}, // 空中敵
-        {"stage", "res/Stage/houseGEO_1.mv1"}               // ステージ
+        {"enemyWheel", "res/Enemy/Wheel/enemy1_set.mv1"},                 // 地上敵
+        {"enemyWheelBoss", "res/Enemy/Wheel/enemy1_boss_set.mv1"},        // 地上敵ボス
+        {"enemyDrone", "res/Enemy/Drone/enemy2 Multimotion fin.mv1"},     // 空中敵
+        {"enemyDroneBoss", "res/Enemy/Drone/enemy2 Bos Multimotion fin.mv1"},  // 空中敵ボス
       };
       // モデルサーバで読み取りを行う
       _app.GetModelServer().AddMV1Model(mv1Models);
@@ -240,14 +241,16 @@ namespace Gyro {
       // エネミーテーブル
       const Object::EnemyTable enemy {
         // 陸上型エネミーの配置情報
-        { Object::EnemyWheel, { 100.0f, 250.0f, 100.0f}, {0.0f, 0.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
-        { Object::EnemyWheel, { -200.0f, 250.0f, 200.0f}, {0.0f, 0.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
-        { Object::EnemyWheel, { 300.0f, 250.0f, 200.0f}, {0.0f, 0.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
-        { Object::EnemyWheel, { -400.0f, 250.0f, 200.0f}, {0.0f, 0.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
-        { Object::EnemyDrone, { 100.0f, 360.0f, -1800.0f}, {0.0f, 0.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
-        { Object::EnemyDrone, { -200.0f, 360.0f, -1800.0f}, {0.0f, 0.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
-        { Object::EnemyDrone, { 300.0f, 360.0f, -1800.0f}, {0.0f, 0.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
-        { Object::EnemyDrone, { -400.0f, 360.0f, -1800.0f}, {0.0f, 0.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
+        { Object::EnemyWheel, { 100.0f, 250.0f, -680.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
+        { Object::EnemyWheel, { -200.0f, 250.0f, -680.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
+        { Object::EnemyWheel, { 300.0f, 250.0f, -680.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
+        { Object::EnemyWheel, { -400.0f, 250.0f, -680.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
+        { Object::EnemyDrone, { 100.0f, 360.0f, -1800.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
+        { Object::EnemyDrone, { -200.0f, 360.0f, -1800.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
+        { Object::EnemyDrone, { 300.0f, 360.0f, -1800.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
+        { Object::EnemyDrone, { -400.0f, 360.0f, -1800.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
+        { Object::EnemyWheelBoss, { 100.0f, 720.0f, -4100.0f}, {0.0f, -180.0f, 0.0f }, {5.0f, 5.0f, 5.0f}},
+        { Object::EnemyDroneBoss, { 300.0f, 720.0f, -4100.0f}, {0.0f, -180.0f, 0.0f }, {7.0f, 7.0f, 7.0f}},
       };
       // 各種テーブルを基にスポーンテーブルを作成
       Object::SpawnData table{

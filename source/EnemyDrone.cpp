@@ -3,17 +3,16 @@
  * @brief   空中敵クラス
  *
  * @author  土橋峡介
- * @date    January 2022
+ * @date    March 2022
  *********************************************************************/
 #include "EnemyDrone.h"
 #include "UtilityDX.h"
-#include "ApplicationMain.h"
 #include "ObjectServer.h"
 #include "Player.h"
 
 namespace {
   // 各種定数
-  constexpr int DroneHP = 5000;           //!< 地上敵最大体力
+  constexpr int DroneHP = 8500;           //!< 地上敵最大体力
   constexpr float DroneMoveSpead = 5.0f;  //!< 地上的移動速度
   constexpr float Height = 380.0f;        //!< 高さ
   // アニメーションキー
@@ -145,6 +144,7 @@ namespace Gyro {
       _gaugeHp->Init(DroneHP);
       _serchRadius = 300.0f;
       _attackRadius = 100.0f;
+      _sort = 0;
       _gravity = false;
     }
 
@@ -152,7 +152,7 @@ namespace Gyro {
       // 球の当たり判定設定
       _sphere = std::make_unique<Object::CollisionSphere>(*this, _position.AddVectorY(100.0f), 50.0f);
       // カプセルコリジョンの設定
-      _capsule = std::make_unique<Object::CollisionCapsule>(*this, _position, 200.0f, 30.0f);
+      _capsule = std::make_unique<Object::CollisionCapsule>(*this, _position, 300.0f, 50.0f);
     }
 
     void EnemyDrone::Move() {
