@@ -242,12 +242,12 @@ namespace Gyro {
         { Object::EnemyWheel, { -200.0f, 250.0f, 200.0f}, {0.0f, 0.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
         { Object::EnemyWheel, { 300.0f, 250.0f, 200.0f}, {0.0f, 0.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
         { Object::EnemyWheel, { -400.0f, 250.0f, 200.0f}, {0.0f, 0.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
-        { Object::EnemyDrone, { 100.0f, 360.0f, -1800.0f}, {0.0f, 0.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
-        { Object::EnemyDrone, { -200.0f, 360.0f, -1800.0f}, {0.0f, 0.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
-        { Object::EnemyDrone, { 300.0f, 360.0f, -1800.0f}, {0.0f, 0.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
-        { Object::EnemyDrone, { -400.0f, 360.0f, -1800.0f}, {0.0f, 0.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
-        { Object::EnemyWheelBoss, { 100.0f, 720.0f, -4100.0f}, {0.0f, 0.0f, 0.0f }, {5.0f, 5.0f, 5.0f}},
-        { Object::EnemyDroneBoss, { 300.0f, 720.0f, -4100.0f}, {0.0f, 0.0f, 0.0f }, {7.0f, 7.0f, 7.0f}},
+        { Object::EnemyDrone, { 100.0f, 360.0f, -1800.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
+        { Object::EnemyDrone, { -200.0f, 360.0f, -1800.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
+        { Object::EnemyDrone, { 300.0f, 360.0f, -1800.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
+        { Object::EnemyDrone, { -400.0f, 360.0f, -1800.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
+        { Object::EnemyWheelBoss, { 100.0f, 720.0f, -4100.0f}, {0.0f, -180.0f, 0.0f }, {5.0f, 5.0f, 5.0f}},
+        { Object::EnemyDroneBoss, { 300.0f, 720.0f, -4100.0f}, {0.0f, -180.0f, 0.0f }, {7.0f, 7.0f, 7.0f}},
       };
       // 各種テーブルを基にスポーンテーブルを作成
       Object::SpawnData table{
