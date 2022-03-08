@@ -197,9 +197,10 @@ namespace Gyro {
     }
 
     void EnemyBase::Dead() {
-      _state = ObjectState::Dead;
-      // オブジェクトサーバに死亡処理を行う
-      // _app.GetObjectServer().
+      // アニメーション終了でDeadへ移行
+      if (_modelAnim.GetMainAnimEnd() && !_modelAnim.IsBlending()) {
+        _state = ObjectState::Dead;
+      }
     }
 
     bool EnemyBase::IsDamege() {
