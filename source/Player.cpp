@@ -105,13 +105,13 @@ namespace Gyro {
      */
     const std::unordered_map<int, std::vector<int>> attackMap{
       // 弱攻撃
-      {StateNumberLight1, {15}},
-      {StateNumberLight2, {15}},
-      {StateNumberLight3, {15}},
+      {StateNumberLight1, {50, 75}},
+      {StateNumberLight2, {15, 17}},
+      {StateNumberLight3, {15, 17, 20, 22}},
       // 強攻撃
-      {StateNumberHeavy1 ,{15}},
-      {StateNumberHeavy2 ,{15}},
-      {StateNumberHeavy3 ,{15}}
+      {StateNumberHeavy1 ,{15/*, 17, 20, 22*/}},
+      {StateNumberHeavy2 ,{15, 17, 20, 22}},
+      {StateNumberHeavy3 ,{15, 17, 20, 22, 50, 75}}
     };
 
     /**
@@ -346,7 +346,7 @@ namespace Gyro {
             // 攻撃判定で使用するフレーム番号の取得
             auto frames = attackMap.at(PlayerStateToNumber());
             // フレームとコリジョン情報の設定
-            _attack->SetFrame(frames, AddSpheres(static_cast<int>(frames.size())));
+            _attack->SetFrame(frames, AddSpheres(static_cast<int>(frames.size(), 100.0f)));
             _stateComponent->Start();
             _attack->Start();
             _attackFlag = true;
@@ -359,7 +359,7 @@ namespace Gyro {
             // 攻撃判定で使用するフレーム番号の取得
             auto frames = attackMap.at(PlayerStateToNumber());
             // フレームとコリジョン情報の設定
-            _attack->SetFrame(frames, AddSpheres(static_cast<int>(frames.size())));
+            _attack->SetFrame(frames, AddSpheres(static_cast<int>(frames.size(), 100.0f)));
             _stateComponent->Start();
             _attack->Start();
             _attackFlag = false;

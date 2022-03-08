@@ -7,6 +7,11 @@
  *********************************************************************/
 #include "EffectPlayerHeavyAttack1.h"
 
+namespace {
+  // 生成から再生までのラグ定数
+  constexpr int PlayLag = 10;
+}
+
 namespace Gyro {
   namespace Effect {
     EffectPlayerHeavyAttack1::EffectPlayerHeavyAttack1(Application::ApplicationMain& app) : EffectBase(app) {
@@ -21,6 +26,8 @@ namespace Gyro {
     void EffectPlayerHeavyAttack1::Init() {
       // エフェクトハンドルの取得
       _effectHandle = GetEffectHandle(EffectKey::PlayerHeavyAttack1);
+      // ラグ設定
+      _playLag = PlayLag;
     }
   } // namespace Effect
 } // namespace Gyro
