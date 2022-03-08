@@ -144,6 +144,7 @@ namespace Gyro {
       _gaugeHp->Init(DroneHP);
       _serchRadius = 300.0f;
       _attackRadius = 100.0f;
+      _sort = 0;
       _gravity = false;
     }
 

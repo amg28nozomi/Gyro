@@ -8,6 +8,7 @@
 #include "ObjectServer.h"
 #include "ObjectBase.h"
 #include "Player.h"
+#include <algorithm>
 
 namespace Gyro {
   namespace Object {
@@ -47,6 +48,12 @@ namespace Gyro {
           object->Process(); // 更新処理呼び出し
         }
       }
+      // _sortの値を見て順番入れ替え
+      std::sort(
+        _registry.begin(),
+        _registry.end(),
+        [](std::shared_ptr<ObjectBase> ch1, std::shared_ptr<ObjectBase> ch2) {return ch1->GetSort() < ch2->GetSort(); }
+      );
       _play = false; // 処理終了
       // 不要になったオブジェクトを削除する
       std::erase_if(_registry, [](auto&& obj) {return obj->IsDead(); });

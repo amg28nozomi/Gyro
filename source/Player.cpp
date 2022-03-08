@@ -443,6 +443,7 @@ namespace Gyro {
       _plane = std::make_unique<AppFrame::Math::Plane>(a, b, c);
       // HPÇÃê›íË
       _playerHP = GyroHP;
+      _sort = 2;
       // ÉQÅ[ÉWÇÃê›íË
       _gaugeHp.Init(GyroHP);
       _gaugeTrick.Init(TrickMax);
