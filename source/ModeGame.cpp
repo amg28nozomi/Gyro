@@ -37,7 +37,7 @@ namespace Gyro {
       // エフェクトリソースの読み取り
       LoadEffectResource();
       // ステージの切り替え
-      StageChange("stage2");
+      StageChange("stage");
       // オブジェクトを生成
       SetSpawn();
       // BGMのループ再生開始
@@ -169,7 +169,8 @@ namespace Gyro {
       using ModelServer = AppFrame::Model::ModelServer;
       // 各種モデルハンドルの読み込み
       const ModelServer::ModelDatas mv1Models{
-        {"enemy", "res/Enemy/Wheel/enemy1_set.mv1"}, // 敵
+        {"enemyWheel", "res/Enemy/Wheel/enemy1_set.mv1"}, // 地上敵
+        {"enemyDrone", "res/Enemy/Drone/enemy2 Multimotion fin.mv1"}, // 空中敵
         {"stage", "res/Stage/houseGEO_1.mv1"}               // ステージ
       };
       // モデルサーバで読み取りを行う
@@ -240,6 +241,10 @@ namespace Gyro {
         { Object::EnemyWheel, { -200.0f, 250.0f, 200.0f}, {0.0f, 0.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
         { Object::EnemyWheel, { 300.0f, 250.0f, 200.0f}, {0.0f, 0.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
         { Object::EnemyWheel, { -400.0f, 250.0f, 200.0f}, {0.0f, 0.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
+        { Object::EnemyDrone, { 100.0f, 360.0f, -1800.0f}, {0.0f, 0.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
+        { Object::EnemyDrone, { -200.0f, 360.0f, -1800.0f}, {0.0f, 0.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
+        { Object::EnemyDrone, { 300.0f, 360.0f, -1800.0f}, {0.0f, 0.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
+        { Object::EnemyDrone, { -400.0f, 360.0f, -1800.0f}, {0.0f, 0.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
       };
       // 各種テーブルを基にスポーンテーブルを作成
       Object::SpawnData table{

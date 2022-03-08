@@ -17,6 +17,10 @@ namespace Gyro {
   namespace Stage {
 
     StageComponent::StageComponent(Application::ApplicationMain& app) {
+      // フォグの設定
+      /*SetFogEnable(true);
+      SetFogColor(0, 255, 255);
+      SetFogStartEnd(2800.0f, 3000.0f);*/
       // リソースの解放
       ReleaseStageInfo();
     }

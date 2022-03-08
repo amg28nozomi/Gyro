@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="source\DashComponent.cpp" />
     <ClCompile Include="source\EffectLoadServer.cpp" />
+    <ClCompile Include="source\EnemyDrone.cpp" />
     <ClCompile Include="source\InteriorBase.cpp" />
     <ClCompile Include="source\KnockBackComponent.cpp" />
     <ClCompile Include="source\Light.cpp" />
@@ -83,6 +84,7 @@
   <ItemGroup>
     <ClInclude Include="source\DashComponent.h" />
     <ClInclude Include="source\EffectLoadServer.h" />
+    <ClInclude Include="source\EnemyDrone.h" />
     <ClInclude Include="source\InteriorBase.h" />
     <ClInclude Include="source\KnockBackComponent.h" />
     <ClInclude Include="source\Light.h" />

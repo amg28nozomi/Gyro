@@ -27,6 +27,8 @@ namespace Gyro{
       switch (number) {
       case EnemyWheel: // 陸上型エネミー
         return EnemyType::Wheel;
+      case EnemyDrone: // 空中型エネミー
+        return EnemyType::Drone;
       default:         // 該当なし
         return EnemyType::None;
       }

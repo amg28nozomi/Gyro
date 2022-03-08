@@ -11,6 +11,7 @@
 #include "ObjectServer.h"
 #include "Player.h"
 #include "EnemyWheel.h"
+#include "EnemyDrone.h"
 #include "SkySphere.h"
 #include "StageComponent.h"
 
@@ -139,7 +140,7 @@ namespace Gyro {
             // スポーン失敗用のメッセージを出力
             SpawnError(num);
           } catch (std::logic_error error) {
-            DebugString(error.what()); 
+            DebugString(error.what());
           }
 #endif
           break; // 生成失敗
@@ -189,6 +190,8 @@ namespace Gyro {
       switch (enemy->GetEnemyType()) {
       case SpawnEnemy::EnemyType::Wheel: // 陸上型
         return EnemyWheel(*enemy.get());
+      case SpawnEnemy::EnemyType::Drone: // 空中型
+        return EnemyDrone(*enemy.get());
       case SpawnEnemy::EnemyType::None:  // 該当なし
         return nullptr;  // 該当がない場合はnullptrを返す
       default:
@@ -201,6 +204,13 @@ namespace Gyro {
       auto wheel = std::make_shared<Enemy::EnemyWheel>(_appMain);
       wheel->Set(enemy);       // スポーン情報の設定
       return std::move(wheel); // 生成したシェアードポインタを返す
+    }
+
+    std::shared_ptr<Enemy::EnemyDrone> SpawnServer::EnemyDrone(SpawnEnemy& enemy) const {
+      // 空中型エネミーの生成
+      auto drone = std::make_shared<Enemy::EnemyDrone>(_appMain);
+      drone->Set(enemy);       // スポーン情報の設定
+      return std::move(drone); // 生成したシェアードポインタを返す
     }
 
     std::shared_ptr<SkySphere> SpawnServer::Skysphere(std::shared_ptr<SpawnBase>& spawn) const {

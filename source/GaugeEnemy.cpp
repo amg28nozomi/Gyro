@@ -54,11 +54,11 @@ namespace Gyro {
       return true;
     }
 
-    bool GaugeEnemy::Draw(const AppFrame::Math::Vector4 position) const {
+    bool GaugeEnemy::Draw(const AppFrame::Math::Vector4 position, const float height) const {
       auto objects = _app.GetObjectServer().GetObjects(); // オブジェクトのコピー
       AppFrame::Math::Vector4 DrawPosition;
       auto pos = position;
-      DrawPosition = pos.AddVectorY(220.f); // Enemyの高さ足す
+      DrawPosition = pos.AddVectorY(height); // Enemyの高さ足す
       DrawBillboard3D(UtilityDX::ToVECTOR(DrawPosition), 0.5f, 0.5f, 68.0f, 0.0f, _hpFrame, true); // 外枠
       DrawModiBillboard3D(UtilityDX::ToVECTOR(DrawPosition), GAUGE_X_POSITION_1, 2.5f, _hitPoint, 2.5f, _hitPoint, -2.5f, -33.f, -2.5f, _gaugeBackHandle, true); // 背面HPゲージ
       DrawModiBillboard3D(UtilityDX::ToVECTOR(DrawPosition), GAUGE_X_POSITION_1, 2.5f, _point, 2.5f, _point, -2.5f, -33.f, -2.5f, _gaugeFrontHandle, true); // 前面HPゲージ

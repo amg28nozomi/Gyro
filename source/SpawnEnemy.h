@@ -18,6 +18,7 @@ namespace Gyro {
    */
   namespace Object {
     constexpr auto EnemyWheel = 0; //!< 陸上型エネミー
+    constexpr auto EnemyDrone = 1; //!< 空中型エネミー
     /**
      * @class SpawnEnemy
      * @brief エネミーのスポーン情報
@@ -28,8 +29,9 @@ namespace Gyro {
        * @brief エネミーの種類
        */
       enum class EnemyType {
-        None, // 該当なし
-        Wheel // 陸上型
+        None,  // 該当なし
+        Wheel, // 陸上型
+        Drone  // 空中型
       };
       /**
        * @brief  空のコンストラクタ
