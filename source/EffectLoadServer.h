@@ -64,4 +64,33 @@ namespace Gyro {
       bool AddEffect(std::string_view key, const std::filesystem::path effectFile, const float magni);
     };
   } // namespace Effect
+
+    // エフェクトキー定数
+  namespace EffectKey {
+    // プレイヤー
+    constexpr std::string_view PlayerJump = "PlayerJump";                        //!< プレイヤージャンプ
+    constexpr std::string_view PlayerHit = "PlayerHit";                          //!< プレイヤー被ダメ
+    constexpr std::string_view PlayerWeakAttack1 = "PlayerWeakAttack1";          //!< プレイヤー弱攻撃1
+    constexpr std::string_view PlayerWeakAttack2 = "PlayerWeakAttack2";          //!< プレイヤー弱攻撃2
+    constexpr std::string_view PlayerWeakAttack3 = "PlayerWeakAttack3";          //!< プレイヤー弱攻撃3
+    constexpr std::string_view PlayerWeakAttackEX = "PlayerWeakAttackEX";        //!< プレイヤー弱攻撃EX
+    constexpr std::string_view PlayerHeavyAttack1 = "PlayerHeavyAttack1";        //!< プレイヤー強攻撃1
+    constexpr std::string_view PlayerHeavyAttack2 = "PlayerHeavyAttack2";        //!< プレイヤー強攻撃2
+    constexpr std::string_view PlayerHeavyAttack3 = "PlayerHeavyAttack3";        //!< プレイヤー強攻撃3
+    constexpr std::string_view PlayerAirWeakAttack1 = "PlayerAirWeakAttack1";    //!< プレイヤー空中弱攻撃1
+    constexpr std::string_view PlayerAirWeakAttack2 = "PlayerAirWeakAttack2";    //!< プレイヤー空中弱攻撃2
+    constexpr std::string_view PlayerAirWeakAttack3 = "PlayerAirWeakAttack3";    //!< プレイヤー空中弱攻撃3
+    constexpr std::string_view PlayerAirHeavyAttack1 = "PlayerAirHeavyAttack1";  //!< プレイヤー空中強攻撃1
+    constexpr std::string_view PlayerAirHeavyAttack2 = "PlayerAirHeavyAttack2";  //!< プレイヤー空中強攻撃2
+    constexpr std::string_view PlayerUltActivate = "PlayerUltActivate";          //!< プレイヤー必殺発動
+    constexpr std::string_view PlayerUltSlash = "PlayerUltSlash";                //!< プレイヤー必殺攻撃
+  // 敵
+    constexpr std::string_view EnemyEyeLight = "EnemyEyeLight";          //!< 敵眼光
+    constexpr std::string_view EnemyGroundAttack = "EnemyGroundAttack";  //!< 敵地上攻撃
+    constexpr std::string_view EnemyHit = "EnemyHit";                    //!< 敵被ダメ
+    constexpr std::string_view EnemyExprosion = "EnemyExprosion";        //!< 敵爆発
+  // ステージ
+    constexpr std::string_view StageBarrier = "StageBarrier";        //!< ステージバリア
+    constexpr std::string_view StageBoxDestroy = "StageBoxDestroy";  //!< ステージ箱破壊
+  } // namespace EffectKey
 } // namespace Gyro
