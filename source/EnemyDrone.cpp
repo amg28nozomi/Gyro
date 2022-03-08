@@ -151,7 +151,7 @@ namespace Gyro {
       // 球の当たり判定設定
       _sphere = std::make_unique<Object::CollisionSphere>(*this, _position.AddVectorY(100.0f), 50.0f);
       // カプセルコリジョンの設定
-      _capsule = std::make_unique<Object::CollisionCapsule>(*this, _position, 200.0f, 30.0f);
+      _capsule = std::make_unique<Object::CollisionCapsule>(*this, _position, 300.0f, 50.0f);
     }
 
     void EnemyDrone::Move() {
