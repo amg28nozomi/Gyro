@@ -17,9 +17,13 @@ namespace {
   constexpr int WheelHP = 5000;           //!< 地上敵最大体力
   constexpr float WheelMoveSpead = 5.0f;  //!< 地上的移動速度
   // アニメーションキー
-  constexpr std::string_view IdleKey = "EnemyIdle";      //!< 待機
-  constexpr std::string_view MoveKey = "EnemyMove";      //!< 移動
-  constexpr std::string_view AttackKey = "EnemyAttack";  //!< 攻撃
+  constexpr std::string_view IdleKey = "idle";      //!< 待機
+  constexpr std::string_view MoveKey = "idle";      //!< 移動
+  constexpr std::string_view AttackKey = "attack";  //!< 攻撃
+  constexpr std::string_view AttackReadyKey = "attack_ready";  //!< 攻撃準備
+  constexpr std::string_view AttackFinishKey = "attack_finish"; //!< 攻撃終了
+  constexpr std::string_view DamageKey = "damage";  //!< ダメージ
+  constexpr std::string_view DeadKey = "dead";      //!< 死亡
 }
 
 namespace Gyro {
@@ -270,8 +274,10 @@ namespace Gyro {
         _modelAnim.SetBlendAttach(AttackKey, 10.0f, 1.0f, false);
         break;
       case EnemyState::Damage:  //!< 被ダメ
+        _modelAnim.SetBlendAttach(DamageKey, 10.0f, 1.0f, false);
         break;
       case EnemyState::Dead:    //!< 死亡
+        _modelAnim.SetBlendAttach(DeadKey, 10.0f, 1.0f, false);
         break;
       default:
         break;

@@ -37,7 +37,7 @@ namespace Gyro {
       // エフェクトリソースの読み取り
       LoadEffectResource();
       // ステージの切り替え
-      StageChange("stage");
+      StageChange("stage2");
       // オブジェクトを生成
       SetSpawn();
       // BGMのループ再生開始
@@ -65,7 +65,7 @@ namespace Gyro {
 
     bool ModeGame::Init() {
       // 使用するデータの読み込みを記述する
-      _plane.Initialize(35840.0, 35);
+      _plane.Initialize(40960.0f, 40);
       _plane.Load(TEXTURE);
       _plane.Create();
       // 重力加速度をセットする
@@ -169,7 +169,7 @@ namespace Gyro {
       using ModelServer = AppFrame::Model::ModelServer;
       // 各種モデルハンドルの読み込み
       const ModelServer::ModelDatas mv1Models{
-        {"enemy", "res/Enemy/Wheel/Enemy_multimotion.mv1"}, // 敵
+        {"enemy", "res/Enemy/Wheel/enemy1_set.mv1"}, // 敵
         {"stage", "res/Stage/houseGEO_1.mv1"}               // ステージ
       };
       // モデルサーバで読み取りを行う

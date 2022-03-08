@@ -144,6 +144,9 @@ namespace Gyro {
 
     bool StageComponent::ReleaseStageInfo() {
       _stageModelMap.clear();
+      for (auto ite : _model) {
+        MV1DeleteModel(ite);
+      }
       _model.clear();
       _skySphere.reset();
 
