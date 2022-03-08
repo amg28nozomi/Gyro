@@ -75,7 +75,13 @@ namespace Gyro {
        * @brief  ステージの設定
        * @return true:正常終了 false:問題発生
        */
-      bool StageChange(std::string_view key);
+      bool StageChange(const Stage::StageTransition::StageType& key);
+      /**
+       * @brief  ステージ遷移の予約 
+       * @param  nextStage 切り替え先のステージ
+       * @return true:予約成功 false:予約失敗
+       */
+      bool ReserveStage(const Stage::StageTransition::StageType& nextStage) const;
       /**
        * @brief  アプリケーションメインの取得
        * @return アプリケーションメインの参照を返す
@@ -93,7 +99,6 @@ namespace Gyro {
       std::unique_ptr<Shadow::Shadow> _shadow;
       //!< 現在のステージキー
       std::string _key;
-
       /**
        * @brief リソースの読み取り
        */
@@ -107,9 +112,10 @@ namespace Gyro {
        */
       void SetSpawn();
       /**
-       * @brief ゲームオーバー切り替え
+       * @brief  ゲームオーバー処理
+       * @return true:ゲームオーバー処理を実行 false:ゲームオーバーではない
        */
-      void GameOver();
+      bool GameOver();
     };
   } // namespace Mode
 } // namespace Gyro

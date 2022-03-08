@@ -29,6 +29,7 @@ namespace Gyro {
    */
   namespace Stage {
     class StageComponent;
+    class StageTransition;
   } // namespace Stage
   /**
    * @brief エフェクトベース
@@ -115,6 +116,13 @@ namespace Gyro {
       Stage::StageComponent& GetStageComponent() const {
         return *_stage;
       }
+      /**
+       * @brief  ステージ遷移マネージャーの取得
+       * @return ステージ遷移マネージャーの参照
+       */
+      Stage::StageTransition& GetStageTransition() const {
+        return *_stageTransition;
+      }
     private:
       //!< オブジェクトサーバ
       std::unique_ptr<Object::ObjectServer> _objectServer{ nullptr };
@@ -128,6 +136,8 @@ namespace Gyro {
       std::unique_ptr<Effect::EffectComponent> _effect{ nullptr };
       //!< ステージコンポーネント
       std::unique_ptr<Stage::StageComponent> _stage{ nullptr };
+      //!< ステージ遷移用のマネージャー
+      std::unique_ptr<Stage::StageTransition> _stageTransition{nullptr};
       /**
        * @brief  更新処理
        * @return

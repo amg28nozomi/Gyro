@@ -14,6 +14,7 @@
 #include "PrimitivePlane.h"
 #include "ObjectServer.h"
 #include "StageComponent.h"
+#include "StageTransition.h"
 #include "ModeGameOver.h"
 
 namespace {
@@ -37,26 +38,22 @@ namespace Gyro {
       // エフェクトリソースの読み取り
       LoadEffectResource();
       // ステージの切り替え
-      StageChange("stage");
-      // オブジェクトを生成
-      SetSpawn();
+      StageChange(_appMain.GetStageTransition().GetStageType());
       // BGMのループ再生開始
-      _app.GetSoundComponent().PlayLoop("bgm");
-      // 再生音量の設定
-      _app.GetSoundComponent().SetVolume("bgm", BgmVolume);
+      PlayBgm("bgm", BgmVolume);
       // カメラの初期化
       _appMain.GetCamera().Init();
       // ライトの設定
       _light = std::make_unique<Light::Light>();
       // シャドウの設定
       _shadow = std::make_unique<Shadow::Shadow>(_appMain);
-
       return true;
     }
 
     bool ModeGame::Exit() {
       // ライトをデフォルトに戻す
       DeleteLightHandleAll();
+      // 
       SetLightEnable(true);
       // 生成したオブジェクトを削除
       _appMain.GetObjectServer().Release();
@@ -68,6 +65,16 @@ namespace Gyro {
       _plane.Initialize(40960.0f, 40);
       _plane.Load(TEXTURE);
       _plane.Create();
+      // 別名定義
+      using StageType = Stage::StageTransition::StageType;
+      // ステージリストの生成
+      const std::unordered_map<StageType, std::string_view> stageMap = {
+        {StageType::Normal, "stage"}
+      };
+      // 生成したリストを登録する
+      _appMain.GetStageTransition().Register(stageMap);
+      // 初回のみキーを直接セットする
+      _appMain.GetStageTransition().SetStageKey(StageType::Normal);
       // 重力加速度をセットする
       AppMath::GravityBase::SetScale(GravityScale);
       return true;
@@ -95,10 +102,8 @@ namespace Gyro {
           break;
           // サウンド停止中
         case AppFrame::Sound::Stop:
-          // BGMの再生開始
-          _app.GetSoundComponent().PlayLoop("bgm");
-          // 再生音量の設定
-          _app.GetSoundComponent().SetVolume("bgm", 50);
+          // BGMのループ再生開始
+          PlayBgm("bgm", BgmVolume);
           break;
         }
       }
@@ -107,12 +112,14 @@ namespace Gyro {
     }
 
     bool ModeGame::Process() {
+      // フェードアウトが終了した場合のみ、処理を実行する
+      if (_appMain.GetStageTransition().IsTransition()) {
+        SetSpawn(); // オブジェクトを生成
+      }
       // モードゲームの入力処理
       Input(_app.GetOperation());
       // ゲームオーバー判定
-      bool gameover = _appMain.GetObjectServer().GetPlayer()->GetGameOver();
-      if (gameover) {
-        GameOver();
+      if (GameOver()) {
         return true;
       }
       // オブジェクトサーバの更新処理
@@ -142,19 +149,12 @@ namespace Gyro {
       return true;
     }
 
-    bool ModeGame::StageChange(std::string_view key) {
-      // ステージ素材の削除
-      _appMain.GetStageComponent().ReleaseStageInfo();
-      // ステージコンポーネントの初期化
-      if (!_appMain.GetStageComponent().Init(key.data())) {
-        return false;
-      }
-      // ステージキーを設定
-      _key = key.data();
-      // フェードイン・フェードアウトをセットする
-
-      return true; // 設定成功
+    bool ModeGame::StageChange(const Stage::StageTransition::StageType& key) {
+      // ステージの遷移予約を行う
+      return _appMain.GetStageTransition().ChangeReserve(key);
     }
+
+    bool ReserveStage(const Stage::StageTransition::StageType& nextStage)
 
     Application::ApplicationMain& ModeGame::GetAppMain() {
       return _appMain;
@@ -265,7 +265,11 @@ namespace Gyro {
       _appMain.GetSpawnServer().Spawn(0);
     }
 
-    void ModeGame::GameOver() {
+    bool ModeGame::GameOver() {
+      // ゲームオーバーフラグが立っているかの判定
+      if (!_appMain.GetObjectServer().GetPlayer()->GetGameOver()) {
+        return false; // ゲームオーバーではないため処理を行わない
+      }
       // モードゲームの削除
       _appMain.GetModeServer().PopBuck();
       // キーが登録されているか
@@ -278,6 +282,7 @@ namespace Gyro {
       _appMain.GetModeServer().TransionToMode("GameOver");
       // BGMの再生を停止する
       _appMain.GetSoundComponent().StopSound("bgm");
+      return true;
     }
   } // namespace Mode
 } // namespace Gyro
