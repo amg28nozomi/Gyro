@@ -17,6 +17,10 @@ namespace Gyro {
   namespace Stage {
 
     StageComponent::StageComponent(Application::ApplicationMain& app) {
+      // フォグの設定
+      /*SetFogEnable(true);
+      SetFogColor(0, 255, 255);
+      SetFogStartEnd(2800.0f, 3000.0f);*/
       // リソースの解放
       ReleaseStageInfo();
     }
@@ -144,6 +148,9 @@ namespace Gyro {
 
     bool StageComponent::ReleaseStageInfo() {
       _stageModelMap.clear();
+      for (auto ite : _model) {
+        MV1DeleteModel(ite);
+      }
       _model.clear();
       _skySphere.reset();
 

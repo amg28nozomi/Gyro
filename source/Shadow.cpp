@@ -10,7 +10,7 @@
 #include "ObjectServer.h"
 
 namespace {
-  constexpr auto ShadowMapSize = 8192;
+  constexpr auto ShadowMapSize = 16384;
 }
 
 namespace Gyro {
@@ -32,8 +32,8 @@ namespace Gyro {
       // シャドウの向き設定
       SetShadowMapLightDirection(_shadowHandle, UtilityDX::ToVECTOR(shadowDir));
       // シャドウマップの影響範囲を設定
-      auto shadowMinArea = AppMath::Vector4(-1200.0f, -1.0f, -8500.0f);
-      auto shadowMaxArea = AppMath::Vector4(1200.0f, 1000.0f, 1000.0f);
+      auto shadowMinArea = AppMath::Vector4(-1200.0f, -1.0f, -16000.0f);
+      auto shadowMaxArea = AppMath::Vector4(6000.0f, 1000.0f, 1000.0f);
       SetShadowMapDrawArea(_shadowHandle, UtilityDX::ToVECTOR(shadowMinArea), UtilityDX::ToVECTOR(shadowMaxArea));
     }
 

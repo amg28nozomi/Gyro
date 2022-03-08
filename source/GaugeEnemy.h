@@ -43,8 +43,9 @@ namespace Gyro {
       /**
        * @brief •`‰æ
        * @param position À•W
+       * @param height À•W
        */
-      bool Draw(const AppFrame::Math::Vector4 position) const;
+      bool Draw(const AppFrame::Math::Vector4 position, const float height) const;
       /**
        * @brief ‰æ‘œ‚Ì“Ç‚İ‚İ
        */
