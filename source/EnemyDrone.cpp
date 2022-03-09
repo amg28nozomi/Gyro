@@ -291,7 +291,7 @@ namespace Gyro {
         _app.GetEffectServer().MakeEffect(EffectNum::EnemyEyeLight, ePos, eRad);
         break;
       case EnemyState::Attack:  //!< UŒ‚
-        _app.GetEffectServer().MakeEffect(EffectNum::EnemyGroundAttack, ePos, eRad);
+        _app.GetEffectServer().MakeEffect(EffectNum::EnemyAirAttack, ePos, eRad);
         break;
       case EnemyState::Damage:  //!< ”íƒ_ƒ
         ePos.AddY(100.0f);

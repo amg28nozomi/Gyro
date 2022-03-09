@@ -288,19 +288,19 @@ namespace Gyro {
       case EnemyState::Idle:    //!< ‘Ò‹@
         break;
       case EnemyState::Move:    //!< ˆÚ“®
-        ePos.AddY(300.0f);
-        _app.GetEffectServer().MakeEffect(EffectNum::EnemyEyeLight, ePos, eRad);
+        ePos.AddY(500.0f);
+        _app.GetEffectServer().MakeEffect(EffectNum::EnemyBossEyeLight, ePos, eRad);
         break;
       case EnemyState::Attack:  //!< UŒ‚
-        _app.GetEffectServer().MakeEffect(EffectNum::EnemyGroundAttack, ePos, eRad);
+        _app.GetEffectServer().MakeEffect(EffectNum::EnemyBossAirAttack, ePos, eRad);
         break;
       case EnemyState::Damage:  //!< ”íƒ_ƒ
         ePos.AddY(100.0f);
-        _app.GetEffectServer().MakeEffect(EffectNum::EnemyHit, ePos, eRad);
+        _app.GetEffectServer().MakeEffect(EffectNum::EnemyBossHit, ePos, eRad);
         break;
       case EnemyState::Dead:    //!< Ž€–S
         ePos.AddY(100.0f);
-        _app.GetEffectServer().MakeEffect(EffectNum::EnemyExprosion, ePos, eRad);
+        _app.GetEffectServer().MakeEffect(EffectNum::EnemyBossExprosion, ePos, eRad);
         break;
       default:
         break;

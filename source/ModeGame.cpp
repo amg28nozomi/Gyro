@@ -216,8 +216,14 @@ namespace Gyro {
         {EffectKey::PlayerHit, "res/Effect/Player/Hit/Hit.efkefc", 5.0f},
         {EffectKey::EnemyEyeLight, "res/Effect/Enemy/EyeLight/Enemy_EyeLight.efkefc", 20.0f},
         {EffectKey::EnemyGroundAttack, "res/Effect/Enemy/GroundAttack/Enemy_ground_attack.efkefc", 10.0f},
+        {EffectKey::EnemyAirAttack, "res/Effect/Enemy/AirAttack/Enemy_air_attack.efkefc", 15.0f},
         {EffectKey::EnemyHit, "res/Effect/Enemy/Hit/Enemy_Hit.efkefc", 20.0f},
         {EffectKey::EnemyExprosion, "res/Effect/Enemy/Exprosion/Enemy_Exprosion.efkefc", 10.0f},
+        {EffectKey::EnemyBossEyeLight, "res/Effect/Enemy/Boss/EyeLight/Enemy_EyeLight.efkefc", 40.0f},
+        {EffectKey::EnemyBossGroundAttack, "res/Effect/Enemy/Boss/GroundAttack/Enemy_ground_attack.efkefc", 20.0f},
+        {EffectKey::EnemyBossAirAttack, "res/Effect/Enemy/Boss/AirAttack/Enemy_air_attack.efkefc", 30.0f},
+        {EffectKey::EnemyBossHit, "res/Effect/Enemy/Boss/Hit/Enemy_Hit.efkefc", 40.0f},
+        {EffectKey::EnemyBossExprosion, "res/Effect/Enemy/Boss/Exprosion/Enemy_Exprosion.efkefc", 20.0f},
         {EffectKey::StageBarrier, "res/Effect/Stage/stage_barrier/stage_barrier.efkefc", 5.0f},
         {EffectKey::StageBoxDestroy, "res/Effect/Stage/Box_Destroy/Box_Destroy.efkefc", 5.0f}
       };

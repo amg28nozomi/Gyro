@@ -37,8 +37,14 @@ namespace Gyro {
     class EffectPlayerUltSlash;
     class EffectEnemyEyeLight;
     class EffectEnemyGroundAttack;
+    class EffectEnemyAirAttack;
     class EffectEnemyHit;
     class EffectEnemyExprosion;
+    class EffectEnemyBossEyeLight;
+    class EffectEnemyBossGroundAttack;
+    class EffectEnemyBossAirAttack;
+    class EffectEnemyBossHit;
+    class EffectEnemyBossExprosion;
     class EffectStageBarrier;
     class EffectStageBoxDestroy;
     /**
@@ -212,6 +218,13 @@ namespace Gyro {
        */
       std::shared_ptr<EffectEnemyGroundAttack> EnemyGroundAttack(const AppMath::Vector4 position, const float radian) const;
       /**
+       * @brief  敵空中攻撃の生成
+       * @param  position エフェクト位置
+       * @param  radian エフェクト向き
+       * @return 敵空中攻撃のシェアードポインタ
+       */
+      std::shared_ptr<EffectEnemyAirAttack> EnemyAirAttack(const AppMath::Vector4 position, const float radian) const;
+      /**
        * @brief  敵被ダメの生成
        * @param  position エフェクト位置
        * @param  radian エフェクト向き
@@ -225,6 +238,41 @@ namespace Gyro {
        * @return 敵爆発のシェアードポインタ
        */
       std::shared_ptr<EffectEnemyExprosion> EnemyExprosion(const AppMath::Vector4 position, const float radian) const;
+      /**
+       * @brief  敵ボス眼光の生成
+       * @param  position エフェクト位置
+       * @param  radian エフェクト向き
+       * @return 敵ボス眼光のシェアードポインタ
+       */
+      std::shared_ptr<EffectEnemyBossEyeLight> EnemyBossEyeLight(const AppMath::Vector4 position, const float radian) const;
+      /**
+       * @brief  敵ボス地上攻撃の生成
+       * @param  position エフェクト位置
+       * @param  radian エフェクト向き
+       * @return 敵ボス地上攻撃のシェアードポインタ
+       */
+      std::shared_ptr<EffectEnemyBossGroundAttack> EnemyBossGroundAttack(const AppMath::Vector4 position, const float radian) const;
+      /**
+       * @brief  敵ボス空中攻撃の生成
+       * @param  position エフェクト位置
+       * @param  radian エフェクト向き
+       * @return 敵ボス空中攻撃のシェアードポインタ
+       */
+      std::shared_ptr<EffectEnemyBossAirAttack> EnemyBossAirAttack(const AppMath::Vector4 position, const float radian) const;
+      /**
+       * @brief  敵ボス被ダメの生成
+       * @param  position エフェクト位置
+       * @param  radian エフェクト向き
+       * @return 敵ボス被ダメのシェアードポインタ
+       */
+      std::shared_ptr<EffectEnemyBossHit> EnemyBossHit(const AppMath::Vector4 position, const float radian) const;
+      /**
+       * @brief  敵ボス爆発の生成
+       * @param  position エフェクト位置
+       * @param  radian エフェクト向き
+       * @return 敵ボス爆発のシェアードポインタ
+       */
+      std::shared_ptr<EffectEnemyBossExprosion> EnemyBossExprosion(const AppMath::Vector4 position, const float radian) const;
       /**
        * @brief  ステージバリアの生成
        * @param  position エフェクト位置
@@ -247,8 +295,8 @@ namespace Gyro {
 
   // エフェクト識別番号定数
   namespace EffectNum {
-    // 1**:プレイヤー
-      // 10*:汎用
+  // 1**:プレイヤー
+    // 10*:汎用
     constexpr int PlayerJump = 100;             //!< プレイヤージャンプ
     constexpr int PlayerHit = 101;              //!< プレイヤー被ダメ
     // 11*:弱攻撃
@@ -271,10 +319,18 @@ namespace Gyro {
     constexpr int PlayerUltActivate = 150;      //!< プレイヤー必殺発動
     constexpr int PlayerUltSlash = 151;         //!< プレイヤー必殺攻撃
   // 2**:敵
+    // 20*:通常
     constexpr int EnemyEyeLight = 200;      //!< 敵眼光
     constexpr int EnemyGroundAttack = 201;  //!< 敵地上攻撃
-    constexpr int EnemyHit = 202;           //!< 敵被ダメ
-    constexpr int EnemyExprosion = 203;     //!< 敵爆発
+    constexpr int EnemyAirAttack = 202;     //!< 敵空中攻撃
+    constexpr int EnemyHit = 203;           //!< 敵被ダメ
+    constexpr int EnemyExprosion = 205;     //!< 敵爆発
+    // 21*:ボス
+    constexpr int EnemyBossEyeLight = 210;      //!< 敵ボス眼光
+    constexpr int EnemyBossGroundAttack = 211;  //!< 敵ボス地上攻撃
+    constexpr int EnemyBossAirAttack = 212;     //!< 敵ボス空中攻撃
+    constexpr int EnemyBossHit = 213;           //!< 敵ボス被ダメ
+    constexpr int EnemyBossExprosion = 214;     //!< 敵ボス爆発
   // 3**:ステージ
     constexpr int StageBarrier = 300;     //!< ステージバリア
     constexpr int StageBoxDestroy = 301;  //!< ステージ箱破壊

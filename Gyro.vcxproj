@@ -21,6 +21,12 @@
   <ItemGroup>
     <ClCompile Include="source\DashComponent.cpp" />
     <ClCompile Include="source\EffectBase.cpp" />
+    <ClCompile Include="source\EffectEnemyAirAttack.cpp" />
+    <ClCompile Include="source\EffectEnemyBossAirAttack.cpp" />
+    <ClCompile Include="source\EffectEnemyBossExprosion.cpp" />
+    <ClCompile Include="source\EffectEnemyBossEyeLight.cpp" />
+    <ClCompile Include="source\EffectEnemyBossGroundAttack.cpp" />
+    <ClCompile Include="source\EffectEnemyBossHit.cpp" />
     <ClCompile Include="source\EffectEnemyExprosion.cpp" />
     <ClCompile Include="source\EffectEnemyEyeLight.cpp" />
     <ClCompile Include="source\EffectEnemyGroundAttack.cpp" />
@@ -109,6 +115,12 @@
   <ItemGroup>
     <ClInclude Include="source\DashComponent.h" />
     <ClInclude Include="source\EffectBase.h" />
+    <ClInclude Include="source\EffectEnemyAirAttack.h" />
+    <ClInclude Include="source\EffectEnemyBossAirAttack.h" />
+    <ClInclude Include="source\EffectEnemyBossExprosion.h" />
+    <ClInclude Include="source\EffectEnemyBossEyeLight.h" />
+    <ClInclude Include="source\EffectEnemyBossGroundAttack.h" />
+    <ClInclude Include="source\EffectEnemyBossHit.h" />
     <ClInclude Include="source\EffectEnemyExprosion.h" />
     <ClInclude Include="source\EffectEnemyEyeLight.h" />
     <ClInclude Include="source\EffectEnemyGroundAttack.h" />

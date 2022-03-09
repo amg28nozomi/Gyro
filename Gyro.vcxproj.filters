@@ -159,6 +159,42 @@
     <Filter Include="ソース ファイル\Effect\Stage">
       <UniqueIdentifier>{40be94e7-dfe6-4cdc-9e6e-62086c55510b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Effect\Player\AirWeakAttack">
+      <UniqueIdentifier>{b3be0da8-7ddd-4dcf-8928-9d7124268cec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Effect\Player\AirHeavyAttack">
+      <UniqueIdentifier>{671f924b-cabb-4598-8c68-b58965dbc959}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Effect\Player\HeavyAttack">
+      <UniqueIdentifier>{b1050db6-eac2-48ef-9ed6-4d8d45e3885f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Effect\Player\WeakAttack">
+      <UniqueIdentifier>{e89b7b94-a5ca-406e-bc06-0985aae89917}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Effect\Player\Ult">
+      <UniqueIdentifier>{209a0de0-b108-402c-89f2-b5eb0697baa0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Effect\Enemy\Boss">
+      <UniqueIdentifier>{473b71eb-d996-47c7-91fa-f6e1e259eaf0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Effect\Enemy\Boss">
+      <UniqueIdentifier>{257c2817-fc56-43bc-9502-826bbe942d5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Effect\Player\AirHeavyAttack">
+      <UniqueIdentifier>{bb1ddc51-918c-4f30-801b-dd88da9b4a94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Effect\Player\AirWeakAttack">
+      <UniqueIdentifier>{fd19677d-8626-4750-86dc-72b53fccea7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Effect\Player\HeavyAttack">
+      <UniqueIdentifier>{48f2eed5-0650-47b6-af11-c9d85a7891a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Effect\Player\WeakAttack">
+      <UniqueIdentifier>{1c816035-88ff-4fe7-84c8-6c3bfd83854f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Effect\Player\Ult">
+      <UniqueIdentifier>{369add95-efa5-47df-baf0-2b82a27c0363}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\ApplicationMain.cpp">
@@ -341,52 +377,10 @@
     <ClCompile Include="source\EnemyDrone.cpp">
       <Filter>ソース ファイル\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="source\EffectPlayerHeavyAttack2.cpp">
-      <Filter>ソース ファイル\Effect\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="source\EffectPlayerAirHeavyAttack1.cpp">
-      <Filter>ソース ファイル\Effect\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="source\EffectPlayerAirHeavyAttack2.cpp">
-      <Filter>ソース ファイル\Effect\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="source\EffectPlayerAirWeakAttack1.cpp">
-      <Filter>ソース ファイル\Effect\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="source\EffectPlayerAirWeakAttack2.cpp">
-      <Filter>ソース ファイル\Effect\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="source\EffectPlayerAirWeakAttack3.cpp">
-      <Filter>ソース ファイル\Effect\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="source\EffectPlayerHeavyAttack1.cpp">
-      <Filter>ソース ファイル\Effect\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="source\EffectPlayerHeavyAttack3.cpp">
-      <Filter>ソース ファイル\Effect\Player</Filter>
-    </ClCompile>
     <ClCompile Include="source\EffectPlayerHit.cpp">
       <Filter>ソース ファイル\Effect\Player</Filter>
     </ClCompile>
     <ClCompile Include="source\EffectPlayerJump.cpp">
-      <Filter>ソース ファイル\Effect\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="source\EffectPlayerUltActivate.cpp">
-      <Filter>ソース ファイル\Effect\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="source\EffectPlayerUltSlash.cpp">
-      <Filter>ソース ファイル\Effect\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="source\EffectPlayerWeakAttack1.cpp">
-      <Filter>ソース ファイル\Effect\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="source\EffectPlayerWeakAttack2.cpp">
-      <Filter>ソース ファイル\Effect\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="source\EffectPlayerWeakAttack3.cpp">
-      <Filter>ソース ファイル\Effect\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="source\EffectPlayerWeakAttackEX.cpp">
       <Filter>ソース ファイル\Effect\Player</Filter>
     </ClCompile>
     <ClCompile Include="source\EffectStageBarrier.cpp">
@@ -418,6 +412,66 @@
     </ClCompile>
     <ClCompile Include="source\EnemyWheelBoss.cpp">
       <Filter>ソース ファイル\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="source\EffectPlayerAirHeavyAttack1.cpp">
+      <Filter>ソース ファイル\Effect\Player\AirHeavyAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="source\EffectPlayerAirHeavyAttack2.cpp">
+      <Filter>ソース ファイル\Effect\Player\AirHeavyAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="source\EffectPlayerAirWeakAttack1.cpp">
+      <Filter>ソース ファイル\Effect\Player\AirWeakAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="source\EffectPlayerAirWeakAttack2.cpp">
+      <Filter>ソース ファイル\Effect\Player\AirWeakAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="source\EffectPlayerAirWeakAttack3.cpp">
+      <Filter>ソース ファイル\Effect\Player\AirWeakAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="source\EffectPlayerHeavyAttack1.cpp">
+      <Filter>ソース ファイル\Effect\Player\HeavyAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="source\EffectPlayerHeavyAttack2.cpp">
+      <Filter>ソース ファイル\Effect\Player\HeavyAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="source\EffectPlayerHeavyAttack3.cpp">
+      <Filter>ソース ファイル\Effect\Player\HeavyAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="source\EffectPlayerUltActivate.cpp">
+      <Filter>ソース ファイル\Effect\Player\Ult</Filter>
+    </ClCompile>
+    <ClCompile Include="source\EffectPlayerUltSlash.cpp">
+      <Filter>ソース ファイル\Effect\Player\Ult</Filter>
+    </ClCompile>
+    <ClCompile Include="source\EffectPlayerWeakAttack1.cpp">
+      <Filter>ソース ファイル\Effect\Player\WeakAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="source\EffectPlayerWeakAttack2.cpp">
+      <Filter>ソース ファイル\Effect\Player\WeakAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="source\EffectPlayerWeakAttack3.cpp">
+      <Filter>ソース ファイル\Effect\Player\WeakAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="source\EffectPlayerWeakAttackEX.cpp">
+      <Filter>ソース ファイル\Effect\Player\WeakAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="source\EffectEnemyBossExprosion.cpp">
+      <Filter>ソース ファイル\Effect\Enemy\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="source\EffectEnemyBossEyeLight.cpp">
+      <Filter>ソース ファイル\Effect\Enemy\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="source\EffectEnemyBossGroundAttack.cpp">
+      <Filter>ソース ファイル\Effect\Enemy\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="source\EffectEnemyBossHit.cpp">
+      <Filter>ソース ファイル\Effect\Enemy\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="source\EffectEnemyAirAttack.cpp">
+      <Filter>ソース ファイル\Effect\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="source\EffectEnemyBossAirAttack.cpp">
+      <Filter>ソース ファイル\Effect\Enemy\Boss</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -631,52 +685,10 @@
     <ClInclude Include="source\EffectStageBoxDestroy.h">
       <Filter>ヘッダー ファイル\Effect\Stage</Filter>
     </ClInclude>
-    <ClInclude Include="source\EffectPlayerAirHeavyAttack1.h">
-      <Filter>ヘッダー ファイル\Effect\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="source\EffectPlayerAirHeavyAttack2.h">
-      <Filter>ヘッダー ファイル\Effect\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="source\EffectPlayerAirWeakAttack1.h">
-      <Filter>ヘッダー ファイル\Effect\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="source\EffectPlayerAirWeakAttack2.h">
-      <Filter>ヘッダー ファイル\Effect\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="source\EffectPlayerAirWeakAttack3.h">
-      <Filter>ヘッダー ファイル\Effect\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="source\EffectPlayerHeavyAttack1.h">
-      <Filter>ヘッダー ファイル\Effect\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="source\EffectPlayerHeavyAttack3.h">
-      <Filter>ヘッダー ファイル\Effect\Player</Filter>
-    </ClInclude>
     <ClInclude Include="source\EffectPlayerHit.h">
       <Filter>ヘッダー ファイル\Effect\Player</Filter>
     </ClInclude>
     <ClInclude Include="source\EffectPlayerJump.h">
-      <Filter>ヘッダー ファイル\Effect\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="source\EffectPlayerUltActivate.h">
-      <Filter>ヘッダー ファイル\Effect\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="source\EffectPlayerUltSlash.h">
-      <Filter>ヘッダー ファイル\Effect\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="source\EffectPlayerWeakAttack1.h">
-      <Filter>ヘッダー ファイル\Effect\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="source\EffectPlayerWeakAttack2.h">
-      <Filter>ヘッダー ファイル\Effect\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="source\EffectPlayerWeakAttack3.h">
-      <Filter>ヘッダー ファイル\Effect\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="source\EffectPlayerWeakAttackEX.h">
-      <Filter>ヘッダー ファイル\Effect\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="source\EffectPlayerHeavyAttack2.h">
       <Filter>ヘッダー ファイル\Effect\Player</Filter>
     </ClInclude>
     <ClInclude Include="source\EnemyDroneBoss.h">
@@ -684,6 +696,66 @@
     </ClInclude>
     <ClInclude Include="source\EnemyWheelBoss.h">
       <Filter>ヘッダー ファイル\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="source\EffectPlayerAirHeavyAttack1.h">
+      <Filter>ヘッダー ファイル\Effect\Player\AirHeavyAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="source\EffectPlayerAirHeavyAttack2.h">
+      <Filter>ヘッダー ファイル\Effect\Player\AirHeavyAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="source\EffectPlayerAirWeakAttack1.h">
+      <Filter>ヘッダー ファイル\Effect\Player\AirWeakAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="source\EffectPlayerAirWeakAttack2.h">
+      <Filter>ヘッダー ファイル\Effect\Player\AirWeakAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="source\EffectPlayerAirWeakAttack3.h">
+      <Filter>ヘッダー ファイル\Effect\Player\AirWeakAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="source\EffectPlayerHeavyAttack1.h">
+      <Filter>ヘッダー ファイル\Effect\Player\HeavyAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="source\EffectPlayerHeavyAttack2.h">
+      <Filter>ヘッダー ファイル\Effect\Player\HeavyAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="source\EffectPlayerHeavyAttack3.h">
+      <Filter>ヘッダー ファイル\Effect\Player\HeavyAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="source\EffectPlayerUltActivate.h">
+      <Filter>ヘッダー ファイル\Effect\Player\Ult</Filter>
+    </ClInclude>
+    <ClInclude Include="source\EffectPlayerUltSlash.h">
+      <Filter>ヘッダー ファイル\Effect\Player\Ult</Filter>
+    </ClInclude>
+    <ClInclude Include="source\EffectPlayerWeakAttack1.h">
+      <Filter>ヘッダー ファイル\Effect\Player\WeakAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="source\EffectPlayerWeakAttack2.h">
+      <Filter>ヘッダー ファイル\Effect\Player\WeakAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="source\EffectPlayerWeakAttack3.h">
+      <Filter>ヘッダー ファイル\Effect\Player\WeakAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="source\EffectPlayerWeakAttackEX.h">
+      <Filter>ヘッダー ファイル\Effect\Player\WeakAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="source\EffectEnemyBossExprosion.h">
+      <Filter>ヘッダー ファイル\Effect\Enemy\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="source\EffectEnemyBossEyeLight.h">
+      <Filter>ヘッダー ファイル\Effect\Enemy\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="source\EffectEnemyBossGroundAttack.h">
+      <Filter>ヘッダー ファイル\Effect\Enemy\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="source\EffectEnemyBossHit.h">
+      <Filter>ヘッダー ファイル\Effect\Enemy\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="source\EffectEnemyAirAttack.h">
+      <Filter>ヘッダー ファイル\Effect\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="source\EffectEnemyBossAirAttack.h">
+      <Filter>ヘッダー ファイル\Effect\Enemy\Boss</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

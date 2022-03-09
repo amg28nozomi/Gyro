@@ -65,9 +65,9 @@ namespace Gyro {
     };
   } // namespace Effect
 
-    // エフェクトキー定数
+  // エフェクトキー定数
   namespace EffectKey {
-    // プレイヤー
+  // プレイヤー
     constexpr std::string_view PlayerJump = "PlayerJump";                        //!< プレイヤージャンプ
     constexpr std::string_view PlayerHit = "PlayerHit";                          //!< プレイヤー被ダメ
     constexpr std::string_view PlayerWeakAttack1 = "PlayerWeakAttack1";          //!< プレイヤー弱攻撃1
@@ -87,8 +87,15 @@ namespace Gyro {
   // 敵
     constexpr std::string_view EnemyEyeLight = "EnemyEyeLight";          //!< 敵眼光
     constexpr std::string_view EnemyGroundAttack = "EnemyGroundAttack";  //!< 敵地上攻撃
+    constexpr std::string_view EnemyAirAttack = "EnemyAirAttack";        //!< 敵空中攻撃
     constexpr std::string_view EnemyHit = "EnemyHit";                    //!< 敵被ダメ
     constexpr std::string_view EnemyExprosion = "EnemyExprosion";        //!< 敵爆発
+    //ボス
+    constexpr std::string_view EnemyBossEyeLight = "EnemyBossEyeLight";          //!< 敵ボス眼光
+    constexpr std::string_view EnemyBossGroundAttack = "EnemyBossGroundAttack";  //!< 敵ボス地上攻撃
+    constexpr std::string_view EnemyBossAirAttack = "EnemyBossAirAttack";        //!< 敵ボス空中攻撃
+    constexpr std::string_view EnemyBossHit = "EnemyBossHit";                    //!< 敵ボス被ダメ
+    constexpr std::string_view EnemyBossExprosion = "EnemyBossExprosion";        //!< 敵ボス爆発
   // ステージ
     constexpr std::string_view StageBarrier = "StageBarrier";        //!< ステージバリア
     constexpr std::string_view StageBoxDestroy = "StageBoxDestroy";  //!< ステージ箱破壊
