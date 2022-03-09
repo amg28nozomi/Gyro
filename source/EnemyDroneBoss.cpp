@@ -10,6 +10,7 @@
 #include "ApplicationMain.h"
 #include "ObjectServer.h"
 #include "Player.h"
+#include <algorithm>
 
 namespace {
   // 各種定数
@@ -21,7 +22,7 @@ namespace {
   constexpr std::string_view MoveKey = "Move";      //!< 移動
   constexpr std::string_view AttackKey = "Attack";  //!< 攻撃
   constexpr std::string_view DamageKey = "Damage";  //!< ダメージ
-  constexpr std::string_view DeadKey = "Destroy1";  //!< 死亡
+  constexpr std::string_view DeadKey = "destroy2";  //!< 死亡
 }
 
 namespace Gyro {
@@ -304,6 +305,31 @@ namespace Gyro {
         break;
       default:
         break;
+      }
+    }
+
+    void EnemyDroneBoss::Dead() {
+      // 状態をPausedにする
+      _state = ObjectState::Paused;
+      // オブジェクトのコピー
+      auto objects = _app.GetObjectServer().GetObjects();
+      // 動的配列に一致する要素があるか判定する
+      auto activeBoss = std::any_of(objects.begin(), objects.end(),
+        [](std::shared_ptr<Object::ObjectBase>& obj) {
+          // 生存状態の敵はいるか
+          return (obj->GetId() == Object::ObjectBase::ObjectId::Enemy) && obj->GetState() == ObjectState::Active; });
+      // 生存状態の敵がいないか
+      if (!activeBoss) {
+        // アニメーション終了でDeadへ移行
+        if (_modelAnim.GetMainAnimEnd() && !_modelAnim.IsBlending()) {
+          // ゲームクリア処理
+          _state = ObjectState::Dead;
+        }
+      }else {
+        // アニメーション終了でDeadへ移行
+        if (_modelAnim.GetMainAnimEnd() && !_modelAnim.IsBlending()) {
+          _state = ObjectState::Dead;
+        }
       }
     }
 

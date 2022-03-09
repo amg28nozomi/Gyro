@@ -11,7 +11,7 @@
 
 namespace {
   constexpr auto Near = 2.0f;             //!< 手前クリップ距離
-  constexpr auto Far = 10000.0f;          //!< 奥クリップ距離
+  constexpr auto Far = 20000.0f;          //!< 奥クリップ距離
   constexpr auto InputMin = 2000.0f;      //!< 入力を受け付ける最低値
 }
 
@@ -65,7 +65,7 @@ namespace Gyro {
     void Camera::SetState() {
       // カメラの初期化
       namespace AppMath = AppFrame::Math;
-      _position = AppMath::Vector4(0.0f, 120.0f, 400.0f, 1.0f);
+      _position = AppMath::Vector4(0.0f, 120.0f, 2300.0f, 1.0f);
       _target = AppMath::Vector4(0.0f, 80.0f, 0.0f, 1.0f);
       SetCameraNearFar(Near, Far);
     }
@@ -107,8 +107,10 @@ namespace Gyro {
       }
       // 座標の設定
       _target.Set(target);
+      // 若干注視点を上にする
+      AppFrame::Math::Vector4 tar = _target.AddVectorY(75.f);
       //カメラの位置更新
-      SetCameraPositionAndTarget_UpVecY(UtilityDX::ToVECTOR(_position), UtilityDX::ToVECTOR(target));
+      SetCameraPositionAndTarget_UpVecY(UtilityDX::ToVECTOR(_position), UtilityDX::ToVECTOR(tar));
     }
 
     void Camera::Special(const AppFrame::Math::Vector4 target, const AppFrame::Math::Vector4 move) {
