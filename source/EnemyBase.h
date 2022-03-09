@@ -47,6 +47,10 @@ namespace Gyro {
         Damage,      //!< 被ダメ
         Dead         //!< 死亡
       };
+      enum class EnemyType {
+        Normal,   //!< ノーマル
+        Boss,     //!< ボス
+      };
       /**
        * @brief  コンストラクタ
        */
@@ -112,6 +116,9 @@ namespace Gyro {
        */
       EnemyState GetEnemyState() const {
         return _enemyState;
+      }
+      EnemyType GetEnemyType() const {
+        return _enemyType;
       }
     protected:
       /**
@@ -180,10 +187,13 @@ namespace Gyro {
       bool IsChangeState(const EnemyState old) {
         return old != _enemyState;
       }
-
+      int SubCnt() {
+        return _bossCnt--;
+      }
       int _cnt{ 0 };        //!< カウント
       int _mHandle{ -1 };   //!< モデルハンドル
       int _enemyHP{ 0 };    //!< 敵体力
+      int _bossCnt{ 1 };       //!< ボスの数
       float _serchRadius{ 0.0f }; //!< 索敵範囲(円)の半径
       float _attackRadius{ 0.0f }; //!< 攻撃範囲(円)の半径
        //!< 球の当たり判定
@@ -194,6 +204,8 @@ namespace Gyro {
       std::unique_ptr<Object::InvincibleComponent> _invincible{ nullptr };
       //!< 敵の状態保持変数
       EnemyState _enemyState;
+      //!< エネミータイプ
+      EnemyType _enemyType;
       //!< 体力ゲージ
       std::shared_ptr<Gauge::GaugeEnemy> _gaugeHp{ nullptr };
       //!< モデルアニメ

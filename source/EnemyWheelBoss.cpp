@@ -9,10 +9,11 @@
 #include "UtilityDX.h"
 #include "ObjectServer.h"
 #include "Player.h"
+#include <algorithm>
 
 namespace {
   // 各種定数
-  constexpr int WheelHP = 10000;          //!< 地上敵最大体力
+  constexpr int WheelHP = 1000;          //!< 地上敵最大体力
   constexpr float WheelMoveSpead = 5.0f;  //!< 地上的移動速度
   constexpr float WheelAttackSpead = 10.0f;  //!< 地上的攻撃移動速度
   constexpr float Height = 530.0f;        //!< 高さ
@@ -150,6 +151,7 @@ namespace Gyro {
       _serchRadius = 350.0f;
       _attackRadius = 200.0f;
       _sort = 0;
+      _enemyType = EnemyType::Boss;
       _gravity = false;
     }
 
@@ -208,7 +210,6 @@ namespace Gyro {
         _iMove = false;
       }
     }
-
 
     void EnemyWheelBoss::Attack() {
       if (_iMove != true) {
@@ -381,6 +382,31 @@ namespace Gyro {
         break;
       default:
         break;
+      }
+    }
+
+    void EnemyWheelBoss::Dead() {
+      // 状態をPausedにする
+      _state = ObjectState::Paused;
+      // オブジェクトのコピー
+      auto objects = _app.GetObjectServer().GetObjects();
+      // 動的配列に一致する要素があるか判定する
+      auto activeBoss = std::any_of(objects.begin(), objects.end(),
+        [](std::shared_ptr<Object::ObjectBase>& obj) {
+          // 生存状態の敵はいるか
+          return (obj->GetId() == Object::ObjectBase::ObjectId::Enemy) && obj->GetState() == ObjectState::Active; });
+      // 生存状態の敵がいないか
+      if (!activeBoss) {
+        // アニメーション終了でDeadへ移行
+        if (_modelAnim.GetMainAnimEnd() && !_modelAnim.IsBlending()) {
+          // ゲームクリア処理
+          _state = ObjectState::Dead;
+        }
+      }else {
+        // アニメーション終了でDeadへ移行
+        if (_modelAnim.GetMainAnimEnd() && !_modelAnim.IsBlending()) {
+          _state = ObjectState::Dead;
+        }
       }
     }
 

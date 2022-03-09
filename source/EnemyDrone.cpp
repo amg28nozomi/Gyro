@@ -145,6 +145,7 @@ namespace Gyro {
       _serchRadius = 300.0f;
       _attackRadius = 100.0f;
       _sort = 0;
+      _enemyType = EnemyType::Normal;
       _gravity = false;
     }
 

@@ -95,6 +95,10 @@ namespace Gyro {
        */
       void PlayEffect() override;
       /**
+       * @brief  オブジェクトの死亡処理
+       */
+      void Dead() override;
+      /**
        * @brief  ダメージを受けたかの判定
        * @return true:衝突
        *         false:ダメージ無し

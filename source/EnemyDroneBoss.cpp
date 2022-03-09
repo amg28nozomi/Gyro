@@ -10,10 +10,11 @@
 #include "ApplicationMain.h"
 #include "ObjectServer.h"
 #include "Player.h"
+#include <algorithm>
 
 namespace {
   // 各種定数
-  constexpr int DroneHP = 15000;          //!< 地上敵最大体力
+  constexpr int DroneHP = 1000;          //!< 地上敵最大体力
   constexpr float DroneMoveSpead = 5.0f;  //!< 地上的移動速度
   constexpr float Height = 650.0f;        //!< 高さ
   // アニメーションキー
@@ -21,7 +22,7 @@ namespace {
   constexpr std::string_view MoveKey = "Move";      //!< 移動
   constexpr std::string_view AttackKey = "Attack";  //!< 攻撃
   constexpr std::string_view DamageKey = "Damage";  //!< ダメージ
-  constexpr std::string_view DeadKey = "Destroy1";  //!< 死亡
+  constexpr std::string_view DeadKey = "destroy2";  //!< 死亡
 }
 
 namespace Gyro {
@@ -146,6 +147,7 @@ namespace Gyro {
       _serchRadius = 300.0f;
       _attackRadius = 100.0f;
       _sort = 0;
+      _enemyType = EnemyType::Boss;
       _gravity = false;
     }
 
@@ -304,6 +306,31 @@ namespace Gyro {
         break;
       default:
         break;
+      }
+    }
+
+    void EnemyDroneBoss::Dead() {
+      // 状態をPausedにする
+      _state = ObjectState::Paused;
+      // オブジェクトのコピー
+      auto objects = _app.GetObjectServer().GetObjects();
+      // 動的配列に一致する要素があるか判定する
+      auto activeBoss = std::any_of(objects.begin(), objects.end(),
+        [](std::shared_ptr<Object::ObjectBase>& obj) {
+          // 生存状態の敵はいるか
+          return (obj->GetId() == Object::ObjectBase::ObjectId::Enemy) && obj->GetState() == ObjectState::Active; });
+      // 生存状態の敵がいないか
+      if (!activeBoss) {
+        // アニメーション終了でDeadへ移行
+        if (_modelAnim.GetMainAnimEnd() && !_modelAnim.IsBlending()) {
+          // ゲームクリア処理
+          _state = ObjectState::Dead;
+        }
+      }else {
+        // アニメーション終了でDeadへ移行
+        if (_modelAnim.GetMainAnimEnd() && !_modelAnim.IsBlending()) {
+          _state = ObjectState::Dead;
+        }
       }
     }
 
