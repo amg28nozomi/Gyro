@@ -14,7 +14,7 @@ namespace Gyro {
     InvincibleComponent::InvincibleComponent(Application::ApplicationMain& app) : _app(app) {
       // –³“Gˆ—
       _type = ComponentType::Invincible;
-      _limit = 0;
+      _limit = 60;
       _time = 0;
       _infinity = false;
     }

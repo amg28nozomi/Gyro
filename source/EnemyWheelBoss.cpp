@@ -233,6 +233,11 @@ namespace Gyro {
         _capsule->Process(_move);
       }
       else {
+        // アニメーションから指定したボーンのローカル座標を取得
+        auto attachIndex = _modelAnim.GetMainAttachIndex();
+        auto rPos = MV1GetFramePosition(_mHandle, 13);
+        _sphere->SetPosition(UtilityDX::ToVector(rPos));
+        _sphere->Process();
         _position.Add(_move);
         _capsule->Process(_move);
       }
