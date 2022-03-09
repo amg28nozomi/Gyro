@@ -14,6 +14,7 @@ namespace {
   // 各種定数
   constexpr int WheelHP = 10000;          //!< 地上敵最大体力
   constexpr float WheelMoveSpead = 5.0f;  //!< 地上的移動速度
+  constexpr float WheelAttackSpead = 10.0f;  //!< 地上的攻撃移動速度
   constexpr float Height = 530.0f;        //!< 高さ
   // アニメーションキー
   constexpr std::string_view IdleKey = "idle";      //!< 待機
@@ -58,6 +59,9 @@ namespace Gyro {
       case Gyro::Enemy::EnemyBase::EnemyState::Move:
         Move();  //!< 移動
         Sercth(); //!< 探索
+        break;
+      case Gyro::Enemy::EnemyBase::EnemyState::AttackReady:
+        AttackReady();
         break;
       case Gyro::Enemy::EnemyBase::EnemyState::Attack:
         Attack();  //!< 攻撃
@@ -143,8 +147,8 @@ namespace Gyro {
       _enemyHP = WheelHP;
       _gaugeHp = std::make_shared<Gauge::GaugeEnemy>(_app);
       _gaugeHp->Init(WheelHP);
-      _serchRadius = 300.0f;
-      _attackRadius = 100.0f;
+      _serchRadius = 350.0f;
+      _attackRadius = 200.0f;
       _sort = 0;
       _gravity = false;
     }
@@ -185,22 +189,53 @@ namespace Gyro {
       }
     }
 
+    void EnemyWheelBoss::AttackReady() {
+      // ターゲット座標
+      auto target = AppMath::Vector4();
+      auto prot = AppMath::Vector4();
+      _app.GetObjectServer().GetPlayerTransForm(target, prot);
+      auto forward = _position.Direction(target);
+      // 高さがいらないので分解してy以外を取り出す
+      auto [x, y, z] = forward.GetVector3();
+      auto efor = AppMath::Vector4(x, 0.0f, z);
+      auto move = efor * (WheelMoveSpead);
+      // ラジアンを生成(z軸は反転させる)
+      auto radian = std::atan2(move.GetX(), -move.GetZ());
+      _rotation.SetY(radian); // y軸の回転量をセットする
+      // アニメーション終了でAttackへ移行
+      if (_modelAnim.GetMainAnimEnd() && !_modelAnim.IsBlending()) {
+        _enemyState = EnemyState::Attack;
+        _iMove = false;
+      }
+    }
+
+
     void EnemyWheelBoss::Attack() {
-      // アニメーションから指定したボーンのローカル座標を取得
-      auto attachIndex = _modelAnim.GetMainAttachIndex();
-      auto rPos = MV1GetFramePosition(_mHandle, 13);
-      //auto lPos = MV1GetFramePosition(_mHandle, 9);
-      /*for (auto i = 0; i < 2; i++) {
-        if (i < 1) {
-          _sphere->SetPosition(UtilityDX::ToVector(rPos));
-        }else {
-          _sphere->SetPosition(UtilityDX::ToVector(lPos));
-        }
+      if (_iMove != true) {
+        _iMove = true;
+        // アニメーションから指定したボーンのローカル座標を取得
+        auto attachIndex = _modelAnim.GetMainAttachIndex();
+        auto rPos = MV1GetFramePosition(_mHandle, 13);
+        _sphere->SetPosition(UtilityDX::ToVector(rPos));
         _sphere->Process();
-      }*/
-      _sphere->SetPosition(UtilityDX::ToVector(rPos));
-      _sphere->Process();
-      _oldPosition = _position;
+        // ターゲット座標
+        auto target = AppMath::Vector4();
+        auto prot = AppMath::Vector4();
+        _app.GetObjectServer().GetPlayerTransForm(target, prot);
+        auto forward = _position.Direction(target);
+        // 高さがいらないので分解してy以外を取り出す
+        auto [x, y, z] = forward.GetVector3();
+        auto efor = AppMath::Vector4(x, 0.0f, z);
+        // 正規化
+        efor.Normalize();
+        _move = efor * (WheelAttackSpead);
+        _position.Add(_move);
+        _capsule->Process(_move);
+      }
+      else {
+        _position.Add(_move);
+        _capsule->Process(_move);
+      }
       // アニメーション終了でIdleへ移行
       if (_modelAnim.GetMainAnimEnd() && !_modelAnim.IsBlending()) {
         _enemyState = EnemyState::Idle;
@@ -224,6 +259,31 @@ namespace Gyro {
       }
       else {
         _enemyState = EnemyState::Idle;
+      }
+    }
+
+    void EnemyWheelBoss::Sercth() {
+      auto objects = _app.GetObjectServer().GetObjects(); // オブジェクトのコピー
+      for (auto pla : objects) {
+        if (pla->GetId() != ObjectId::Player) continue;
+        auto position = pla->GetPosition();
+        // 円と点の距離
+        auto a = position.GetX() - _position.GetX();
+        auto b = position.GetZ() - _position.GetZ();
+        auto c = sqrt(a * a + b * b);
+        // 距離と半径を比較して状態変化
+        if (c < _attackRadius) {
+          _enemyState = EnemyState::AttackReady;
+          break;
+        }
+        else if (c < _serchRadius) {
+          _enemyState = EnemyState::Move;
+          break;
+        }
+        else {
+          _enemyState = EnemyState::Idle;
+          break;
+        }
       }
     }
 
@@ -269,6 +329,9 @@ namespace Gyro {
         break;
       case EnemyState::Move:    //!< 移動
         _modelAnim.SetBlendAttach(MoveKey, 10.0f, 1.0f, false);
+        break;
+      case EnemyState::AttackReady:  //!< 攻撃準備
+        _modelAnim.SetBlendAttach(AttackReadyKey, 10.0f, 1.0f, false);
         break;
       case EnemyState::Attack:  //!< 攻撃
         _modelAnim.SetBlendAttach(AttackKey, 10.0f, 1.0f, false);

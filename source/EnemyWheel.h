@@ -72,6 +72,10 @@ namespace Gyro {
        */
       void Move() override;
       /**
+       * @brief  攻撃準備処理
+       */
+      void AttackReady();
+      /**
        * @brief  攻撃処理
        */
       void Attack() override;
@@ -79,6 +83,10 @@ namespace Gyro {
        * @brief  ノックバック処理
        */
       void NockBack() override;
+      /**
+       * @brief  探索処理
+       */
+      void Sercth() override;
       /**
        * @brief  衝突処理
        */
@@ -100,6 +108,7 @@ namespace Gyro {
 
       bool _iMove{ false };  //!< 移動フラグ
       AppFrame::Math::Vector4 _oldPosition;   //!< 攻撃状態に移行したタイミングの座標
+      AppFrame::Math::Vector4 _move;          //!< 移動距離
       static inline unsigned short _number{ 0 };  //!< 生成番号
       unsigned short _this{ 0 };  //!< 識別ID
     };

@@ -40,11 +40,12 @@ namespace Gyro {
        * @brief  敵の状態遷移用定数
        */
       enum class EnemyState {
-        Idle,    //!< 待機
-        Move,    //!< 移動
-        Attack,  //!< 攻撃
-        Damage,  //!< 被ダメ
-        Dead     //!< 死亡
+        Idle,        //!< 待機
+        Move,        //!< 移動
+        AttackReady, //!< 攻撃準備
+        Attack,      //!< 攻撃
+        Damage,      //!< 被ダメ
+        Dead         //!< 死亡
       };
       /**
        * @brief  コンストラクタ
