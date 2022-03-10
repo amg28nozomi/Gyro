@@ -8,6 +8,7 @@
 #include "ModeTitle.h"
 #include "UtilityDX.h"
 #include "ModeGame.h"
+#include "ModeLoading.h"
 
 namespace {
   constexpr int BgmVolume = 50;  //!< BGMの再生ボリューム
@@ -125,8 +126,15 @@ namespace Gyro {
       // キーが登録されているか
       bool key = _app.GetModeServer().Contains("Game");
       if (!key) {
-        // モードゲームの登録
-        _appMain.GetModeServer().AddMode("Game", std::make_shared<Mode::ModeGame>(_appMain));
+        if (GetASyncLoadNum() > 0) {
+          // モードローディングの登録
+          _appMain.GetModeServer().AddMode("Loading", std::make_shared<Mode::ModeLoading>(_appMain));
+        }else {
+          // 非同期処理フラグfalse
+          SetUseASyncLoadFlag(false);
+          // モードゲームの登録
+          _appMain.GetModeServer().AddMode("Game", std::make_shared<Mode::ModeGame>(_appMain));
+        }
       }
       // モードゲーム遷移
       _appMain.GetModeServer().TransionToMode("Game");

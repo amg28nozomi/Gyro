@@ -40,7 +40,7 @@ namespace Gyro {
       // エフェクトリソースの読み取り
       LoadEffectResource();
       // ステージの切り替え
-      StageChange("stage");
+      //StageChange("stage");
       // オブジェクトを生成
       SetSpawn();
       // BGMのループ再生開始

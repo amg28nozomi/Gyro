@@ -82,6 +82,7 @@
     <ClCompile Include="source\ModeGame.cpp" />
     <ClCompile Include="source\ModelAnimComponent.cpp" />
     <ClCompile Include="source\ModelAnimInfo.cpp" />
+    <ClCompile Include="source\ModeLoading.cpp" />
     <ClCompile Include="source\ModePause.cpp" />
     <ClCompile Include="source\ModeResult.cpp" />
     <ClCompile Include="source\ModeTeam.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="source\ModeGame.h" />
     <ClInclude Include="source\ModelAnimComponent.h" />
     <ClInclude Include="source\ModelAnimInfo.h" />
+    <ClInclude Include="source\ModeLoading.h" />
     <ClInclude Include="source\ModePause.h" />
     <ClInclude Include="source\ModeResult.h" />
     <ClInclude Include="source\ModeTeam.h" />

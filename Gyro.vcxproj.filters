@@ -473,6 +473,9 @@
     <ClCompile Include="source\EffectEnemyBossAirAttack.cpp">
       <Filter>ソース ファイル\Effect\Enemy\Boss</Filter>
     </ClCompile>
+    <ClCompile Include="source\ModeLoading.cpp">
+      <Filter>ソース ファイル\Mode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\ApplicationMain.h">
@@ -756,6 +759,9 @@
     </ClInclude>
     <ClInclude Include="source\EffectEnemyBossAirAttack.h">
       <Filter>ヘッダー ファイル\Effect\Enemy\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="source\ModeLoading.h">
+      <Filter>ヘッダー ファイル\Mode</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
