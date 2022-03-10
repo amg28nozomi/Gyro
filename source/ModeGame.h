@@ -94,7 +94,13 @@ namespace Gyro {
       std::unique_ptr<Shadow::Shadow> _shadow;
       //!< 現在のステージキー
       std::string _key;
-
+      //!< waveフラグ
+      bool _wave1{ true };
+      bool _wave2{ true };
+      bool _wave3{ true };
+      bool _wave4{ true };
+      bool _bossStage{ true };
+      int _waveNum{ 0 };
       /**
        * @brief リソースの読み取り
        */
@@ -107,6 +113,10 @@ namespace Gyro {
        * @brief スポーン情報の設定
        */
       void SetSpawn();
+      /**
+       * @brief スポーンさせるタイミング
+       */
+      void SpawnTiming();
       /**
        * @brief ゲームオーバー切り替え
        */

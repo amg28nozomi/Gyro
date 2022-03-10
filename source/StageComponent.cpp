@@ -17,10 +17,6 @@ namespace Gyro {
   namespace Stage {
 
     StageComponent::StageComponent(Application::ApplicationMain& app) {
-      // フォグの設定
-      /*SetFogEnable(true);
-      SetFogColor(0, 255, 255);
-      SetFogStartEnd(2800.0f, 3000.0f);*/
       // リソースの解放
       ReleaseStageInfo();
     }
@@ -28,9 +24,12 @@ namespace Gyro {
     StageComponent::~StageComponent() {
       // リソースの解放
       ReleaseStageInfo();
+      _skySphere.reset();
     }
 
     bool StageComponent::Init(std::filesystem::path jsonName) {
+      // ステージネーム
+      _stageName = jsonName;
       // パスの生成
       std::filesystem::path p = "res/Stage";
       const auto jsonPath = (p / jsonName).generic_string() + ".json";
@@ -147,12 +146,13 @@ namespace Gyro {
     }
 
     bool StageComponent::ReleaseStageInfo() {
-      _stageModelMap.clear();
-      for (auto ite : _model) {
-        MV1DeleteModel(ite);
+      for (auto& [key, stageModels] : _stageModelMap) {
+        for (auto& [handle, stageData] : stageModels) {
+          MV1DeleteModel(handle);
+        }
+        stageModels.clear();
       }
-      _model.clear();
-      _skySphere.reset();
+      _stageModelMap.clear();
 
       return true;
     }
