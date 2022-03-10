@@ -143,7 +143,7 @@ namespace Gyro {
        * @brief  ’Tõˆ—
        * @author “y‹´‹¬‰î
        */
-      virtual void Sercth();
+      virtual void Search();
       /**
        * @brief  Õ“Ëˆ—
        */

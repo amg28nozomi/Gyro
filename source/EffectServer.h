@@ -36,12 +36,14 @@ namespace Gyro {
     class EffectPlayerUltActivate;
     class EffectPlayerUltSlash;
     class EffectEnemyEyeLight;
-    class EffectEnemyGroundAttack;
+    class EffectEnemyGroundAttack1;
+    class EffectEnemyGroundAttack2;
     class EffectEnemyAirAttack;
     class EffectEnemyHit;
     class EffectEnemyExprosion;
     class EffectEnemyBossEyeLight;
-    class EffectEnemyBossGroundAttack;
+    class EffectEnemyBossGroundAttack1;
+    class EffectEnemyBossGroundAttack2;
     class EffectEnemyBossAirAttack;
     class EffectEnemyBossHit;
     class EffectEnemyBossExprosion;
@@ -211,12 +213,19 @@ namespace Gyro {
        */
       std::shared_ptr<EffectEnemyEyeLight> EnemyEyeLight(const AppMath::Vector4 position, const float radian) const;
       /**
-       * @brief  敵地上攻撃の生成
+       * @brief  敵地上攻撃1の生成
        * @param  position エフェクト位置
        * @param  radian エフェクト向き
-       * @return 敵地上攻撃のシェアードポインタ
+       * @return 敵地上攻撃1のシェアードポインタ
        */
-      std::shared_ptr<EffectEnemyGroundAttack> EnemyGroundAttack(const AppMath::Vector4 position, const float radian) const;
+      std::shared_ptr<EffectEnemyGroundAttack1> EnemyGroundAttack1(const AppMath::Vector4 position, const float radian) const;
+      /**
+       * @brief  敵地上攻撃2の生成
+       * @param  position エフェクト位置
+       * @param  radian エフェクト向き
+       * @return 敵地上攻撃2のシェアードポインタ
+       */
+      std::shared_ptr<EffectEnemyGroundAttack2> EnemyGroundAttack2(const AppMath::Vector4 position, const float radian) const;
       /**
        * @brief  敵空中攻撃の生成
        * @param  position エフェクト位置
@@ -246,12 +255,19 @@ namespace Gyro {
        */
       std::shared_ptr<EffectEnemyBossEyeLight> EnemyBossEyeLight(const AppMath::Vector4 position, const float radian) const;
       /**
-       * @brief  敵ボス地上攻撃の生成
+       * @brief  敵ボス地上攻撃1の生成
        * @param  position エフェクト位置
        * @param  radian エフェクト向き
-       * @return 敵ボス地上攻撃のシェアードポインタ
+       * @return 敵ボス地上攻撃1のシェアードポインタ
        */
-      std::shared_ptr<EffectEnemyBossGroundAttack> EnemyBossGroundAttack(const AppMath::Vector4 position, const float radian) const;
+      std::shared_ptr<EffectEnemyBossGroundAttack1> EnemyBossGroundAttack1(const AppMath::Vector4 position, const float radian) const;
+      /**
+       * @brief  敵ボス地上攻撃2の生成
+       * @param  position エフェクト位置
+       * @param  radian エフェクト向き
+       * @return 敵ボス地上攻撃2のシェアードポインタ
+       */
+      std::shared_ptr<EffectEnemyBossGroundAttack2> EnemyBossGroundAttack2(const AppMath::Vector4 position, const float radian) const;
       /**
        * @brief  敵ボス空中攻撃の生成
        * @param  position エフェクト位置
@@ -320,17 +336,19 @@ namespace Gyro {
     constexpr int PlayerUltSlash = 151;         //!< プレイヤー必殺攻撃
   // 2**:敵
     // 20*:通常
-    constexpr int EnemyEyeLight = 200;      //!< 敵眼光
-    constexpr int EnemyGroundAttack = 201;  //!< 敵地上攻撃
-    constexpr int EnemyAirAttack = 202;     //!< 敵空中攻撃
-    constexpr int EnemyHit = 203;           //!< 敵被ダメ
-    constexpr int EnemyExprosion = 205;     //!< 敵爆発
+    constexpr int EnemyEyeLight = 200;       //!< 敵眼光
+    constexpr int EnemyGroundAttack1 = 201;  //!< 敵地上攻撃1
+    constexpr int EnemyGroundAttack2 = 202;  //!< 敵地上攻撃2
+    constexpr int EnemyAirAttack = 203;      //!< 敵空中攻撃
+    constexpr int EnemyHit = 204;            //!< 敵被ダメ
+    constexpr int EnemyExprosion = 205;      //!< 敵爆発
     // 21*:ボス
-    constexpr int EnemyBossEyeLight = 210;      //!< 敵ボス眼光
-    constexpr int EnemyBossGroundAttack = 211;  //!< 敵ボス地上攻撃
-    constexpr int EnemyBossAirAttack = 212;     //!< 敵ボス空中攻撃
-    constexpr int EnemyBossHit = 213;           //!< 敵ボス被ダメ
-    constexpr int EnemyBossExprosion = 214;     //!< 敵ボス爆発
+    constexpr int EnemyBossEyeLight = 210;       //!< 敵ボス眼光
+    constexpr int EnemyBossGroundAttack1 = 211;  //!< 敵ボス地上攻撃1
+    constexpr int EnemyBossGroundAttack2 = 212;  //!< 敵ボス地上攻撃2
+    constexpr int EnemyBossAirAttack = 213;      //!< 敵ボス空中攻撃
+    constexpr int EnemyBossHit = 214;            //!< 敵ボス被ダメ
+    constexpr int EnemyBossExprosion = 215;      //!< 敵ボス爆発
   // 3**:ステージ
     constexpr int StageBarrier = 300;     //!< ステージバリア
     constexpr int StageBoxDestroy = 301;  //!< ステージ箱破壊

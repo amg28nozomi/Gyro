@@ -102,7 +102,7 @@ namespace Gyro {
 
     }
 
-    void EnemyBase::Sercth() {
+    void EnemyBase::Search() {
       auto objects = _app.GetObjectServer().GetObjects(); // オブジェクトのコピー
       for (auto pla : objects) {
         if (pla->GetId() != ObjectId::Player) continue;

@@ -85,17 +85,19 @@ namespace Gyro {
     constexpr std::string_view PlayerUltActivate = "PlayerUltActivate";          //!< ƒvƒŒƒCƒ„[•KŽE”­“®
     constexpr std::string_view PlayerUltSlash = "PlayerUltSlash";                //!< ƒvƒŒƒCƒ„[•KŽEUŒ‚
   // “G
-    constexpr std::string_view EnemyEyeLight = "EnemyEyeLight";          //!< “GŠáŒõ
-    constexpr std::string_view EnemyGroundAttack = "EnemyGroundAttack";  //!< “G’nãUŒ‚
-    constexpr std::string_view EnemyAirAttack = "EnemyAirAttack";        //!< “G‹ó’†UŒ‚
-    constexpr std::string_view EnemyHit = "EnemyHit";                    //!< “G”íƒ_ƒ
-    constexpr std::string_view EnemyExprosion = "EnemyExprosion";        //!< “G”š”­
+    constexpr std::string_view EnemyEyeLight = "EnemyEyeLight";            //!< “GŠáŒõ
+    constexpr std::string_view EnemyGroundAttack1 = "EnemyGroundAttack1";  //!< “G’nãUŒ‚1
+    constexpr std::string_view EnemyGroundAttack2 = "EnemyGroundAttack2";  //!< “G’nãUŒ‚2
+    constexpr std::string_view EnemyAirAttack = "EnemyAirAttack";          //!< “G‹ó’†UŒ‚
+    constexpr std::string_view EnemyHit = "EnemyHit";                      //!< “G”íƒ_ƒ
+    constexpr std::string_view EnemyExprosion = "EnemyExprosion";          //!< “G”š”­
     //ƒ{ƒX
-    constexpr std::string_view EnemyBossEyeLight = "EnemyBossEyeLight";          //!< “Gƒ{ƒXŠáŒõ
-    constexpr std::string_view EnemyBossGroundAttack = "EnemyBossGroundAttack";  //!< “Gƒ{ƒX’nãUŒ‚
-    constexpr std::string_view EnemyBossAirAttack = "EnemyBossAirAttack";        //!< “Gƒ{ƒX‹ó’†UŒ‚
-    constexpr std::string_view EnemyBossHit = "EnemyBossHit";                    //!< “Gƒ{ƒX”íƒ_ƒ
-    constexpr std::string_view EnemyBossExprosion = "EnemyBossExprosion";        //!< “Gƒ{ƒX”š”­
+    constexpr std::string_view EnemyBossEyeLight = "EnemyBossEyeLight";            //!< “Gƒ{ƒXŠáŒõ
+    constexpr std::string_view EnemyBossGroundAttack1 = "EnemyBossGroundAttack1";  //!< “Gƒ{ƒX’nãUŒ‚1
+    constexpr std::string_view EnemyBossGroundAttack2 = "EnemyBossGroundAttack2";  //!< “Gƒ{ƒX’nãUŒ‚2
+    constexpr std::string_view EnemyBossAirAttack = "EnemyBossAirAttack";          //!< “Gƒ{ƒX‹ó’†UŒ‚
+    constexpr std::string_view EnemyBossHit = "EnemyBossHit";                      //!< “Gƒ{ƒX”íƒ_ƒ
+    constexpr std::string_view EnemyBossExprosion = "EnemyBossExprosion";          //!< “Gƒ{ƒX”š”­
   // ƒXƒe[ƒW
     constexpr std::string_view StageBarrier = "StageBarrier";        //!< ƒXƒe[ƒWƒoƒŠƒA
     constexpr std::string_view StageBoxDestroy = "StageBoxDestroy";  //!< ƒXƒe[ƒW” ”j‰ó

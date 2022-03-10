@@ -24,12 +24,14 @@
 #include "EffectPlayerUltActivate.h"
 #include "EffectPlayerUltSlash.h"
 #include "EffectEnemyEyeLight.h"
-#include "EffectEnemyGroundAttack.h"
+#include "EffectEnemyGroundAttack1.h"
+#include "EffectEnemyGroundAttack2.h"
 #include "EffectEnemyAirAttack.h"
 #include "EffectEnemyHit.h"
 #include "EffectEnemyExprosion.h"
 #include "EffectEnemyBossEyeLight.h"
-#include "EffectEnemyBossGroundAttack.h"
+#include "EffectEnemyBossGroundAttack1.h"
+#include "EffectEnemyBossGroundAttack2.h"
 #include "EffectEnemyBossAirAttack.h"
 #include "EffectEnemyBossHit.h"
 #include "EffectEnemyBossExprosion.h"
@@ -147,9 +149,13 @@ namespace Gyro {
         // 敵眼光
         AddEffect(EnemyEyeLight(position, radian));
         break;
-      case EffectNum::EnemyGroundAttack:
-        // 敵地上攻撃
-        AddEffect(EnemyGroundAttack(position, radian));
+      case EffectNum::EnemyGroundAttack1:
+        // 敵地上攻撃1
+        AddEffect(EnemyGroundAttack1(position, radian));
+        break;
+      case EffectNum::EnemyGroundAttack2:
+        // 敵地上攻撃2
+        AddEffect(EnemyGroundAttack2(position, radian));
         break;
       case EffectNum::EnemyAirAttack:
         // 敵空中攻撃
@@ -167,9 +173,13 @@ namespace Gyro {
         // 敵ボス眼光
         AddEffect(EnemyBossEyeLight(position, radian));
         break;
-      case EffectNum::EnemyBossGroundAttack:
-        // 敵ボス地上攻撃
-        AddEffect(EnemyBossGroundAttack(position, radian));
+      case EffectNum::EnemyBossGroundAttack1:
+        // 敵ボス地上攻撃1
+        AddEffect(EnemyBossGroundAttack1(position, radian));
+        break;
+      case EffectNum::EnemyBossGroundAttack2:
+        // 敵ボス地上攻撃2
+        AddEffect(EnemyBossGroundAttack2(position, radian));
         break;
       case EffectNum::EnemyBossAirAttack:
         // 敵ボス空中攻撃
@@ -364,13 +374,22 @@ namespace Gyro {
       return std::move(enemyEyeLight);
     }
 
-    std::shared_ptr<EffectEnemyGroundAttack> EffectServer::EnemyGroundAttack(const AppMath::Vector4 position, const float radian) const {
-      // 敵地上攻撃の生成
-      auto enemyGroundAttack = std::make_shared<EffectEnemyGroundAttack>(_app);
+    std::shared_ptr<EffectEnemyGroundAttack1> EffectServer::EnemyGroundAttack1(const AppMath::Vector4 position, const float radian) const {
+      // 敵地上攻撃1の生成
+      auto enemyGroundAttack1 = std::make_shared<EffectEnemyGroundAttack1>(_app);
       // 位置・向き設定
-      enemyGroundAttack->SetEffectParameter(position, radian);
+      enemyGroundAttack1->SetEffectParameter(position, radian);
       // 生成したシェアードポインタを返す
-      return std::move(enemyGroundAttack);
+      return std::move(enemyGroundAttack1);
+    }
+
+    std::shared_ptr<EffectEnemyGroundAttack2> EffectServer::EnemyGroundAttack2(const AppMath::Vector4 position, const float radian) const {
+      // 敵地上攻撃2の生成
+      auto enemyGroundAttack2 = std::make_shared<EffectEnemyGroundAttack2>(_app);
+      // 位置・向き設定
+      enemyGroundAttack2->SetEffectParameter(position, radian);
+      // 生成したシェアードポインタを返す
+      return std::move(enemyGroundAttack2);
     }
 
     std::shared_ptr<EffectEnemyAirAttack> EffectServer::EnemyAirAttack(const AppMath::Vector4 position, const float radian) const {
@@ -409,13 +428,22 @@ namespace Gyro {
       return std::move(enemyBossEyeLight);
     }
 
-    std::shared_ptr<EffectEnemyBossGroundAttack> EffectServer::EnemyBossGroundAttack(const AppMath::Vector4 position, const float radian) const {
-      // 敵ボス地上攻撃の生成
-      auto enemyBossGroundAttack = std::make_shared<EffectEnemyBossGroundAttack>(_app);
+    std::shared_ptr<EffectEnemyBossGroundAttack1> EffectServer::EnemyBossGroundAttack1(const AppMath::Vector4 position, const float radian) const {
+      // 敵ボス地上攻撃1の生成
+      auto enemyBossGroundAttack1 = std::make_shared<EffectEnemyBossGroundAttack1>(_app);
       // 位置・向き設定
-      enemyBossGroundAttack->SetEffectParameter(position, radian);
+      enemyBossGroundAttack1->SetEffectParameter(position, radian);
       // 生成したシェアードポインタを返す
-      return std::move(enemyBossGroundAttack);
+      return std::move(enemyBossGroundAttack1);
+    }
+
+    std::shared_ptr<EffectEnemyBossGroundAttack2> EffectServer::EnemyBossGroundAttack2(const AppMath::Vector4 position, const float radian) const {
+      // 敵ボス地上攻撃2の生成
+      auto enemyBossGroundAttack2 = std::make_shared<EffectEnemyBossGroundAttack2>(_app);
+      // 位置・向き設定
+      enemyBossGroundAttack2->SetEffectParameter(position, radian);
+      // 生成したシェアードポインタを返す
+      return std::move(enemyBossGroundAttack2);
     }
 
     std::shared_ptr<EffectEnemyBossAirAttack> EffectServer::EnemyBossAirAttack(const AppMath::Vector4 position, const float radian) const {

@@ -1,6 +1,6 @@
 /*****************************************************************//**
- * @file    EffectEnemyGroundAttack.h
- * @brief   敵地上攻撃エフェクトクラス
+ * @file    EffectEnemyBossGroundAttack2.h
+ * @brief   敵ボス地上攻撃2エフェクトクラス
  *
  * @author  宮澤耀生
  * @date    March 2022
@@ -17,20 +17,20 @@ namespace Gyro {
    */
   namespace Effect {
     /**
-     * @class EffectEnemyGroundAttack
-     * @brief 敵地上攻撃エフェクトクラス
+     * @class EffectEnemyBossGroundAttack2
+     * @brief 敵ボス地上攻撃2エフェクトクラス
      */
-    class EffectEnemyGroundAttack : public EffectBase {
+    class EffectEnemyBossGroundAttack2 : public EffectBase {
     public:
       /**
        * @brief  コンストラクタ
        * @param  app アプリケーションの参照
        */
-      EffectEnemyGroundAttack(Application::ApplicationMain& app);
+      EffectEnemyBossGroundAttack2(Application::ApplicationMain& app);
       /**
        * @brief  デストラクタ
        */
-      ~EffectEnemyGroundAttack();
+      ~EffectEnemyBossGroundAttack2();
       /**
        * @brief  初期化
        */

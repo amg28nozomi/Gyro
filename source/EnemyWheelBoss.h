@@ -86,7 +86,7 @@ namespace Gyro {
       /**
        * @brief  探索処理
        */
-      void Sercth() override;
+      void Search() override;
       /**
        * @brief  衝突処理
        */
@@ -100,6 +100,10 @@ namespace Gyro {
        */
       void PlayEffect() override;
       /**
+       * @brief  回転攻撃エフェクト
+       */
+      void SlashEffect();
+      /**
        * @brief  オブジェクトの死亡処理
        */
       void Dead() override;
@@ -111,6 +115,7 @@ namespace Gyro {
       bool IsDamege() override;
 
       bool _iMove{ false };  //!< 移動フラグ
+      bool _slash{ false };  //!< 回転攻撃フラグ
       AppFrame::Math::Vector4 _oldPosition;   //!< 攻撃状態に移行したタイミングの座標
       AppFrame::Math::Vector4 _move;          //!< 移動距離
       static inline unsigned short _number{ 0 };  //!< 生成番号

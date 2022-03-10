@@ -395,7 +395,7 @@
     <ClCompile Include="source\EffectEnemyEyeLight.cpp">
       <Filter>ソース ファイル\Effect\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="source\EffectEnemyGroundAttack.cpp">
+    <ClCompile Include="source\EffectEnemyGroundAttack1.cpp">
       <Filter>ソース ファイル\Effect\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="source\EffectEnemyHit.cpp">
@@ -461,7 +461,7 @@
     <ClCompile Include="source\EffectEnemyBossEyeLight.cpp">
       <Filter>ソース ファイル\Effect\Enemy\Boss</Filter>
     </ClCompile>
-    <ClCompile Include="source\EffectEnemyBossGroundAttack.cpp">
+    <ClCompile Include="source\EffectEnemyBossGroundAttack1.cpp">
       <Filter>ソース ファイル\Effect\Enemy\Boss</Filter>
     </ClCompile>
     <ClCompile Include="source\EffectEnemyBossHit.cpp">
@@ -471,6 +471,12 @@
       <Filter>ソース ファイル\Effect\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="source\EffectEnemyBossAirAttack.cpp">
+      <Filter>ソース ファイル\Effect\Enemy\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="source\EffectEnemyGroundAttack2.cpp">
+      <Filter>ソース ファイル\Effect\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="source\EffectEnemyBossGroundAttack2.cpp">
       <Filter>ソース ファイル\Effect\Enemy\Boss</Filter>
     </ClCompile>
   </ItemGroup>
@@ -673,7 +679,7 @@
     <ClInclude Include="source\EffectEnemyEyeLight.h">
       <Filter>ヘッダー ファイル\Effect\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="source\EffectEnemyGroundAttack.h">
+    <ClInclude Include="source\EffectEnemyGroundAttack1.h">
       <Filter>ヘッダー ファイル\Effect\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="source\EffectEnemyHit.h">
@@ -745,7 +751,7 @@
     <ClInclude Include="source\EffectEnemyBossEyeLight.h">
       <Filter>ヘッダー ファイル\Effect\Enemy\Boss</Filter>
     </ClInclude>
-    <ClInclude Include="source\EffectEnemyBossGroundAttack.h">
+    <ClInclude Include="source\EffectEnemyBossGroundAttack1.h">
       <Filter>ヘッダー ファイル\Effect\Enemy\Boss</Filter>
     </ClInclude>
     <ClInclude Include="source\EffectEnemyBossHit.h">
@@ -755,6 +761,12 @@
       <Filter>ヘッダー ファイル\Effect\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="source\EffectEnemyBossAirAttack.h">
+      <Filter>ヘッダー ファイル\Effect\Enemy\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="source\EffectEnemyGroundAttack2.h">
+      <Filter>ヘッダー ファイル\Effect\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="source\EffectEnemyBossGroundAttack2.h">
       <Filter>ヘッダー ファイル\Effect\Enemy\Boss</Filter>
     </ClInclude>
   </ItemGroup>

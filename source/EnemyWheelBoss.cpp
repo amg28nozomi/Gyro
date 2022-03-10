@@ -13,10 +13,11 @@
 
 namespace {
   // 各種定数
-  constexpr int WheelHP = 10000;          //!< 地上敵最大体力
-  constexpr float WheelMoveSpead = 5.0f;  //!< 地上的移動速度
+  constexpr int WheelHP = 10000;             //!< 地上敵最大体力
+  constexpr float WheelMoveSpead = 5.0f;     //!< 地上的移動速度
   constexpr float WheelAttackSpead = 10.0f;  //!< 地上的攻撃移動速度
-  constexpr float Height = 530.0f;        //!< 高さ
+  constexpr float WheelSlashFrame = 27.0f;   //!< 地上敵回転攻撃フレーム
+  constexpr float Height = 530.0f;           //!< 高さ
   // アニメーションキー
   constexpr std::string_view IdleKey = "idle";      //!< 待機
   constexpr std::string_view MoveKey = "idle";      //!< 移動
@@ -58,8 +59,8 @@ namespace Gyro {
       // 状態もどき
       switch (_enemyState) {
       case Gyro::Enemy::EnemyBase::EnemyState::Move:
+        Search(); //!< 探索
         Move();  //!< 移動
-        Sercth(); //!< 探索
         break;
       case Gyro::Enemy::EnemyBase::EnemyState::AttackReady:
         AttackReady();
@@ -75,7 +76,7 @@ namespace Gyro {
         break;
       default:
         _enemyState = EnemyState::Idle;
-        Sercth(); //!< 探索
+        Search(); //!< 探索
         break;
       }
       // 衝突判定
@@ -202,7 +203,12 @@ namespace Gyro {
       auto move = efor * (WheelMoveSpead);
       // ラジアンを生成(z軸は反転させる)
       auto radian = std::atan2(move.GetX(), -move.GetZ());
+#ifndef _DEBUG
       _rotation.SetY(radian); // y軸の回転量をセットする
+#else
+      // デグリー値をセットする(デバッグ用)
+      _rotation.SetY(AppMath::Utility::RadianToDegree(radian));
+#endif
       // アニメーション終了でAttackへ移行
       if (_modelAnim.GetMainAnimEnd() && !_modelAnim.IsBlending()) {
         _enemyState = EnemyState::Attack;
@@ -241,11 +247,16 @@ namespace Gyro {
         _sphere->Process();
         _position.Add(_move);
         _capsule->Process(_move);
+        // 回転攻撃エフェクト
+        if (!_slash) {
+          SlashEffect();
+        }
       }
       // アニメーション終了でIdleへ移行
       if (_modelAnim.GetMainAnimEnd() && !_modelAnim.IsBlending()) {
         _enemyState = EnemyState::Idle;
         _iMove = false;
+        _slash = false;
       }
     }
 
@@ -268,7 +279,7 @@ namespace Gyro {
       }
     }
 
-    void EnemyWheelBoss::Sercth() {
+    void EnemyWheelBoss::Search() {
       auto objects = _app.GetObjectServer().GetObjects(); // オブジェクトのコピー
       for (auto pla : objects) {
         if (pla->GetId() != ObjectId::Player) continue;
@@ -371,7 +382,7 @@ namespace Gyro {
         break;
       case EnemyState::Attack:  //!< 攻撃
         ePos.AddY(0.0f);
-        _app.GetEffectServer().MakeEffect(EffectNum::EnemyBossGroundAttack, ePos, eRad);
+        _app.GetEffectServer().MakeEffect(EffectNum::EnemyBossGroundAttack1, ePos, eRad);
         break;
       case EnemyState::Damage:  //!< 被ダメ
         ePos.AddY(100.0f);
@@ -384,6 +395,30 @@ namespace Gyro {
       default:
         break;
       }
+    }
+
+    void EnemyWheelBoss::SlashEffect() {
+      // アニメーションブレンド中の場合中断
+      if (_modelAnim.IsBlending()) {
+        return;
+      }
+      // 現在のアニメーションの再生時間の取得
+      float slash = _modelAnim.GetMainPlayTime();
+      // 回転攻撃フレームに満たない場合中断
+      if (slash < WheelSlashFrame) {
+        return;
+    }
+      // パラメータ設定
+      auto ePos = _position;
+#ifndef _DEBUG
+      auto eRad = -_rotation.GetY();
+#else
+      auto eRad = -AppMath::Utility::DegreeToRadian(_rotation.GetY());
+#endif
+      // エフェクト生成
+      _app.GetEffectServer().MakeEffect(EffectNum::EnemyGroundAttack2, ePos, eRad);
+      // エフェクト生成完了
+      _slash = true;
     }
 
     void EnemyWheelBoss::Dead() {

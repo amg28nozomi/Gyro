@@ -58,7 +58,7 @@ namespace Gyro {
       switch (_enemyState) {
       case Gyro::Enemy::EnemyBase::EnemyState::Move:
         Move();  //!< ˆÚ“®
-        Sercth(); //!< ’Tõ
+        Search(); //!< ’Tõ
         break;
       case Gyro::Enemy::EnemyBase::EnemyState::Attack:
         Attack();  //!< UŒ‚
@@ -71,7 +71,7 @@ namespace Gyro {
         break;
       default:
         _enemyState = EnemyState::Idle;
-        Sercth(); //!< ’Tõ
+        Search(); //!< ’Tõ
         break;
       }
       // Õ“Ë”»’è
