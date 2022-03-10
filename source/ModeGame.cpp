@@ -15,6 +15,8 @@
 #include "ObjectServer.h"
 #include "StageComponent.h"
 #include "ModeGameOver.h"
+#include "ModeResult.h"
+#include "ModePause.h"
 
 namespace {
     constexpr auto TEXTURE = _T("res/Stage/water.png");
@@ -50,7 +52,10 @@ namespace Gyro {
       _light = std::make_unique<Light::Light>();
       // シャドウの設定
       _shadow = std::make_unique<Shadow::Shadow>(_appMain);
-
+      // ゲームフラグの初期化
+      _appMain.SetGameOver(false);
+      _appMain.SetGameClear(false);
+      _appMain.SetGamePause(false);
       return true;
     }
 
@@ -82,6 +87,8 @@ namespace Gyro {
       // STARTボタンが押された場合、アプリケーションを終了する
       if (device.GetButton(XINPUT_BUTTON_START, App::InputTrigger)) {
         _appMain.RequestTerminate(); // アプリケーションの終了処理を呼び出し
+        // ポーズ
+        //Pause();
       }
 #ifdef _DEBUG
       // デバッグ時限定:左スティックが押された場合、デバッグフラグを切り替える
@@ -112,9 +119,17 @@ namespace Gyro {
       // モードゲームの入力処理
       Input(_app.GetOperation());
       // ゲームオーバー判定
-      bool gameover = _appMain.GetObjectServer().GetPlayer()->GetGameOver();
-      if (gameover) {
+      if (_appMain.GetGameOver()) {
         GameOver();
+        return true;
+      }
+      // ゲームクリア判定
+      if (_appMain.GetGameClear()) {
+        Result();
+        return true;
+      }
+      // ポーズ判定
+      if (_appMain.GetGamePause()) {
         return true;
       }
       // オブジェクトサーバの更新処理
@@ -290,6 +305,34 @@ namespace Gyro {
       _appMain.GetModeServer().TransionToMode("GameOver");
       // BGMの再生を停止する
       _appMain.GetSoundComponent().StopSound("bgm");
+    }
+
+    void ModeGame::Result() {
+      // モードゲームの削除
+      _appMain.GetModeServer().PopBuck();
+      // キーが登録されているか
+      bool key = _app.GetModeServer().Contains("Result");
+      if (!key) {
+        // モードリザルトの登録
+        _appMain.GetModeServer().AddMode("Result", std::make_shared<Mode::ModeResult>(_appMain));
+      }
+      // モードリザルト遷移
+      _appMain.GetModeServer().TransionToMode("Result");
+      // BGMの再生を停止する
+      _appMain.GetSoundComponent().StopSound("bgm");
+    }
+
+    void ModeGame::Pause() {
+      // キーが登録されているか
+      bool key = _app.GetModeServer().Contains("Pause");
+      if (!key) {
+        // モードポーズの登録
+        _appMain.GetModeServer().AddMode("Pause", std::make_shared<Mode::ModePause>(_appMain));
+      }
+      // モードポーズ遷移
+      _appMain.GetModeServer().TransionToMode("Pause");
+      // ポーズ開始
+      _appMain.SetGamePause(true);
     }
   } // namespace Mode
 } // namespace Gyro

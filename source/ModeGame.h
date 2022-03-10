@@ -81,6 +81,7 @@ namespace Gyro {
        * @return アプリケーションメインの参照を返す
        */
       Application::ApplicationMain& GetAppMain();
+
     private:
       bool _isEffectLoad{ false };  //!< エフェクト読み込みフラグ
       //!< アプリケーションメインの参照
@@ -110,6 +111,14 @@ namespace Gyro {
        * @brief ゲームオーバー切り替え
        */
       void GameOver();
+      /**
+       * @brief リザルト切り替え
+       */
+      void Result();
+      /**
+       * @brief ポーズ切り替え
+       */
+      void Pause();
     };
   } // namespace Mode
 } // namespace Gyro

@@ -14,8 +14,8 @@ namespace {
   const AppMath::Vector4 StudioPos{ 0.0f, 0.0f, 2750.0f };     //!< スタジオ位置
   const AppMath::Vector4 GyroPos{ 250.0f, 0.0f, 300.0f };      //!< ジャイロ位置
   const AppMath::Vector4 SkyPos{ 0.0f, 0.0f, 0.0f };           //!< スカイ位置
-  const AppMath::Vector4 CamPos{ 250.0f, 125.0f, 50.0f };      //!< カメラ位置
-  const AppMath::Vector4 CamTarget{ 225.0f, 125.0f, 100.0f };  //!< カメラ注視点
+  const AppMath::Vector4 CamPos{ 225.0f, 150.0f, 50.0f };      //!< カメラ位置
+  const AppMath::Vector4 CamTarget{ 200.0f, 145.0f, 100.0f };  //!< カメラ注視点
   constexpr float AnimSpeed = 0.5f;        //!< ジャイロアニメ再生速度
   constexpr float AnimBlendFlame = 10.0f;  //!< ジャイロアニメブレンドフレーム
   constexpr float SkyAddRot = 0.0001f;     //!< スカイ回転率

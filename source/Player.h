@@ -102,13 +102,6 @@ namespace Gyro {
         return _handleMap;
       }
       /**
-       * @brief  ゲームオーバーの取得
-       * @return ゲームオーバー
-       */
-      bool GetGameOver() const {
-        return _gameOver;
-      }
-      /**
        * @brief  指定したフレームのワールド座標を取得
        * @param  frame フレーム番号
        * @return 取得に成功した場合はワールド座標を返す
@@ -318,7 +311,8 @@ namespace Gyro {
        * @return コリジョン情報が格納された動的配列
        */
       std::vector<std::shared_ptr<Object::CollisionBase>> AddSpheres(const int num, float daius = DefaultRadius);
-    private:
+ 
+   private:
       //!< モデルサーバに紐づけられた文字列
       static inline std::string _modelKey{"player"};
       //!< ジャンプコンポーネント
@@ -341,8 +335,6 @@ namespace Gyro {
       std::string _animationKey;
       //!< 重力リセット処理
       bool _gravityReset{false};
-      //!< ゲームオーバー
-      bool _gameOver{ false };
     };
   } // namespace Player
 } // namespace Gyro

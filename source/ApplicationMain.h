@@ -67,11 +67,53 @@ namespace Gyro {
        */
       void Terminate() override;
       /**
+       * @brief  ゲームオーバーフラグセット
+       * @param  flag フラグ
+       */
+      void SetGameOver(const bool flag) {
+        _gameOver = flag;
+      }
+      /**
+       * @brief  ゲームクリアフラグセット
+       * @param  flag フラグ
+       */
+      void SetGameClear(const bool flag) {
+        _gameClear = flag;
+      }
+      /**
+       * @brief  ゲームポーズフラグセット
+       * @param  flag フラグ
+       */
+      void SetGamePause(const bool flag) {
+        _gamePause = flag;
+      }
+      /**
        * @brief  フレームカウンタの取得
        * @return フレームカウンタ
        */
       const int GetFrameCount() const override {
         return 0;
+      }
+      /**
+       * @brief  ゲームオーバーフラグの取得
+       * @return ゲームオーバーフラグ
+       */
+      bool GetGameOver() {
+        return _gameOver;
+      }
+      /**
+       * @brief  ゲームクリアフラグの取得
+       * @return ゲームクリアフラグ
+       */
+      bool GetGameClear() {
+        return _gameClear;
+      }
+      /**
+       * @brief  ゲームポーズフラグの取得
+       * @return ゲームポーズフラグ
+       */
+      bool GetGamePause() {
+        return _gamePause;
       }
       /**
        * @brief  オブジェクトサーバの取得
@@ -116,6 +158,9 @@ namespace Gyro {
         return *_stage;
       }
     private:
+      bool _gameOver{ false };      //!< ゲームオーバーフラグ
+      bool _gameClear{ false };     //!< ゲームクリアフラグ
+      bool _gamePause{ false };     //!< ゲームポーズフラグ
       //!< オブジェクトサーバ
       std::unique_ptr<Object::ObjectServer> _objectServer{ nullptr };
       //!< スポーンサーバ

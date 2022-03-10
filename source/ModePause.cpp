@@ -94,6 +94,8 @@ namespace Gyro {
     void ModePause::ChangeMode() {
       // モードポーズの削除
       _appMain.GetModeServer().PopBuck();
+      // ポーズ終了
+      _appMain.SetGamePause(false);
       // ゲーム終了選択時
       if (_quitGame == 1) {
         // アプリケーションの終了処理を呼び出し

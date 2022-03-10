@@ -318,17 +318,13 @@ namespace Gyro {
         [](std::shared_ptr<Object::ObjectBase>& obj) {
           // 生存状態の敵はいるか
           return (obj->GetId() == Object::ObjectBase::ObjectId::Enemy) && obj->GetState() == ObjectState::Active; });
-      // 生存状態の敵がいないか
-      if (!activeBoss) {
-        // アニメーション終了でDeadへ移行
-        if (_modelAnim.GetMainAnimEnd() && !_modelAnim.IsBlending()) {
+      // アニメーション終了でDeadへ移行
+      if (_modelAnim.GetMainAnimEnd() && !_modelAnim.IsBlending()) {
+        _state = ObjectState::Dead;
+        // 生存状態の敵がいないか
+        if (!activeBoss) {
           // ゲームクリア処理
-          _state = ObjectState::Dead;
-        }
-      }else {
-        // アニメーション終了でDeadへ移行
-        if (_modelAnim.GetMainAnimEnd() && !_modelAnim.IsBlending()) {
-          _state = ObjectState::Dead;
+          _app.SetGameClear(true);
         }
       }
     }
