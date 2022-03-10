@@ -65,12 +65,14 @@ namespace Gyro {
     void Camera::SetState() {
       // カメラの初期化
       namespace AppMath = AppFrame::Math;
-      _position = AppMath::Vector4(0.0f, 120.0f, 2300.0f, 1.0f);
+      _position = AppMath::Vector4(0.0f, 120.0f, 500.0f, 1.0f);
       _target = AppMath::Vector4(0.0f, 80.0f, 0.0f, 1.0f);
       SetCameraNearFar(Near, Far);
     }
 
     void Camera::Normal(const AppFrame::Math::Vector4 stick, const AppFrame::Math::Vector4 target, const AppFrame::Math::Vector4 move) {
+      // 前の座標から今の座標をひいて移動量を算出
+      _move = _target.Direction(target);
       // ターゲット座標までの向きを算出
       auto direction = target.Direction(_position);
       // 向きベクトルの各成分を取得
@@ -82,9 +84,9 @@ namespace Gyro {
       if (stick.GetX() > InputMin) { radian -= 0.1f; }
       if (stick.GetX() < -InputMin) { radian += 0.1f; }
       // x,z位置
-      auto x = target.GetX() + move.GetX() + cos(radian) * length;
+      auto x = target.GetX() + _move.GetX() + cos(radian) * length;
       _position.SetX(x);
-      auto z = target.GetZ() + move.GetZ() + sin(radian) * length;
+      auto z = target.GetZ() + _move.GetZ() + sin(radian) * length;
       _position.SetZ(z);
       // y位置
       if (stick.GetY() > InputMin) {

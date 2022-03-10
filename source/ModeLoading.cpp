@@ -26,6 +26,11 @@ namespace Gyro {
     bool ModeLoading::Enter() {
       // リソース読み込み
       LoadResource();
+      // 非同期処理フラグtrue
+      SetUseASyncLoadFlag(true);
+      // ボスステージ情報読み込み
+      _appMain.GetStageComponent().ReleaseStageInfo();
+      _appMain.GetStageComponent().Init("boss");
       return true;
     }
 
@@ -37,9 +42,14 @@ namespace Gyro {
 
     bool ModeLoading::Process() {
       _cnt++;
-      // 非同期の数が0ならGameへ移行
-      if (GetASyncLoadNum() == 0) {
-        ChangeMode();
+      auto maxCnt = 180;
+      if (maxCnt < _cnt) {
+        // 非同期の数が0ならGameへ移行
+        if (GetASyncLoadNum() == 0) {
+          ChangeMode();
+        }else {
+          _cnt = 0;
+        }
       }
       return true;
     }
@@ -50,7 +60,7 @@ namespace Gyro {
       // 背景を黒に
       DrawBox(0, 0, 1920, 1080, black, true);
       // ローディング画像の描画
-      DrawGraph(1400, 950, _loadHandle[_cnt / 10 % 4], true);
+      DrawGraph(1400, 950, _loadHandle[_cnt / 20 % 4], true);
       return true;
     }
 
@@ -60,7 +70,8 @@ namespace Gyro {
         return; // 読み込み済み
       }
       // ロード画像読み込み
-      LoadDivGraph("res/Loading/Loading2.png", 4, 2, 2, 500, 100, _loadHandle);
+      auto a = LoadDivGraph("res/Loading/Loading2.png", 4, 2, 2, 500, 100, _loadHandle);
+      // 読み込み完了
       _isLoad = true;
     }
 
@@ -73,8 +84,6 @@ namespace Gyro {
         // モードゲームの登録
         _appMain.GetModeServer().AddMode("Game", std::make_shared<Mode::ModeGame>(_appMain));
       }
-      // モードゲーム遷移
-      _appMain.GetModeServer().TransionToMode("Game");
     }
   } // namespace Mode
 } // namespace Gyro

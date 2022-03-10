@@ -129,6 +129,10 @@ namespace Gyro {
        * @brief ポーズ切り替え
        */
       void Pause();
+      /**
+       * @brief ローディング切り替え
+       */
+      void Loading();
     };
   } // namespace Mode
 } // namespace Gyro

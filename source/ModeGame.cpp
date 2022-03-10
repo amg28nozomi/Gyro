@@ -18,6 +18,7 @@
 #include "ModeGameOver.h"
 #include "ModeResult.h"
 #include "ModePause.h"
+#include "ModeLoading.h"
 
 namespace {
     constexpr auto TEXTURE = _T("res/Stage/water.png");
@@ -386,7 +387,9 @@ namespace Gyro {
         //  StageChange("boss");
         //}
         // ステージの切り替え
-        StageChange("boss");
+        //StageChange("boss");
+        // モードローディングへ遷移
+        Loading();
         // ボスステージ
         const Object::SpawnTable bossP{
           { Object::TypeSkySphere, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {3.0f, 3.0f, 3.0f}},
@@ -449,6 +452,17 @@ namespace Gyro {
       _appMain.GetModeServer().TransionToMode("Pause");
       // ポーズ開始
       _appMain.SetGamePause(true);
+    }
+
+    void ModeGame::Loading() {
+      // キーが登録されているか
+      bool key = _appMain.GetModeServer().Contains("Loading");
+      if (!key) {
+        // モードロードディングの登録
+        _appMain.GetModeServer().AddMode("Loading", std::make_shared<Mode::ModeLoading>(_appMain));
+      }
+      // モードロードディング遷移
+      _appMain.GetModeServer().PushBack("Loading");
     }
   } // namespace Mode
 } // namespace Gyro
