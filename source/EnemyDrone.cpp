@@ -334,7 +334,7 @@ namespace Gyro {
           _cnt = 20;
         }
         // 衝突フラグがある場合は無敵時間を開始する
-        _invincible->Start();
+        //_invincible->Start();
         return true; // 衝突判定
       }
       return false;  // 衝突なし

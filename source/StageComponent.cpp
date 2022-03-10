@@ -31,6 +31,8 @@ namespace Gyro {
     }
 
     bool StageComponent::Init(std::filesystem::path jsonName) {
+      // ステージネーム
+      _stageName = jsonName;
       // パスの生成
       std::filesystem::path p = "res/Stage";
       const auto jsonPath = (p / jsonName).generic_string() + ".json";
@@ -147,12 +149,14 @@ namespace Gyro {
     }
 
     bool StageComponent::ReleaseStageInfo() {
-      _stageModelMap.clear();
-      for (auto ite : _model) {
-        MV1DeleteModel(ite);
+      for (auto& [key, stageModels] : _stageModelMap) {
+        for (auto& [handle, stageData] : stageModels) {
+          MV1DeleteModel(handle);
+        }
+        stageModels.clear();
       }
-      _model.clear();
-      _skySphere.reset();
+      _stageModelMap.clear();
+      //_skySphere.reset();
 
       return true;
     }

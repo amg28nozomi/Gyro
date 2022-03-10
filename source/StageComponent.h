@@ -94,8 +94,19 @@ namespace Gyro {
       std::vector<int> GetStageModel() const {
           return _model;
       }
+      /**
+       * @brief  スカイスフィアの取得
+       * @return スカイスフィア
+       */
       std::shared_ptr<Object::SkySphere> GetSkySphere() {
         return _skySphere;
+      }
+      /**
+       * @brief  ステージネームの取得
+       * @return ステージネーム
+       */
+      std::filesystem::path GetStageName() {
+        return _stageName;
       }
     private:
       /**
@@ -104,6 +115,7 @@ namespace Gyro {
       std::unordered_map<std::string, std::vector<std::pair<int, StageData>>> _stageModelMap;
       std::vector<int> _model{ -1 }; //!< モデルハンドル格納用コンテナ
       std::shared_ptr<Object::SkySphere> _skySphere{ nullptr };
+      std::filesystem::path _stageName;
     };
   } //namespace Stage
 } // namespace Gyro

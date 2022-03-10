@@ -343,6 +343,8 @@ namespace Gyro {
       bool _gravityReset{false};
       //!< ゲームオーバー
       bool _gameOver{ false };
+      //!< ステージが変わったか
+      bool _stageChenge{ true };
     };
   } // namespace Player
 } // namespace Gyro

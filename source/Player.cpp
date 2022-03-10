@@ -227,6 +227,13 @@ namespace Gyro {
       if (!_invincible->Invincible()) {
         IsDamage();
       }
+      auto stage = "boss";
+      if (_app.GetStageComponent().GetStageName().generic_string() == stage && _stageChenge == true) {
+        auto oldPos = _position;
+        _position.Set(0.0f, 1000.f, -200.f);
+        move = _position - oldPos;
+        _stageChenge = false;
+      }
       // カメラの更新
       _app.GetCamera().Process(AppMath::Vector4(rightX, rightY), _position, move);
       // ワールド座標の設定
