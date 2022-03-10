@@ -229,11 +229,11 @@ namespace Gyro {
       }
       // ステージが変わった時座標変更
       auto stage = "boss";
-      if (_app.GetStageComponent().GetStageName().generic_string() == stage && _stageChenge == true) {
+      if (_app.GetStageComponent().GetStageName().generic_string() == stage && _stageChange == true) {
         auto oldPos = _position;
         _position.Set(0.0f, 1000.f, -200.f);
         move = _position - oldPos;
-        _stageChenge = false;
+        _stageChange = false;
       }
       // カメラの更新
       _app.GetCamera().Process(AppMath::Vector4(rightX, rightY), _position, move);
@@ -456,6 +456,7 @@ namespace Gyro {
       // ゲージの設定
       _gaugeHp.Init(GyroHP);
       _gaugeTrick.Init(TrickMax);
+      _stageChange = true;
     }
 
     void Player::CameraUpdate(const AppFrame::Math::Vector4 stick) {

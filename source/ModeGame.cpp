@@ -57,6 +57,12 @@ namespace Gyro {
       _appMain.SetGameOver(false);
       _appMain.SetGameClear(false);
       _appMain.SetGamePause(false);
+      _wave1 = true;
+      _wave2 = true;
+      _wave3 = true;
+      _wave4 = true;
+      _bossStage = true;
+      _waveNum = 0;
       return true;
     }
 
@@ -269,49 +275,61 @@ namespace Gyro {
       const Object::EnemyTable wave1{
         // 陸上型エネミーの配置情報
         { Object::EnemyWheel, { 100.0f, 705.0f, -200.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
-        { Object::EnemyWheel, { -200.0f, 705.0f, -200.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
-        /*{ Object::EnemyWheel, { 300.0f, 705.0f, -200.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
-        { Object::EnemyWheel, { -400.0f, 705.0f, -200.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},*/
+        //{ Object::EnemyWheel, { -200.0f, 705.0f, -200.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
+        //{ Object::EnemyWheel, { 300.0f, 705.0f, -200.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
+        //{ Object::EnemyWheel, { -400.0f, 705.0f, -200.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
       };
       const Object::EnemyTable wave2{
         { Object::EnemyDrone, { 100.0f, 845.0f, -4500.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
-        { Object::EnemyDrone, { -200.0f, 845.0f, -4500.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
-        /*{ Object::EnemyDrone, { 300.0f, 845.0f, -4500.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
-        { Object::EnemyDrone, { -400.0f, 845.0f, -4500.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},*/
+        //{ Object::EnemyDrone, { -200.0f, 845.0f, -4500.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
+        //{ Object::EnemyDrone, { 300.0f, 845.0f, -4500.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
+        //{ Object::EnemyDrone, { -400.0f, 845.0f, -4500.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
       };
       const Object::EnemyTable wave3{
         { Object::EnemyWheel, { 4100.0f, 480.0f, -7500.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
-        { Object::EnemyWheel, { 4200.0f, 480.0f, -7500.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
-        /*{ Object::EnemyDrone, { 4300.0f, 480.0f, -7500.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
-        { Object::EnemyDrone, { 4400.0f, 480.0f, -7500.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},*/
+        //{ Object::EnemyWheel, { 4200.0f, 480.0f, -7500.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
+        //{ Object::EnemyDrone, { 4300.0f, 480.0f, -7500.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
+        //{ Object::EnemyDrone, { 4400.0f, 480.0f, -7500.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
       };
       const Object::EnemyTable wave4{
         { Object::EnemyDrone, { 2100.0f, 765.0f, -11200.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
-        { Object::EnemyWheel, { 2200.0f, 765.0f, -11200.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
-        /*{ Object::EnemyWheel, { 2300.0f, 765.0f, -11200.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
-        { Object::EnemyDrone, { 2400.0f, 765.0f, -11200.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},*/
+        //{ Object::EnemyWheel, { 2200.0f, 765.0f, -11200.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
+        //{ Object::EnemyWheel, { 2300.0f, 765.0f, -11200.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
+        //{ Object::EnemyDrone, { 2400.0f, 765.0f, -11200.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
       };
       const Object::EnemyTable wave5{
         { Object::EnemyWheel, { 1600.0f, 1200.0f, -15500.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
-        { Object::EnemyDrone, { 1700.0f, 1200.0f, -15500.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
-        /*{ Object::EnemyDrone, { 1800.0f, 1200.0f, -15500.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
-        { Object::EnemyWheel, { 1900.0f, 1200.0f, -15500.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},*/
+        //{ Object::EnemyDrone, { 1700.0f, 1200.0f, -15500.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
+        //{ Object::EnemyDrone, { 1800.0f, 1200.0f, -15500.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
+        //{ Object::EnemyWheel, { 1900.0f, 1200.0f, -15500.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
       };
       // 各種テーブルを基にスポーンテーブルを作成
-      Object::SpawnData table{
+      Object::SpawnData table1{
         {0, std::make_tuple(normal, wave1)},
-        {1, std::make_tuple(none, wave2)},
-        {2, std::make_tuple(none, wave3)},
-        {3, std::make_tuple(none, wave4)},
-        {4, std::make_tuple(none, wave5)},
+      };
+      Object::SpawnData table2{
+        {0, std::make_tuple(none, wave2)},
+      };
+      Object::SpawnData table3{
+        {0, std::make_tuple(none, wave3)},
+      };
+      Object::SpawnData table4{
+        {0, std::make_tuple(none, wave4)},
+      };
+      Object::SpawnData table5{
+        {0, std::make_tuple(none, wave5)},
       };
       // スポーンテーブルの登録
-      _appMain.GetSpawnServer().AddSpawnTable("test", table);
+      _appMain.GetSpawnServer().AddSpawnTable("wave1", table1);
+      _appMain.GetSpawnServer().AddSpawnTable("wave2", table2);
+      _appMain.GetSpawnServer().AddSpawnTable("wave3", table3);
+      _appMain.GetSpawnServer().AddSpawnTable("wave4", table4);
+      _appMain.GetSpawnServer().AddSpawnTable("wave5", table5);
 #ifndef _DEBUG
-      _appMain.GetSpawnServer().SetStage("test");
+      _appMain.GetSpawnServer().SetStage("wave1");
 #else
       try {
-        _appMain.GetSpawnServer().SetStage("test");
+        _appMain.GetSpawnServer().SetStage("wave1");
       } catch (std::logic_error error) {
         OutputDebugString(error.what());
       }
@@ -325,25 +343,29 @@ namespace Gyro {
       // プレイヤーの位置を見て敵スポーンさせる
       auto pPos = _appMain.GetObjectServer().GetPlayer().get()->GetPosition();
       if (pPos.GetZ() < -2244.f && _wave1 == true) {
-        _appMain.GetSpawnServer().Spawn(1);
+        _appMain.GetSpawnServer().SetStage("wave2");
+        _appMain.GetSpawnServer().Spawn(0);
         _waveNum++;
         _wave1 = false;
       }else if (pPos.GetZ() < -6600.f && _wave2 == true) {
-        _appMain.GetSpawnServer().Spawn(2);
+        _appMain.GetSpawnServer().SetStage("wave3");
+        _appMain.GetSpawnServer().Spawn(0);
         _waveNum++;
         _wave2 = false;
       }else if (pPos.GetZ() < -9600.f && _wave3 == true) {
-        _appMain.GetSpawnServer().Spawn(3);
+        _appMain.GetSpawnServer().SetStage("wave4");
+        _appMain.GetSpawnServer().Spawn(0);
         _waveNum++;
         _wave3 = false;
       }else if (pPos.GetZ() < -13500.f && _wave4 == true) {
-        _appMain.GetSpawnServer().Spawn(4);
+        _appMain.GetSpawnServer().SetStage("wave5");
+        _appMain.GetSpawnServer().Spawn(0);
         _waveNum++;
         _wave4 = false;
       }
       // 最終ウェーブ時に
       if (waveMax <= _waveNum && _bossStage == true) {
-        // オブジェクトのコピー
+        //// オブジェクトのコピー
         //auto objects = _appMain.GetObjectServer().GetObjects();
         //// 動的配列に一致する要素があるか判定する
         //auto activeEnemy = std::any_of(objects.begin(), objects.end(),
@@ -351,10 +373,18 @@ namespace Gyro {
         //    // 生存状態の敵はいるか
         //    return (obj->GetId() == Object::ObjectBase::ObjectId::Enemy) && obj->GetState() == Object::ObjectBase::ObjectState::Active; });
         //if (!activeEnemy) {
+        //  // いないならステージの切り替え
+        //  StageChange("boss");
+        //}else {
+        //  for (auto obj : objects) {
+        //    // 敵なら続く
+        //    if (obj->GetId() != Object::ObjectBase::ObjectId::Enemy)continue;
+        //    auto enemy = std::dynamic_pointer_cast<Enemy::EnemyBase>(obj).get()->GetState();
+        //    enemy = Object::ObjectBase::ObjectState::Dead;
+        //  }
         //  // ステージの切り替え
         //  StageChange("boss");
         //}
-
         // ステージの切り替え
         StageChange("boss");
         // ボスステージ

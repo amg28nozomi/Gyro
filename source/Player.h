@@ -336,7 +336,7 @@ namespace Gyro {
       //!< 重力リセット処理
       bool _gravityReset{false};
       //!< ステージが変わったか
-      bool _stageChenge{ true };
+      bool _stageChange{ true };
     };
   } // namespace Player
 } // namespace Gyro
