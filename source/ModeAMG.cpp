@@ -7,6 +7,7 @@
  *********************************************************************/
 #include "ModeAMG.h"
 #include "ModeTitle.h"
+#include "StageComponent.h"
 
 namespace {
   // 各種定数
@@ -62,6 +63,10 @@ namespace Gyro {
       _amgHandle = LoadGraph("res/Logo/amglogo.png");
       // 読み込み完了
       _isLoad = true;
+      // 非同期処理フラグtrue
+      SetUseASyncLoadFlag(true);
+      // 通常ステージの読み込み開始
+      _appMain.GetStageComponent().Init("stage");
     }
 
     void ModeAMG::ChangeMode() {

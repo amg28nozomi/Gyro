@@ -1,16 +1,15 @@
 /*****************************************************************//**
- * @file    ModeAMG.h
- * @brief   モードAMGクラス
- *
- * @author  宮澤耀生
- * @date    February 2022
+ * @file   ModeLoading.h
+ * @brief  モードローディングクラス
+ * 
+ * @author 土橋峡介
+ * @date   March 2022
  *********************************************************************/
 #pragma once
 #include "ApplicationMain.h"
-
- /**
-  * @brief ゲームベース
-  */
+/**
+ * @brief ゲームベース
+ */
 namespace Gyro {
   namespace Application {
     class ApplicationMain; //!< 前方宣言
@@ -19,22 +18,21 @@ namespace Gyro {
    * @brief モードベース
    */
   namespace Mode {
-    namespace AppMath = AppFrame::Math;
     /**
-     * @class ModeAMG
-     * @brief モードAMGクラス
+     * @class ModeLoading
+     * @brief モードローディングクラス
      */
-    class ModeAMG : public AppFrame::Mode::ModeBase {
+    class ModeLoading : public AppFrame::Mode::ModeBase {
     public:
       /**
-       * @brief  コンストラクタ
-       * @param  app アプリケーションの参照
+       * @brief コンストラクタ
+       * @param app アプリケーションの参照
        */
-      ModeAMG(Application::ApplicationMain& app);
+      ModeLoading(Application::ApplicationMain& app);
       /**
-       * @brief  デストラクタ
+       * @brief デストラクタ
        */
-      ~ModeAMG() override;
+      ~ModeLoading() override;
       /**
        * @brief  初期化処理
        * @return true
@@ -60,7 +58,6 @@ namespace Gyro {
        * @return true
        */
       bool Draw() const override;
-
     private:
       /**
        * @brief  リソース読み込み
@@ -71,7 +68,8 @@ namespace Gyro {
        */
       void ChangeMode();
 
-      int _amgHandle{ -1 };  //!< AMG画像
+      int _loadHandle[ 4 ]{ -1 };  //!< AMG画像
+      int _cnt{ 0 };               //!< カウント
       //!< アプリケーションメインの参照
       Application::ApplicationMain& _appMain;
     };

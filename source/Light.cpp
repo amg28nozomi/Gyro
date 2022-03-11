@@ -16,9 +16,7 @@ namespace Gyro {
     }
 
     Light::~Light() {
-      // ライトをデフォルトに戻す
-      DeleteLightHandleAll();
-      SetLightEnable(true);
+      
     }
 
     void Light::Init() {
