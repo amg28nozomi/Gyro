@@ -41,6 +41,8 @@ namespace Gyro {
       }
       // 向きベクトルの取得
       auto forward = _owner.GetForward();
+      // 向きの取得
+      auto rotation = _owner.GetRotation();
       // 力を算出
       auto power = _power / _count;
       // 別名定義
