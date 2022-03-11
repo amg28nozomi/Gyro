@@ -18,6 +18,8 @@ namespace Gyro {
 
     void DashComponent::Init() {
       // 初期化処理
+      _dashState = DashState::NoActive;
+
     }
 
     void DashComponent::Start() {
@@ -32,11 +34,9 @@ namespace Gyro {
 
     bool DashComponent::Process(AppMath::Vector4& move) {
       // ダッシュ状態かの判定
-      if (_dashState != DashState::Active) {
+      if (!IsDash()) {
         // インターバル中か？
-        if (IsInterval()) {
-          Interval();
-        }
+        Interval();
         return false;
       }
       // 向きベクトルの取得
@@ -52,14 +52,19 @@ namespace Gyro {
       return true;
     }
 
-    void DashComponent::Interval() {
+    bool DashComponent::Interval() {
+      // インターバル中でない場合は処理を行わない
+      if (!IsInterval()) {
+        return false;
+      }
       // インターバルが終了したかの判定
       if (_intervalTime <= 0.0f) {
         _dashState = DashState::NoActive;
         _intervalTime = 0.0f;
-        return;
+        return true;
       }
       _intervalTime -= 10.0f; // インターバルタイムを経過させる
+      return true;
     }
 
     void DashComponent::SetDash(const float dashPower, float totalTime, float playSpeed) {

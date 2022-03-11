@@ -102,13 +102,6 @@ namespace Gyro {
         return _handleMap;
       }
       /**
-       * @brief  ゲームオーバーの取得
-       * @return ゲームオーバー
-       */
-      bool GetGameOver() const {
-        return _gameOver;
-      }
-      /**
        * @brief  指定したフレームのワールド座標を取得
        * @param  frame フレーム番号
        * @return 取得に成功した場合はワールド座標を返す
@@ -265,6 +258,11 @@ namespace Gyro {
        */
       void Attack();
       /**
+       * @brief  エキサイトトリック
+       * @return true:トリック開始 false:トリック失敗
+       */
+      bool ExiteTrick();
+      /**
        * @brief  移動処理の開始
        * @return true:正常終了 false:問題発生
        */
@@ -311,6 +309,7 @@ namespace Gyro {
        * @return true:再生 false:問題発生
        */
       bool PlayEffect() const;
+
       /**
        * @brief  コリジョンを生成する
        * @param  num    生成する数
@@ -341,8 +340,6 @@ namespace Gyro {
       std::string _animationKey;
       //!< 重力リセット処理
       bool _gravityReset{false};
-      //!< ゲームオーバー
-      bool _gameOver{ false };
     };
   } // namespace Player
 } // namespace Gyro

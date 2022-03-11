@@ -14,7 +14,6 @@
 #include "PrimitivePlane.h"
 #include "ObjectServer.h"
 #include "StageComponent.h"
-#include "StageTransition.h"
 #include "ModeGameOver.h"
 
 namespace {
@@ -38,9 +37,11 @@ namespace Gyro {
       // エフェクトリソースの読み取り
       LoadEffectResource();
       // ステージの切り替え
-      StageChange(_appMain.GetStageTransition().GetStageType());
+      StageChange(Stage::StageTransition::StageType::Normal);
       // BGMのループ再生開始
       PlayBgm("bgm", BgmVolume);
+      // ゲーム状態の設定
+      _gameState = GameState::Play;
       // カメラの初期化
       _appMain.GetCamera().Init();
       // ライトの設定
@@ -73,8 +74,6 @@ namespace Gyro {
       };
       // 生成したリストを登録する
       _appMain.GetStageTransition().Register(stageMap);
-      // 初回のみキーを直接セットする
-      _appMain.GetStageTransition().SetStageKey(StageType::Normal);
       // 重力加速度をセットする
       AppMath::GravityBase::SetScale(GravityScale);
       return true;
@@ -115,6 +114,8 @@ namespace Gyro {
       // フェードアウトが終了した場合のみ、処理を実行する
       if (_appMain.GetStageTransition().IsTransition()) {
         SetSpawn(); // オブジェクトを生成
+        _appMain.GetModeServer().FadeOutReset();
+        return false;
       }
       // モードゲームの入力処理
       Input(_app.GetOperation());
@@ -152,12 +153,6 @@ namespace Gyro {
     bool ModeGame::StageChange(const Stage::StageTransition::StageType& key) {
       // ステージの遷移予約を行う
       return _appMain.GetStageTransition().ChangeReserve(key);
-    }
-
-    bool ReserveStage(const Stage::StageTransition::StageType& nextStage)
-
-    Application::ApplicationMain& ModeGame::GetAppMain() {
-      return _appMain;
     }
 
     void ModeGame::LoadResource() {
@@ -267,7 +262,7 @@ namespace Gyro {
 
     bool ModeGame::GameOver() {
       // ゲームオーバーフラグが立っているかの判定
-      if (!_appMain.GetObjectServer().GetPlayer()->GetGameOver()) {
+      if (_gameState != GameState::GameOver) {
         return false; // ゲームオーバーではないため処理を行わない
       }
       // モードゲームの削除

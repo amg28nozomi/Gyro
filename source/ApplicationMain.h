@@ -75,6 +75,15 @@ namespace Gyro {
         return 0;
       }
       /**
+       * @brief  ゲームオーバー状態かの判定
+       * @return true:ゲームオーバー false:ゲームオーバーではない
+       */
+      bool IsGameOver() const;
+      /**
+       * @brief  ゲームオーバーの呼び出し
+       */
+      void GameOver();
+      /**
        * @brief  オブジェクトサーバの取得
        * @return オブジェクトサーバの参照
        */

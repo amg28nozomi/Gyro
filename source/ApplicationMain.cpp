@@ -10,6 +10,7 @@
 #include <DxLib.h>
 #include "ObjectServer.h"
 #include "ModeAMG.h"
+#include "ModeGame.h"
 #include "SpawnServer.h"
 #include "StageTransition.h"
 #include "StageComponent.h"
@@ -52,6 +53,7 @@ namespace Gyro {
             _stage = std::make_unique<Stage::StageComponent>(*this);
             // ステージ遷移マネージャーの生成
             _stageTransition = std::make_unique<Stage::StageTransition>(*this);
+            _stageTransition->Init();
             // モードゲームの登録
             _modeServer->AddMode("AMG", std::make_shared<Mode::ModeAMG>(*this));
             _modeServer->TransionToMode("AMG");
@@ -77,6 +79,16 @@ namespace Gyro {
 
         bool ApplicationMain::Process() {
             return ApplicationBase::Process();
+        }
+
+        bool ApplicationMain::IsGameOver() const {
+          // ゲームオーバー状態かの判定を行う
+          return std::dynamic_pointer_cast<Mode::ModeGame>(_modeServer->GetMode("game"))->IsGameOver();
+        }
+
+        void ApplicationMain::GameOver() {
+          // ゲームオーバー状態に遷移する
+          std::dynamic_pointer_cast<Mode::ModeGame>(_modeServer->GetMode("game"))->ToGameOver();
         }
 
         bool ApplicationMain::Effekseer() {

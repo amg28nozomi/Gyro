@@ -70,7 +70,7 @@ namespace Gyro {
       /**
        * @brief インターバル処理
        */
-      void Interval();
+      bool Interval();
       /**
        * @brief  移動量の取得
        * @return 移動量
@@ -84,6 +84,13 @@ namespace Gyro {
        */
       DashState GetDashState() const {
         return _dashState;
+      }
+      /**
+       * @brief  ダッシュ状態かの判定
+       * @return true:ダッシュ状態 false:ダッシュ状態ではない
+       */
+      bool IsDash() const {
+        return _dashState == DashState::Active;
       }
       /**
        * @brief  インターバルがあるかの判定
@@ -105,6 +112,8 @@ namespace Gyro {
       int _count{0};
       //!< 移動量
       AppMath::Vector4 _move{};
+      //!< 進行方向ベクトル
+      AppMath::Vector4 _forwarad{};
     };
   } // namespace Object
 } // namespace Gyro

@@ -46,7 +46,7 @@ namespace Gyro {
       // 向きベクトルを取得
       auto v = segment.Segment();
       using Vector4 = AppMath::Vector4;
-      // 長さがない
+      // ベクトルの長さがない
       if (Vector4::NearZero(v)) {
         return false;
       }

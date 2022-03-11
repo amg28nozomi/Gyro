@@ -693,6 +693,10 @@ namespace Gyro {
       _attack->Process();
     }
 
+    bool Player::ExiteTrick() {
+
+    }
+
     bool Player::DashStart() {
       // ダッシュを開始する
       // _dash->SetDash(, 600.0f);
@@ -719,12 +723,14 @@ namespace Gyro {
         if (enemy->GetEnemyState() != Enemy::EnemyBase::EnemyState::Attack) continue;
         // 球と球の衝突判定
         if (_capsule->IntersectSphere(std::dynamic_pointer_cast<Enemy::EnemyBase>(obj)->GetCollision())) {
+          // ノックバック処理の開始
           _knockBack->Start();
+          // ヒットポイントの減少
           _playerHP -= 100;
           _gaugeHp.Sub(100);
+          // HPが一定を下回った場合
           if (_playerHP <= 0) {
-            // ゲームオーバー
-            _gameOver = true;
+            _app.GameOver(); // ゲームオーバー処理の呼び出し
           }
           // 無敵時間を開始する
           _invincible->Start();

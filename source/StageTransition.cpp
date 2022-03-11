@@ -98,6 +98,8 @@ namespace Gyro {
       // 遷移予約を行う
       _transition = true;
       _reserveType = stage;
+      // フェード処理を開始する
+      _app.GetModeServer().FadeStart();
       return true;
     }
 
@@ -112,8 +114,6 @@ namespace Gyro {
       if (StageNull(stage)) {
         return false;
       }
-      // ステージ情報の削除
-      _app.GetStageComponent().ReleaseStageInfo();
       // ステージの読み込み
       _app.GetStageComponent().Init(key);
       // ステージキーの切り替え
@@ -140,8 +140,6 @@ namespace Gyro {
     }
 
     bool StageTransition::Transition() {
-      // 前ステージの情報を削除する
-      _app.GetStageComponent().ReleaseStageInfo();
       // ステージコンポーネントの初期化を行う
       _app.GetStageComponent().Init(StageKey(_reserveType));
       // 現在のキーを更新

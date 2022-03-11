@@ -9,6 +9,7 @@
 #include <appframe.h>
 #include "SpawnBase.h"
 #include "SpawnEnemy.h"
+#include "SpawnItem.h"
 #include "StageComponent.h"
 /**
  * @brief ゲームベース
@@ -36,6 +37,9 @@ namespace Gyro {
   namespace Stage {
     class StageComponent;
   }
+  namespace Item {
+    class Box;
+  } // namespace Item
   /**
    * @brief オブジェクトベース
    */
@@ -146,6 +150,12 @@ namespace Gyro {
        * @return 陸上型敵のシェアードポインタ
        */
       std::shared_ptr<Enemy::EnemyWheel> EnemyWheel(SpawnEnemy& spawn) const;
+      /**
+       * @brief  箱の生成
+       * @param  spawn スポーン情報
+       * @return 箱のシェアードポインタ
+       */
+      std::shared_ptr<Item::Box> ItemBox(std::shared_ptr<SpawnBase>& spawn) const;
       /**
        * @brief  空中型敵の生成
        * @param  spawn スポーン情報

@@ -20,6 +20,10 @@ namespace Gyro {
     SpawnBase::SpawnBase(const int type, const Vector4& position, const Vector4& rotation, const Vector4& scale) {
       // 各種パラメータの設定
       _type = NumberToType(type);
+      SetTransForm(position, rotation, scale);
+    }
+
+    void SpawnBase::SetTransForm(const Vector4& position, const Vector4& rotation, const Vector4& scale) {
       _position = position;
       _rotation = rotation;
       _scale = scale;

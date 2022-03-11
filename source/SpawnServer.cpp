@@ -7,6 +7,7 @@
  *********************************************************************/
 #include "SpawnServer.h"
 #include "ApplicationMain.h"
+#include "Box.h"
 #include "ObjectBase.h"
 #include "ObjectServer.h"
 #include "Player.h"
@@ -133,6 +134,11 @@ namespace Gyro {
           // スカイスフィアの生成・登録を行う
           AddSkySphere(Skysphere(spawn));
           break;
+          // アイテム
+        case SpawnBase::ObjectType::Item:
+          // アイテムの生成・登録
+          AddObject(ItemBox(spawn));
+          break;
           // オブジェクトタイプの該当がない場合
         case SpawnBase::ObjectType::None:
 #ifdef _DEBUG
@@ -211,6 +217,14 @@ namespace Gyro {
       auto drone = std::make_shared<Enemy::EnemyDrone>(_appMain);
       drone->Set(enemy);       // スポーン情報の設定
       return std::move(drone); // 生成したシェアードポインタを返す
+    }
+
+    std::shared_ptr<Item::Box> SpawnServer::ItemBox(std::shared_ptr<SpawnBase>& spawn) const {
+      // ボックスの生成
+      auto box = std::make_shared<Item::Box>(_appMain);
+      // スポーン情報の設定
+      box->Set(*std::dynamic_pointer_cast<SpawnItem>(spawn));
+      return std::move(box);
     }
 
     std::shared_ptr<SkySphere> SpawnServer::Skysphere(std::shared_ptr<SpawnBase>& spawn) const {
