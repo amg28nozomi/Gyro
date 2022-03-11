@@ -212,7 +212,7 @@ namespace Gyro {
       void Animation(PlayerState old);
       /**
        * @brief  状態の切り替え処理(βプレゼン専用)
-       * @param  move XBOXコントローラの入力状態クラスの参照
+       * @param  input XBOXコントローラの入力状態クラスの参照
        * @return true:チェンジ false:変更なし
        */
       bool StateChanege(const AppFrame::Application::XBoxState& input);
@@ -294,6 +294,14 @@ namespace Gyro {
        */
       int NextKey() const;
       /**
+       * @brief  攻撃判定
+       * @param  input XBOXコントローラの入力状態クラスの参照
+       * @param  key   判定で使用するキー番号
+       * @param  flag  弱・強攻撃判定用フラグ
+       * @return true:遷移開始 false:未遷移
+       */
+      bool InputAttackCheck(const AppFrame::Application::XBoxState& input, const int key, bool flag);
+      /**
        * @brief  状態の変更
        * @return true: false:
        */
@@ -304,6 +312,11 @@ namespace Gyro {
        * @return true:遷移する false:遷移しない
        */
       bool IsRun(const AppMath::Vector4& move);
+      /**
+       * @brief  ノックバック処理
+       * @param  move 移動量の参照
+       */
+      void KnockBack(AppMath::Vector4& move);
       /**
        * @brief  プレイヤー状態を数値に変換する
        * @return プレイヤー状態に対応した

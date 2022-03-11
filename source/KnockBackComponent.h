@@ -57,6 +57,13 @@ namespace Gyro {
        */
       bool Process();
       /**
+       * @brief  ノックバック状態かの判定
+       * @return true:ノックバック中 false:ノックバック状態ではない
+       */
+      bool IsKnockBack() const {
+        return _state == KnockBackState::Active;
+      }
+      /**
        * @brief  ノックバック状態の取得
        * @return ノックバック状態
        */

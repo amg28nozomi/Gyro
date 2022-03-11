@@ -64,6 +64,9 @@ namespace {
 
   constexpr auto RunPower = 3.8f;
 
+  constexpr auto LightFlag = true;  //!< 弱攻撃フラグ
+  constexpr auto HeavyFlag = false; //!< 強攻撃フラグ
+
   // 状態を表すキー
   constexpr auto StateNumberIdle = 0;    //!< 待機
   constexpr auto StateNumberWalk = 1;    //!< 歩き
@@ -213,11 +216,8 @@ namespace Gyro {
       _capsule->Process(move); // カプセルの更新
       //衝突判定
       Hit();
-      if (_knockBack->GetState() != Object::KnockBackComponent::KnockBackState::NonActive) {
-        _knockBack->Process();
-        move = _knockBack->MoveVector();
-        _position.Add(move);
-      }
+      // ノックバック処理
+      KnockBack(move);
       // ダメージ・無敵処理
       Invincible();
       // 地形の押し出し処理
@@ -309,12 +309,26 @@ namespace Gyro {
     }
 
     bool Player::StateChanege(const AppFrame::Application::XBoxState& input) {
-      // 既に攻撃状態か
+      // 攻撃状態かの判定
       if (IsAttackState()) {
         // 検索で使用するキーの取得
         auto key = NextKey();
-        // キーの取得に失敗しなかった場合
-        if (key != -1) {
+        /**
+         * @brief  攻撃遷移用の入力判定を行うか
+         * @param  nextKey 遷移判定で使用するキーボタン
+         * @param  flag    攻撃遷移フラグ(true:遷移予約 false:予約なし)
+         * @return true:入力判定を行う false:入力判定を行わない
+         */
+        auto AttackInput = [](int nextKey, bool flag) {
+          // 遷移フラグが立っているかの判定
+          if (flag) {
+            return false; // 入力判定は行わない
+          }
+          // キーの取得に成功したかを返す
+          return nextKey != -1;
+        };
+        // 入力判定を行うか
+        if (AttackInput(key, _nextAttack)) {
           // 攻撃遷移判定
           if (input.GetButton(key, false) && _stateComponent->Process(_modelAnim.GetMainPlayTime())) {
             // 条件を満たしている場合は攻撃遷移フラグをセットする
@@ -334,7 +348,18 @@ namespace Gyro {
             SetStateParam(stateMap.at(_playerState));
             // 攻撃処理開始
             _attack->Start();
+            // 
+            _intervalAttack = true;
             return true;
+          }
+          // 待機状態への遷移を行うか
+          if (_intervalAttack) {
+            // アニメーションブレンド中かの判定
+            if (_modelAnim.IsBlending()) {
+              return true;
+            }
+            // アニメーションブレンドが終了したので待機処理を無効
+            _intervalAttack = false;
           }
           // 待機状態に遷移する
           _playerState = PlayerState::Idle;
@@ -351,36 +376,18 @@ namespace Gyro {
       if (_playerState == PlayerState::Idle || _playerState == PlayerState::Run || _playerState == PlayerState::Walk) {
         // 攻撃状態に遷移できるか
         if (_attack->ToAttack()) {
-          // Yボタンの入力があった場合
-          if (input.GetButton(XINPUT_BUTTON_Y, false)) {
-            // 強攻撃に遷移する
-            SetStateParam(PlayerState::Attack1);
-            // 攻撃判定で使用するフレーム番号の取得
-            auto frames = attackMap.at(PlayerStateToNumber());
-            // フレームとコリジョン情報の設定
-            _attack->SetFrame(frames, AddSpheres(static_cast<int>(frames.size())));
-            _stateComponent->Start();
-            _attack->Start();
-            _attackFlag = true;
-            return true; // 遷移する
-          }
-          // Xボタンの入力があった場合
-          if (input.GetButton(XINPUT_BUTTON_X, false)) {
-            // 弱攻撃に遷移する
-            SetStateParam(PlayerState::Attack1);
-            // 攻撃判定で使用するフレーム番号の取得
-            auto frames = attackMap.at(PlayerStateToNumber());
-            // フレームとコリジョン情報の設定
-            _attack->SetFrame(frames, AddSpheres(static_cast<int>(frames.size())));
-            _stateComponent->Start();
-            _attack->Start();
-            _attackFlag = false;
-            return true; // 遷移する
+          // 弱攻撃判定
+          auto light = InputAttackCheck(input, XINPUT_BUTTON_Y, LightFlag);
+          // 強攻撃判定
+          auto heavy = InputAttackCheck(input, XINPUT_BUTTON_X, HeavyFlag);
+          // どちらかの状態に遷移したか
+          if (light || heavy) {
+            return true;
           }
         }
         // Aボタンの入力があった場合はジャンプ状態に遷移
         if (input.GetButton(XINPUT_BUTTON_A, false)) {
-          Jump(); // ジャンプ処理
+          Jump();      // ジャンプ処理
           return true; // 遷移する
         }
       }
@@ -400,6 +407,23 @@ namespace Gyro {
       default:
         return -2;  // 攻撃状態ではない
       }
+    }
+
+    bool Player::InputAttackCheck(const AppFrame::Application::XBoxState& input, const int key, bool flag) {
+      // 入力が行われたかの判定
+      if (input.GetButton(key, false)) {
+
+        SetStateParam(PlayerState::Attack1);
+        // 攻撃判定で使用するフレーム番号の取得
+        auto frames = attackMap.at(PlayerStateToNumber());
+        // フレームとコリジョン情報の設定
+        _attack->SetFrame(frames, AddSpheres(static_cast<int>(frames.size())));
+        _stateComponent->Start();
+        _attack->Start();
+        _attackFlag = flag;
+        return true; // 遷移する
+      }
+      return false; // 入力無し
     }
 
     void Player::Input() {
@@ -488,6 +512,19 @@ namespace Gyro {
         return true; // 走り状態に
       }
       return false;  // 走り状態ではない
+    }
+
+    void Player::KnockBack(AppMath::Vector4& move) {
+      // ノックバック状態ではない場合は処理を行わない
+      if (!_knockBack->IsKnockBack()) {
+        return;
+      }
+      // 更新処理呼び出し
+      _knockBack->Process();
+      // 移動量更新
+      move = _knockBack->MoveVector();
+      // 移動量で座標を更新する
+      _position.Add(move);
     }
 
     void Player::Animation(PlayerState old) {
@@ -674,7 +711,6 @@ namespace Gyro {
           auto normal = Vector4(hit.Dim[i].Normal.x, hit.Dim[i].Normal.y, hit.Dim[i].Normal.z);
           // スライドベクトル
           auto slide = Vector4::Cross(normal, Vector4::Cross(move, normal));
-          // 
           // slide.SetY(0.0f);
           newPosition.Sub(slide);
           newCapsule.SetPosition(newPosition);
