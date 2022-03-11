@@ -10,12 +10,16 @@
 #include "CollisionAABB.h"
 #include "CollisionCapsule.h"
 #include "EffectComponent.h"
+#include "ObjectServer.h"
+#include "Player.h"
 
 namespace Gyro {
   namespace Object {
 
     HealBox::HealBox(Application::ApplicationMain& app) : ObjectBase(app) {
+      _id = ObjectId::Field;
       _state = ObjectState::Active;
+      _healPoint = 300.0f / 600.0f;
     }
 
     bool HealBox::Process() {
@@ -29,11 +33,32 @@ namespace Gyro {
       }
       // 生存時間を減少させる
       _totalTime -= _speed;
+      // 自機を回復させる
+      HealPlayer();
       return true;
     }
 
-    bool HealBox::IsInvasion(const CollisionCapsule& capsule) const {
-      // カプセルとAABBの衝突判定を行う
+    bool HealBox::IsInvasion(const CollisionCapsule& capsule, float& heal) const {
+      const auto [min, max] = capsule.LineSegment().GetVector();
+      if (_collision->CheckPoint(min) || _collision->CheckPoint(max)) {
+        // 回復量を返す
+        heal = _healPoint;
+        return true;
+      }
+      return false;
+    }
+
+    bool HealBox::HealPlayer() {
+      // 自機の取得
+      auto player = _app.GetObjectServer().GetPlayer();
+      // 取得に失敗した場合はスキップ
+      if (player == nullptr) return false;
+      // 接触している場合は自機を回復する
+      if (_collision->CheckPoint(player->GetPosition())) {
+        // 回復処理を開始する
+        player->Heal(_healPoint);
+        return true;
+      }
       return false;
     }
 

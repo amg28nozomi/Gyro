@@ -133,9 +133,7 @@ namespace Gyro {
       /**
        * @brief  ゲームオーバー状態への切り替え
        */
-      inline void ToGameOver() {
-        _gameState = GameState::GameOver;
-      }
+      void ToGameOver();
     };
   } // namespace Mode
 } // namespace Gyro

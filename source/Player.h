@@ -132,6 +132,11 @@ namespace Gyro {
        * @return 向き(ラジアン値)
        */
       float GetRotationRadianY() const;
+      /**
+       * @brief  回復処理
+       * @return
+       */
+      bool Heal(const float heal);
     private:
       //!< モデルハンドル
       int _model;
@@ -234,7 +239,7 @@ namespace Gyro {
       /**
        * @brief  押し出し処理
        */
-      void Extrude() override;
+      void Extrude(const AppMath::Vector4& move);
       /**
        * @brief 衝突判定処理
        */
@@ -309,7 +314,22 @@ namespace Gyro {
        * @return true:再生 false:問題発生
        */
       bool PlayEffect() const;
-
+      /**
+       * @brief  無敵・ダメージ処理
+       */
+      void Invincible();
+      /**
+       * @brief  床との接触判定
+       * @param  capsule カプセル
+       * @param  position 座標
+       * @return true:接触 false:接触していない
+       */
+      bool StandFloor(Object::CollisionCapsule capsule, const AppMath::Vector4& position);
+      /**
+       * @brief  オブジェクトの上に立っているかの判定
+       * @return true:接触している false:接触していない
+       */
+      bool IsStandObject(Object::CollisionCapsule capsule, AppMath::Vector4& position);
       /**
        * @brief  コリジョンを生成する
        * @param  num    生成する数
@@ -340,6 +360,10 @@ namespace Gyro {
       std::string _animationKey;
       //!< 重力リセット処理
       bool _gravityReset{false};
+      //!< 攻撃派生フラグ
+      bool _nextAttack{false};
+      //!< 攻撃のインターバルフラグ
+      bool _intervalAttack{false};
     };
   } // namespace Player
 } // namespace Gyro

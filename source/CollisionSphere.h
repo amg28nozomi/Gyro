@@ -71,6 +71,13 @@ namespace Gyro {
       float Radius() const {
         return _radius;
       }
+      /**
+       * @brief  ”¼Œa‚Ì“ñæ‚ğæ“¾
+       * @return ”¼Œa‚Ì“ñæ
+       */
+      inline float RadiusSquared() const {
+        return _radius * _radius;
+      }
     private:
       float _radius{0.0f}; //!< ‰~‚Ì”¼Œa
     };

@@ -82,13 +82,25 @@ namespace Gyro {
         }
 
         bool ApplicationMain::IsGameOver() const {
+          // モードゲームの取得
+          auto game = _modeServer->GetMode("Game");
+          // 取得に失敗
+          if (game == nullptr) {
+            return false; // 取得失敗
+          }
           // ゲームオーバー状態かの判定を行う
-          return std::dynamic_pointer_cast<Mode::ModeGame>(_modeServer->GetMode("game"))->IsGameOver();
+          return std::dynamic_pointer_cast<Mode::ModeGame>(game)->IsGameOver();
         }
 
         void ApplicationMain::GameOver() {
+          // モードゲームの取得
+          auto game = _modeServer->GetMode("Game");
+          // 取得に失敗
+          if (game == nullptr) {
+            return; // 取得失敗
+          }
           // ゲームオーバー状態に遷移する
-          std::dynamic_pointer_cast<Mode::ModeGame>(_modeServer->GetMode("game"))->ToGameOver();
+          std::dynamic_pointer_cast<Mode::ModeGame>(game)->ToGameOver();
         }
 
         bool ApplicationMain::Effekseer() {

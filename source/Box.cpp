@@ -7,15 +7,16 @@
  *********************************************************************/
 #include "Box.h"
 #include "ApplicationMain.h"
-#include "CollisionAABB.h"
 #include "SpawnItem.h"
 #include "ObjectServer.h"
 #include "HealBox.h"
 #include "UtilityDX.h"
+#include "Player.h"
+#include "AttackComponent.h"
 
 namespace {
-  constexpr auto TotalTime = 0.0f;
-  constexpr auto PlayTime = 0.0f;
+  constexpr auto TotalTime = 600.0f;
+  constexpr auto PlayTime = 1.0f;
   constexpr auto DefaultSound = "";
   constexpr auto HealSound = "";
 }
@@ -25,12 +26,21 @@ namespace Gyro {
 
     Box::Box(Application::ApplicationMain& app) : ObjectBase(app) {
       // デフォルトのサウンドキーをセットする
+      _id = ObjectId::Item;
       _sound = DefaultSound;
+      _model = 0;
     }
 
     bool Box::Process() {
       // 更新処理
-      return ObjectBase::Process();
+      ObjectBase::Process();
+      return IsDamage();
+    }
+
+    bool Box::Draw() const {
+      // モデルの描画を行う
+      MV1DrawModel(_model);
+      return true;
     }
 
     void Box::Set(Object::SpawnItem& spawn) {
@@ -38,8 +48,14 @@ namespace Gyro {
       _position = spawn.GetPosition();
       _rotation = spawn.GetRotation();
       _scale = spawn.GetScale();
+      // コリジョン情報をセットする
+      using Vector4 = AppMath::Vector4;
+      auto min = _position - Vector4(100.0f, 0.0f, 100.0f);
+      auto max = _position + Vector4(100.0f, 100.0f, 100.0f);
+      _collision = std::make_unique<Object::CollisionAABB>(*this, min, max);
+
       // モデルハンドルの取得
-      auto [handle, num] = _app.GetModelServer().GetModel(spawn.ModelKey(), _modelNum);
+      auto [handle, num] = _app.GetModelServer().GetModel(spawn.ModelKey(), 2);
       // モデルハンドルの登録
       _model = handle;
       // モデルカウントを加算
@@ -89,9 +105,28 @@ namespace Gyro {
       // 生成したコリジョンを登録
       heal->SetCollision(std::move(collision));
       // オブジェクトサーバに登録する
-      _app.GetObjectServer().Register(heal);
+      _app.GetObjectServer().Register(std::move(heal));
       // 回復SEをセットする
       _sound = HealSound;
+    }
+
+    bool Box::IsDamage() {
+      // ダメージ判定を行う
+      auto player = _app.GetObjectServer().GetPlayer();
+      auto attack = player->AttackComponent();
+      if (attack.GetState() != Object::AttackComponent::AttackState::Active) return false;
+      // 当たり判定情報の取得
+      auto collision = attack.GetCollisions();
+
+      if (collision.empty()) return false;
+      for (auto point : collision) {
+        // AABBと球で衝突判定を行う
+        if (_collision->CheckSphere(*std::dynamic_pointer_cast<Object::CollisionSphere>(point))) {
+          Break(); // 破壊処理に遷移
+          return true;
+        }
+      }
+      return false;
     }
   } // namespace Item
 } // namespace Gyro

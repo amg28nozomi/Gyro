@@ -49,9 +49,11 @@ namespace Gyro {
       bool Process() override;
       /**
        * @brief  対象が回復判定内に存在するかの判定
+       * @param  capsule 対象の当たり判定
+       * @param  heal    回復量を受け取るための参照
        * @return true:存在する false:存在しない
        */
-      bool IsInvasion(const CollisionCapsule& capsule) const;
+      bool IsInvasion(const CollisionCapsule& capsule, float& heal) const;
       /**
        * @brief  回復ポイントの取得
        * @return 回復量
@@ -67,7 +69,9 @@ namespace Gyro {
       //!< 生存時間
       float _totalTime{0.0f};
       //!< 回復量
-      float _healPoint{0.0f};
+      float _healPoint;
+      //!< プレイヤーの回復判定
+      bool HealPlayer();
     };
   } // namespace Object
 } // 

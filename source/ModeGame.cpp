@@ -241,9 +241,13 @@ namespace Gyro {
         { Object::EnemyDrone, { 300.0f, 360.0f, -1800.0f}, {0.0f, 0.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
         { Object::EnemyDrone, { -400.0f, 360.0f, -1800.0f}, {0.0f, 0.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
       };
+      // アイテムテーブル
+      const Object::ItemTable item{
+        { "player", 1, {0.0f, 200.0f, -100.0f}, {}, {1.0f, 1.0f, 1.0f}}
+      };
       // 各種テーブルを基にスポーンテーブルを作成
-      Object::SpawnData table{
-        {0, std::make_tuple(normal, enemy)}
+      Object::SpawnData3 table {
+        {0, std::make_tuple(normal, enemy, item)}
       };
       // スポーンテーブルの登録
       _appMain.GetSpawnServer().AddSpawnTable("test", table);
@@ -278,6 +282,10 @@ namespace Gyro {
       // BGMの再生を停止する
       _appMain.GetSoundComponent().StopSound("bgm");
       return true;
+    }
+
+    void ModeGame::ToGameOver() {
+      _gameState = GameState::GameOver;
     }
   } // namespace Mode
 } // namespace Gyro

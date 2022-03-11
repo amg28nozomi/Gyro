@@ -7,6 +7,7 @@
  *********************************************************************/
 #include "Player.h"
 #include "ApplicationMain.h"
+#include "Box.h"
 #include "DashComponent.h"
 #include "UtilityDX.h"
 #include "ObjectServer.h"
@@ -207,7 +208,6 @@ namespace Gyro {
       _gaugeTrick.Process();   // トリックゲージの更新
       Animation(_oldState);    // アニメーションの設定
       _modelAnim.Process();    // アニメーションの再生
-      WorldMatrix();           // ワールド座標の更新
       Attack();                // 攻撃処理
       _sphere->Process(move);  // 移動量の加算
       _capsule->Process(move); // カプセルの更新
@@ -218,15 +218,12 @@ namespace Gyro {
         move = _knockBack->MoveVector();
         _position.Add(move);
       }
-      // 無敵状態か
-      if (_invincible->Invincible()) {
-        // 無敵時間の経過処理を呼び出し
-        _invincible->Process();
-      }
-      // 無敵状態ではない場合、ダメージ判定を行う
-      if (!_invincible->Invincible()) {
-        IsDamage();
-      }
+      // ダメージ・無敵処理
+      Invincible();
+      // 地形の押し出し処理
+      Extrude(move);
+      // ワールド座標の更新
+      WorldMatrix();
       // カメラの更新
       _app.GetCamera().Process(AppMath::Vector4(rightX, rightY), _position, move);
       // ワールド座標の設定
@@ -316,21 +313,36 @@ namespace Gyro {
       if (IsAttackState()) {
         // 検索で使用するキーの取得
         auto key = NextKey();
+        // キーの取得に失敗しなかった場合
         if (key != -1) {
-          // 攻撃状態の場合は遷移フラグの判定を行う
+          // 攻撃遷移判定
           if (input.GetButton(key, false) && _stateComponent->Process(_modelAnim.GetMainPlayTime())) {
-            // 現在の攻撃処理を終了
-            _attack->Finish();
-            // 条件を満たしたので更新を行う
-            SetStateParam(stateMap.at(_playerState));
+            // 条件を満たしている場合は攻撃遷移フラグをセットする
+            _nextAttack = true;
             return true;
           }
         }
         // アニメーションが終了している場合
         if (_modelAnim.GetMainAnimEnd()) {
+          // 攻撃遷移フラグがセットされている場合
+          if (_nextAttack) {
+            // フラグをリセット
+            _nextAttack = false;
+            // 現在の攻撃処理を終了
+            _attack->Finish();
+            // 条件を満たしたので更新を行う
+            SetStateParam(stateMap.at(_playerState));
+            // 攻撃処理開始
+            _attack->Start();
+            return true;
+          }
+          // 待機状態に遷移する
           _playerState = PlayerState::Idle;
+          // 攻撃終了
           _attack->Finish();
+          // インターバル時間の設定
           _attack->SetInterval(150.0f);
+          // 状態遷移判定を中断
           _stateComponent->Finish();
         }
         return true;
@@ -401,15 +413,6 @@ namespace Gyro {
       if (_move->Move(leftX, leftY)) {
         // 移動量の取得
         move = _move->MoveVector();
-//        // ラジアンを生成(z軸は反転させる)
-//        auto radian = std::atan2(move.GetX(), -move.GetZ());
-//#ifndef _DEBUG
-//        // y軸の回転量をセットする
-//        _rotation.SetY(radian);
-//#else
-//        // デグリー値をセットする(デバッグ用)
-//        _rotation.SetY(AppMath::Utility::RadianToDegree(radian));
-//#endif
         _forward = AppMath::Vector4::Normalize(_position + move);
       }
       return move; // 移動量を返す
@@ -532,23 +535,16 @@ namespace Gyro {
       newCapsule.SetPosition(newPos);
       // 線分の取得
       auto [start, end] = newCapsule.LineSegment().GetVector();
-
+      // 衝突フラグ
       auto flag = false;
-      // 地形(床)と線分の衝突判定
-      for (int i = 0; i < _app.GetStageComponent().GetStageModel().size(); i++) {
-        auto handleMap = _app.GetStageComponent().GetStageModel()[i];
-        auto hit = MV1CollCheck_Line(handleMap, 2, UtilityDX::ToVECTOR(end), UtilityDX::ToVECTOR(start));
-        // 衝突フラグがない場合
-        if (hit.HitFlag == 0) {
-          continue;
-        }
-        // 衝突座標を座標に代入
-        _position = UtilityDX::ToVector(hit.HitPosition);
-        // 新しい座標をコリジョンに反映
-        _capsule->SetPosition(_position);
+      // オブジェクトとの衝突判定
+      if (IsStandObject(newCapsule, newPos)) {
         flag = true;
-        break;
+        _position = newPos;
+        _capsule->SetPosition(_position);
       }
+      // 障害物と接触していない場合は床との衝突判定を行う
+      else flag = StandFloor(newCapsule, newPos);
       // 衝突フラグに応じて処理を切り替える
       switch (flag) {
       case true: // 床との接触有り
@@ -628,9 +624,6 @@ namespace Gyro {
           _position.Add(vv);
           // カメラの座標に加算
           _app.GetCamera().CamAddPos(vv);
-          // auto l = radius2 - v.Length();
-          // _position = (AppMath::Vector4::Normalize(v) * l);
-          // _position.SetY(y);
           _capsule->SetPosition(_position);
           // 衝突した場合はワイヤーアクションを中断する
           if (_wire->IsAction()) {
@@ -641,23 +634,59 @@ namespace Gyro {
       }
     }
 
-    void Player::Extrude() {
-      auto newPosition = _position + _move->MoveVector();
+    void Player::Extrude(const AppMath::Vector4& move) {
+      // 地形との衝突判定
+      auto newPosition = _position + move;
       // コリジョンと壁の押し出し処理を行う
       auto newCapsule = *_capsule;
       newCapsule.SetPosition(newPosition);
-      auto [start, end] = newCapsule.LineSegment().GetVector();
-      auto radius = newCapsule.GetRadius();
-      // ステージとの衝突判定
-      int handleMap = 0;
-      auto hit = MV1CollCheck_Capsule(handleMap, 1, UtilityDX::ToVECTOR(start), UtilityDX::ToVECTOR(end), radius);
-      // 接触箇所がない場合
-      if (!hit.HitNum) {
-        // 衝突用情報の後始末を行う
+      auto radius = newCapsule.GetRadius(); // 半径の取得
+      // モデルハンドルの取得
+      auto stageMap = _app.GetStageComponent().GetStageModel();
+      // 押し出しフラグ
+      auto flag = false;
+      // 地形モデル(壁)との衝突判定
+      for (auto model : stageMap) {
+        // 線分の取得
+        auto [start, end] = newCapsule.LineSegment().GetVector();
+        // 地形との衝突判定を行う
+        auto hit = MV1CollCheck_Capsule(model, 1, UtilityDX::ToVECTOR(start), UtilityDX::ToVECTOR(end), radius);
+        // 接触箇所がない場合
+        if (!hit.HitNum) {
+          // 衝突用情報の後始末を行う
+          MV1CollResultPolyDimTerminate(hit);
+          continue;
+        }
+        // 更新フラグ
+        if (!flag) flag = true;
+        // ヒットしたポリゴン分押し出す
+        for (auto i = 0; i < hit.HitNum; ++i) {
+          // 法線ベクトルをベクトルクラス化
+          auto v = Vector4(hit.Dim[i].Normal.x, 0.0f, hit.Dim[i].Normal.z);
+          // 法線ベクトルを
+          newPosition.Sub(v);
+        }
+        // 別名定義
+        using Vector4 = AppMath::Vector4;
+        // ヒットしたポリゴン回分押し出す
+        for (auto i = 0; i < hit.HitNum; ++i) {
+          // 法線ベクトルの取得
+          auto normal = Vector4(hit.Dim[i].Normal.x, hit.Dim[i].Normal.y, hit.Dim[i].Normal.z);
+          // スライドベクトル
+          auto slide = Vector4::Cross(normal, Vector4::Cross(move, normal));
+          // 
+          // slide.SetY(0.0f);
+          newPosition.Sub(slide);
+          newCapsule.SetPosition(newPosition);
+        }
+        // 衝突判定情報の後始末を行う
         MV1CollResultPolyDimTerminate(hit);
-        return;
       }
-      MV1CollResultPolyDimTerminate(hit);
+      // 座標を更新する
+      if (flag) {
+        _position = newPosition;
+        _capsule->SetPosition(newPosition);
+      }
     }
 
     void Player::Jump() {
@@ -665,6 +694,7 @@ namespace Gyro {
       if (_jump->IsJump()) {
         return; // インターバルがない場合は処理を行わない
       }
+      // ジャンプ処理を開始する
       _jump->Start(); // ジャンプ開始
       _gravityScale = 0.0f;
       _playerState = PlayerState::Jump;
@@ -694,7 +724,7 @@ namespace Gyro {
     }
 
     bool Player::ExiteTrick() {
-
+      return true;
     }
 
     bool Player::DashStart() {
@@ -833,6 +863,64 @@ namespace Gyro {
       return true;
     }
 
+    void Player::Invincible() {
+      // 無敵状態か
+      switch (_invincible->Invincible()) {
+      case true:
+        // 無敵時間の経過処理を呼び出し
+        _invincible->Process();
+        break;
+      case false:
+        // 無敵状態ではない場合、ダメージ判定を行う
+        IsDamage();
+        break;
+      }
+    }
+
+    bool Player::StandFloor(Object::CollisionCapsule capsule, const AppMath::Vector4& position) {
+      // 線分の取得
+      const auto [start, end] = capsule.LineSegment().GetVector();
+      // 地形(床)と線分の衝突判定
+      for (int i = 0; i < _app.GetStageComponent().GetStageModel().size(); i++) {
+        // ステージハンドルの取得
+        auto handleMap = _app.GetStageComponent().GetStageModel()[i];
+        // 地形と線分の衝突判定
+        auto hit = MV1CollCheck_Line(handleMap, 2, UtilityDX::ToVECTOR(end), UtilityDX::ToVECTOR(start));
+        // 衝突フラグがない場合
+        if (hit.HitFlag == 0) {
+          continue;
+        }
+        // 衝突地点を座標に代入
+        _position = UtilityDX::ToVector(hit.HitPosition);
+        // 新しい座標をコリジョンに反映
+        _capsule->SetPosition(_position);
+        return true; // 接触している
+      }
+      return false;  // 接触していない
+    }
+
+    bool Player::IsStandObject(Object::CollisionCapsule capsule, AppMath::Vector4& position) {
+      // オブジェクトサーバの取得
+      auto object = _app.GetObjectServer();
+      // ベクトルの取得
+      auto [min, max] = capsule.LineSegment().GetVector();
+      // 障害物のみソートする
+      for (auto obj : object.GetObjects()) {
+        // オブジェクトの判定
+        if (obj->GetId() != ObjectBase::ObjectId::Item) continue;
+        // 対象との接触判定を行う
+        auto item = std::dynamic_pointer_cast<Item::Box>(obj);
+        // コリジョン情報の取得
+        auto collision = item->GetCollision();
+        // めり込んでいる場合は押し出し処理を行う
+        if (collision.CheckPoint(min) || collision.CheckPoint(max)) {
+          position.SetY(collision.GetMax().GetY());
+          return true;
+        }
+      }
+      return false;
+    }
+
     std::vector<std::shared_ptr<Object::CollisionBase>> Player::AddSpheres(const int num, float radius) {
       // 当たり判定を格納するコンテナ
       std::vector<std::shared_ptr<Object::CollisionBase>> collision;
@@ -844,5 +932,18 @@ namespace Gyro {
       return collision;
     }
 
+    bool Player::Heal(const float heal) {
+      // ゲージが最大値の場合は更新を行わない
+      const auto max = _gaugeHp.GetMaxGauge();
+      // 現在HPの取得
+      auto hp = _gaugeHp.GetFloat();
+      // 最大値の場合は処理を行わない
+      if (_gaugeHp.IsMax()) {
+        return false;
+      }
+      // 自機を回復させる
+      _gaugeHp.Add(heal);
+      return true;
+    }
   } // namespace Player
 }// namespace Gyro

@@ -37,7 +37,8 @@ namespace Gyro {
         Player,    //!< プレイヤー
         Enemy,     //!< 敵
         SkySphere, //!< スカイスフィア
-        Item       //!< アイテム
+        Item,      //!< アイテム
+        Field      // Field
       };
       /**
        * @brief オブジェクトの状態を表す列挙型クラス

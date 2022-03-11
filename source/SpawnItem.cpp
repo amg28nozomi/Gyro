@@ -24,6 +24,7 @@ namespace Gyro {
       case ItemType::Heal:
         return 1;
       }
+      return -1;
     }
 
     void SpawnItem::SetItemType(const int type) {

@@ -73,6 +73,47 @@ namespace Gyro {
       return true; // 登録成功
     }
 
+    bool SpawnServer::AddSpawnTable(std::string_view key, SpawnData3 spawnMap) {
+      // データが登録されているか
+      if (spawnMap.empty()) [[unlikely]] {
+#ifdef _DEBUG
+        throw LogicError("スポーン情報が空です");
+#endif
+        return false; // 問題発生
+      }
+        // キーが重複しているか
+        if (Contains(key.data())) {
+          // 重複している場合は既存データを削除する
+          Delete(key);
+        }
+      // スポーン情報用の連想配列
+      SpawnMap map;
+      // スポーン情報を管理する動的配列
+      std::vector<std::shared_ptr<SpawnBase>> table;
+      // スポーン情報をシェアードポインタに変換して登録を行う
+      for (auto&& [number, spawn] : spawnMap) {
+        // 生成テーブルの取得
+        auto [normal, enemy, item] = spawn;
+        // 通常のスポーン情報を変換
+        for (auto&& value : normal) {
+          table.emplace_back(std::make_shared<SpawnBase>(value));
+        }
+        // 敵のスポーン情報を変換
+        for (auto&& value : enemy) {
+          table.emplace_back(std::make_shared<SpawnEnemy>(value));
+        }
+        // アイテムスポーン情報を変換
+        for (auto&& value : item) {
+          table.emplace_back(std::make_shared<SpawnItem>(value));
+        }
+        // 変換したテーブルをコンテナに登録
+        map.emplace(number, table);
+      }
+      // データベースに情報を登録する
+      _registry.emplace(key.data(), map);
+      return true; // 登録成功
+    }
+
     bool SpawnServer::Spawn(const int number) {
       // キーが不正な場合は生成を行わない
       if (!_registry.contains(_stage)) [[unlikely]] {

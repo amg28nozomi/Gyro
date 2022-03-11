@@ -7,12 +7,12 @@
  *********************************************************************/
 #pragma once
 #include "ObjectBase.h"
+#include "CollisionAABB.h"
 
 namespace Gyro {
 
   namespace Object {
     class SpawnItem;
-    class CollisionAABB;
   }
   namespace Item {
     /**
@@ -39,19 +39,18 @@ namespace Gyro {
        */
       bool Process() override;
 
+      bool Draw() const override;
+
       void Set(Object::SpawnItem& spawn);
-      /**
-       * @brief  当たり判定情報の取得
-       * @return 当たり判定情報
-       */
-      Object::CollisionAABB& GetCollision() {
-        return *_collision;
-      }
       /**
        * @brief  モデルカウントの初期化
        */
       static inline void ModelNumReset() {
         _modelNum = 1;
+      }
+
+      Object::CollisionAABB GetCollision() const {
+        return *_collision;
       }
     protected:
       //!< ボックスタイプ
@@ -61,7 +60,7 @@ namespace Gyro {
       //!< サウンドキー
       std::string _sound;
       //!< コリジョン情報
-      std::unique_ptr<Object::CollisionAABB> _collision;
+      std::unique_ptr<Object::CollisionAABB> _collision{nullptr};
       //!< モデルハンドル用
       static inline unsigned short _modelNum{1};
       /**
@@ -72,6 +71,11 @@ namespace Gyro {
        * @brief  回復フィールドの生成
        */
       void CreateHeal();
+      /**
+       * @brief
+       * @return 
+       */
+      bool IsDamage();
     };
   } // namespace Item
 } // namespace Gyro
