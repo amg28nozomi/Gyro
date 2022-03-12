@@ -77,6 +77,13 @@ namespace Gyro {
       inline float GetFloat() const {
           return _point;
       }
+      /**
+       * @brief  上限値の取得
+       * @return 上限値
+       */
+      inline float GetMaxGauge() const {
+        return _maxGauge;
+      }
     protected:
       Application::ApplicationMain& _app; //!< アプリケーションの参照
       float _point{ 0 };       //!< ゲージポイント

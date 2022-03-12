@@ -9,6 +9,7 @@
 #include <appframe.h>
 #include "SpawnBase.h"
 #include "SpawnEnemy.h"
+#include "SpawnItem.h"
 #include "StageComponent.h"
 /**
  * @brief ゲームベース
@@ -38,6 +39,9 @@ namespace Gyro {
   namespace Stage {
     class StageComponent;
   }
+  namespace Item {
+    class Box;
+  } // namespace Item
   /**
    * @brief オブジェクトベース
    */
@@ -52,11 +56,15 @@ namespace Gyro {
      * @brief エネミーのスポーン情報を格納する動的配列の別名
      */
     using EnemyTable = std::vector<SpawnEnemy>;
+
+    using ItemTable = std::vector<SpawnItem>;
     /**
      * @brief 登録時に使用する各種スポーン情報を数値で管理する連想配列
      *        0:スポーンテーブル 1:エネミーテーブル
      */
     using SpawnData = std::unordered_map<int, std::tuple<SpawnTable, EnemyTable>>;
+
+    using SpawnData3 = std::unordered_map<int, std::tuple<SpawnTable, EnemyTable, ItemTable>>;
     /**
      * @brief 番号をキーとしてスポーン情報のシェアードポインタを管理する連想配列の別名
      */
@@ -84,6 +92,13 @@ namespace Gyro {
        * @return true:登録成功 false:問題発生
        */
       bool AddSpawnTable(std::string_view key, SpawnData spawnMap);
+      /**
+       * @brief  スポーン情報の登録
+       * @param  key スポーン情報に紐づける文字列(ステージ名)
+       * @param  spawnMap スポーン情報に紐づける文字列(ステージ名)
+       * @return true:登録成功 false:問題発生
+       */
+      bool AddSpawnTable(std::string_view key, SpawnData3 spawnMap);
       /**
        * @brief  オブジェクトの生成処理
        * @param  number 生成番号
@@ -154,6 +169,12 @@ namespace Gyro {
        * @return 陸上型敵ボスのシェアードポインタ
        */
       std::shared_ptr<Enemy::EnemyWheelBoss> EnemyWheelBoss(SpawnEnemy& spawn) const;
+      /**
+       * @brief  箱の生成
+       * @param  spawn スポーン情報
+       * @return 箱のシェアードポインタ
+       */
+      std::shared_ptr<Item::Box> ItemBox(std::shared_ptr<SpawnBase>& spawn) const;
       /**
        * @brief  空中型敵の生成
        * @param  spawn スポーン情報

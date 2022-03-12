@@ -16,11 +16,14 @@ namespace Gyro {
    * @brief オブジェクトベース
    */
   namespace Object {
+
+    class CollisionSphere;
     /**
      * @class CollisionAABB
      * @brief 軸平行バウンディングボックスの衝突判定クラス
      */
     class CollisionAABB : public CollisionBase {
+    public:
       /**
        * @brief コンストラクタ
        * @param owner 所有者の参照
@@ -33,7 +36,6 @@ namespace Gyro {
        * @param point 中心座標
        */
       void Process(const AppMath::Vector4& point);
-
 #ifdef _DEBUG
       /**
        * @brief 当たり判定の描画
@@ -51,6 +53,19 @@ namespace Gyro {
        * @return true:衝突 false:衝突していない
        */
       bool CheckLineSegment(const AppMath::LineSegment& segment);
+      /**
+       * @brief  球との衝突判定
+       * @param  sphere 判定対象(球)
+       * @return true:衝突 false:衝突していない
+       */
+      bool CheckSphere(const CollisionSphere& sphere);
+      /**
+       * @brief  最大情報の取得
+       * @return 最大点
+       */
+      inline AppMath::Vector4 GetMax() {
+        return _max;
+      }
     private:
       AppMath::Vector4 _max; //!< 最大点
     };

@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="source\Box.cpp" />
     <ClCompile Include="source\DashComponent.cpp" />
     <ClCompile Include="source\EffectBase.cpp" />
     <ClCompile Include="source\EffectEnemyAirAttack.cpp" />
@@ -56,6 +57,7 @@
     <ClCompile Include="source\EnemyDrone.cpp" />
     <ClCompile Include="source\EnemyDroneBoss.cpp" />
     <ClCompile Include="source\EnemyWheelBoss.cpp" />
+    <ClCompile Include="source\HealBox.cpp" />
     <ClCompile Include="source\InteriorBase.cpp" />
     <ClCompile Include="source\KnockBackComponent.cpp" />
     <ClCompile Include="source\Light.cpp" />
@@ -106,6 +108,7 @@
     <ClCompile Include="source\SkySphere.cpp" />
     <ClCompile Include="source\SpawnBase.cpp" />
     <ClCompile Include="source\SpawnEnemy.cpp" />
+    <ClCompile Include="source\SpawnItem.cpp" />
     <ClCompile Include="source\SpawnServer.cpp" />
     <ClCompile Include="source\StageComponent.cpp" />
     <ClCompile Include="source\StageTransition.cpp" />
@@ -116,6 +119,7 @@
     <ClCompile Include="source\WirePoint.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="source\Box.h" />
     <ClInclude Include="source\DashComponent.h" />
     <ClInclude Include="source\EffectBase.h" />
     <ClInclude Include="source\EffectEnemyAirAttack.h" />
@@ -153,6 +157,7 @@
     <ClInclude Include="source\EnemyDroneBoss.h" />
     <ClInclude Include="source\EffectEnemyGroundAttack2.h" />
     <ClInclude Include="source\EnemyWheelBoss.h" />
+    <ClInclude Include="source\HealBox.h" />
     <ClInclude Include="source\InteriorBase.h" />
     <ClInclude Include="source\KnockBackComponent.h" />
     <ClInclude Include="source\Light.h" />
@@ -203,6 +208,7 @@
     <ClInclude Include="source\SkySphere.h" />
     <ClInclude Include="source\SpawnBase.h" />
     <ClInclude Include="source\SpawnEnemy.h" />
+    <ClInclude Include="source\SpawnItem.h" />
     <ClInclude Include="source\SpawnServer.h" />
     <ClInclude Include="source\StageComponent.h" />
     <ClInclude Include="source\StageData.h" />

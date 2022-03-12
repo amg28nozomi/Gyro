@@ -53,6 +53,8 @@ namespace Gyro {
     bool ModeTitle::Input(AppFrame::Application::InputOperation& input) {
       // 入力状態の取得
       auto device = input.GetXBoxState();
+
+      device.InputAnyButton();
       namespace App = AppFrame::Application;
       // STARTボタンが押された場合、アプリケーションを終了する(デバッグ用)
       if (device.GetButton(XINPUT_BUTTON_START, App::InputTrigger)) {

@@ -6,6 +6,7 @@
  * @date   February 2022
  *********************************************************************/
 #include "CollisionAABB.h"
+#include "CollisionSphere.h"
 
 namespace Gyro {
   /**
@@ -46,7 +47,7 @@ namespace Gyro {
       // 向きベクトルを取得
       auto v = segment.Segment();
       using Vector4 = AppMath::Vector4;
-      // 長さがない
+      // ベクトルの長さがない
       if (Vector4::NearZero(v)) {
         return false;
       }
@@ -54,6 +55,25 @@ namespace Gyro {
 
 
       return false;
+    }
+
+    bool CollisionAABB::CheckSphere(const CollisionSphere& sphere) {
+      // 中心座標の取得
+      auto [x, y, z] = sphere.GetPosition().GetVector3();
+      // 別名定義
+      using Utility = AppMath::Utility;
+      using Vector4 = AppMath::Vector4;
+      // 最短距離の算出
+      auto directionX = Utility::Max(_position.GetX() - x, 0.0f);
+      directionX = Utility::Max(directionX, x - _max.GetX());
+      auto directionY = Utility::Max(_position.GetY() - y, 0.0f);
+      directionY = Utility::Max(directionY, y - _max.GetY());
+      auto directionZ = Utility::Max(_position.GetZ() - z, 0.0f);
+      directionZ = Utility::Max(directionZ, z - _max.GetZ());
+      // 距離の二乗を算出
+      auto distSq = Vector4::LengthSquared(Vector4(directionX, directionY, directionZ));
+      // 
+      return distSq <= sphere.RadiusSquared();
     }
   } // namespace Object
 } // namespace Gyro

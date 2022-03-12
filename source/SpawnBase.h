@@ -20,6 +20,7 @@ namespace Gyro {
     constexpr auto TypeEnemyWheel = 1; //!< 陸上型エネミー
 
     constexpr auto TypeSkySphere = 5;  //!< スカイスフィア
+    constexpr auto TypeItem = 7;
     /**
      * @brief Vector4クラスの省略
      */
@@ -34,10 +35,11 @@ namespace Gyro {
        * @brief オブジェクトの種類を表す
        */
       enum class ObjectType {
-        None,     // 無し
-        Player,   // 自機
-        Enemy,    // 敵
-        SkySphere // スカイスフィア
+        None,      // 無し
+        Player,    // 自機
+        Enemy,     // 敵
+        SkySphere, // スカイスフィア
+        Item       // アイテム
       };
       /**
        * @brief コンストラクタ
@@ -98,6 +100,13 @@ namespace Gyro {
       Vector4 _position; //!< 生成座標
       Vector4 _rotation; //!< 角度
       Vector4 _scale;    //!< スケール
+      /**
+       * @brief 座標・向き・拡大率の登録
+       * @param position 生成座標
+       * @param rotation 向き
+       * @param scale    拡大率
+       */
+      void SetTransForm(const Vector4& position, const Vector4& rotation, const Vector4& scale);
       /**
        * @brief  オブジェクト番号をオブジェクトタイプに変換する
        * @param  number オブジェクトタイプ(整数)

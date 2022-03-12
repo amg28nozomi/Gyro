@@ -11,6 +11,7 @@
 #include "PrimitiveBase.h"
 #include "PrimitivePlane.h"
 #include "SpawnServer.h"
+#include "StageTransition.h"
 #include "Light.h"
 #include "Shadow.h"
 /**
@@ -30,7 +31,17 @@ namespace Gyro {
      * @brief ゲーム処理を行うモード
      */
     class ModeGame : public AppFrame::Mode::ModeBase {
+    private:
+      friend class Application::ApplicationMain;
     public:
+      /**
+       * @brief ゲームの状態を表す列挙型クラス
+       */
+      enum class GameState {
+        Play,    // プレイ中
+        Pouse,   // ポーズ
+        GameOver // ゲームオーバー
+      };
       /**
        * @brief コンストラクタ
        * @param app アプリケーションの参照
@@ -68,24 +79,32 @@ namespace Gyro {
       bool Process() override;
       /**
        * @brief  描画処理
-       * @return 
+       * @return
        */
       bool Draw() const override;
       /**
        * @brief  ステージの設定
        * @return true:正常終了 false:問題発生
        */
-      bool StageChange(std::string_view key);
+      bool StageChange(const Stage::StageTransition::StageType& key);
       /**
        * @brief  アプリケーションメインの取得
        * @return アプリケーションメインの参照を返す
        */
       Application::ApplicationMain& GetAppMain();
-
+      /**
+       * @brief  ゲームオーバー状態かの判定
+       * @return true:ゲームオーバー false:ゲームオーバーではない
+       */
+      bool IsGameOver() const {
+        return _gameState == GameState::GameOver;
+      }
     private:
       bool _isEffectLoad{ false };  //!< エフェクト読み込みフラグ
       //!< アプリケーションメインの参照
       Application::ApplicationMain& _appMain;
+      //!< ゲーム状態
+      GameState _gameState{GameState::Pouse};
       //!< 床
       Primitive::Plane _plane;
       //!< ライト
@@ -114,6 +133,12 @@ namespace Gyro {
        */
       void SetSpawn();
       /**
+       * @brief  ゲームオーバー処理
+       * @return true:ゲームオーバー処理を実行 false:ゲームオーバーではない
+       */
+      bool GameOver();
+      /**
+       * @brief  ゲームオーバー状態への切り替え
        * @brief スポーンさせるタイミング
        */
       void SpawnTiming();
@@ -133,6 +158,7 @@ namespace Gyro {
        * @brief ローディング切り替え
        */
       void Loading();
+      void ToGameOver();
     };
   } // namespace Mode
 } // namespace Gyro

@@ -43,6 +43,11 @@ namespace Gyro {
        * @brief •`‰æ
        */
       bool Draw() const override;
+      /**
+       * @brief  Å‘å’l‚©‚Ì”»’è
+       * @return true:Å‘å’l false:Å‘å‚Å‚Í‚È‚¢
+       */
+      bool IsMax() const;
     private:
     };
   } // namesapce Gauge

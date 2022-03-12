@@ -29,6 +29,7 @@ namespace Gyro {
    */
   namespace Stage {
     class StageComponent;
+    class StageTransition;
   } // namespace Stage
   /**
    * @brief エフェクトベース
@@ -95,26 +96,35 @@ namespace Gyro {
         return 0;
       }
       /**
+       * @brief  ゲームオーバー状態かの判定
+       * @return true:ゲームオーバー false:ゲームオーバーではない
+       */
+      bool IsGameOver() const;
+      /**
+       * @brief  ゲームオーバーの呼び出し
+       */
+      void GameOver();
+      /**
        * @brief  ゲームオーバーフラグの取得
        * @return ゲームオーバーフラグ
        */
-      bool GetGameOver() {
-        return _gameOver;
-      }
-      /**
-       * @brief  ゲームクリアフラグの取得
-       * @return ゲームクリアフラグ
-       */
-      bool GetGameClear() {
-        return _gameClear;
-      }
-      /**
-       * @brief  ゲームポーズフラグの取得
-       * @return ゲームポーズフラグ
-       */
-      bool GetGamePause() {
-        return _gamePause;
-      }
+      //bool GetGameOver() {
+      //  return _gameOver;
+      //}
+      ///**
+      // * @brief  ゲームクリアフラグの取得
+      // * @return ゲームクリアフラグ
+      // */
+      //bool GetGameClear() {
+      //  return _gameClear;
+      //}
+      ///**
+      // * @brief  ゲームポーズフラグの取得
+      // * @return ゲームポーズフラグ
+      // */
+      //bool GetGamePause() {
+      //  return _gamePause;
+      //}
       /**
        * @brief  オブジェクトサーバの取得
        * @return オブジェクトサーバの参照
@@ -157,6 +167,13 @@ namespace Gyro {
       Stage::StageComponent& GetStageComponent() const {
         return *_stage;
       }
+      /**
+       * @brief  ステージ遷移マネージャーの取得
+       * @return ステージ遷移マネージャーの参照
+       */
+      Stage::StageTransition& GetStageTransition() const {
+        return *_stageTransition;
+      }
     private:
       bool _gameOver{ false };      //!< ゲームオーバーフラグ
       bool _gameClear{ false };     //!< ゲームクリアフラグ
@@ -173,6 +190,8 @@ namespace Gyro {
       std::unique_ptr<Effect::EffectServer> _effectServer{ nullptr };
       //!< ステージコンポーネント
       std::unique_ptr<Stage::StageComponent> _stage{ nullptr };
+      //!< ステージ遷移用のマネージャー
+      std::unique_ptr<Stage::StageTransition> _stageTransition{nullptr};
       /**
        * @brief  更新処理
        * @return

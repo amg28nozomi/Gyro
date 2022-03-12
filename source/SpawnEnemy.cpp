@@ -18,9 +18,7 @@ namespace Gyro{
     SpawnEnemy::SpawnEnemy(const int type, const Vector4& position, const Vector4& rotation, const Vector4& scale) {
       _type = ObjectType::Enemy;
       _enemyType = NumberToEnemyType(type);
-      _position = position;
-      _rotation = rotation;
-      _scale = scale;
+      SetTransForm(position, rotation, scale);
     }
 
     const SpawnEnemy::EnemyType SpawnEnemy::NumberToEnemyType(const int number) const {

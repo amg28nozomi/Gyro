@@ -132,6 +132,11 @@ namespace Gyro {
        * @return 向き(ラジアン値)
        */
       float GetRotationRadianY() const;
+      /**
+       * @brief  回復処理
+       * @return
+       */
+      bool Heal(const float heal);
     private:
       //!< モデルハンドル
       int _model;
@@ -193,9 +198,9 @@ namespace Gyro {
        */
       void SetRotation(const AppFrame::Math::Vector4 move);
       /**
-       * @brief  
-       * @param  state 
-       * @return 
+       * @brief  対象の状態と一致しているかの判定
+       * @param  state 判定状態
+       * @return 引数と一致している場合はtrueを返す 一致していない場合はfalseを返す
        */
       bool State(const PlayerState& state) const {
         return _playerState == state;
@@ -207,7 +212,7 @@ namespace Gyro {
       void Animation(PlayerState old);
       /**
        * @brief  状態の切り替え処理(βプレゼン専用)
-       * @param  move XBOXコントローラの入力状態クラスの参照
+       * @param  input XBOXコントローラの入力状態クラスの参照
        * @return true:チェンジ false:変更なし
        */
       bool StateChanege(const AppFrame::Application::XBoxState& input);
@@ -232,9 +237,9 @@ namespace Gyro {
        */
       bool IsStand() override;
       /**
-       * @brief  押し出し処理
+       * @brief  壁との衝突判定・押し出し処理
        */
-      void Extrude() override;
+      void Extrude(AppMath::Vector4& move);
       /**
        * @brief 衝突判定処理
        */
@@ -257,6 +262,11 @@ namespace Gyro {
        * @brief  攻撃処理
        */
       void Attack();
+      /**
+       * @brief  エキサイトトリック
+       * @return true:トリック開始 false:トリック失敗
+       */
+      bool ExiteTrick();
       /**
        * @brief  移動処理の開始
        * @return true:正常終了 false:問題発生
@@ -284,6 +294,14 @@ namespace Gyro {
        */
       int NextKey() const;
       /**
+       * @brief  攻撃判定
+       * @param  input XBOXコントローラの入力状態クラスの参照
+       * @param  key   判定で使用するキー番号
+       * @param  flag  弱・強攻撃判定用フラグ
+       * @return true:遷移開始 false:未遷移
+       */
+      bool InputAttackCheck(const AppFrame::Application::XBoxState& input, const int key, bool flag);
+      /**
        * @brief  状態の変更
        * @return true: false:
        */
@@ -295,6 +313,11 @@ namespace Gyro {
        */
       bool IsRun(const AppMath::Vector4& move);
       /**
+       * @brief  ノックバック処理
+       * @param  move 移動量の参照
+       */
+      void KnockBack(AppMath::Vector4& move);
+      /**
        * @brief  プレイヤー状態を数値に変換する
        * @return プレイヤー状態に対応した
        */
@@ -304,6 +327,22 @@ namespace Gyro {
        * @return true:再生 false:問題発生
        */
       bool PlayEffect() const;
+      /**
+       * @brief  無敵・ダメージ処理
+       */
+      void Invincible();
+      /**
+       * @brief  床との接触判定
+       * @param  capsule カプセル
+       * @param  position 座標
+       * @return true:接触 false:接触していない
+       */
+      bool StandFloor(Object::CollisionCapsule capsule, const AppMath::Vector4& position);
+      /**
+       * @brief  オブジェクトの上に立っているかの判定
+       * @return true:接触している false:接触していない
+       */
+      bool IsStandObject(Object::CollisionCapsule capsule, AppMath::Vector4& position);
       /**
        * @brief  コリジョンを生成する
        * @param  num    生成する数
@@ -335,6 +374,10 @@ namespace Gyro {
       std::string _animationKey;
       //!< 重力リセット処理
       bool _gravityReset{false};
+      //!< 攻撃派生フラグ
+      bool _nextAttack{false};
+      //!< 攻撃のインターバルフラグ
+      bool _intervalAttack{false};
       //!< ステージが変わったか
       bool _stageChange{ true };
     };

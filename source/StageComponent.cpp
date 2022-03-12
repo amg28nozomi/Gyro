@@ -130,8 +130,9 @@ namespace Gyro {
     }
 
     bool StageComponent::Process() {
-      _skySphere->Process();
-
+      if (_skySphere) {
+        _skySphere->Process();
+      }
       return true;
     }
 
@@ -140,8 +141,9 @@ namespace Gyro {
       for (auto ite : _model) {
         MV1DrawModel(ite);
       }
-      _skySphere->Draw();
-
+      if (_skySphere) {
+        _skySphere->Draw();
+      }
       return true;
     }
 

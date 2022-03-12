@@ -66,7 +66,7 @@ namespace Gyro {
        * @brief  所有者の前フレーム座標の取得
        * @return 所有者の前フレーム座標
        */
-      AppMath::Vector4 OldPosition() const {
+      AppMath::Vector4 GetOldPosition() const {
         return _oldPosition;
       }
       /**

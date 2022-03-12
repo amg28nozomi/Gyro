@@ -60,5 +60,9 @@ namespace Gyro {
 
       return true;
     }
+
+    bool GaugeHP::IsMax() const {
+      return static_cast<int>(_value) == static_cast<int>(_maxGauge);
+    }
   } // namespace Gauge
 } // namespace Gyro

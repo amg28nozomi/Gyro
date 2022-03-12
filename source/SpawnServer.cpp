@@ -7,6 +7,7 @@
  *********************************************************************/
 #include "SpawnServer.h"
 #include "ApplicationMain.h"
+#include "Box.h"
 #include "ObjectBase.h"
 #include "ObjectServer.h"
 #include "Player.h"
@@ -65,6 +66,47 @@ namespace Gyro {
         // 敵のスポーン情報を変換
         for (auto&& value : enemy) {
           table.emplace_back(std::make_shared<SpawnEnemy>(value));
+        }
+        // 変換したテーブルをコンテナに登録
+        map.emplace(number, table);
+      }
+      // データベースに情報を登録する
+      _registry.emplace(key.data(), map);
+      return true; // 登録成功
+    }
+
+    bool SpawnServer::AddSpawnTable(std::string_view key, SpawnData3 spawnMap) {
+      // データが登録されているか
+      if (spawnMap.empty()) [[unlikely]] {
+#ifdef _DEBUG
+        throw LogicError("スポーン情報が空です");
+#endif
+        return false; // 問題発生
+      }
+        // キーが重複しているか
+        if (Contains(key.data())) {
+          // 重複している場合は既存データを削除する
+          Delete(key);
+        }
+      // スポーン情報用の連想配列
+      SpawnMap map;
+      // スポーン情報を管理する動的配列
+      std::vector<std::shared_ptr<SpawnBase>> table;
+      // スポーン情報をシェアードポインタに変換して登録を行う
+      for (auto&& [number, spawn] : spawnMap) {
+        // 生成テーブルの取得
+        auto [normal, enemy, item] = spawn;
+        // 通常のスポーン情報を変換
+        for (auto&& value : normal) {
+          table.emplace_back(std::make_shared<SpawnBase>(value));
+        }
+        // 敵のスポーン情報を変換
+        for (auto&& value : enemy) {
+          table.emplace_back(std::make_shared<SpawnEnemy>(value));
+        }
+        // アイテムスポーン情報を変換
+        for (auto&& value : item) {
+          table.emplace_back(std::make_shared<SpawnItem>(value));
         }
         // 変換したテーブルをコンテナに登録
         map.emplace(number, table);
@@ -134,6 +176,11 @@ namespace Gyro {
         case SpawnBase::ObjectType::SkySphere:
           // スカイスフィアの生成・登録を行う
           AddSkySphere(Skysphere(spawn));
+          break;
+          // アイテム
+        case SpawnBase::ObjectType::Item:
+          // アイテムの生成・登録
+          AddObject(ItemBox(spawn));
           break;
           // オブジェクトタイプの該当がない場合
         case SpawnBase::ObjectType::None:
@@ -224,6 +271,14 @@ namespace Gyro {
       auto drone = std::make_shared<Enemy::EnemyDrone>(_appMain);
       drone->Set(enemy);       // スポーン情報の設定
       return std::move(drone); // 生成したシェアードポインタを返す
+    }
+
+    std::shared_ptr<Item::Box> SpawnServer::ItemBox(std::shared_ptr<SpawnBase>& spawn) const {
+      // ボックスの生成
+      auto box = std::make_shared<Item::Box>(_appMain);
+      // スポーン情報の設定
+      box->Set(*std::dynamic_pointer_cast<SpawnItem>(spawn));
+      return std::move(box);
     }
 
     std::shared_ptr<Enemy::EnemyDroneBoss> SpawnServer::EnemyDroneBoss(SpawnEnemy& enemy) const {

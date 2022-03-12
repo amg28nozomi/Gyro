@@ -10,7 +10,9 @@
 #include <DxLib.h>
 #include "ObjectServer.h"
 #include "ModeAMG.h"
+#include "ModeGame.h"
 #include "SpawnServer.h"
+#include "StageTransition.h"
 #include "StageComponent.h"
 
 namespace Gyro {
@@ -49,6 +51,9 @@ namespace Gyro {
             _effectServer = std::make_unique<Effect::EffectServer>(*this);
             // ステージコンポーネントの生成
             _stage = std::make_unique<Stage::StageComponent>(*this);
+            // ステージ遷移マネージャーの生成
+            _stageTransition = std::make_unique<Stage::StageTransition>(*this);
+            _stageTransition->Init();
             // モードゲームの登録
             _modeServer->AddMode("AMG", std::make_shared<Mode::ModeAMG>(*this));
             _modeServer->TransionToMode("AMG");
@@ -74,6 +79,28 @@ namespace Gyro {
 
         bool ApplicationMain::Process() {
             return ApplicationBase::Process();
+        }
+
+        bool ApplicationMain::IsGameOver() const {
+          // モードゲームの取得
+          auto game = _modeServer->GetMode("Game");
+          // 取得に失敗
+          if (game == nullptr) {
+            return false; // 取得失敗
+          }
+          // ゲームオーバー状態かの判定を行う
+          return std::dynamic_pointer_cast<Mode::ModeGame>(game)->IsGameOver();
+        }
+
+        void ApplicationMain::GameOver() {
+          // モードゲームの取得
+          auto game = _modeServer->GetMode("Game");
+          // 取得に失敗
+          if (game == nullptr) {
+            return; // 取得失敗
+          }
+          // ゲームオーバー状態に遷移する
+          std::dynamic_pointer_cast<Mode::ModeGame>(game)->ToGameOver();
         }
 
         bool ApplicationMain::Effekseer() {
