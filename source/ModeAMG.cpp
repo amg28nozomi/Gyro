@@ -66,7 +66,8 @@ namespace Gyro {
       // 非同期処理フラグtrue
       SetUseASyncLoadFlag(true);
       // 通常ステージの読み込み開始
-      _appMain.GetStageComponent().Init("stage");
+      //_appMain.GetStageComponent().Init("stage");
+
     }
 
     void ModeAMG::ChangeMode() {

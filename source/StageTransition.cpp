@@ -99,7 +99,7 @@ namespace Gyro {
       _transition = true;
       _reserveType = stage;
       // フェード処理を開始する
-      _app.GetModeServer().FadeStart();
+      //_app.GetModeServer().FadeStart();
       return true;
     }
 
@@ -127,9 +127,9 @@ namespace Gyro {
         return false; // フラグは立っていない
       }
       // フェードアウトが終了した場合
-      if (!_app.GetModeServer().IsFadeOutEnd()) {
-        return false; // 処理が終了していない
-      }
+      //if (!_app.GetModeServer().IsFadeOutEnd()) {
+      //  return false; // 処理が終了していない
+      //}
       // ステージ遷移を行う
       return Transition();
     }

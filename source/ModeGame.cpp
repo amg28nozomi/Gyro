@@ -130,7 +130,12 @@ namespace Gyro {
 
     bool ModeGame::Process() {
       // フェードアウトが終了した場合のみ、処理を実行する
-      if (_appMain.GetStageTransition().IsTransition()) {
+      //if (_appMain.GetStageTransition().IsTransition()) {
+      //  SetSpawn(); // オブジェクトを生成
+      //  _appMain.GetModeServer().FadeOutReset();
+      //  return false;
+      //}
+      if (_appMain.GetStageComponent().CreateStage("stage")) {
         SetSpawn(); // オブジェクトを生成
         _appMain.GetModeServer().FadeOutReset();
         return false;

@@ -80,7 +80,8 @@ namespace Gyro {
         std::filesystem::path keyName = (jsonName.generic_string());
         LoadStage(keyName.generic_string(), stageData);
       }
-      CreateStage(jsonName.generic_string());
+      // 読み込んだ情報を元にステージの作成
+      //CreateStage(jsonName.generic_string());
 
       return true;
     }
