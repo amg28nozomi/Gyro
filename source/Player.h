@@ -2,7 +2,7 @@
  * @file   Player.h
  * @brief  オブジェクトベースのサブクラス
  *         自機の処理を行う
- * 
+ *
  * @author 鈴木希海
  * @date   January 2022
  *********************************************************************/
@@ -23,9 +23,9 @@
 #include "StateComponent.h"
 #include "DashComponent.h"
 
-/**
- * @brief ゲームベース
- */
+ /**
+  * @brief ゲームベース
+  */
 namespace Gyro {
   /**
    * @brief エネミークラス
@@ -65,6 +65,9 @@ namespace Gyro {
         Attack1,     //!< 攻撃1
         Attack2,     //!< 攻撃2
         Attack3,     //!< 攻撃3
+        JumpAttack1, //!< 空中攻撃1
+        JumpAttack2, //!< 空中攻撃2
+        JumpAttack3, //!< 空中攻撃3
         ExciteTrick, //!< エキサイトトリック
         Dash,        //!< ダッシュ
         Jump         //!< ジャンプ
@@ -124,7 +127,7 @@ namespace Gyro {
       }
       /**
        * @brief  カメラの注視方向に合わせた自機の向きベクトルを取得する
-       * @return 
+       * @return
        */
       AppMath::Vector4 GetCameraForward() const;
       /**
@@ -154,13 +157,13 @@ namespace Gyro {
       //!< 当たり判定コリジョン(カプセル)
       std::unique_ptr<Object::CollisionCapsule> _capsule;
       //!< 自機状態
-      PlayerState _playerState{PlayerState::Idle};
+      PlayerState _playerState{ PlayerState::Idle };
       //!< 前フレーム状態
       PlayerState _oldState{ PlayerState::Idle };
       //!< 前方ベクトル
       AppMath::Vector4 _forward{};
       //!< 攻撃フラグ(true:強攻撃 false:弱攻撃)
-      bool _attackFlag{false};
+      bool _attackFlag{ false };
       //!< 平面
       std::unique_ptr<AppMath::Plane> _plane;
       int _handleMap;
@@ -178,20 +181,11 @@ namespace Gyro {
        */
       void SetState();
       /**
-       * @brief カメラの設定
-       */
-      void SetCamera();
-      /**
        * @brief  移動量の算出
        * @param  leftX 左スティックの入力情報(x軸)
        * @param  leftY 左スティックの入力情報(y軸)
        */
       AppMath::Vector4 Move(const float leftX, const float leftY);
-      /**
-       * @brief カメラの更新
-       * @param stick 
-       */
-      void CameraUpdate(const AppFrame::Math::Vector4 stick);
       /**
        * @brief 向きの設定
        * @param move 移動量
@@ -350,10 +344,10 @@ namespace Gyro {
        * @return コリジョン情報が格納された動的配列
        */
       std::vector<std::shared_ptr<Object::CollisionBase>> AddSpheres(const int num, float daius = DefaultRadius);
- 
-   private:
+
+    private:
       //!< モデルサーバに紐づけられた文字列
-      static inline std::string _modelKey{"player"};
+      static inline std::string _modelKey{ "player" };
       //!< ジャンプコンポーネント
       std::unique_ptr<JumpComponent> _jump;
       //!< ノックバックコンポーネント
@@ -373,11 +367,11 @@ namespace Gyro {
       //!< アニメーション名を保持する文字列
       std::string _animationKey;
       //!< 重力リセット処理
-      bool _gravityReset{false};
+      bool _gravityReset{ false };
       //!< 攻撃派生フラグ
-      bool _nextAttack{false};
+      bool _nextAttack{ false };
       //!< 攻撃のインターバルフラグ
-      bool _intervalAttack{false};
+      bool _intervalAttack{ false };
       //!< ステージが変わったか
       bool _stageChange{ true };
     };
