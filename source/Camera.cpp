@@ -65,7 +65,7 @@ namespace Gyro {
     void Camera::SetState() {
       // ƒJƒƒ‰‚Ì‰Šú‰»
       namespace AppMath = AppFrame::Math;
-      _position = AppMath::Vector4(0.0f, 120.0f, 500.0f, 1.0f);
+      _position = AppMath::Vector4(0.0f, 400.0f, 500.0f, 1.0f);
       _target = AppMath::Vector4(0.0f, 80.0f, 0.0f, 1.0f);
       SetCameraNearFar(Near, Far);
     }
@@ -116,7 +116,7 @@ namespace Gyro {
     }
 
     void Camera::Special(const AppFrame::Math::Vector4 target, const AppFrame::Math::Vector4 move) {
-        
+      
     }
   }// namespace Camera
 }// namespace Gyro

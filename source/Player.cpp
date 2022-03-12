@@ -74,8 +74,13 @@ namespace {
   constexpr auto StateNumberHeavy1 = 5;  //!< 強攻撃1
   constexpr auto StateNumberHeavy2 = 7;  //!< 強攻撃2
   constexpr auto StateNumberHeavy3 = 9;  //!< 強攻撃3
-  constexpr auto StateNumberExcite = 10; //!< エキサイトトリック
-  constexpr auto StateNumberDash = 11;   //!< ダッシュ
+  constexpr auto StateNumberAirLight1 = 10;  //!< 空中弱攻撃1
+  constexpr auto StateNumberAirLight2 = 11;  //!< 空中弱攻撃2
+  constexpr auto StateNumberAirLight3 = 12;  //!< 空中弱攻撃3
+  constexpr auto StateNumberAirHeavy1 = 13;  //!< 空中強攻撃1
+  constexpr auto StateNumberAirHeavy2 = 14;  //!< 空中強攻撃2
+  constexpr auto StateNumberExcite = 15; //!< エキサイトトリック
+  constexpr auto StateNumberDash = 16;   //!< ダッシュ
 
   constexpr auto AttackInterval = 150.0f; //!< 攻撃用インターバル
 
@@ -138,6 +143,12 @@ namespace Gyro {
       {StateNumberHeavy2 ,{GroundHeavyAttack2, 10.0f, 1.0f, false, EffectNum::PlayerHeavyAttack2}},
       // 強攻撃3
       {StateNumberHeavy3 ,{GroundHeavyAttack3, 10.0f, 1.0f, false, EffectNum::PlayerHeavyAttack3}},
+      // 空中弱攻撃1
+      {StateNumberAirLight1, {AirLightAttack1, 10.0f, 1.3f, false, EffectNum::PlayerWeakAttack1}},
+      // 空中弱攻撃2
+      {StateNumberAirLight2, {AirLightAttack2, 10.0f, 1.3f, false, EffectNum::PlayerWeakAttack2}},
+      // 空中弱攻撃3
+      {StateNumberAirLight3, {AirLightAttack3, 10.0f, 1.0f, false, EffectNum::PlayerWeakAttack3}},
       // ダッシュ
       {StateNumberDash, {Step, 10.0f, 1.0f, false}}
     };
@@ -374,6 +385,37 @@ namespace Gyro {
             return true; // 遷移する
           }
         }
+        //// ジャンプ攻撃状態に遷移するかの判定
+        //if (_playerState == PlayerState::Jump) {
+        //  // 攻撃状態に遷移できるか
+        //  if (_attack->ToAttack()) {
+        //    // Yボタンの入力があった場合
+        //    if (input.GetButton(XINPUT_BUTTON_Y, false)) {
+        //      // 強攻撃に遷移する
+        //      SetStateParam(PlayerState::JumpAttack1);
+        //      // 攻撃判定で使用するフレーム番号の取得
+        //      auto frames = attackMap.at(PlayerStateToNumber());
+        //      // フレームとコリジョン情報の設定
+        //      _attack->SetFrame(frames, AddSpheres(static_cast<int>(frames.size(), 100.0f)));
+        //      _stateComponent->Start();
+        //      _attack->Start();
+        //      _attackFlag = true;
+        //      return true; // 遷移する
+        //    }
+        //    // Xボタンの入力があった場合
+        //    if (input.GetButton(XINPUT_BUTTON_X, false)) {
+        //      // 弱攻撃に遷移する
+        //      SetStateParam(PlayerState::JumpAttack1);
+        //      // 攻撃判定で使用するフレーム番号の取得
+        //      auto frames = attackMap.at(PlayerStateToNumber());
+        //      // フレームとコリジョン情報の設定
+        //      _attack->SetFrame(frames, AddSpheres(static_cast<int>(frames.size(), 100.0f)));
+        //      _stateComponent->Start();
+        //      _attack->Start();
+        //      _attackFlag = false;
+        //      return true; // 遷移する
+        //    }
+        //}
         // Aボタンの入力があった場合はジャンプ状態に遷移
         if (input.GetButton(XINPUT_BUTTON_A, false)) {
           Jump(); // ジャンプ処理
@@ -808,6 +850,18 @@ namespace Gyro {
         // 攻撃3
       case PlayerState::Attack3:
         number = StateNumberLight3;
+        break;
+        // ジャンプ攻撃1
+      case PlayerState::JumpAttack1:
+        number = StateNumberLight1;
+        break;
+        // ジャンプ攻撃2
+      case PlayerState::JumpAttack2:
+        number = StateNumberLight1;
+        break;
+        // ジャンプ攻撃3
+      case PlayerState::JumpAttack3:
+        number = StateNumberLight1;
         break;
         // エキサイトトリック
       case PlayerState::ExciteTrick:

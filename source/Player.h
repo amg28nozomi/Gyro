@@ -61,10 +61,13 @@ namespace Gyro {
       enum class PlayerState {
         Idle,        //!< 待機
         Walk,        //!< 歩き
-        Run,         //!< 移動    
+        Run,         //!< 移動
         Attack1,     //!< 攻撃1
         Attack2,     //!< 攻撃2
         Attack3,     //!< 攻撃3
+        JumpAttack1, //!< ジャンプ攻撃1
+        JumpAttack2, //!< ジャンプ攻撃2
+        JumpAttack3, //!< ジャンプ攻撃3
         ExciteTrick, //!< エキサイトトリック
         Dash,        //!< ダッシュ
         Jump         //!< ジャンプ

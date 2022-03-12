@@ -57,6 +57,7 @@
     <ClCompile Include="source\EnemyDroneBoss.cpp" />
     <ClCompile Include="source\EnemyWheelBoss.cpp" />
     <ClCompile Include="source\InteriorBase.cpp" />
+    <ClCompile Include="source\JumpAttackComponent.cpp" />
     <ClCompile Include="source\KnockBackComponent.cpp" />
     <ClCompile Include="source\Light.cpp" />
     <ClCompile Include="source\ModeAMG.cpp" />
@@ -154,6 +155,7 @@
     <ClInclude Include="source\EffectEnemyGroundAttack2.h" />
     <ClInclude Include="source\EnemyWheelBoss.h" />
     <ClInclude Include="source\InteriorBase.h" />
+    <ClInclude Include="source\JumpAttackComponent.h" />
     <ClInclude Include="source\KnockBackComponent.h" />
     <ClInclude Include="source\Light.h" />
     <ClInclude Include="source\ModeAMG.h" />
@@ -215,6 +217,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Gyro1.rc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
