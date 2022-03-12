@@ -166,6 +166,11 @@ namespace Gyro {
        */
       virtual bool IsDamege();
       /**
+       * @brief  Processを行うか判定する
+       * @return true:Processを行う false:Processを行わない
+       */
+      virtual bool ProcessFlag();
+      /**
        * @brief  地形との衝突判定
        * @return true:床に立っている
        *         false:床に立っていない
@@ -184,8 +189,9 @@ namespace Gyro {
       int _cnt{ 0 };        //!< カウント
       int _mHandle{ -1 };   //!< モデルハンドル
       int _enemyHP{ 0 };    //!< 敵体力
-      float _serchRadius{ 0.0f }; //!< 索敵範囲(円)の半径
+      float _serchRadius{ 0.0f };  //!< 索敵範囲(円)の半径
       float _attackRadius{ 0.0f }; //!< 攻撃範囲(円)の半径
+      float _flagRadius{ 700.0f }; //!< Processを行うかどうか
        //!< 球の当たり判定
       std::unique_ptr<Object::CollisionSphere> _sphere{ nullptr };
       //!< カプセル当たり判定

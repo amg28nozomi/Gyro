@@ -51,6 +51,14 @@ namespace Gyro {
       if (_cnt > 0) {
           _cnt--;
       }
+      // 場外に出た時死亡するようにする
+      if (_position.GetY() < -100.0f) {
+        _enemyHP -= 50000;
+        _gaugeHp->Sub(50000);
+      }
+      if (_enemyHP <= 0) {
+        _enemyState = EnemyState::Dead;
+      }
 
       return true;
     }
@@ -253,6 +261,26 @@ namespace Gyro {
         _capsule->SetPosition(_position);
       }
       return flag;
+    }
+
+    bool EnemyBase::ProcessFlag() {
+      auto objects = _app.GetObjectServer().GetObjects(); // オブジェクトのコピー
+      for (auto pla : objects) {
+        if (pla->GetId() != ObjectId::Player) continue;
+        auto position = pla->GetPosition();
+        // 円と点の距離
+        auto a = position.GetX() - _position.GetX();
+        auto b = position.GetZ() - _position.GetZ();
+        auto c = sqrt(a * a + b * b);
+        // 距離と半径を比較してflag変化
+        if (c < _flagRadius) {
+          _gravity = true;
+          return true;
+          break;
+        }
+      }
+      _gravity = false;
+      return false;
     }
   } // namespace Enemy
 } // namespace Gyro
