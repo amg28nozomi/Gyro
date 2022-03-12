@@ -9,7 +9,6 @@
 #include "ApplicationMain.h"
 #include "CollisionAABB.h"
 #include "CollisionCapsule.h"
-#include "EffectComponent.h"
 #include "ObjectServer.h"
 #include "Player.h"
 

@@ -111,20 +111,20 @@ namespace Gyro {
       //bool GetGameOver() {
       //  return _gameOver;
       //}
-      ///**
-      // * @brief  ゲームクリアフラグの取得
-      // * @return ゲームクリアフラグ
-      // */
-      //bool GetGameClear() {
-      //  return _gameClear;
-      //}
-      ///**
-      // * @brief  ゲームポーズフラグの取得
-      // * @return ゲームポーズフラグ
-      // */
-      //bool GetGamePause() {
-      //  return _gamePause;
-      //}
+      /**
+       * @brief  ゲームクリアフラグの取得
+       * @return ゲームクリアフラグ
+       */
+      bool GetGameClear() {
+        return _gameClear;
+      }
+      /**
+       * @brief  ゲームポーズフラグの取得
+       * @return ゲームポーズフラグ
+       */
+      bool GetGamePause() {
+        return _gamePause;
+      }
       /**
        * @brief  オブジェクトサーバの取得
        * @return オブジェクトサーバの参照

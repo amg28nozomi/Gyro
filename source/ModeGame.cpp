@@ -308,8 +308,8 @@ namespace Gyro {
         { "player", 1, {0.0f, 200.0f, -100.0f}, {}, {1.0f, 1.0f, 1.0f}}
       };
       // 各種テーブルを基にスポーンテーブルを作成
-      Object::SpawnData table1{
-        {0, std::make_tuple(normal, wave1)},
+      Object::SpawnData3 table1{
+        {0, std::make_tuple(normal, wave1, item)},
       };
       Object::SpawnData table2{
         {0, std::make_tuple(none, wave2)},
@@ -322,8 +322,6 @@ namespace Gyro {
       };
       Object::SpawnData table5{
         {0, std::make_tuple(none, wave5)},
-      Object::SpawnData3 table {
-        {0, std::make_tuple(normal, enemy, item)}
       };
       // スポーンテーブルの登録
       _appMain.GetSpawnServer().AddSpawnTable("wave1", table1);
@@ -433,6 +431,7 @@ namespace Gyro {
       _appMain.GetModeServer().TransionToMode("GameOver");
       // BGMの再生を停止する
       _appMain.GetSoundComponent().StopSound("bgm");
+      return true;
     }
 
     void ModeGame::Result() {
@@ -448,7 +447,6 @@ namespace Gyro {
       _appMain.GetModeServer().TransionToMode("Result");
       // BGMの再生を停止する
       _appMain.GetSoundComponent().StopSound("bgm");
-      return true;
     }
 
     void ModeGame::ToGameOver() {

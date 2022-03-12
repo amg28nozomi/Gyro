@@ -145,7 +145,7 @@ namespace Gyro {
       /**
        * @brief ゲームオーバー切り替え
        */
-      void GameOver();
+      // void GameOver();
       /**
        * @brief リザルト切り替え
        */
