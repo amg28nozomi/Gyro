@@ -206,13 +206,13 @@ namespace Gyro {
         move = _wire->WireMove();
       }
       // 座標に現在座標を更新する
-      _position.Add(move);     // 現在座標の更新
       _gaugeHp.Process();      // HPゲージの更新
       _gaugeTrick.Process();   // トリックゲージの更新
       Animation(_oldState);    // アニメーションの設定
       _modelAnim.Process();    // アニメーションの再生
       Attack();                // 攻撃処理
       _sphere->Process(move);  // 移動量の加算
+
       _capsule->Process(move); // カプセルの更新
       //衝突判定
       Hit();
@@ -222,10 +222,11 @@ namespace Gyro {
       Invincible();
       // 地形の押し出し処理
       Extrude(move);
+      _position.Add(move);     // 現在座標の更新
       // ワールド座標の更新
       WorldMatrix();
       // カメラの更新
-      _app.GetCamera().Process(AppMath::Vector4(rightX, rightY), _position, move);
+      _app.GetCamera().Process(AppMath::Vector4(rightX, rightY), _position, _move->GetOldPosition().Direction(_position));
       // ワールド座標の設定
       MV1SetMatrix(_model, UtilityDX::ToMATRIX(_world));
       return true;
@@ -269,7 +270,6 @@ namespace Gyro {
       // ビュー変換行列の取得
 
       auto view = AppMath::Matrix44::CreateLookAt(cameraPosition, cameraTarget, Vector4(1.0f, 1.0f, 1.0f));
-      // 
       // 逆行列
       auto inverse = view.Inverse(view);
       // 自機の向きを取得
@@ -278,8 +278,7 @@ namespace Gyro {
       using Vector4 = AppMath::Vector4;
       // 向きベクトル
       auto vector = Vector4(1.0f, 0.0f, -1.0f);
-
-
+      // 
       vector = vector * rotation;
       // 二点間の距離を算出
       auto l = cameraPosition.Direction(cameraTarget);
@@ -412,7 +411,7 @@ namespace Gyro {
     bool Player::InputAttackCheck(const AppFrame::Application::XBoxState& input, const int key, bool flag) {
       // 入力が行われたかの判定
       if (input.GetButton(key, false)) {
-
+        // 攻撃状態1に遷移する
         SetStateParam(PlayerState::Attack1);
         // 攻撃判定で使用するフレーム番号の取得
         auto frames = attackMap.at(PlayerStateToNumber());
@@ -523,8 +522,6 @@ namespace Gyro {
       _knockBack->Process();
       // 移動量更新
       move = _knockBack->MoveVector();
-      // 移動量で座標を更新する
-      _position.Add(move);
     }
 
     void Player::Animation(PlayerState old) {
@@ -671,7 +668,7 @@ namespace Gyro {
       }
     }
 
-    void Player::Extrude(const AppMath::Vector4& move) {
+    void Player::Extrude(AppMath::Vector4& move) {
       // 地形との衝突判定
       auto newPosition = _position + move;
       // コリジョンと壁の押し出し処理を行う
@@ -699,9 +696,9 @@ namespace Gyro {
         // ヒットしたポリゴン分押し出す
         for (auto i = 0; i < hit.HitNum; ++i) {
           // 法線ベクトルをベクトルクラス化
-          auto v = Vector4(hit.Dim[i].Normal.x, 0.0f, hit.Dim[i].Normal.z);
+          auto v = Vector4(hit.Dim[i].Normal.x, hit.Dim[i].Normal.y, hit.Dim[i].Normal.z);
           // 法線ベクトルを
-          newPosition.Sub(v);
+          newPosition.Add(v);
         }
         // 別名定義
         using Vector4 = AppMath::Vector4;
@@ -712,7 +709,7 @@ namespace Gyro {
           // スライドベクトル
           auto slide = Vector4::Cross(normal, Vector4::Cross(move, normal));
           // slide.SetY(0.0f);
-          newPosition.Sub(slide);
+          newPosition.Add(slide);
           newCapsule.SetPosition(newPosition);
         }
         // 衝突判定情報の後始末を行う
@@ -720,6 +717,7 @@ namespace Gyro {
       }
       // 座標を更新する
       if (flag) {
+        move.Zero();
         _position = newPosition;
         _capsule->SetPosition(newPosition);
       }

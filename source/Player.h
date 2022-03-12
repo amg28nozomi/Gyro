@@ -198,9 +198,9 @@ namespace Gyro {
        */
       void SetRotation(const AppFrame::Math::Vector4 move);
       /**
-       * @brief  
-       * @param  state 
-       * @return 
+       * @brief  ‘ÎÛ‚Ìó‘Ô‚Æˆê’v‚µ‚Ä‚¢‚é‚©‚Ì”»’è
+       * @param  state ”»’èó‘Ô
+       * @return ˆø”‚Æˆê’v‚µ‚Ä‚¢‚éê‡‚Ítrue‚ğ•Ô‚· ˆê’v‚µ‚Ä‚¢‚È‚¢ê‡‚Ífalse‚ğ•Ô‚·
        */
       bool State(const PlayerState& state) const {
         return _playerState == state;
@@ -237,9 +237,9 @@ namespace Gyro {
        */
       bool IsStand() override;
       /**
-       * @brief  ‰Ÿ‚µo‚µˆ—
+       * @brief  •Ç‚Æ‚ÌÕ“Ë”»’èE‰Ÿ‚µo‚µˆ—
        */
-      void Extrude(const AppMath::Vector4& move);
+      void Extrude(AppMath::Vector4& move);
       /**
        * @brief Õ“Ë”»’èˆ—
        */
