@@ -41,11 +41,13 @@ namespace Gyro {
       // エフェクトリソースの読み取り
       LoadEffectResource();
       // ステージの切り替え
-      StageChange(Stage::StageTransition::StageType::Normal);
+      //StageChange(Stage::StageTransition::StageType::Normal);
       // BGMのループ再生開始
       PlayBgm("bgm", BgmVolume);
       // ゲーム状態の設定
       _gameState = GameState::Play;
+      _appMain.GetStageComponent().CreateStage("stage");
+      SetSpawn(); // オブジェクトを生成
       // カメラの初期化
       _appMain.GetCamera().Init();
       // ライトの設定
@@ -82,14 +84,14 @@ namespace Gyro {
       _plane.Initialize(40960.0f, 40);
       _plane.Load(TEXTURE);
       _plane.Create();
-      // 別名定義
-      using StageType = Stage::StageTransition::StageType;
-      // ステージリストの生成
-      const std::unordered_map<StageType, std::string_view> stageMap = {
-        {StageType::Normal, "stage"}
-      };
-      // 生成したリストを登録する
-      _appMain.GetStageTransition().Register(stageMap);
+      //// 別名定義
+      //using StageType = Stage::StageTransition::StageType;
+      //// ステージリストの生成
+      //const std::unordered_map<StageType, std::string_view> stageMap = {
+      //  {StageType::Normal, "stage"}
+      //};
+      //// 生成したリストを登録する
+      //_appMain.GetStageTransition().Register(stageMap);
       // 重力加速度をセットする
       AppMath::GravityBase::SetScale(GravityScale);
       return true;
@@ -135,11 +137,11 @@ namespace Gyro {
       //  _appMain.GetModeServer().FadeOutReset();
       //  return false;
       //}
-      if (_appMain.GetStageComponent().CreateStage("stage")) {
-        SetSpawn(); // オブジェクトを生成
-        _appMain.GetModeServer().FadeOutReset();
-        return false;
-      }
+      //if (_appMain.GetStageComponent().CreateStage("stage")) {
+      //  SetSpawn(); // オブジェクトを生成
+      //  //_appMain.GetModeServer().FadeOutReset();
+      //  return false;
+      //}
       // モードゲームの入力処理
       Input(_app.GetOperation());
       // ゲームオーバー判定

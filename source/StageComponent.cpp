@@ -81,7 +81,7 @@ namespace Gyro {
         LoadStage(keyName.generic_string(), stageData);
       }
       // 読み込んだ情報を元にステージの作成
-      //CreateStage(jsonName.generic_string());
+      CreateStage(jsonName.generic_string());
 
       return true;
     }
