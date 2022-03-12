@@ -90,7 +90,12 @@ namespace Gyro {
        * @return true:登録成功 false:問題発生
        */
       bool AddSpawnTable(std::string_view key, SpawnData spawnMap);
-
+      /**
+       * @brief  スポーン情報の登録
+       * @param  key スポーン情報に紐づける文字列(ステージ名)
+       * @param  spawnMap スポーン情報に紐づける文字列(ステージ名)
+       * @return true:登録成功 false:問題発生
+       */
       bool AddSpawnTable(std::string_view key, SpawnData3 spawnMap);
       /**
        * @brief  オブジェクトの生成処理

@@ -335,6 +335,15 @@ namespace Gyro {
             return true;
           }
         }
+        /**
+         * @brief  アニメーションの終了判定
+         * @param  animEnd アニメーション終了フラグ
+         * @param  brand   アニメーションブレンドフラグ
+         * @return true:終了　false:終了していない
+         */
+        auto IsAnimEnd = [](bool animEnd, bool brand) {
+          return animEnd == true && brand == false;
+        };
         // アニメーションが終了している場合
         if (_modelAnim.GetMainAnimEnd()) {
           // 攻撃遷移フラグがセットされている場合
@@ -432,6 +441,10 @@ namespace Gyro {
     AppMath::Vector4 Player::Move(const float leftX, const float leftY) {
       // 移動ベクトル
       auto move = AppMath::Vector4();
+      // 攻撃状態の場合
+      if (_attack->IsAttack()) {
+        return move;  // 移動を行わない
+      }
       // 移動量の生成
       if (_move->Move(leftX, leftY)) {
         // 移動量の取得
@@ -694,12 +707,12 @@ namespace Gyro {
         // 更新フラグ
         if (!flag) flag = true;
         // ヒットしたポリゴン分押し出す
-        for (auto i = 0; i < hit.HitNum; ++i) {
-          // 法線ベクトルをベクトルクラス化
-          auto v = Vector4(hit.Dim[i].Normal.x, hit.Dim[i].Normal.y, hit.Dim[i].Normal.z);
-          // 法線ベクトルを
-          newPosition.Add(v);
-        }
+        //for (auto i = 0; i < hit.HitNum; ++i) {
+        //  // 法線ベクトルをベクトルクラス化
+        //  auto v = Vector4(hit.Dim[i].Normal.x, hit.Dim[i].Normal.y, hit.Dim[i].Normal.z);
+        //  // 法線ベクトルを
+        //  newPosition.Add(v);
+        //}
         // 別名定義
         using Vector4 = AppMath::Vector4;
         // ヒットしたポリゴン回分押し出す
@@ -708,6 +721,7 @@ namespace Gyro {
           auto normal = Vector4(hit.Dim[i].Normal.x, hit.Dim[i].Normal.y, hit.Dim[i].Normal.z);
           // スライドベクトル
           auto slide = Vector4::Cross(normal, Vector4::Cross(move, normal));
+          slide = Vector4::Scale(slide, Vector4(-1.0, 0.0f, -1.0f));
           // slide.SetY(0.0f);
           newPosition.Add(slide);
           newCapsule.SetPosition(newPosition);

@@ -30,11 +30,6 @@ namespace Gyro {
         _move.Zero(); // 移動量初期化
         return false; // 移動無し
       }
-      // カメラの取得
-      const auto& camera = _owner.GetApplicaton().GetCamera();
-      // カメラ情報の取得
-      const auto position = camera.GetPosition();
-      const auto target = camera.GetTarget();
       // 別名定義
       using Vector4 = AppMath::Vector4;
       // デッドゾーンの取得
@@ -44,40 +39,17 @@ namespace Gyro {
       auto inputX = (x / deadZone);
       auto inputZ = (z / deadZone);
       // 移動量
-      auto move = Vector4(inputX * _speed, 0.0f, inputZ * _speed);
-      // 移動量(-1~ 1)
-      // auto normal = Vector4(inputX, 0.0f, inputZ);
-
-      // auto thisDirection = Vector4::Cross(_owner.GetPosition(), normal);
-
-      //// カメラからターゲットへの向きベクトルを取得
-      //auto direction = position.Direction(target);
-      //// カメラからターゲットへの向きを求める
-      //auto cameraCross = Vector4::Cross(position, direction);
-
-      ////
-      //auto angle = std::acos(thisDirection.Dot(cameraCross) / (thisDirection.Length() * cameraCross.Length()));
-      //// デグリー値に変換
-      //auto degree = AppMath::Utility::RadianToDegree(angle);
-
-      // 行列の別名定義
-      using Matrix44 = AppMath::Matrix44;
-
+      _move = Vector4(inputX * _speed, 0.0f, (inputZ * _speed));
+      _move = _move * -1.0f;
       // ラジアンを生成(z軸は反転させる)
-      auto radian = std::atan2(-move.GetZ(), move.GetX());
-      auto l = Vector4::Normalize(position.Direction(target));
-      radian += std::atan2(l.GetZ(), l.GetX());
+      auto radian = std::atan2(_move.GetX(), -_move.GetZ());
+      // auto radian = std::atan2(-move.GetZ(), move.GetX());
 #ifndef _DEBUG
       _owner.SetRotation(Vector4(0.0f, radian, 0.0f));
 #else
       // デグリー値をセットする(デバッグ用)
       _owner.SetRotation(Vector4(0.0f, AppMath::Utility::RadianToDegree(radian), 0.0f));
 #endif
-
-      // 回転→平行移動
-      auto moveMatrix = /*translate **/ Matrix44::ToRotationY(radian);
-      auto v = Vector4(0.0f, 0.0f, 8.0f);
-      _move = moveMatrix * v;
       return true;   // 移動有り
     }
 
