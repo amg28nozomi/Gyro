@@ -29,28 +29,27 @@ namespace Gyro {
 
     void DashComponent::Finish() {
       // ダッシュ状態を終了
-      _dashState = DashState::NoActive;
+      _dashState = DashState::Interval;
+      _count = 0;
+      _dashEnd = true;
     }
 
-    bool DashComponent::Process(AppMath::Vector4& move) {
+    bool DashComponent::Process() {
       // ダッシュ状態かの判定
       if (!IsDash()) {
         // インターバル中か？
         Interval();
         return false;
       }
-      // 向きベクトルの取得
-      auto forward = _owner.GetForward();
-      // 向きの取得
-      auto rotation = _owner.GetRotation();
-      // 力を算出
-      auto power = _power / _count;
-      // 別名定義
-      using Vector4 = AppMath::Vector4;
-      // y成分を無視して計算を行う
-      auto m = Vector4::Scale(forward, Vector4(1.0f, 0.0f, 1.0f));
-      // 向いている方向に進ませる
-      _move = m * power;
+      // 待機遷移判定
+      if (_count == 30) {
+        // インターバル状態に遷移する
+        _dashState = DashState::Interval;
+        _count = 0;
+        return true;
+      }
+      // カウントでの終了判定
+      ++_count;
       return true;
     }
 
@@ -69,14 +68,31 @@ namespace Gyro {
       return true;
     }
 
-    void DashComponent::SetDash(const float dashPower, float totalTime, float playSpeed) {
+    void DashComponent::SetDash(const AppMath::Vector4& direction, float power, float totalTime) {
+      // 再生中の場合はセットを行わない
       if (totalTime <= 0.0f) {
         return;
       }
-      // 移動力の設定
-      _power = dashPower;
-      // 処理回数の設定
-      _count = static_cast<int>(totalTime / playSpeed);
+      // 移動速度の設定
+      auto speed = 10.0f;
+      using Vector4 = AppMath::Vector4;
+      // 自機の向きベクトル
+      auto forward = _owner.GetForward();
+
+      _move = Vector4(speed * forward.GetX(), 0.0f, speed * forward.GetZ());
+      // 単位ベクトル化
+      auto normal = AppMath::Vector4::Normalize(_move);
+      // ラジアンを生成(z軸は反転させる)
+      auto radian = std::atan2f(normal.GetX(), !normal.GetZ());
+#ifndef _DEBUG
+      _owner.SetRotation(AppMath::Vector4(0.0f, radian, 0.0f));
+#else
+      // デグリー値をセットする(デバッグ用)
+      _owner.SetRotation(AppMath::Vector4(0.0f, AppMath::Utility::RadianToDegree(radian), 0.0f));
+#endif
+      // 移動量を設定する
+      // _move = Vector4::Scale(_direction, Vector4(speed, 0.0f, speed));
+      _power = power;
     }
 
     void DashComponent::SetIniterval(const float interval) {

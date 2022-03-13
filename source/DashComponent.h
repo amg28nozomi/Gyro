@@ -52,17 +52,16 @@ namespace Gyro {
       void Finish() override;
       /**
        * @brief  更新処理
-       * @param  move 移動量を格納するためのベクトル4クラスの参照
        * @return true
        */
-      bool Process(AppMath::Vector4& move);
+      bool Process();
       /**
        * @brief ダッシュの設定
-       * @param dashPower 総移動量
+       * @param direction 向き
+       * @param power 総移動量
        * @param totalTime ダッシュ時間
-       * @param playSpeed 再生速度
        */
-      void SetDash(const float dashPower, float totalTime, float playSpeed);
+      void SetDash(const AppMath::Vector4& direction, const float power, float totalTime);
       /**
        * @brief インターバルの設定
        */
@@ -99,6 +98,13 @@ namespace Gyro {
       bool IsInterval() const {
         return _dashState == DashState::Interval;
       }
+      /**
+       * @brief  ダッシュの終了判定
+       * @return true:終了 false:未終了
+       */
+      bool GetDashEnd() const {
+        return _dashEnd;
+      }
     private:
       //!< 所有者の参照
       ObjectBase& _owner;
@@ -110,10 +116,12 @@ namespace Gyro {
       float _intervalTime{0.0f};
       //!< 処理回数
       int _count{0};
+      // 終了判定
+      bool _dashEnd{false};
       //!< 移動量
       AppMath::Vector4 _move{};
       //!< 進行方向ベクトル
-      AppMath::Vector4 _forwarad{};
+      AppMath::Vector4 _direction{};
     };
   } // namespace Object
 } // namespace Gyro

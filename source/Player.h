@@ -146,6 +146,13 @@ namespace Gyro {
        * @return 
        */
       void AddTrickValue(float trickValue) { _trickValue += trickValue; }
+      /**
+       * @brief  プレイヤー状態の取得
+       * @return プレイヤー状態
+       */
+      PlayerState GetPlayerState() const {
+        return _playerState;
+      }
     private:
       //!< モデルハンドル
       int _model;
@@ -168,8 +175,6 @@ namespace Gyro {
       PlayerState _playerState{PlayerState::Idle};
       //!< 前フレーム状態
       PlayerState _oldState{ PlayerState::Idle };
-      //!< 前方ベクトル
-      AppMath::Vector4 _forward{};
       //!< 攻撃フラグ(true:強攻撃 false:弱攻撃)
       bool _attackFlag{false};
       //!< 平面
@@ -192,6 +197,11 @@ namespace Gyro {
        * @brief カメラの設定
        */
       void SetCamera();
+      /**
+       * @brief アナログスティックの入力情報を変換
+       * @param XBoxコントローラの入力情報
+       */
+      void InputValue(const AppFrame::Application::XBoxState& input);
       /**
        * @brief  移動量の算出
        * @param  leftX 左スティックの入力情報(x軸)
@@ -285,9 +295,14 @@ namespace Gyro {
       bool DashStart();
       /**
        * @brief  ダッシュ処理
-       * @return 移動量
+       * @param  move 移動量の参照
        */
-      AppMath::Vector4 Dash();
+      void Dash(AppMath::Vector4& move);
+      /**
+       * @brief  ダッシュ状態に遷移できるかの判定
+       * @return true:遷移可能 false:遷移不可
+       */
+      bool IsChangeDash();
       /**
        * @brief  攻撃状態かの判定
        * @return true:攻撃状態 false:攻撃状態ではない
@@ -395,6 +410,8 @@ namespace Gyro {
       bool _intervalAttack{false};
       //!< ステージが変わったか
       bool _stageChange{ true };
+      //!< スティックの入力情報
+      std::pair<float, float> _stick{0.0f, 0.0f};
     };
   } // namespace Player
 } // namespace Gyro

@@ -219,12 +219,16 @@ namespace Gyro {
       _move->OldPosition();
       // 移動量
       AppMath::Vector4 move;
+      //!< スティック情報の更新
+      InputValue(input);
       // ワイヤーフラグが立っていない場合のみ更新を行う
       if (!_wire->IsAction()) {
         // 状態の切り替え処理
         auto f = StateChanege(input);
         // 移動量の取得
         move = Move(static_cast<float>(leftX), static_cast<float>(leftY));
+        // ダッシュ処理
+        Dash(move);
         // 状態の変化がない場合
         if (!f) {
           SetRotation(move);
@@ -472,6 +476,14 @@ namespace Gyro {
           }
         }
       }
+      // ダッシュ状態に遷移可能な場合
+      if (IsChangeDash()) {
+        // ダッシュ状態に遷移するかの判定
+        if (input.GetButton(XINPUT_BUTTON_RIGHT_SHOULDER, false)) {
+          DashStart(); // ダッシュ処理の開始
+          return true;
+        }
+      }
       return false;
     }
 
@@ -526,11 +538,16 @@ namespace Gyro {
       if (_attack->IsAttack()) {
         return move;  // 移動を行わない
       }
+      // ダッシュ中も処理を行わない
+      if (_dash->IsDash()) {
+        return move;
+      }
       // 移動量の生成
       if (_move->Move(leftX, leftY)) {
         // 移動量の取得
         move = _move->MoveVector();
-        _forward = AppMath::Vector4::Normalize(_position + move);
+        // 向きベクトルを設定
+        _forward = AppMath::Vector4::Normalize(move);
       }
       return move; // 移動量を返す
     }
@@ -544,6 +561,21 @@ namespace Gyro {
 
     void Player::SetCamera() {
 
+    }
+
+    void Player::InputValue(const AppFrame::Application::XBoxState& input) {
+      // 左スティックの入力情報
+      auto leftStick = input.GetStick(false);
+      // float値に変換する
+      auto x = static_cast<float>(leftStick.first);
+      auto y = static_cast<float>(leftStick.second);
+      // デッドゾーン
+      auto deadZone = input.GetDeadZone();
+      // 
+      auto deadX = static_cast<float>(deadZone.first);
+      auto deadZ = static_cast<float>(deadZone.second);
+      // 入力情報の設定
+      _stick = std::make_pair((x / deadX), (y / deadZ));
     }
 
 
@@ -860,18 +892,61 @@ namespace Gyro {
     }
 
     bool Player::DashStart() {
+      // 入力情報の取得
+      auto [x, z] = _stick;
+      // 入力方向の取得
+      auto move = Vector4(x, 0.0f, z);
+      // ダッシュを設定
+      _dash->SetDash(move, 600.0f, 18000.0f);
       // ダッシュを開始する
-      // _dash->SetDash(, 600.0f);
+      _dash->Start();
+      // 状態の変更
+      _playerState = PlayerState::Dash;
       return true;
     }
 
-    AppMath::Vector4 Player::Dash() {
-      // 移動量
-      auto move = AppMath::Vector4();
-      _dash->Process(move);
-      return move;
+    void Player::Dash(AppMath::Vector4& move) {
+      // ダッシュコンポーネントが非活動状態の場合は処理を行わない
+      if (_dash->GetDashState() == Object::DashComponent::DashState::NoActive) {
+        return;
+      }
+      // ダッシュの更新
+      _dash->Process();
+      // ダッシュ状態ではない場合
+      if (!_dash->IsDash()) {
+        /**
+         * @brief  地形に立っているかに応じて待機・降下状態を返す
+         * @param  stand 立ちフラグ
+         * @return true:Idel状態 false:ジャンプ状態
+         */
+        auto NextState = [](bool stand) {
+          return (stand) ? Player::PlayerState::Idle : Player::PlayerState::Jump;
+        };
+        // 立ちフラグを返す
+        _playerState = NextState(_isStand);
+        // ダッシュ処理を終了する
+        _dash->Finish();
+        return;
+      }
+      // 移動量を返す
+      move = _dash->GetMovePower();
     }
 
+    bool Player::IsChangeDash() {
+      // ダッシュ中の場合は設定しない
+      if (_dash->IsDash()) {
+        return false;
+      }
+      // 状態判定
+      switch (_playerState) {
+      case PlayerState::Idle:
+      case PlayerState::Run:
+      case PlayerState::Walk:
+        return true; // 遷移可能
+      default:
+        return false; // 遷移不可
+      }
+    }
 
     void Player::IsDamage() {
       auto objects = _app.GetObjectServer().GetObjects(); // オブジェクトのコピー
