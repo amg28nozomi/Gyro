@@ -62,6 +62,18 @@ namespace Gyro {
       _blending = true;
     }
 
+    bool ModelAnimComponent::IsSetMainAnim(std::string_view key) {
+      // メインにセットされているアニメーションを取得
+      auto mainAnim = _main.GetAnimNum();
+      auto number = AnimKeyConversion(key.data());
+      // 取得に失敗した場合は偽を返す
+      if (number == -1) {
+        return false;
+      }
+      // 一致している場合はtrueを返す
+      return number == mainAnim;
+    }
+
     void ModelAnimComponent::SetAttach(ModelAnimInfo& motion, const std::string_view key, const float speed, const bool loop) {
       // モデルハンドル未所持の場合エラー
       if (_mHandle == -1) {

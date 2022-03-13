@@ -65,6 +65,9 @@ namespace Gyro {
         Attack1,     //!< 攻撃1
         Attack2,     //!< 攻撃2
         Attack3,     //!< 攻撃3
+        JumpAttack1, //!< 空中攻撃1
+        JumpAttack2, //!< 空中攻撃2
+        JumpAttack3, //!< 空中攻撃3
         ExciteTrick, //!< エキサイトトリック
         Dash,        //!< ダッシュ
         Jump         //!< ジャンプ
@@ -137,9 +140,17 @@ namespace Gyro {
        * @return
        */
       bool Heal(const float heal);
+      /**
+       * @brief  トリックゲージに値を入れる
+       * @param  trickValue トリックゲージの値
+       * @return 
+       */
+      void AddTrickValue(float trickValue) { _trickValue += trickValue; }
     private:
       //!< モデルハンドル
       int _model;
+      //!< トリックゲージの値
+      float _trickValue{ 0 };
       //!< 歩き・ダッシュモーションの再生速度
       float _animSpeed;
       int _playerHP{ 0 };  //!< 自機体力

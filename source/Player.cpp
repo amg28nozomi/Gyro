@@ -78,8 +78,13 @@ namespace {
   constexpr auto StateNumberHeavy1 = 5;  //!< 強攻撃1
   constexpr auto StateNumberHeavy2 = 7;  //!< 強攻撃2
   constexpr auto StateNumberHeavy3 = 9;  //!< 強攻撃3
-  constexpr auto StateNumberExcite = 10; //!< エキサイトトリック
-  constexpr auto StateNumberDash = 11;   //!< ダッシュ
+  constexpr auto StateNumberAirLight1 = 10;  //!< 空中弱攻撃1
+  constexpr auto StateNumberAirLight2 = 12;  //!< 空中弱攻撃2
+  constexpr auto StateNumberAirLight3 = 14;  //!< 空中弱攻撃3
+  constexpr auto StateNumberAirHeavy1 = 11;  //!< 空中強攻撃1
+  constexpr auto StateNumberAirHeavy2 = 13;  //!< 空中強攻撃2
+  constexpr auto StateNumberExcite = 15; //!< エキサイトトリック
+  constexpr auto StateNumberDash = 16;   //!< ダッシュ
 
   constexpr auto AttackInterval = 150.0f; //!< 攻撃用インターバル
 
@@ -96,13 +101,18 @@ namespace Gyro {
     const std::unordered_map<Player::PlayerState, std::pair<int, int>> chaneMap{
       {Player::PlayerState::Attack1, {60, 90}}, // 攻撃1
       {Player::PlayerState::Attack2, {60, 90}}, // 攻撃2
+      {Player::PlayerState::JumpAttack1, {60, 90}}, // 空中攻撃1
+      {Player::PlayerState::JumpAttack2, {60, 90}}, // 空中攻撃2
     };
 
     const std::unordered_map<Player::PlayerState, Player::PlayerState> stateMap{
       {Player::PlayerState::Attack1, Player::PlayerState::Attack2},
       {Player::PlayerState::Attack2, Player::PlayerState::Attack3},
       {Player::PlayerState::Attack3, Player::PlayerState::Idle},
-      {Player::PlayerState::Dash, Player::PlayerState::Idle}
+      {Player::PlayerState::Dash, Player::PlayerState::Idle},
+      {Player::PlayerState::JumpAttack1, Player::PlayerState::JumpAttack2},
+      {Player::PlayerState::JumpAttack2, Player::PlayerState::JumpAttack3},
+      {Player::PlayerState::JumpAttack3, Player::PlayerState::Idle},
     };
     /**
      * @brief コリジョンに使用するフレーム番号を管理する連想配列
@@ -115,7 +125,14 @@ namespace Gyro {
       // 強攻撃
       {StateNumberHeavy1 ,{15/*, 17, 20, 22*/}},
       {StateNumberHeavy2 ,{15, 17, 20, 22}},
-      {StateNumberHeavy3 ,{15, 17, 20, 22, 50, 75}}
+      {StateNumberHeavy3 ,{15, 17, 20, 22, 50, 75}},
+      // 空中弱攻撃
+      {StateNumberAirLight1 ,{15, 17, 20, 22}},
+      {StateNumberAirLight2 ,{15, 17, 20, 22}},
+      {StateNumberAirLight3 ,{15, 17, 20, 22}},
+      // 空中強攻撃
+      {StateNumberAirHeavy1 ,{15, 17, 20, 22}},
+      {StateNumberAirHeavy2 ,{15, 17, 20, 22}},
     };
 
     /**
@@ -142,6 +159,16 @@ namespace Gyro {
       {StateNumberHeavy2 ,{GroundHeavyAttack2, 10.0f, 1.0f, false, EffectNum::PlayerHeavyAttack2}},
       // 強攻撃3
       {StateNumberHeavy3 ,{GroundHeavyAttack3, 10.0f, 1.0f, false, EffectNum::PlayerHeavyAttack3}},
+      // 空中弱攻撃1
+      {StateNumberAirLight1 ,{AirLightAttack1, 10.0f, 1.0f, false}},
+      // 空中弱攻撃2
+      {StateNumberAirLight2 ,{AirLightAttack2, 10.0f, 1.0f, false}},
+      // 空中弱攻撃3
+      {StateNumberAirLight3 ,{AirLightAttack3, 10.0f, 1.0f, false}},
+      // 空中強攻撃1
+      {StateNumberAirHeavy1 ,{AirHeavyAttack1, 10.0f, 1.0f, false}},
+      // 空中強攻撃2
+      {StateNumberAirHeavy2 ,{AirHeavyAttack2, 10.0f, 1.0f, false}},
       // ダッシュ
       {StateNumberDash, {Step, 10.0f, 1.0f, false}}
     };
@@ -210,6 +237,7 @@ namespace Gyro {
       // 座標に現在座標を更新する
       _gaugeHp.Process();      // HPゲージの更新
       _gaugeTrick.Process();   // トリックゲージの更新
+      _gaugeTrick.SetValue(_trickValue); // トリックゲージに値を入れる
       Animation(_oldState);    // アニメーションの設定
       _modelAnim.Process();    // アニメーションの再生
       Attack();                // 攻撃処理
@@ -380,10 +408,21 @@ namespace Gyro {
             // アニメーションブレンドが終了したので待機処理を無効
             _intervalAttack = false;
           }
-
-
-          // 待機状態に遷移する
-          _playerState = PlayerState::Idle;
+          // ジャンプモーションがセットされている場合は弾く
+          if (_modelAnim.IsSetMainAnim(JumpUp)) {
+            return true;
+          }
+          // 重力処理
+          _gravity = true;
+          // 現在の状態を見て空中攻撃
+          if (_playerState == PlayerState::JumpAttack1 || _playerState == PlayerState::JumpAttack2 || _playerState == PlayerState::JumpAttack3) {
+            // ジャンプ落ちるモーションにする
+            _playerState = PlayerState::Jump;
+          }
+          else {
+            // 待機状態に遷移する
+            _playerState = PlayerState::Idle;
+          }
           // 攻撃終了
           _attack->Finish();
           // インターバル時間の設定
@@ -413,6 +452,21 @@ namespace Gyro {
           return true; // 遷移する
         }
       }
+      // 空中攻撃状態に遷移するかの判定？
+      if (_playerState == PlayerState::Jump) {
+        // 攻撃状態に遷移できるか
+        if (_attack->ToAttack()) {
+          // 弱攻撃判定
+          auto light = InputAttackCheck(input, XINPUT_BUTTON_Y, LightFlag);
+          // 強攻撃判定
+          auto heavy = InputAttackCheck(input, XINPUT_BUTTON_X, HeavyFlag);
+          // どちらかの状態に遷移したか
+          if (light || heavy) {
+            _gravity = false;
+            return true;
+          }
+        }
+      }
       return false;
     }
 
@@ -423,8 +477,11 @@ namespace Gyro {
       switch (_playerState) {
       case PlayerState::Attack1:
       case PlayerState::Attack2:
+      case PlayerState::JumpAttack1:
+      case PlayerState::JumpAttack2:
         return key; // 対応するキーを返す
       case PlayerState::Attack3:
+      case PlayerState::JumpAttack3:
         return -1;  // 処理は派生しない
       default:
         return -2;  // 攻撃状態ではない
@@ -435,7 +492,12 @@ namespace Gyro {
       // 入力が行われたかの判定
       if (input.GetButton(key, false)) {
         // 攻撃状態1に遷移する
-        SetStateParam(PlayerState::Attack1);
+        if (_playerState != PlayerState::Jump) {
+          SetStateParam(PlayerState::Attack1);
+        }
+        else {
+          SetStateParam(PlayerState::JumpAttack1);
+        }
         // 攻撃判定で使用するフレーム番号の取得
         auto frames = attackMap.at(PlayerStateToNumber());
         // フレームとコリジョン情報の設定
@@ -616,7 +678,7 @@ namespace Gyro {
         if (_jump->IsJump()) {
           _jump->Finish();
         }
-        if (_playerState == PlayerState::Jump) {
+        if (_playerState == PlayerState::Jump || _playerState == PlayerState::JumpAttack1 || _playerState == PlayerState::JumpAttack2 || _playerState == PlayerState::JumpAttack3) {
           _playerState = PlayerState::Idle;
         }
         break;
@@ -845,6 +907,9 @@ namespace Gyro {
       case PlayerState::Attack1:
       case PlayerState::Attack2:
       case PlayerState::Attack3:
+      case PlayerState::JumpAttack1:
+      case PlayerState::JumpAttack2:
+      case PlayerState::JumpAttack3:
         return true;  // 攻撃状態
       default:
         return false; // 攻撃状態ではない
@@ -905,6 +970,18 @@ namespace Gyro {
         // 攻撃3
       case PlayerState::Attack3:
         number = StateNumberLight3;
+        break;
+        // 空中攻撃1
+      case PlayerState::JumpAttack1:
+        number = StateNumberAirLight1;
+        break;
+        // 空中攻撃2
+      case PlayerState::JumpAttack2:
+        number = StateNumberAirLight2;
+        break;
+        // 空中攻撃3
+      case PlayerState::JumpAttack3:
+        number = StateNumberAirLight3;
         break;
         // エキサイトトリック
       case PlayerState::ExciteTrick:
@@ -1016,7 +1093,7 @@ namespace Gyro {
       // ゲージが最大値の場合は更新を行わない
       const auto max = _gaugeHp.GetMaxGauge();
       // 現在HPの取得
-      auto hp = _gaugeHp.GetFloat();
+      auto hp = _gaugeHp.GetFloatPoint();
       // 最大値の場合は処理を行わない
       if (_gaugeHp.IsMax()) {
         return false;

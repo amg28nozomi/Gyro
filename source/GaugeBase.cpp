@@ -35,5 +35,7 @@ namespace Gyro {
     void GaugeBase::Sub(float value) {
       _value -= value;
     }
+
+
   } // namespace Gauge
 } // namespace Gyro

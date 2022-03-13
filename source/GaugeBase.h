@@ -67,16 +67,29 @@ namespace Gyro {
        * @brief  ゲージポイントの取得(整数値)
        * @return 整数値にキャストしたゲージポイント
        */
-      inline int GetInteger() const {
+      inline int GetIntPoint() const {
           return static_cast<int>(_point);
       }
       /**
        * @brief  ゲージポイントの取得(単精度浮動小数点数)
        * @return 生のゲージポイント
        */
-      inline float GetFloat() const {
+      inline float GetFloatPoint() const {
           return _point;
       }
+      /**
+       * @brief  ゲージの値の取得
+       * @return ゲージの値
+       */
+      float Getvalue() const {
+        return _value;
+      }
+      /**
+       * @brief  _valueに値を入れる
+       * @param  value 値
+       * @return 
+       */
+      void SetValue(float value) { _value = value; }
       /**
        * @brief  上限値の取得
        * @return 上限値

@@ -340,6 +340,7 @@ namespace Gyro {
         // Õ“Ë‚É‘ÎÛ‹…‚ÌF‚ğ•Ï‚¦‚é
         std::dynamic_pointer_cast<Object::CollisionSphere>(attack.GetCollision())->HitOn();
 #endif
+        player.get()->AddTrickValue(500.f);
         _enemyHP -= 1000;
         _gaugeHp->Sub(1000);
         if (_enemyHP <= 0) {
