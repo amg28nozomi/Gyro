@@ -29,6 +29,7 @@ namespace Gyro {
    * @brief 敵ベース
    */
   namespace Enemy {
+    namespace AppMath = AppFrame::Math;
     /**
      * @class EnemyBase
      * @brief 敵の基底クラス
@@ -177,6 +178,10 @@ namespace Gyro {
        */
       bool IsStand() override;
       /**
+       * @brief  壁との衝突判定
+       */
+      void Extrude();
+      /**
        * @brief  状態遷移したか
        * @param  前の状態
        * @return true:状態遷移あり
@@ -204,6 +209,8 @@ namespace Gyro {
       std::shared_ptr<Gauge::GaugeEnemy> _gaugeHp{ nullptr };
       //!< モデルアニメ
       ModelAnim::ModelAnimComponent _modelAnim;
+      //!< 前フレーム座標
+      AppMath::Vector4 _oldPosition;
     };
   } // namespace Enemy
 } // namespace Gyro

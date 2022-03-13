@@ -23,7 +23,7 @@ namespace Gyro {
     }
 
     void DashComponent::Start() {
-      // 
+      // ダッシュ起動
       _dashState = DashState::Active;
     }
 

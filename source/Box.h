@@ -34,13 +34,19 @@ namespace Gyro {
        */
       Box(Application::ApplicationMain& app);
       /**
-       * @brief
-       * @return 
+       * @brief  更新処理
+       * @return true
        */
       bool Process() override;
-
+      /**
+       * @brief  描画処理
+       * @return true
+       */
       bool Draw() const override;
-
+      /**
+       * @brief  オブジェクト設定
+       * @param  spawn アイテムのスポーン情報
+       */
       void Set(Object::SpawnItem& spawn);
       /**
        * @brief  モデルカウントの初期化

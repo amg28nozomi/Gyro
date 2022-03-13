@@ -96,6 +96,8 @@ namespace Gyro {
           // エフェクト再生
           PlayEffect();
         }
+        // 壁押し出し
+        Extrude();
         // 体力ゲージの更新
         _gaugeHp->Process();
       }

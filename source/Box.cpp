@@ -38,7 +38,7 @@ namespace Gyro {
     }
 
     bool Box::Draw() const {
-      // モデルの描画を行う
+      // モデル描画
       MV1DrawModel(_model);
       return true;
     }
@@ -53,9 +53,8 @@ namespace Gyro {
       auto min = _position - Vector4(100.0f, 0.0f, 100.0f);
       auto max = _position + Vector4(100.0f, 100.0f, 100.0f);
       _collision = std::make_unique<Object::CollisionAABB>(*this, min, max);
-
       // モデルハンドルの取得
-      auto [handle, num] = _app.GetModelServer().GetModel(spawn.ModelKey(), 2);
+      auto [handle, num] = _app.GetModelServer().GetModel(spawn.ModelKey(), _modelNum);
       // モデルハンドルの登録
       _model = handle;
       // モデルカウントを加算

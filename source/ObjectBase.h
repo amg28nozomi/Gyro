@@ -206,6 +206,7 @@ namespace Gyro {
       int _sort{ 0 };       //!< ソート用
       bool _stand{false};   //!< 立ちフラグ(true:床に立っている false:床と接触していない)
       bool _gravity{false}; //!< 重力処理を行うか(true:重力処理を行う false:重力処理を行わない)
+      bool _isStand{false}; //!< 立ちフラグ
       float _mass{0.0f};    //!< 質量
       float _gravityScale{0.0f}; //!< 重力スケール
       /**

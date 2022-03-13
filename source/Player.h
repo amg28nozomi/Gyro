@@ -350,7 +350,11 @@ namespace Gyro {
        * @return コリジョン情報が格納された動的配列
        */
       std::vector<std::shared_ptr<Object::CollisionBase>> AddSpheres(const int num, float daius = DefaultRadius);
- 
+      /**
+       * @brief  画面外に堕ちたかの判定
+       * @return true:死亡 false:死んでいない
+       */
+      bool OffScreen();
    private:
       //!< モデルサーバに紐づけられた文字列
       static inline std::string _modelKey{"player"};

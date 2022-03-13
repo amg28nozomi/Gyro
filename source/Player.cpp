@@ -312,6 +312,7 @@ namespace Gyro {
     AppMath::Vector4 Player::GetFramePosition(int frame) {
       // 取得した座標をVectorクラスに変換して返す
       auto position = MV1GetFramePosition(_model, frame);
+      // 指定フレーム情報をベクトルクラスに変換
       return UtilityDX::ToVector(position);
     }
 
@@ -370,8 +371,6 @@ namespace Gyro {
           }
           // 待機状態への遷移を行うか
           if (_intervalAttack) {
-            // ジャンプ状態中は
-            if()
             // アニメーションブレンド中かの判定
             if (_modelAnim.IsBlending()) {
               return true;
@@ -850,16 +849,23 @@ namespace Gyro {
     bool Player::SetStateParam(PlayerState pState) {
       // 状態の切り替え
       _playerState = pState;
-      // データが登録されていない場合は設定を行わない
-      if (!chaneMap.contains(_playerState)) {
+      // 遷移判定フレームの登録が行われているかの判定
+      if (chaneMap.contains(_playerState)) {
+        // 自機の状態を取得
+        auto [start, end] = chaneMap.at(_playerState);
+        // 切り替え状態を設定する
+        _stateComponent->Set(_modelAnim.GetMainPlayTime(), start, end);
+        _stateComponent->Start();
+      } 
+      else {
+        // ステートの設定を終了する
         _stateComponent->Finish();
-        return false;
       }
-      // 自機の状態を取得
-      auto [start, end] = chaneMap.at(_playerState);
-      // 切り替え状態を設定する
-      _stateComponent->Set(_modelAnim.GetMainPlayTime(), start, end);
-      _stateComponent->Start();
+
+      // 攻撃判定をセットするか
+      if (!attackMap.contains(PlayerStateToNumber())) {
+        return true;
+      }
       // 攻撃判定で使用するフレーム番号の取得
       auto frames = attackMap.at(PlayerStateToNumber());
       // フレームとコリジョン情報の設定
@@ -991,6 +997,14 @@ namespace Gyro {
         collision.emplace_back(std::make_shared<Object::CollisionSphere>(*this, _position, radius));
       }
       return collision;
+    }
+
+    bool Player::OffScreen() {
+      // 既に死亡しているか
+      if (IsDead()) {
+        return true;
+      }
+      // 画面外に堕ちているか
     }
 
     bool Player::Heal(const float heal) {
