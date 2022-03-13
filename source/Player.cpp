@@ -101,8 +101,8 @@ namespace Gyro {
     const std::unordered_map<Player::PlayerState, std::pair<int, int>> chaneMap{
       {Player::PlayerState::Attack1, {60, 90}}, // UŒ‚1
       {Player::PlayerState::Attack2, {60, 90}}, // UŒ‚2
-      {Player::PlayerState::JumpAttack1, {60, 90}}, // ‹ó’†UŒ‚1
-      {Player::PlayerState::JumpAttack2, {60, 90}}, // ‹ó’†UŒ‚2
+      {Player::PlayerState::JumpAttack1, {0, 100}}, // ‹ó’†UŒ‚1
+      {Player::PlayerState::JumpAttack2, {0, 100}}, // ‹ó’†UŒ‚2
     };
 
     const std::unordered_map<Player::PlayerState, Player::PlayerState> stateMap{
@@ -113,6 +113,7 @@ namespace Gyro {
       {Player::PlayerState::JumpAttack1, Player::PlayerState::JumpAttack2},
       {Player::PlayerState::JumpAttack2, Player::PlayerState::JumpAttack3},
       {Player::PlayerState::JumpAttack3, Player::PlayerState::Idle},
+      {Player::PlayerState::Idle, Player::PlayerState::ExciteTrick},
     };
     /**
      * @brief ƒRƒŠƒWƒ‡ƒ“‚Ég—p‚·‚éƒtƒŒ[ƒ€”Ô†‚ğŠÇ—‚·‚é˜A‘z”z—ñ
@@ -133,6 +134,8 @@ namespace Gyro {
       // ‹ó’†‹­UŒ‚
       {StateNumberAirHeavy1 ,{15, 17, 20, 22}},
       {StateNumberAirHeavy2 ,{15, 17, 20, 22}},
+      // •KE‹Z
+      {StateNumberExcite ,{15, 17, 20, 22}},
     };
 
     /**
@@ -169,6 +172,8 @@ namespace Gyro {
       {StateNumberAirHeavy1 ,{AirHeavyAttack1, 10.0f, 1.0f, false}},
       // ‹ó’†‹­UŒ‚2
       {StateNumberAirHeavy2 ,{AirHeavyAttack2, 10.0f, 1.0f, false}},
+      // •KE‹Z
+      {StateNumberExcite ,{ExciteTrickActive, 10.0f, 1.0f, false}},
       // ƒ_ƒbƒVƒ…
       {StateNumberDash, {Step, 10.0f, 1.0f, false}}
     };
