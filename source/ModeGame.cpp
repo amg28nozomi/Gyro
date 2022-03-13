@@ -101,11 +101,10 @@ namespace Gyro {
       // 入力状態の取得
       auto device = input.GetXBoxState();
       namespace App = AppFrame::Application;
-      // STARTボタンが押された場合、アプリケーションを終了する
+      // STARTボタンが押された場合、ポーズを呼び出す
       if (device.GetButton(XINPUT_BUTTON_START, App::InputTrigger)) {
-        _appMain.RequestTerminate(); // アプリケーションの終了処理を呼び出し
         // ポーズ
-        //Pause();
+        Pause();
       }
 #ifdef _DEBUG
       // デバッグ時限定:左スティックが押された場合、デバッグフラグを切り替える
@@ -474,7 +473,7 @@ namespace Gyro {
         _appMain.GetModeServer().AddMode("Pause", std::make_shared<Mode::ModePause>(_appMain));
       }
       // モードポーズ遷移
-      _appMain.GetModeServer().TransionToMode("Pause");
+      _appMain.GetModeServer().PushBack("Pause");
       // ポーズ開始
       _appMain.SetGamePause(true);
     }
