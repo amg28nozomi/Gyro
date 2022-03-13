@@ -179,6 +179,8 @@ namespace Gyro {
     bool Player::Process() {
       // 基底クラスの更新処理呼び出し
       ObjectBase::Process();
+
+      if (_gravity) { _oldState = _playerState; }
       // 名前空間の省略
       namespace App = AppFrame::Application;
       // 入力状態の取得
@@ -378,6 +380,8 @@ namespace Gyro {
             // アニメーションブレンドが終了したので待機処理を無効
             _intervalAttack = false;
           }
+
+
           // 待機状態に遷移する
           _playerState = PlayerState::Idle;
           // 攻撃終了
@@ -399,6 +403,7 @@ namespace Gyro {
           auto heavy = InputAttackCheck(input, XINPUT_BUTTON_X, HeavyFlag);
           // どちらかの状態に遷移したか
           if (light || heavy) {
+            _gravity = false;
             return true;
           }
         }

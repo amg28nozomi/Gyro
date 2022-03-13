@@ -52,9 +52,12 @@ namespace Gyro {
     }
 
     void ObjectBase::Gravity() {
-      GravityScale(); // グラビティスケールの更新
+      // グラビティスケールの更新
+      GravityScale();
+      // 立ちフラグの更新
+      _isStand = IsStand();
       // 地形との衝突判定
-      if (IsStand()) {
+      if (_isStand) {
         GravityReset(); // 重力スケールの初期化
       }
     }
