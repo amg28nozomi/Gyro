@@ -65,6 +65,9 @@ namespace Gyro {
         Attack1,     //!< UŒ‚1
         Attack2,     //!< UŒ‚2
         Attack3,     //!< UŒ‚3
+        JumpAttack1, //!< ‹ó’†UŒ‚1
+        JumpAttack2, //!< ‹ó’†UŒ‚2
+        JumpAttack3, //!< ‹ó’†UŒ‚3
         ExciteTrick, //!< ƒGƒLƒTƒCƒgƒgƒŠƒbƒN
         Dash,        //!< ƒ_ƒbƒVƒ…
         Jump         //!< ƒWƒƒƒ“ƒv

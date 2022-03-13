@@ -78,8 +78,13 @@ namespace {
   constexpr auto StateNumberHeavy1 = 5;  //!< ‹­UŒ‚1
   constexpr auto StateNumberHeavy2 = 7;  //!< ‹­UŒ‚2
   constexpr auto StateNumberHeavy3 = 9;  //!< ‹­UŒ‚3
-  constexpr auto StateNumberExcite = 10; //!< ƒGƒLƒTƒCƒgƒgƒŠƒbƒN
-  constexpr auto StateNumberDash = 11;   //!< ƒ_ƒbƒVƒ…
+  constexpr auto StateNumberAirLight1 = 10;  //!< ‹ó’†ãUŒ‚1
+  constexpr auto StateNumberAirLight2 = 11;  //!< ‹ó’†ãUŒ‚2
+  constexpr auto StateNumberAirLight3 = 12;  //!< ‹ó’†ãUŒ‚3
+  constexpr auto StateNumberAirHeavy1 = 10;  //!< ‹ó’†‹­UŒ‚1
+  constexpr auto StateNumberAirHeavy2 = 11;  //!< ‹ó’†‹­UŒ‚2
+  constexpr auto StateNumberExcite = 15; //!< ƒGƒLƒTƒCƒgƒgƒŠƒbƒN
+  constexpr auto StateNumberDash = 16;   //!< ƒ_ƒbƒVƒ…
 
   constexpr auto AttackInterval = 150.0f; //!< UŒ‚—pƒCƒ“ƒ^[ƒoƒ‹
 
@@ -96,13 +101,18 @@ namespace Gyro {
     const std::unordered_map<Player::PlayerState, std::pair<int, int>> chaneMap{
       {Player::PlayerState::Attack1, {60, 90}}, // UŒ‚1
       {Player::PlayerState::Attack2, {60, 90}}, // UŒ‚2
+      {Player::PlayerState::JumpAttack1, {60, 90}}, // ‹ó’†UŒ‚1
+      {Player::PlayerState::JumpAttack2, {60, 90}}, // ‹ó’†UŒ‚2
     };
 
     const std::unordered_map<Player::PlayerState, Player::PlayerState> stateMap{
       {Player::PlayerState::Attack1, Player::PlayerState::Attack2},
       {Player::PlayerState::Attack2, Player::PlayerState::Attack3},
       {Player::PlayerState::Attack3, Player::PlayerState::Idle},
-      {Player::PlayerState::Dash, Player::PlayerState::Idle}
+      {Player::PlayerState::Dash, Player::PlayerState::Idle},
+      {Player::PlayerState::JumpAttack1, Player::PlayerState::JumpAttack2},
+      {Player::PlayerState::JumpAttack2, Player::PlayerState::JumpAttack3},
+      {Player::PlayerState::JumpAttack3, Player::PlayerState::Idle},
     };
     /**
      * @brief ƒRƒŠƒWƒ‡ƒ“‚Ég—p‚·‚éƒtƒŒ[ƒ€”Ô†‚ğŠÇ—‚·‚é˜A‘z”z—ñ
@@ -115,7 +125,14 @@ namespace Gyro {
       // ‹­UŒ‚
       {StateNumberHeavy1 ,{15/*, 17, 20, 22*/}},
       {StateNumberHeavy2 ,{15, 17, 20, 22}},
-      {StateNumberHeavy3 ,{15, 17, 20, 22, 50, 75}}
+      {StateNumberHeavy3 ,{15, 17, 20, 22, 50, 75}},
+      // ‹ó’†ãUŒ‚
+      {StateNumberAirLight1 ,{15, 17, 20, 22}},
+      {StateNumberAirLight2 ,{15, 17, 20, 22}},
+      {StateNumberAirLight3 ,{15, 17, 20, 22}},
+      // ‹ó’†‹­UŒ‚
+      {StateNumberAirHeavy1 ,{15, 17, 20, 22}},
+      {StateNumberAirHeavy2 ,{15, 17, 20, 22}},
     };
 
     /**
@@ -142,6 +159,16 @@ namespace Gyro {
       {StateNumberHeavy2 ,{GroundHeavyAttack2, 10.0f, 1.0f, false, EffectNum::PlayerHeavyAttack2}},
       // ‹­UŒ‚3
       {StateNumberHeavy3 ,{GroundHeavyAttack3, 10.0f, 1.0f, false, EffectNum::PlayerHeavyAttack3}},
+      // ‹ó’†ãUŒ‚1
+      {StateNumberAirLight1 ,{AirLightAttack1, 10.0f, 1.0f, false}},
+      // ‹ó’†ãUŒ‚2
+      {StateNumberAirLight2 ,{AirLightAttack2, 10.0f, 1.0f, false}},
+      // ‹ó’†ãUŒ‚3
+      {StateNumberAirLight3 ,{AirLightAttack3, 10.0f, 1.0f, false}},
+      // ‹ó’†‹­UŒ‚1
+      {StateNumberAirHeavy1 ,{AirHeavyAttack1, 10.0f, 1.0f, false}},
+      // ‹ó’†‹­UŒ‚2
+      {StateNumberAirHeavy2 ,{AirHeavyAttack2, 10.0f, 1.0f, false}},
       // ƒ_ƒbƒVƒ…
       {StateNumberDash, {Step, 10.0f, 1.0f, false}}
     };
@@ -377,6 +404,10 @@ namespace Gyro {
             // ƒAƒjƒ[ƒVƒ‡ƒ“ƒuƒŒƒ“ƒh‚ªI—¹‚µ‚½‚Ì‚Å‘Ò‹@ˆ—‚ğ–³Œø
             _intervalAttack = false;
           }
+          // ƒWƒƒƒ“ƒvƒ‚[ƒVƒ‡ƒ“‚ªƒZƒbƒg‚³‚ê‚Ä‚¢‚éê‡‚Í’e‚­
+          if (_modelAnim.IsSetMainAnim(JumpUp)) {
+            return true;
+          }
           // ‘Ò‹@ó‘Ô‚É‘JˆÚ‚·‚é
           _playerState = PlayerState::Idle;
           // UŒ‚I—¹
@@ -407,6 +438,20 @@ namespace Gyro {
           return true; // ‘JˆÚ‚·‚é
         }
       }
+      // ‹ó’†UŒ‚ó‘Ô‚É‘JˆÚ‚·‚é‚©‚Ì”»’èH
+      if (_playerState == PlayerState::Jump) {
+        // UŒ‚ó‘Ô‚É‘JˆÚ‚Å‚«‚é‚©
+        if (_attack->ToAttack()) {
+          // ãUŒ‚”»’è
+          auto light = InputAttackCheck(input, XINPUT_BUTTON_Y, LightFlag);
+          // ‹­UŒ‚”»’è
+          auto heavy = InputAttackCheck(input, XINPUT_BUTTON_X, HeavyFlag);
+          // ‚Ç‚¿‚ç‚©‚Ìó‘Ô‚É‘JˆÚ‚µ‚½‚©
+          if (light || heavy) {
+            return true;
+          }
+        }
+      }
       return false;
     }
 
@@ -417,8 +462,11 @@ namespace Gyro {
       switch (_playerState) {
       case PlayerState::Attack1:
       case PlayerState::Attack2:
+      case PlayerState::JumpAttack1:
+      case PlayerState::JumpAttack2:
         return key; // ‘Î‰‚·‚éƒL[‚ğ•Ô‚·
       case PlayerState::Attack3:
+      case PlayerState::JumpAttack3:
         return -1;  // ˆ—‚Í”h¶‚µ‚È‚¢
       default:
         return -2;  // UŒ‚ó‘Ô‚Å‚Í‚È‚¢
@@ -429,7 +477,12 @@ namespace Gyro {
       // “ü—Í‚ªs‚í‚ê‚½‚©‚Ì”»’è
       if (input.GetButton(key, false)) {
         // UŒ‚ó‘Ô1‚É‘JˆÚ‚·‚é
-        SetStateParam(PlayerState::Attack1);
+        if (_playerState != PlayerState::Jump) {
+          SetStateParam(PlayerState::Attack1);
+        }
+        else {
+          SetStateParam(PlayerState::JumpAttack1);
+        }
         // UŒ‚”»’è‚Åg—p‚·‚éƒtƒŒ[ƒ€”Ô†‚Ìæ“¾
         auto frames = attackMap.at(PlayerStateToNumber());
         // ƒtƒŒ[ƒ€‚ÆƒRƒŠƒWƒ‡ƒ“î•ñ‚Ìİ’è
@@ -610,7 +663,7 @@ namespace Gyro {
         if (_jump->IsJump()) {
           _jump->Finish();
         }
-        if (_playerState == PlayerState::Jump) {
+        if (_playerState == PlayerState::Jump || _playerState == PlayerState::JumpAttack1 || _playerState == PlayerState::JumpAttack2 || _playerState == PlayerState::JumpAttack3) {
           _playerState = PlayerState::Idle;
         }
         break;
@@ -839,6 +892,9 @@ namespace Gyro {
       case PlayerState::Attack1:
       case PlayerState::Attack2:
       case PlayerState::Attack3:
+      case PlayerState::JumpAttack1:
+      case PlayerState::JumpAttack2:
+      case PlayerState::JumpAttack3:
         return true;  // UŒ‚ó‘Ô
       default:
         return false; // UŒ‚ó‘Ô‚Å‚Í‚È‚¢
@@ -892,6 +948,18 @@ namespace Gyro {
         // UŒ‚3
       case PlayerState::Attack3:
         number = StateNumberLight3;
+        break;
+        // ‹ó’†UŒ‚1
+      case PlayerState::JumpAttack1:
+        number = StateNumberAirLight1;
+        break;
+        // ‹ó’†UŒ‚2
+      case PlayerState::JumpAttack2:
+        number = StateNumberAirLight2;
+        break;
+        // ‹ó’†UŒ‚3
+      case PlayerState::JumpAttack3:
+        number = StateNumberAirLight3;
         break;
         // ƒGƒLƒTƒCƒgƒgƒŠƒbƒN
       case PlayerState::ExciteTrick:

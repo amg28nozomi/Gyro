@@ -65,6 +65,12 @@ namespace Gyro {
         _main.SetSpeedRate(rate);
       }
       /**
+       * @brief  指定アニメーションがセットされているかの判定
+       * @param  key    アニメーション名
+       * @return true:セットされている false:セットされていない
+       */
+      bool IsSetMainAnim(std::string_view key);
+      /**
        * @brief  アニメーション名のアニメーション番号変換
        * @param  key アニメーション名
        * @return アニメーション番号
