@@ -59,8 +59,8 @@ namespace Gyro {
         // ó‘Ô‚à‚Ç‚«
         switch (_enemyState) {
         case Gyro::Enemy::EnemyBase::EnemyState::Move:
-          Move();  //!< ˆÚ“®
           Search(); //!< ’Tõ
+          Move();  //!< ˆÚ“®
           break;
         case Gyro::Enemy::EnemyBase::EnemyState::Attack:
           Attack();  //!< UŒ‚

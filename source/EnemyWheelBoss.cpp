@@ -10,13 +10,14 @@
 #include "ObjectServer.h"
 #include "Player.h"
 #include <algorithm>
+#include "EffectEnemyGroundAttack2.h"
 
 namespace {
   // 各種定数
   constexpr int WheelHP = 10000;             //!< 地上敵最大体力
   constexpr float WheelMoveSpead = 5.0f;     //!< 地上的移動速度
   constexpr float WheelAttackSpead = 10.0f;  //!< 地上的攻撃移動速度
-  constexpr float WheelSlashFrame = 27.0f;   //!< 地上敵回転攻撃フレーム
+  constexpr float WheelSlashFrame = 25.0f;   //!< 地上敵回転攻撃フレーム
   constexpr float Height = 530.0f;           //!< 高さ
   // アニメーションキー
   constexpr std::string_view IdleKey = "idle";      //!< 待機
@@ -46,7 +47,8 @@ namespace Gyro {
       SetParameter();
       // アニメーションアタッチ
       _modelAnim.SetMainAttach(_mHandle, IdleKey, 1.0f, true);
-
+      // 回転攻撃エフェクトの生成
+      _groundAttack2 = std::make_shared<Effect::EffectEnemyGroundAttack2>(_app);
       return true;
     }
 
@@ -241,9 +243,7 @@ namespace Gyro {
         _position.Add(_move);
         _capsule->Process(_move);
         // 回転攻撃エフェクト
-        if (!_slash) {
-          SlashEffect();
-        }
+        SlashEffect();
       }
       // アニメーション終了でIdleへ移行
       if (_modelAnim.GetMainAnimEnd() && !_modelAnim.IsBlending()) {
@@ -400,7 +400,14 @@ namespace Gyro {
       // 回転攻撃フレームに満たない場合中断
       if (slash < WheelSlashFrame) {
         return;
-    }
+      }
+      // エフェクト未再生
+      if (!_slash) {
+        // エフェクト再生
+        _groundAttack2->PlayEffect();
+        // エフェクト再生完了
+        _slash = true;
+      }
       // パラメータ設定
       auto ePos = _position;
 #ifndef _DEBUG
@@ -408,10 +415,9 @@ namespace Gyro {
 #else
       auto eRad = -AppMath::Utility::DegreeToRadian(_rotation.GetY());
 #endif
-      // エフェクト生成
-      _app.GetEffectServer().MakeEffect(EffectNum::EnemyGroundAttack2, ePos, eRad);
-      // エフェクト生成完了
-      _slash = true;
+      // エフェクト更新
+      _groundAttack2->SetEffectParameter(ePos, eRad);
+      _groundAttack2->Process();
     }
 
     void EnemyWheelBoss::Dead() {
