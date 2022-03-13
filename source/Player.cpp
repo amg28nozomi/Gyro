@@ -1087,6 +1087,7 @@ namespace Gyro {
         return true;
       }
       // ‰æ–ÊŠO‚É‘Â‚¿‚Ä‚¢‚é‚©
+      return false;
     }
 
     bool Player::Heal(const float heal) {
