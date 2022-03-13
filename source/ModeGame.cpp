@@ -355,9 +355,17 @@ namespace Gyro {
     }
 
     void ModeGame::SpawnTiming() {
-      auto waveMax = 4;
+      // ウェーブ数
+      const auto waveMax = 4;
+      // 自機の取得
+      auto player = _appMain.GetObjectServer().GetPlayer();
+      // 取得に失敗した場合は更新を行わない
+      if (player == nullptr) {
+        return;
+      }
       // プレイヤーの位置を見て敵スポーンさせる
-      auto pPos = _appMain.GetObjectServer().GetPlayer().get()->GetPosition();
+      const auto pPos = player->GetPosition();
+      // 生成判定
       if (pPos.GetZ() < -2244.f && _wave1 == true) {
         _appMain.GetSpawnServer().SetStage("wave2");
         _appMain.GetSpawnServer().Spawn(0);

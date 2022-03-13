@@ -267,6 +267,8 @@ namespace Gyro {
       _app.GetCamera().Process(AppMath::Vector4(rightX, rightY), _position, _move->GetOldPosition().Direction(_position));
       // ワールド座標の設定
       MV1SetMatrix(_model, UtilityDX::ToMATRIX(_world));
+      // 画面外判定
+      OffScreen();
       return true;
     }
 
@@ -1087,6 +1089,14 @@ namespace Gyro {
         return true;
       }
       // 画面外に堕ちているか
+      const auto y = _position.GetY();
+      // y軸が画面外に出た場合は死亡する
+      if (_position.GetY() <= 0.0f) {
+        // ゲームオーバー
+        _state = ObjectState::Dead;
+        _app.GameOver();
+        return true;
+      }
       return false;
     }
 
