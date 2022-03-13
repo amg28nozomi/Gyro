@@ -127,12 +127,12 @@ namespace Gyro {
       {StateNumberHeavy2 ,{15, 17, 20, 22}},
       {StateNumberHeavy3 ,{15, 17, 20, 22, 50, 75}},
       // ‹ó’†ãUŒ‚
-      {StateNumberAirLight1 ,{}},
-      {StateNumberAirLight2 ,{}},
-      {StateNumberAirLight3 ,{}},
+      {StateNumberAirLight1 ,{15, 17, 20, 22}},
+      {StateNumberAirLight2 ,{15, 17, 20, 22}},
+      {StateNumberAirLight3 ,{15, 17, 20, 22}},
       // ‹ó’†‹­UŒ‚
-      {StateNumberAirHeavy1 ,{}},
-      {StateNumberAirHeavy2 ,{}},
+      {StateNumberAirHeavy1 ,{15, 17, 20, 22}},
+      {StateNumberAirHeavy2 ,{15, 17, 20, 22}},
     };
 
     /**
