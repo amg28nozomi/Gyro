@@ -49,9 +49,9 @@ namespace {
   constexpr auto AirLightAttack3 = "GyroJLaw3";                //!< ‹ó’†ŽãUŒ‚3
   constexpr auto AirHeavyAttack1 = "GyroJHigh1";               //!< ‹ó’†‹­UŒ‚1
   constexpr auto AirHeavyAttack2 = "GyroJHigh2";               //!< ‹ó’†‹­UŒ‚2
-  constexpr auto ExciteTrickActive = "GyroExciteTrickActive";  //!< •KŽE‹Z
-  constexpr auto ExciteTrick1 = "GyroExciteTrickDirect1";      //!< •KŽE‹Z
-  constexpr auto ExciteTrick2 = "GyroExciteTrickDirect2";      //!< •KŽE‹Z
+  constexpr auto ExciteTrickActive = "GyroExciteTrickActive";  //!< •KŽE‹Z\‚¦
+  constexpr auto ExciteTrick1 = "GyroExciteTrickDirect1";      //!< •KŽE‹Z’†
+  constexpr auto ExciteTrick2 = "GyroExciteTrickDirect2";      //!< •KŽE‹ZŒã
   constexpr auto Damage1 = "GyroDamage1";                      //!< ¬ƒ_ƒ[ƒW
   constexpr auto Damage2 = "GyroDamage2";                      //!< ‘åƒ_ƒ[ƒW
   // ƒvƒŒƒCƒ„[‚ÌHP
@@ -83,8 +83,10 @@ namespace {
   constexpr auto StateNumberAirLight3 = 14;  //!< ‹ó’†ŽãUŒ‚3
   constexpr auto StateNumberAirHeavy1 = 11;  //!< ‹ó’†‹­UŒ‚1
   constexpr auto StateNumberAirHeavy2 = 13;  //!< ‹ó’†‹­UŒ‚2
-  constexpr auto StateNumberExcite = 15; //!< ƒGƒLƒTƒCƒgƒgƒŠƒbƒN
-  constexpr auto StateNumberDash = 16;   //!< ƒ_ƒbƒVƒ…
+  constexpr auto StateNumberExciteActive = 15; //!< •KŽE‹Z\‚¦
+  constexpr auto StateNumberExciteTrick1 = 16; //!< •KŽE‹Z’†
+  constexpr auto StateNumberExciteTrick2 = 17; //!< •KŽE‹ZŒã
+  constexpr auto StateNumberDash = 18;   //!< ƒ_ƒbƒVƒ…
 
   constexpr auto AttackInterval = 150.0f; //!< UŒ‚—pƒCƒ“ƒ^[ƒoƒ‹
 
@@ -134,8 +136,6 @@ namespace Gyro {
       // ‹ó’†‹­UŒ‚
       {StateNumberAirHeavy1 ,{15, 17, 20, 22}},
       {StateNumberAirHeavy2 ,{15, 17, 20, 22}},
-      // •KŽE‹Z
-      {StateNumberExcite ,{15, 17, 20, 22}},
     };
 
     /**
@@ -172,8 +172,12 @@ namespace Gyro {
       {StateNumberAirHeavy1 ,{AirHeavyAttack1, 10.0f, 1.0f, false}},
       // ‹ó’†‹­UŒ‚2
       {StateNumberAirHeavy2 ,{AirHeavyAttack2, 10.0f, 1.0f, false}},
-      // •KŽE‹Z
-      {StateNumberExcite ,{ExciteTrickActive, 10.0f, 1.0f, false}},
+      // •KŽE‹Z\‚¦
+      {StateNumberExciteActive ,{ExciteTrickActive, 10.0f, 1.0f, false}},
+      // •KŽE‹Z’†
+      {StateNumberExciteTrick1 ,{ExciteTrick1, 10.0f, 1.0f, false}},
+      // •KŽE‹ZŒã
+      {StateNumberExciteTrick2 ,{ExciteTrick2, 10.0f, 1.0f, false}},
       // ƒ_ƒbƒVƒ…
       {StateNumberDash, {Step, 10.0f, 1.0f, false}}
     };
@@ -990,7 +994,7 @@ namespace Gyro {
         break;
         // ƒGƒLƒTƒCƒgƒgƒŠƒbƒN
       case PlayerState::ExciteTrick:
-        return StateNumberExcite;
+        return StateNumberExciteActive;
         // ƒ_ƒbƒVƒ…
       case PlayerState::Dash:
         return StateNumberDash;
