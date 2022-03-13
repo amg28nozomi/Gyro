@@ -206,8 +206,8 @@ namespace Gyro {
     bool Player::Process() {
       // 基底クラスの更新処理呼び出し
       ObjectBase::Process();
-
-      if (_gravity) { _oldState = _playerState; }
+      // グラビティフラグがオフの場合はここで更新
+      if (!_gravity) { _oldState = _playerState; }
       // 名前空間の省略
       namespace App = AppFrame::Application;
       // 入力状態の取得
