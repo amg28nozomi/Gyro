@@ -237,9 +237,8 @@ namespace Gyro {
       }
       // 座標に現在座標を更新する
       _gaugeHp.Process();      // HPゲージの更新
-      _gaugeTrick.Add(100);    // トリックゲージの更新
       _gaugeTrick.Process();   // トリックゲージの更新
-      _gaugeTrick.GetIntPoint();
+      _gaugeTrick.SetValue(_trickValue); // トリックゲージに値を入れる
       Animation(_oldState);    // アニメーションの設定
       _modelAnim.Process();    // アニメーションの再生
       Attack();                // 攻撃処理

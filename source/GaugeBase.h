@@ -85,6 +85,12 @@ namespace Gyro {
         return _value;
       }
       /**
+       * @brief  _valueに値を入れる
+       * @param  value 値
+       * @return 
+       */
+      void SetValue(float value) { _value = value; }
+      /**
        * @brief  上限値の取得
        * @return 上限値
        */
