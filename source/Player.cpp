@@ -141,7 +141,7 @@ namespace Gyro {
       {StateNumberAirHeavy1 ,{15, 17, 20, 22}},
       {StateNumberAirHeavy2 ,{15, 17, 20, 22}},
       // 必殺技攻撃
-      {StateNumberExciteTrick1 ,{15, 17, 20, 22}},
+      {StateNumberExciteTrick1 ,{0}},
     };
 
     /**
@@ -521,7 +521,7 @@ namespace Gyro {
             // 攻撃判定で使用するフレーム番号の取得
             auto frames = attackMap.at(PlayerStateToNumber());
             // フレームとコリジョン情報の設定
-            _attack->SetFrame(frames, AddSpheres(static_cast<int>(frames.size(), 5000.f)));
+            _attack->SetFrame(frames, AddSpheres(static_cast<int>(frames.size()), 2000.f));
           }
           else if (_playerState == PlayerState::ExciteTrick) {
             _playerState = PlayerState::ExciteTrickEnd;
