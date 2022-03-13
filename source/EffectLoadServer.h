@@ -68,8 +68,11 @@ namespace Gyro {
   // エフェクトキー定数
   namespace EffectKey {
   // プレイヤー
+    constexpr std::string_view PlayerDash = "PlayerDash";                        //!< プレイヤーダッシュ
     constexpr std::string_view PlayerJump = "PlayerJump";                        //!< プレイヤージャンプ
+    constexpr std::string_view PlayerLanding = "PlayerLanding";                  //!< プレイヤー着地
     constexpr std::string_view PlayerHit = "PlayerHit";                          //!< プレイヤー被ダメ
+    constexpr std::string_view PlayerAvoidance = "PlayerAvoidance";              //!< プレイヤー回避
     constexpr std::string_view PlayerWeakAttack1 = "PlayerWeakAttack1";          //!< プレイヤー弱攻撃1
     constexpr std::string_view PlayerWeakAttack2 = "PlayerWeakAttack2";          //!< プレイヤー弱攻撃2
     constexpr std::string_view PlayerWeakAttack3 = "PlayerWeakAttack3";          //!< プレイヤー弱攻撃3
@@ -84,6 +87,8 @@ namespace Gyro {
     constexpr std::string_view PlayerAirHeavyAttack2 = "PlayerAirHeavyAttack2";  //!< プレイヤー空中強攻撃2
     constexpr std::string_view PlayerUltActivate = "PlayerUltActivate";          //!< プレイヤー必殺発動
     constexpr std::string_view PlayerUltSlash = "PlayerUltSlash";                //!< プレイヤー必殺攻撃
+    constexpr std::string_view PlayerJustActivate = "PlayerJustActivate";        //!< プレイヤージャスト発動
+    constexpr std::string_view PlayerJustEmit = "PlayerJustEmit";                //!< プレイヤージャスト終了
   // 敵
     constexpr std::string_view EnemyEyeLight = "EnemyEyeLight";            //!< 敵眼光
     constexpr std::string_view EnemyGroundAttack1 = "EnemyGroundAttack1";  //!< 敵地上攻撃1
@@ -101,5 +106,6 @@ namespace Gyro {
   // ステージ
     constexpr std::string_view StageBarrier = "StageBarrier";        //!< ステージバリア
     constexpr std::string_view StageBoxDestroy = "StageBoxDestroy";  //!< ステージ箱破壊
+    constexpr std::string_view StageHeal = "StageHeal";              //!< ステージ回復
   } // namespace EffectKey
 } // namespace Gyro

@@ -7,8 +7,11 @@
  *********************************************************************/
 #include "EffectServer.h"
 #include "EffectBase.h"
+#include "EffectPlayerDash.h"
 #include "EffectPlayerJump.h"
+#include "EffectPlayerLanding.h"
 #include "EffectPlayerHit.h"
+#include "EffectPlayerAvoidance.h"
 #include "EffectPlayerWeakAttack1.h"
 #include "EffectPlayerWeakAttack2.h"
 #include "EffectPlayerWeakAttack3.h"
@@ -23,6 +26,8 @@
 #include "EffectPlayerAirHeavyAttack2.h"
 #include "EffectPlayerUltActivate.h"
 #include "EffectPlayerUltSlash.h"
+#include "EffectPlayerJustActivate.h"
+#include "EffectPlayerJustEmit.h"
 #include "EffectEnemyEyeLight.h"
 #include "EffectEnemyGroundAttack1.h"
 #include "EffectEnemyGroundAttack2.h"
@@ -37,6 +42,7 @@
 #include "EffectEnemyBossExprosion.h"
 #include "EffectStageBarrier.h"
 #include "EffectStageBoxDestroy.h"
+#include "EffectStageHeal.h"
 
 namespace Gyro {
   namespace Effect {
@@ -89,13 +95,25 @@ namespace Gyro {
     void EffectServer::MakeEffect(const int num, const AppMath::Vector4 position, const float radian) {
       // エフェクト識別生成
       switch (num) {
+      case EffectNum::PlayerDash:
+        // プレイヤーダッシュ
+        AddEffect(PlayerDash(position, radian));
+        break;
       case EffectNum::PlayerJump:
         // プレイヤージャンプ
         AddEffect(PlayerJump(position, radian));
         break;
+      case EffectNum::PlayerLanding:
+        // プレイヤー着地
+        AddEffect(PlayerLanding(position, radian));
+        break;
       case EffectNum::PlayerHit:
         // プレイヤー被ダメ
         AddEffect(PlayerHit(position, radian));
+        break;
+      case EffectNum::PlayerAvoidance:
+        // プレイヤー回避
+        AddEffect(PlayerAvoidance(position, radian));
         break;
       case EffectNum::PlayerWeakAttack1:
         // プレイヤー弱攻撃1
@@ -109,6 +127,10 @@ namespace Gyro {
         // プレイヤー弱攻撃3
         AddEffect(PlayerWeakAttack3(position, radian));
         break;
+      case EffectNum::PlayerWeakAttackEX:
+        // プレイヤー弱攻撃EX
+        AddEffect(PlayerWeakAttackEX(position, radian));
+        break;
       case EffectNum::PlayerHeavyAttack1:
         // プレイヤー強攻撃1
         AddEffect(PlayerHeavyAttack1(position, radian));
@@ -120,10 +142,6 @@ namespace Gyro {
       case EffectNum::PlayerHeavyAttack3:
         // プレイヤー強攻撃3
         AddEffect(PlayerHeavyAttack3(position, radian));
-        break;
-      case EffectNum::PlayerWeakAttackEX:
-        // プレイヤー弱攻撃EX
-        AddEffect(PlayerWeakAttackEX(position, radian));
         break;
       case EffectNum::PlayerAirWeakAttack1:
         // プレイヤー空中弱攻撃1
@@ -144,6 +162,22 @@ namespace Gyro {
       case EffectNum::PlayerAirHeavyAttack2:
         // プレイヤー空中強攻撃2
         AddEffect(PlayerAirHeavyAttack2(position, radian));
+        break;
+      case EffectNum::PlayerUltActivate:
+        // プレイヤー必殺発動
+        AddEffect(PlayerUltActivate(position, radian));
+        break;
+      case EffectNum::PlayerUltSlash:
+        // プレイヤー必殺攻撃
+        AddEffect(PlayerUltSlash(position, radian));
+        break;
+      case EffectNum::PlayerJustActivate:
+        // プレイヤージャスト発動
+        AddEffect(PlayerJustActivate(position, radian));
+        break;
+      case EffectNum::PlayerJustEmit:
+        // プレイヤージャスト終了
+        AddEffect(PlayerJustEmit(position, radian));
         break;
       case EffectNum::EnemyEyeLight:
         // 敵眼光
@@ -201,6 +235,10 @@ namespace Gyro {
         // ステージ箱破壊
         AddEffect(StageBoxDestroy(position, radian));
         break;
+      case EffectNum::StageHeal:
+        // ステージ回復
+        AddEffect(StageHeal(position, radian));
+        break;
       default:
 #ifdef _DEBUG
         throw ("エフェクト識別番号がありません");
@@ -221,6 +259,15 @@ namespace Gyro {
       _registry.emplace_back(std::move(effect));
     }
 
+    std::shared_ptr<EffectPlayerDash> EffectServer::PlayerDash(const AppMath::Vector4 position, const float radian) const {
+      // プレイヤーダッシュの生成
+      auto playerDash = std::make_shared<EffectPlayerDash>(_app);
+      // 位置・向き設定
+      playerDash->SetEffectParameter(position, radian);
+      // 生成したシェアードポインタを返す
+      return std::move(playerDash);
+    }
+
     std::shared_ptr<EffectPlayerJump> EffectServer::PlayerJump(const AppMath::Vector4 position, const float radian) const {
       // プレイヤージャンプの生成
       auto playerJump = std::make_shared<EffectPlayerJump>(_app);
@@ -230,6 +277,15 @@ namespace Gyro {
       return std::move(playerJump);
     }
 
+    std::shared_ptr<EffectPlayerLanding> EffectServer::PlayerLanding(const AppMath::Vector4 position, const float radian) const {
+      // プレイヤー着地の生成
+      auto playerLanding = std::make_shared<EffectPlayerLanding>(_app);
+      // 位置・向き設定
+      playerLanding->SetEffectParameter(position, radian);
+      // 生成したシェアードポインタを返す
+      return std::move(playerLanding);
+    }
+
     std::shared_ptr<EffectPlayerHit> EffectServer::PlayerHit(const AppMath::Vector4 position, const float radian) const {
       // プレイヤー被ダメの生成
       auto playerHit = std::make_shared<EffectPlayerHit>(_app);
@@ -237,6 +293,15 @@ namespace Gyro {
       playerHit->SetEffectParameter(position, radian);
       // 生成したシェアードポインタを返す
       return std::move(playerHit);
+    }
+
+    std::shared_ptr<EffectPlayerAvoidance> EffectServer::PlayerAvoidance(const AppMath::Vector4 position, const float radian) const {
+      // プレイヤー回避の生成
+      auto playerAvoidance = std::make_shared<EffectPlayerAvoidance>(_app);
+      // 位置・向き設定
+      playerAvoidance->SetEffectParameter(position, radian);
+      // 生成したシェアードポインタを返す
+      return std::move(playerAvoidance);
     }
 
     std::shared_ptr<EffectPlayerWeakAttack1> EffectServer::PlayerWeakAttack1(const AppMath::Vector4 position, const float radian) const {
@@ -365,6 +430,24 @@ namespace Gyro {
       return std::move(playerUltSlash);
     }
 
+    std::shared_ptr<EffectPlayerJustActivate> EffectServer::PlayerJustActivate(const AppMath::Vector4 position, const float radian) const {
+      // プレイヤージャスト発動の生成
+      auto playerJustActivate = std::make_shared<EffectPlayerJustActivate>(_app);
+      // 位置・向き設定
+      playerJustActivate->SetEffectParameter(position, radian);
+      // 生成したシェアードポインタを返す
+      return std::move(playerJustActivate);
+    }
+
+    std::shared_ptr<EffectPlayerJustEmit> EffectServer::PlayerJustEmit(const AppMath::Vector4 position, const float radian) const {
+      // プレイヤージャスト終了の生成
+      auto playerJustEmit = std::make_shared<EffectPlayerJustEmit>(_app);
+      // 位置・向き設定
+      playerJustEmit->SetEffectParameter(position, radian);
+      // 生成したシェアードポインタを返す
+      return std::move(playerJustEmit);
+    }
+
     std::shared_ptr<EffectEnemyEyeLight> EffectServer::EnemyEyeLight(const AppMath::Vector4 position, const float radian) const {
       // 敵眼光の生成
       auto enemyEyeLight = std::make_shared<EffectEnemyEyeLight>(_app);
@@ -489,6 +572,15 @@ namespace Gyro {
       stageBoxDestroy->SetEffectParameter(position, radian);
       // 生成したシェアードポインタを返す
       return std::move(stageBoxDestroy);
+    }
+
+    std::shared_ptr<EffectStageHeal> EffectServer::StageHeal(const AppMath::Vector4 position, const float radian) const {
+      // ステージ回復の生成
+      auto stageHeal = std::make_shared<EffectStageHeal>(_app);
+      // 位置・向き設定
+      stageHeal->SetEffectParameter(position, radian);
+      // 生成したシェアードポインタを返す
+      return std::move(stageHeal);
     }
   } // namespace Effect
 } // namespace Gyro

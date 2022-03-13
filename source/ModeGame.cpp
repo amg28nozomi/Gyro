@@ -227,6 +227,11 @@ namespace Gyro {
       using EffectLoadServer = Effect::EffectLoadServer;
       // エフェクトハンドルの読み込み
       const EffectLoadServer::EffectMap effectMap{
+        {EffectKey::PlayerDash, "res/Effect/Player/Dash/player_dash.efkefc", 5.0f},
+        {EffectKey::PlayerJump, "res/Effect/Player/Jump/jump.efkefc", 5.0f},
+        {EffectKey::PlayerLanding, "res/Effect/Player/Landing/landing.efkefc", 5.0f},
+        {EffectKey::PlayerHit, "res/Effect/Player/Hit/Player_hit.efkefc", 5.0f},
+        {EffectKey::PlayerAvoidance, "res/Effect/Player/Avoidance/player_avoidance.efkefc", 5.0f},
         {EffectKey::PlayerWeakAttack1, "res/Effect/Player/WeakAttack1/player_weakattack_1.efkefc", 5.0f},
         {EffectKey::PlayerWeakAttack2, "res/Effect/Player/WeakAttack2/player_weakattack_2.efkefc", 5.0f},
         {EffectKey::PlayerWeakAttack3, "res/Effect/Player/WeakAttack3/player_weakattack_3.efkefc", 5.0f},
@@ -239,10 +244,10 @@ namespace Gyro {
         {EffectKey::PlayerAirWeakAttack3, "res/Effect/Player/AirWeakAttack3/Player_attack_air_normal_03.efkefc", 5.0f},
         {EffectKey::PlayerAirHeavyAttack1, "res/Effect/Player/AirHeavyAttack1/Player_attack_air_heavy_01.efkefc", 5.0f},
         {EffectKey::PlayerAirHeavyAttack2, "res/Effect/Player/AirHeavyAttack2/Player_attack_air_heavy_02.efkefc", 5.0f},
-        {EffectKey::PlayerUltActivate, "res/Effect/Player/Ult_Activate/Player_ult_activate.efkefc", 5.0f},
-        {EffectKey::PlayerUltSlash, "res/Effect/Player/Ult_Slash/Player_ult_slash.efkefc", 5.0f},
-        {EffectKey::PlayerJump, "res/Effect/Player/Jump/jump.efkefc", 5.0f},
-        {EffectKey::PlayerHit, "res/Effect/Player/Hit/Hit.efkefc", 5.0f},
+        {EffectKey::PlayerUltActivate, "res/Effect/Player/UltActivate/Player_ult_activate.efkefc", 5.0f},
+        {EffectKey::PlayerUltSlash, "res/Effect/Player/UltSlash/Player_ult_slash.efkefc", 5.0f},
+        {EffectKey::PlayerJustActivate, "res/Effect/Player/JustActivate/Player_justcursor_activate.efkefc", 5.0f},
+        {EffectKey::PlayerJustEmit, "res/Effect/Player/JustEmit/Player_justcursor_emit.efkefc", 5.0f},
         {EffectKey::EnemyEyeLight, "res/Effect/Enemy/EyeLight/Enemy_EyeLight.efkefc", 20.0f},
         {EffectKey::EnemyGroundAttack1, "res/Effect/Enemy/GroundAttack1/Enemy_ground_attack1.efkefc", 10.0f},
         {EffectKey::EnemyGroundAttack2, "res/Effect/Enemy/GroundAttack2/Enemy_ground_attack2.efkefc", 10.0f},
@@ -255,8 +260,9 @@ namespace Gyro {
         {EffectKey::EnemyBossAirAttack, "res/Effect/Enemy/Boss/AirAttack/Enemy_air_attack.efkefc", 30.0f},
         {EffectKey::EnemyBossHit, "res/Effect/Enemy/Boss/Hit/Enemy_Hit.efkefc", 40.0f},
         {EffectKey::EnemyBossExprosion, "res/Effect/Enemy/Boss/Exprosion/Enemy_Exprosion.efkefc", 20.0f},
-        {EffectKey::StageBarrier, "res/Effect/Stage/stage_barrier/stage_barrier.efkefc", 5.0f},
-        {EffectKey::StageBoxDestroy, "res/Effect/Stage/Box_Destroy/Box_Destroy.efkefc", 5.0f}
+        {EffectKey::StageBarrier, "res/Effect/Stage/Barrier/stage_barrier.efkefc", 5.0f},
+        {EffectKey::StageBoxDestroy, "res/Effect/Stage/BoxDestroy/Box_Destroy.efkefc", 5.0f},
+        {EffectKey::StageHeal, "res/Effect/Stage/Heal/Player_heal.efkefc", 5.0f}
       };
       // エフェクトサーバに登録
       _appMain.GetEffectLoadServer().AddEffects(effectMap);
