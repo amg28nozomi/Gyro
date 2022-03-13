@@ -394,6 +394,7 @@ namespace Gyro {
             _intervalAttack = true;
             return true;
           }
+
           // 待機状態への遷移を行うか
           if (_intervalAttack) {
             // アニメーションブレンド中かの判定
@@ -402,6 +403,10 @@ namespace Gyro {
             }
             // アニメーションブレンドが終了したので待機処理を無効
             _intervalAttack = false;
+          }
+          // ジャンプモーションがセットされている場合は弾く
+          if (_modelAnim.IsSetMainAnim(JumpUp)) {
+            return true;
           }
           // 待機状態に遷移する
           _playerState = PlayerState::Idle;
