@@ -79,10 +79,10 @@ namespace {
   constexpr auto StateNumberHeavy2 = 7;  //!< ‹­UŒ‚2
   constexpr auto StateNumberHeavy3 = 9;  //!< ‹­UŒ‚3
   constexpr auto StateNumberAirLight1 = 10;  //!< ‹ó’†ŽãUŒ‚1
-  constexpr auto StateNumberAirLight2 = 11;  //!< ‹ó’†ŽãUŒ‚2
-  constexpr auto StateNumberAirLight3 = 12;  //!< ‹ó’†ŽãUŒ‚3
-  constexpr auto StateNumberAirHeavy1 = 10;  //!< ‹ó’†‹­UŒ‚1
-  constexpr auto StateNumberAirHeavy2 = 11;  //!< ‹ó’†‹­UŒ‚2
+  constexpr auto StateNumberAirLight2 = 12;  //!< ‹ó’†ŽãUŒ‚2
+  constexpr auto StateNumberAirLight3 = 14;  //!< ‹ó’†ŽãUŒ‚3
+  constexpr auto StateNumberAirHeavy1 = 11;  //!< ‹ó’†‹­UŒ‚1
+  constexpr auto StateNumberAirHeavy2 = 13;  //!< ‹ó’†‹­UŒ‚2
   constexpr auto StateNumberExcite = 15; //!< ƒGƒLƒTƒCƒgƒgƒŠƒbƒN
   constexpr auto StateNumberDash = 16;   //!< ƒ_ƒbƒVƒ…
 
