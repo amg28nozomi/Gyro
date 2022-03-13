@@ -19,8 +19,11 @@ namespace Gyro {
     namespace AppServer = AppFrame::Server;
     namespace AppMath = AppFrame::Math;
     class EffectBase;
+    class EffectPlayerDash;
     class EffectPlayerJump;
+    class EffectPlayerLanding;
     class EffectPlayerHit;
+    class EffectPlayerAvoidance;
     class EffectPlayerWeakAttack1;
     class EffectPlayerWeakAttack2;
     class EffectPlayerWeakAttack3;
@@ -35,6 +38,8 @@ namespace Gyro {
     class EffectPlayerAirHeavyAttack2;
     class EffectPlayerUltActivate;
     class EffectPlayerUltSlash;
+    class EffectPlayerJustActivate;
+    class EffectPlayerJustEmit;
     class EffectEnemyEyeLight;
     class EffectEnemyGroundAttack1;
     class EffectEnemyGroundAttack2;
@@ -49,6 +54,7 @@ namespace Gyro {
     class EffectEnemyBossExprosion;
     class EffectStageBarrier;
     class EffectStageBoxDestroy;
+    class EffectStageHeal;
     /**
      * @class EffectServer
      * @brief エフェクトを管理するサーバクラス
@@ -80,7 +86,7 @@ namespace Gyro {
        */
       bool Draw();
       /**
-       * @brief  エフェクト生成
+       * @brief  エフェクト生成(サーバに登録)
        * @param  num エフェクト識別番号
        * @param  position エフェクト位置
        * @param  radian エフェクト向き
@@ -94,6 +100,13 @@ namespace Gyro {
        */
       void AddEffect(std::shared_ptr<EffectBase> effect);
       /**
+       * @brief  プレイヤーダッシュの生成
+       * @param  position エフェクト位置
+       * @param  radian エフェクト向き
+       * @return プレイヤーダッシュのシェアードポインタ
+       */
+      std::shared_ptr<EffectPlayerDash> PlayerDash(const AppMath::Vector4 position, const float radian) const;
+      /**
        * @brief  プレイヤージャンプの生成
        * @param  position エフェクト位置
        * @param  radian エフェクト向き
@@ -101,12 +114,26 @@ namespace Gyro {
        */
       std::shared_ptr<EffectPlayerJump> PlayerJump(const AppMath::Vector4 position, const float radian) const;
       /**
+       * @brief  プレイヤー着地の生成
+       * @param  position エフェクト位置
+       * @param  radian エフェクト向き
+       * @return プレイヤー着地のシェアードポインタ
+       */
+      std::shared_ptr<EffectPlayerLanding> PlayerLanding(const AppMath::Vector4 position, const float radian) const;
+      /**
        * @brief  プレイヤー被ダメの生成
        * @param  position エフェクト位置
        * @param  radian エフェクト向き
        * @return プレイヤー被ダメのシェアードポインタ
        */
       std::shared_ptr<EffectPlayerHit> PlayerHit(const AppMath::Vector4 position, const float radian) const;
+      /**
+       * @brief  プレイヤー回避の生成
+       * @param  position エフェクト位置
+       * @param  radian エフェクト向き
+       * @return プレイヤー回避のシェアードポインタ
+       */
+      std::shared_ptr<EffectPlayerAvoidance> PlayerAvoidance(const AppMath::Vector4 position, const float radian) const;
       /**
        * @brief  プレイヤー弱攻撃1の生成
        * @param  position エフェクト位置
@@ -206,6 +233,20 @@ namespace Gyro {
        */
       std::shared_ptr<EffectPlayerUltSlash> PlayerUltSlash(const AppMath::Vector4 position, const float radian) const;
       /**
+       * @brief  プレイヤージャスト発動の生成
+       * @param  position エフェクト位置
+       * @param  radian エフェクト向き
+       * @return プレイヤージャスト発動のシェアードポインタ
+       */
+      std::shared_ptr<EffectPlayerJustActivate> PlayerJustActivate(const AppMath::Vector4 position, const float radian) const;
+      /**
+       * @brief  プレイヤージャスト終了の生成
+       * @param  position エフェクト位置
+       * @param  radian エフェクト向き
+       * @return プレイヤージャスト終了のシェアードポインタ
+       */
+      std::shared_ptr<EffectPlayerJustEmit> PlayerJustEmit(const AppMath::Vector4 position, const float radian) const;
+      /**
        * @brief  敵眼光の生成
        * @param  position エフェクト位置
        * @param  radian エフェクト向き
@@ -303,6 +344,13 @@ namespace Gyro {
        * @return ステージ箱破壊のシェアードポインタ
        */
       std::shared_ptr<EffectStageBoxDestroy> StageBoxDestroy(const AppMath::Vector4 position, const float radian) const;
+      /**
+       * @brief  ステージ回復の生成
+       * @param  position エフェクト位置
+       * @param  radian エフェクト向き
+       * @return ステージ回復のシェアードポインタ
+       */
+      std::shared_ptr<EffectStageHeal> StageHeal(const AppMath::Vector4 position, const float radian) const;
 
       //!< アプリケーションの参照
       Application::ApplicationMain& _app;
@@ -313,27 +361,33 @@ namespace Gyro {
   namespace EffectNum {
   // 1**:プレイヤー
     // 10*:汎用
-    constexpr int PlayerJump = 100;             //!< プレイヤージャンプ
-    constexpr int PlayerHit = 101;              //!< プレイヤー被ダメ
+    constexpr int PlayerDash = 100;       //!< プレイヤーダッシュ
+    constexpr int PlayerJump = 101;       //!< プレイヤージャンプ
+    constexpr int PlayerLanding = 102;    //!< プレイヤー着地
+    constexpr int PlayerHit = 103;        //!< プレイヤー被ダメ
+    constexpr int PlayerAvoidance = 104;  //!< プレイヤー回避
     // 11*:弱攻撃
-    constexpr int PlayerWeakAttack1 = 111;      //!< プレイヤー弱攻撃1
-    constexpr int PlayerWeakAttack2 = 112;      //!< プレイヤー弱攻撃2
-    constexpr int PlayerWeakAttack3 = 113;      //!< プレイヤー弱攻撃3
-    constexpr int PlayerWeakAttackEX = 114;     //!< プレイヤー弱攻撃EX
+    constexpr int PlayerWeakAttack1 = 111;   //!< プレイヤー弱攻撃1
+    constexpr int PlayerWeakAttack2 = 112;   //!< プレイヤー弱攻撃2
+    constexpr int PlayerWeakAttack3 = 113;   //!< プレイヤー弱攻撃3
+    constexpr int PlayerWeakAttackEX = 114;  //!< プレイヤー弱攻撃EX
     // 12*:強攻撃
-    constexpr int PlayerHeavyAttack1 = 121;     //!< プレイヤー強攻撃1
-    constexpr int PlayerHeavyAttack2 = 122;     //!< プレイヤー強攻撃2
-    constexpr int PlayerHeavyAttack3 = 123;     //!< プレイヤー強攻撃3
+    constexpr int PlayerHeavyAttack1 = 121;  //!< プレイヤー強攻撃1
+    constexpr int PlayerHeavyAttack2 = 122;  //!< プレイヤー強攻撃2
+    constexpr int PlayerHeavyAttack3 = 123;  //!< プレイヤー強攻撃3
     // 13*:空中弱攻撃
-    constexpr int PlayerAirWeakAttack1 = 131;   //!< プレイヤー空中弱攻撃1
-    constexpr int PlayerAirWeakAttack2 = 132;   //!< プレイヤー空中弱攻撃2
-    constexpr int PlayerAirWeakAttack3 = 133;   //!< プレイヤー空中弱攻撃3
+    constexpr int PlayerAirWeakAttack1 = 131;  //!< プレイヤー空中弱攻撃1
+    constexpr int PlayerAirWeakAttack2 = 132;  //!< プレイヤー空中弱攻撃2
+    constexpr int PlayerAirWeakAttack3 = 133;  //!< プレイヤー空中弱攻撃3
     // 14*:空中強攻撃
     constexpr int PlayerAirHeavyAttack1 = 141;  //!< プレイヤー空中強攻撃1
     constexpr int PlayerAirHeavyAttack2 = 142;  //!< プレイヤー空中強攻撃2
     // 15*:必殺技
-    constexpr int PlayerUltActivate = 150;      //!< プレイヤー必殺発動
-    constexpr int PlayerUltSlash = 151;         //!< プレイヤー必殺攻撃
+    constexpr int PlayerUltActivate = 150;  //!< プレイヤー必殺発動
+    constexpr int PlayerUltSlash = 151;     //!< プレイヤー必殺攻撃
+    // 16*:ジャスト
+    constexpr int PlayerJustActivate = 160;  //!< プレイヤージャスト発動
+    constexpr int PlayerJustEmit = 161;      //!< プレイヤージャスト終了
   // 2**:敵
     // 20*:通常
     constexpr int EnemyEyeLight = 200;       //!< 敵眼光
@@ -352,5 +406,6 @@ namespace Gyro {
   // 3**:ステージ
     constexpr int StageBarrier = 300;     //!< ステージバリア
     constexpr int StageBoxDestroy = 301;  //!< ステージ箱破壊
+    constexpr int StageHeal = 302;        //!< ステージ回復
   } // namespace EffectNum
 } // namespace Gyro

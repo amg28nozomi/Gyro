@@ -203,7 +203,7 @@ namespace Gyro {
       AppMath::Vector4 _scale{0, 0, 0};
       //!< 向きベクトル
       AppMath::Vector4 _forward{0, 0, 0};
-      int _sort;            //!< ソート用
+      int _sort{ 0 };       //!< ソート用
       bool _stand{false};   //!< 立ちフラグ(true:床に立っている false:床と接触していない)
       bool _gravity{false}; //!< 重力処理を行うか(true:重力処理を行う false:重力処理を行わない)
       float _mass{0.0f};    //!< 質量

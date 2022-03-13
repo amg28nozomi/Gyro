@@ -41,11 +41,13 @@ namespace Gyro {
       // エフェクトリソースの読み取り
       LoadEffectResource();
       // ステージの切り替え
-      StageChange(Stage::StageTransition::StageType::Normal);
+      //StageChange(Stage::StageTransition::StageType::Normal);
       // BGMのループ再生開始
       PlayBgm("bgm", BgmVolume);
       // ゲーム状態の設定
       _gameState = GameState::Play;
+      _appMain.GetStageComponent().CreateStage("stage");
+      SetSpawn(); // オブジェクトを生成
       // カメラの初期化
       _appMain.GetCamera().Init();
       // ライトの設定
@@ -82,14 +84,14 @@ namespace Gyro {
       _plane.Initialize(40960.0f, 40);
       _plane.Load(TEXTURE);
       _plane.Create();
-      // 別名定義
-      using StageType = Stage::StageTransition::StageType;
-      // ステージリストの生成
-      const std::unordered_map<StageType, std::string_view> stageMap = {
-        {StageType::Normal, "stage"}
-      };
-      // 生成したリストを登録する
-      _appMain.GetStageTransition().Register(stageMap);
+      //// 別名定義
+      //using StageType = Stage::StageTransition::StageType;
+      //// ステージリストの生成
+      //const std::unordered_map<StageType, std::string_view> stageMap = {
+      //  {StageType::Normal, "stage"}
+      //};
+      //// 生成したリストを登録する
+      //_appMain.GetStageTransition().Register(stageMap);
       // 重力加速度をセットする
       AppMath::GravityBase::SetScale(GravityScale);
       return true;
@@ -99,11 +101,10 @@ namespace Gyro {
       // 入力状態の取得
       auto device = input.GetXBoxState();
       namespace App = AppFrame::Application;
-      // STARTボタンが押された場合、アプリケーションを終了する
+      // STARTボタンが押された場合、ポーズを呼び出す
       if (device.GetButton(XINPUT_BUTTON_START, App::InputTrigger)) {
-        _appMain.RequestTerminate(); // アプリケーションの終了処理を呼び出し
         // ポーズ
-        //Pause();
+        Pause();
       }
 #ifdef _DEBUG
       // デバッグ時限定:左スティックが押された場合、デバッグフラグを切り替える
@@ -130,11 +131,16 @@ namespace Gyro {
 
     bool ModeGame::Process() {
       // フェードアウトが終了した場合のみ、処理を実行する
-      if (_appMain.GetStageTransition().IsTransition()) {
-        SetSpawn(); // オブジェクトを生成
-        _appMain.GetModeServer().FadeOutReset();
-        return false;
-      }
+      //if (_appMain.GetStageTransition().IsTransition()) {
+      //  SetSpawn(); // オブジェクトを生成
+      //  _appMain.GetModeServer().FadeOutReset();
+      //  return false;
+      //}
+      //if (_appMain.GetStageComponent().CreateStage("stage")) {
+      //  SetSpawn(); // オブジェクトを生成
+      //  //_appMain.GetModeServer().FadeOutReset();
+      //  return false;
+      //}
       // モードゲームの入力処理
       Input(_app.GetOperation());
       // ゲームオーバー判定
@@ -220,6 +226,11 @@ namespace Gyro {
       using EffectLoadServer = Effect::EffectLoadServer;
       // エフェクトハンドルの読み込み
       const EffectLoadServer::EffectMap effectMap{
+        {EffectKey::PlayerDash, "res/Effect/Player/Dash/player_dash.efkefc", 5.0f},
+        {EffectKey::PlayerJump, "res/Effect/Player/Jump/jump.efkefc", 5.0f},
+        {EffectKey::PlayerLanding, "res/Effect/Player/Landing/landing.efkefc", 5.0f},
+        {EffectKey::PlayerHit, "res/Effect/Player/Hit/Player_hit.efkefc", 5.0f},
+        {EffectKey::PlayerAvoidance, "res/Effect/Player/Avoidance/player_avoidance.efkefc", 5.0f},
         {EffectKey::PlayerWeakAttack1, "res/Effect/Player/WeakAttack1/player_weakattack_1.efkefc", 5.0f},
         {EffectKey::PlayerWeakAttack2, "res/Effect/Player/WeakAttack2/player_weakattack_2.efkefc", 5.0f},
         {EffectKey::PlayerWeakAttack3, "res/Effect/Player/WeakAttack3/player_weakattack_3.efkefc", 5.0f},
@@ -232,10 +243,10 @@ namespace Gyro {
         {EffectKey::PlayerAirWeakAttack3, "res/Effect/Player/AirWeakAttack3/Player_attack_air_normal_03.efkefc", 5.0f},
         {EffectKey::PlayerAirHeavyAttack1, "res/Effect/Player/AirHeavyAttack1/Player_attack_air_heavy_01.efkefc", 5.0f},
         {EffectKey::PlayerAirHeavyAttack2, "res/Effect/Player/AirHeavyAttack2/Player_attack_air_heavy_02.efkefc", 5.0f},
-        {EffectKey::PlayerUltActivate, "res/Effect/Player/Ult_Activate/Player_ult_activate.efkefc", 5.0f},
-        {EffectKey::PlayerUltSlash, "res/Effect/Player/Ult_Slash/Player_ult_slash.efkefc", 5.0f},
-        {EffectKey::PlayerJump, "res/Effect/Player/Jump/jump.efkefc", 5.0f},
-        {EffectKey::PlayerHit, "res/Effect/Player/Hit/Hit.efkefc", 5.0f},
+        {EffectKey::PlayerUltActivate, "res/Effect/Player/UltActivate/Player_ult_activate.efkefc", 5.0f},
+        {EffectKey::PlayerUltSlash, "res/Effect/Player/UltSlash/Player_ult_slash.efkefc", 5.0f},
+        {EffectKey::PlayerJustActivate, "res/Effect/Player/JustActivate/Player_justcursor_activate.efkefc", 5.0f},
+        {EffectKey::PlayerJustEmit, "res/Effect/Player/JustEmit/Player_justcursor_emit.efkefc", 5.0f},
         {EffectKey::EnemyEyeLight, "res/Effect/Enemy/EyeLight/Enemy_EyeLight.efkefc", 20.0f},
         {EffectKey::EnemyGroundAttack1, "res/Effect/Enemy/GroundAttack1/Enemy_ground_attack1.efkefc", 10.0f},
         {EffectKey::EnemyGroundAttack2, "res/Effect/Enemy/GroundAttack2/Enemy_ground_attack2.efkefc", 10.0f},
@@ -248,8 +259,9 @@ namespace Gyro {
         {EffectKey::EnemyBossAirAttack, "res/Effect/Enemy/Boss/AirAttack/Enemy_air_attack.efkefc", 30.0f},
         {EffectKey::EnemyBossHit, "res/Effect/Enemy/Boss/Hit/Enemy_Hit.efkefc", 40.0f},
         {EffectKey::EnemyBossExprosion, "res/Effect/Enemy/Boss/Exprosion/Enemy_Exprosion.efkefc", 20.0f},
-        {EffectKey::StageBarrier, "res/Effect/Stage/stage_barrier/stage_barrier.efkefc", 5.0f},
-        {EffectKey::StageBoxDestroy, "res/Effect/Stage/Box_Destroy/Box_Destroy.efkefc", 5.0f}
+        {EffectKey::StageBarrier, "res/Effect/Stage/Barrier/stage_barrier.efkefc", 5.0f},
+        {EffectKey::StageBoxDestroy, "res/Effect/Stage/BoxDestroy/Box_Destroy.efkefc", 5.0f},
+        {EffectKey::StageHeal, "res/Effect/Stage/Heal/Player_heal.efkefc", 5.0f}
       };
       // エフェクトサーバに登録
       _appMain.GetEffectLoadServer().AddEffects(effectMap);
@@ -461,7 +473,7 @@ namespace Gyro {
         _appMain.GetModeServer().AddMode("Pause", std::make_shared<Mode::ModePause>(_appMain));
       }
       // モードポーズ遷移
-      _appMain.GetModeServer().TransionToMode("Pause");
+      _appMain.GetModeServer().PushBack("Pause");
       // ポーズ開始
       _appMain.SetGamePause(true);
     }

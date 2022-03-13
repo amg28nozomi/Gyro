@@ -9,7 +9,7 @@
 
 namespace {
   // ¶¬‚©‚çÄ¶‚Ü‚Å‚Ìƒ‰ƒO’è”
-  constexpr int PlayLag = 10;
+  constexpr int PlayLag = 25;
 }
 
 namespace Gyro {

@@ -54,7 +54,7 @@ namespace Gyro {
        * @param  radian 向き(y回転, ラジアン)
        */
       virtual void SetEffectParameter(const AppMath::Vector4 position, const float radian) {
-        _ePos = position, _eRad = radian;
+        _ePos = position, _eRadY = radian;
       }
       /**
        * @brief  死亡状態かの判定
@@ -90,7 +90,7 @@ namespace Gyro {
       int _lagCount{ 0 };       //!< ラグカウント
       bool _isPlay{ false };    //!< 再生判定
       AppMath::Vector4 _ePos;   //!< エフェクト位置
-      float _eRad{ 0.0f };      //!< エフェクト向き(y回転, ラジアン)
+      float _eRadY{ 0.0f };     //!< エフェクトy向き(ラジアン)
 
       //!< アプリケーションの参照
       Application::ApplicationMain& _app;

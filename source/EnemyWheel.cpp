@@ -9,13 +9,14 @@
 #include "UtilityDX.h"
 #include "ObjectServer.h"
 #include "Player.h"
+#include "EffectEnemyGroundAttack2.h"
 
 namespace {
   // 各種定数
   constexpr int WheelHP = 5000;              //!< 地上敵最大体力
   constexpr float WheelMoveSpead = 5.0f;     //!< 地上敵移動速度
   constexpr float WheelAttackSpead = 10.0f;  //!< 地上敵攻撃移動速度
-  constexpr float WheelSlashFrame = 27.0f;   //!< 地上敵回転攻撃フレーム
+  constexpr float WheelSlashFrame = 25.0f;   //!< 地上敵回転攻撃フレーム
   constexpr float Height = 220.0f;           //!< 高さ
   // アニメーションキー
   constexpr std::string_view IdleKey = "idle";      //!< 待機
@@ -46,68 +47,62 @@ namespace Gyro {
       SetParameter();
       // アニメーションアタッチ
       _modelAnim.SetMainAttach(_mHandle, IdleKey, 1.0f, true);
-
+      // 回転攻撃エフェクトの生成
+      _groundAttack2 = std::make_shared<Effect::EffectEnemyGroundAttack2>(_app);
       return true;
     }
 
     bool EnemyWheel::Process() {
       // 基底クラスの更新処理を呼び出し
       EnemyBase::Process();
-      // 前フレームの状態
-      EnemyState oldEnemyState = _enemyState;
-      // 索敵範囲に入ったら状態をMoveに変化
-      // 状態もどき
-      switch (_enemyState) {
-        case Gyro::Enemy::EnemyBase::EnemyState::Move:
+      // プレイヤーとの距離で処理回すか判定
+      if (ProcessFlag()) {
+        // 前フレームの状態
+        EnemyState oldEnemyState = _enemyState;
+        // 索敵範囲に入ったら状態をMoveに変化
+        // 状態もどき
+        switch (_enemyState) {
+        case EnemyState::Move:
           Search(); //!< 探索
           Move();  //!< 移動
           break;
-        case Gyro::Enemy::EnemyBase::EnemyState::AttackReady:
+        case EnemyState::AttackReady:
           AttackReady();
           break;
-        case Gyro::Enemy::EnemyBase::EnemyState::Attack:
+        case EnemyState::Attack:
           Attack();  //!< 攻撃
           break;
         case EnemyState::Damage:
           NockBack(); //!< ノックバック
           break;
-        case Gyro::Enemy::EnemyBase::EnemyState::Dead:
+        case EnemyState::Dead:
           Dead();  //!< 死亡
           break;
         default:
           _enemyState = EnemyState::Idle;
           Search(); //!< 探索
           break;
-      }
-      // 衝突判定
-      Hit();
-      // 無敵状態ではない場合、ダメージ判定を行う
-      if (!_invincible->Invincible()) {
-        IsDamege();
+        }
+        // 衝突判定
+        Hit();
+        // 無敵状態ではない場合、ダメージ判定を行う
+        if (!_invincible->Invincible()) {
+          IsDamege();
+        }
+        // 状態遷移したか
+        if (IsChangeState(oldEnemyState)) {
+          // アニメーション変更
+          ChangeAnim();
+          // エフェクト再生
+          PlayEffect();
+        }
+        // 体力ゲージの更新
+        _gaugeHp->Process();
       }
       // ワールド座標の更新
       WorldMatrix();
       // ワールド座標の設定
       MV1SetMatrix(_mHandle, UtilityDX::ToMATRIX(_world));
-      // 地形との当たり判定
-      //IsStand();
-      // 場外に出た時死亡するようにする
-      if (_position.GetY() < -100.0f) {
-        _enemyHP -= 50000;
-        _gaugeHp->Sub(50000);
-      }
-      if (_enemyHP <= 0) {
-        _enemyState = EnemyState::Dead;
-      }
-      // 状態遷移したか
-      if (IsChangeState(oldEnemyState)) {
-        // アニメーション変更
-        ChangeAnim();
-        // エフェクト再生
-        PlayEffect();
-      }
-      // 体力ゲージの更新
-      _gaugeHp->Process();
       // モデルアニメの更新
       _modelAnim.Process();
 
@@ -246,9 +241,7 @@ namespace Gyro {
         _position.Add(_move);
         _capsule->Process(_move);
         // 回転攻撃エフェクト
-        if (!_slash) {
-          SlashEffect();
-        }
+        SlashEffect();
       }
       // アニメーション終了でIdleへ移行
       if (_modelAnim.GetMainAnimEnd() && !_modelAnim.IsBlending()) {
@@ -404,6 +397,13 @@ namespace Gyro {
       if (slash < WheelSlashFrame) {
         return;
       }
+      // エフェクト未再生
+      if (!_slash) {
+        // エフェクト再生
+        _groundAttack2->PlayEffect();
+        // エフェクト再生完了
+        _slash = true;
+      }
       // パラメータ設定
       auto ePos = _position;
 #ifndef _DEBUG
@@ -411,10 +411,9 @@ namespace Gyro {
 #else
       auto eRad = -AppMath::Utility::DegreeToRadian(_rotation.GetY());
 #endif
-      // エフェクト生成
-      _app.GetEffectServer().MakeEffect(EffectNum::EnemyGroundAttack2, ePos, eRad);
-      // エフェクト生成完了
-      _slash = true;
+      // エフェクト更新
+      _groundAttack2->SetEffectParameter(ePos, eRad);
+      _groundAttack2->Process();
     }
 
     bool EnemyWheel::IsDamege() {

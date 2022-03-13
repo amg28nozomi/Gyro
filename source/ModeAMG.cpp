@@ -8,6 +8,7 @@
 #include "ModeAMG.h"
 #include "ModeTitle.h"
 #include "StageComponent.h"
+#include "StageTransition.h"
 
 namespace {
   // 各種定数
@@ -25,11 +26,21 @@ namespace Gyro {
     }
 
     bool ModeAMG::Init() {
+      // 別名定義
+      using StageType = Stage::StageTransition::StageType;
+      // ステージリストの生成
+      const std::unordered_map<StageType, std::string_view> stageMap = {
+        {StageType::Normal, "stage"},
+        {StageType::Boss, "boss"},
+      };
+      // 生成したリストを登録する
+      _appMain.GetStageTransition().Register(stageMap);
       return true;
     }
 
     bool ModeAMG::Enter() {
       // リソース読み込み
+      _appMain.GetStageTransition().ChangeReserve(Stage::StageTransition::StageType::Normal);
       LoadResource();
       return true;
     }
@@ -66,7 +77,7 @@ namespace Gyro {
       // 非同期処理フラグtrue
       SetUseASyncLoadFlag(true);
       // 通常ステージの読み込み開始
-      _appMain.GetStageComponent().Init("stage");
+      _appMain.GetStageTransition().IsTransition();
     }
 
     void ModeAMG::ChangeMode() {

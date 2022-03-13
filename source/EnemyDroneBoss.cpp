@@ -51,58 +51,51 @@ namespace Gyro {
     bool EnemyDroneBoss::Process() {
       // 基底クラスの更新処理を呼び出し
       EnemyBase::Process();
-      // 前フレームの状態
-      EnemyState oldEnemyState = _enemyState;
-      // 索敵範囲に入ったら状態をMoveに変化
-      // 状態もどき
-      switch (_enemyState) {
-      case Gyro::Enemy::EnemyBase::EnemyState::Move:
-        Move();  //!< 移動
-        Search(); //!< 探索
-        break;
-      case Gyro::Enemy::EnemyBase::EnemyState::Attack:
-        Attack();  //!< 攻撃
-        break;
-      case EnemyState::Damage:
-        NockBack(); //!< ノックバック
-        break;
-      case Gyro::Enemy::EnemyBase::EnemyState::Dead:
-        Dead();  //!< 死亡
-        break;
-      default:
-        _enemyState = EnemyState::Idle;
-        Search(); //!< 探索
-        break;
-      }
-      // 衝突判定
-      Hit();
-      // 無敵状態ではない場合、ダメージ判定を行う
-      if (!_invincible->Invincible()) {
-        IsDamege();
+      // プレイヤーとの距離で処理回すか判定
+      if (ProcessFlag()) {
+        // 前フレームの状態
+        EnemyState oldEnemyState = _enemyState;
+        // 索敵範囲に入ったら状態をMoveに変化
+        // 状態もどき
+        switch (_enemyState) {
+        case Gyro::Enemy::EnemyBase::EnemyState::Move:
+          Search(); //!< 探索
+          Move();  //!< 移動
+          break;
+        case Gyro::Enemy::EnemyBase::EnemyState::Attack:
+          Attack();  //!< 攻撃
+          break;
+        case EnemyState::Damage:
+          NockBack(); //!< ノックバック
+          break;
+        case Gyro::Enemy::EnemyBase::EnemyState::Dead:
+          Dead();  //!< 死亡
+          break;
+        default:
+          _enemyState = EnemyState::Idle;
+          Search(); //!< 探索
+          break;
+        }
+        // 衝突判定
+        Hit();
+        // 無敵状態ではない場合、ダメージ判定を行う
+        if (!_invincible->Invincible()) {
+          IsDamege();
+        }
+        // 状態遷移したか
+        if (IsChangeState(oldEnemyState)) {
+          // アニメーション変更
+          ChangeAnim();
+          // エフェクト再生
+          PlayEffect();
+        }
+        // 体力ゲージの更新
+        _gaugeHp->Process();
       }
       // ワールド座標の更新
       WorldMatrix();
       // ワールド座標の設定
       MV1SetMatrix(_mHandle, UtilityDX::ToMATRIX(_world));
-      // 地形との当たり判定
-      //IsStand();
-      // 場外に出た時死亡するようにする
-      if (_position.GetY() < -100.0f) {
-        _enemyHP -= 50000;
-        _gaugeHp->Sub(50000);
-      }
-      if (_enemyHP <= 0) {
-        _enemyState = EnemyState::Dead;
-      }
-      // 状態遷移したか
-      if (IsChangeState(oldEnemyState)) {
-        // アニメーション変更
-        ChangeAnim();
-        // エフェクト再生
-        PlayEffect();
-      }
-      // 体力ゲージの更新
-      _gaugeHp->Process();
       // モデルアニメの更新
       _modelAnim.Process();
 
