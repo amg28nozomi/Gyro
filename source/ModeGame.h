@@ -159,6 +159,10 @@ namespace Gyro {
        */
       void Loading();
       void ToGameOver();
+      /**
+       * @brief オブジェクト番号を初期化する
+       */
+      void ResetObjectNumber();
     };
   } // namespace Mode
 } // namespace Gyro

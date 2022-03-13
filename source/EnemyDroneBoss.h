@@ -56,6 +56,12 @@ namespace Gyro {
       unsigned short GetThis() const override {
         return _this;
       }
+      /**
+       * @brief  モデル番号の初期化
+       */
+      static inline void ModelNumberReset() {
+        _number = 1;
+      }
     private:
       /**
        * @brief  モデルの読み込み
@@ -107,7 +113,7 @@ namespace Gyro {
 
       bool _iMove{ false };  //!< 移動フラグ
       AppFrame::Math::Vector4 _oldPosition;   //!< 攻撃状態に移行したタイミングの座標
-      static inline unsigned short _number{ 0 };  //!< 生成番号
+      static inline unsigned short _number{ 1 };  //!< 生成番号
       unsigned short _this{ 0 };  //!< 識別ID
     };
   } // namespace Enemy

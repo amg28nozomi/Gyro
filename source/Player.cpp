@@ -448,10 +448,13 @@ namespace Gyro {
             return true;
           }
         }
-        // Aボタンの入力があった場合はジャンプ状態に遷移
-        if (input.GetButton(XINPUT_BUTTON_A, false)) {
-          Jump();      // ジャンプ処理
-          return true; // 遷移する
+        // 足場に立っている場合のみ
+        if (_isStand) {
+          // Aボタンの入力があった場合はジャンプ状態に遷移
+          if (input.GetButton(XINPUT_BUTTON_A, false)) {
+            Jump();      // ジャンプ処理
+            return true; // 遷移する
+          }
         }
       }
       // 空中攻撃状態に遷移するかの判定？

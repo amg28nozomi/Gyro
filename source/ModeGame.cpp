@@ -20,6 +20,11 @@
 #include "ModePause.h"
 #include "ModeLoading.h"
 
+#include "EnemyDrone.h"
+#include "EnemyDroneBoss.h"
+#include "EnemyWheel.h"
+#include "EnemyWheelBoss.h"
+
 namespace {
     constexpr auto TEXTURE = _T("res/Stage/water.png");
     constexpr auto GravityScale = -9.8f; //!< 重力スケール
@@ -46,7 +51,6 @@ namespace Gyro {
       PlayBgm("bgm", BgmVolume);
       // ゲーム状態の設定
       _gameState = GameState::Play;
-      _appMain.GetStageComponent().CreateStage("stage");
       SetSpawn(); // オブジェクトを生成
       // カメラの初期化
       _appMain.GetCamera().Init();
@@ -74,6 +78,8 @@ namespace Gyro {
       SetLightEnable(true);
       // 生成したオブジェクトを削除
       _appMain.GetObjectServer().Release();
+      // 複製したハンドルを削除
+      ResetObjectNumber();
       // 生成したエフェクトを削除
       _appMain.GetEffectServer().Release();
       return true;
@@ -84,6 +90,7 @@ namespace Gyro {
       _plane.Initialize(40960.0f, 40);
       _plane.Load(TEXTURE);
       _plane.Create();
+      _appMain.GetStageComponent().CreateStage("stage");
       //// 別名定義
       //using StageType = Stage::StageTransition::StageType;
       //// ステージリストの生成
@@ -495,6 +502,16 @@ namespace Gyro {
       }
       // モードロードディング遷移
       _appMain.GetModeServer().PushBack("Loading");
+    }
+
+    void ModeGame::ResetObjectNumber() {
+      // 各種オブジェクト番号を初期化
+      Enemy::EnemyDrone::ModelNumberReset();
+      Enemy::EnemyDroneBoss::ModelNumberReset();
+      Enemy::EnemyWheel::ModelNumberReset();
+      Enemy::EnemyWheelBoss::ModelNumberReset();
+      // オブジェクトサーバから複製品を削除する
+      _appMain.GetModelServer().DeleteDuplicateModels("", true);
     }
   } // namespace Mode
 } // namespace Gyro

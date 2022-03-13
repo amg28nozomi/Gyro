@@ -24,6 +24,8 @@ namespace Gyro {
     }
 
     bool ModeGameOver::Enter() {
+
+
       // ƒŠƒ\[ƒX“Ç‚İ‚İ
       LoadResource();
       // •Ï”‰Šú‰»
