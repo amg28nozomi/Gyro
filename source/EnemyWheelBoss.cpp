@@ -6,11 +6,12 @@
  * @date    March 2022
  *********************************************************************/
 #include "EnemyWheelBoss.h"
+#include <algorithm>
 #include "UtilityDX.h"
 #include "ObjectServer.h"
 #include "Player.h"
-#include <algorithm>
 #include "EffectEnemyGroundAttack2.h"
+#include "ModeGame.h"
 
 namespace {
   // 各種定数
@@ -423,18 +424,21 @@ namespace Gyro {
     void EnemyWheelBoss::Dead() {
       // 状態をPausedにする
       _state = ObjectState::Paused;
-      // オブジェクトのコピー
-      auto objects = _app.GetObjectServer().GetObjects();
-      // 動的配列に一致する要素があるか判定する
-      auto activeBoss = std::any_of(objects.begin(), objects.end(),
-        [](std::shared_ptr<Object::ObjectBase>& obj) {
-          // 生存状態の敵はいるか
-          return (obj->GetId() == Object::ObjectBase::ObjectId::Enemy) && obj->GetState() == ObjectState::Active; });
+      //// オブジェクトのコピー
+      //auto objects = _app.GetObjectServer().GetObjects();
+      //// 動的配列に一致する要素があるか判定する
+      //auto activeBoss = std::any_of(objects.begin(), objects.end(),
+      //  [](std::shared_ptr<Object::ObjectBase>& obj) {
+      //    // 生存状態の敵はいるか
+      //    return (obj->GetId() == Object::ObjectBase::ObjectId::Enemy) && obj->GetState() == ObjectState::Active; });
       // アニメーション終了でDeadへ移行
       if (_modelAnim.GetMainAnimEnd() && !_modelAnim.IsBlending()) {
+        // 死亡状態に設定
         _state = ObjectState::Dead;
-        // 生存状態の敵がいないか
-        if (!activeBoss) {
+        // モードゲームの取得
+        auto mode = _app.GetModeServer().GetMode("Game");
+        // クリア遷移判定
+        if (std::dynamic_pointer_cast<Mode::ModeGame>(mode)->ToGameClear()) {
           // ゲームクリア処理
           _app.SetGameClear(true);
         }

@@ -23,6 +23,13 @@ namespace Gyro {
     class ApplicationMain;
   }
   /**
+   * @brief エネミーベース
+   */
+  namespace Enemy {
+    class EnemyDroneBoss; //!< 前方宣言
+    class EnemyWheelBoss; //!< 前方宣言
+  } // namespace Enemy
+  /**
    * @brief モードベース
    */
   namespace Mode {
@@ -33,6 +40,8 @@ namespace Gyro {
     class ModeGame : public AppFrame::Mode::ModeBase {
     private:
       friend class Application::ApplicationMain;
+      friend class Enemy::EnemyDroneBoss;
+      friend class Enemy::EnemyWheelBoss;
     public:
       /**
        * @brief ゲームの状態を表す列挙型クラス
@@ -99,6 +108,13 @@ namespace Gyro {
       bool IsGameOver() const {
         return _gameState == GameState::GameOver;
       }
+      /**
+       * @brief  ボスカウントの取得
+       * @return ボスカウント
+       */
+      inline int GetBossCount() {
+        return _bossCount;
+      }
     private:
       bool _isEffectLoad{ false };  //!< エフェクト読み込みフラグ
       //!< アプリケーションメインの参照
@@ -120,6 +136,10 @@ namespace Gyro {
       bool _wave4{ true };
       bool _bossStage{ true };
       int _waveNum{ 0 };
+      //!< ボス討伐カウント
+      int _bossCount{0};
+      //!< ボス数
+      int _bossNum{0};
       /**
        * @brief リソースの読み取り
        */
@@ -163,6 +183,24 @@ namespace Gyro {
        * @brief オブジェクト番号を初期化する
        */
       void ResetObjectNumber();
+      /**
+       * @brief ボス討伐カウントの初期化
+       */
+      inline void BossCountReset() {
+        _bossCount = 0;
+      }
+      /**
+       * @brief  ゲームクリアに遷移するかの判定
+       * @return true:遷移する false:遷移しない
+       */
+      bool ToGameClear();
+      /**
+       * @brief  ゲームクリア判定
+       * @return true:クリア false:クリアではない
+       */
+      inline bool IsGameClear() const {
+        return _bossCount == _bossNum;
+      }
     };
   } // namespace Mode
 } // namespace Gyro

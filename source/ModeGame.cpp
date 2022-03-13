@@ -197,6 +197,16 @@ namespace Gyro {
       return _appMain.GetStageTransition().ChangeReserve(key);
     }
 
+    bool ModeGame::ToGameClear() {
+      // ボスカウントをインクリメント
+      ++_bossCount;
+      // ゲームクリアに遷移するかの判定を行う
+      if (IsGameClear()) {
+        return true; // 遷移する
+      }
+      return false; // クリアに遷移しない
+    }
+
     void ModeGame::LoadResource() {
       // リソースの読み込みは行われているか
       if (_isLoad) {
