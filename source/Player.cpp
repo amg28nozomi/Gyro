@@ -370,6 +370,8 @@ namespace Gyro {
           }
           // 待機状態への遷移を行うか
           if (_intervalAttack) {
+            // ジャンプ状態中は
+            if()
             // アニメーションブレンド中かの判定
             if (_modelAnim.IsBlending()) {
               return true;
