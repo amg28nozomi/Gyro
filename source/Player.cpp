@@ -234,7 +234,9 @@ namespace Gyro {
       }
       // 座標に現在座標を更新する
       _gaugeHp.Process();      // HPゲージの更新
+      _gaugeTrick.Add(100);    // トリックゲージの更新
       _gaugeTrick.Process();   // トリックゲージの更新
+      _gaugeTrick.GetIntPoint();
       Animation(_oldState);    // アニメーションの設定
       _modelAnim.Process();    // アニメーションの再生
       Attack();                // 攻撃処理
@@ -1063,7 +1065,7 @@ namespace Gyro {
       // ゲージが最大値の場合は更新を行わない
       const auto max = _gaugeHp.GetMaxGauge();
       // 現在HPの取得
-      auto hp = _gaugeHp.GetFloat();
+      auto hp = _gaugeHp.GetFloatPoint();
       // 最大値の場合は処理を行わない
       if (_gaugeHp.IsMax()) {
         return false;
