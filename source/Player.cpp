@@ -84,7 +84,11 @@ namespace {
   constexpr auto StateNumberAirHeavy1 = 11;  //!< 空中強攻撃1
   constexpr auto StateNumberAirHeavy2 = 13;  //!< 空中強攻撃2
   constexpr auto StateNumberExcite = 15; //!< エキサイトトリック
-  constexpr auto StateNumberDash = 16;   //!< ダッシュ
+  constexpr auto StateNumberDash = 18;   //!< ダッシュ
+  constexpr auto StateNumberFall = 19;   //!< 降下
+
+
+
 
   constexpr auto AttackInterval = 150.0f; //!< 攻撃用インターバル
 
@@ -170,7 +174,9 @@ namespace Gyro {
       // 空中強攻撃2
       {StateNumberAirHeavy2 ,{AirHeavyAttack2, 10.0f, 1.0f, false}},
       // ダッシュ
-      {StateNumberDash, {Step, 10.0f, 1.0f, false}}
+      {StateNumberDash, {Step, 10.0f, 1.0f, false}},
+      // 降下モーション
+      {StateNumberFall, {JumpDown, 10.0f, 1.0f, false}},
     };
 
     Player::Player(Application::ApplicationMain& app) : ObjectBase(app), _gaugeHp(app), _gaugeTrick(app) {
@@ -206,8 +212,15 @@ namespace Gyro {
     bool Player::Process() {
       // 基底クラスの更新処理呼び出し
       ObjectBase::Process();
-      // グラビティフラグがオフの場合はここで更新
-      if (!_gravity) { _oldState = _playerState; }
+      // 重力スケールに応じたジャンプ・降下モーションの遷移
+      if (_gravity) {
+        // 重力スケールがマイナスの場合は落下状態に遷移する
+        if (_playerState == PlayerState::Jump && _gravityScale < 0.0f) {
+          _playerState = PlayerState::Fall;
+        }
+      }
+      // グラビティフラグがオフの場合はここで旧状態を更新
+      else { _oldState = _playerState; }
       // 名前空間の省略
       namespace App = AppFrame::Application;
       // 入力状態の取得
@@ -423,7 +436,7 @@ namespace Gyro {
           // 現在の状態を見て空中攻撃
           if (_playerState == PlayerState::JumpAttack1 || _playerState == PlayerState::JumpAttack2 || _playerState == PlayerState::JumpAttack3) {
             // ジャンプ落ちるモーションにする
-            _playerState = PlayerState::Jump;
+            _playerState = PlayerState::Fall;
           }
           else {
             // 待機状態に遷移する
@@ -462,7 +475,7 @@ namespace Gyro {
         }
       }
       // 空中攻撃状態に遷移するかの判定？
-      if (_playerState == PlayerState::Jump) {
+      if (_playerState == PlayerState::Jump || _playerState == PlayerState::Fall) {
         // 攻撃状態に遷移できるか
         if (_attack->ToAttack()) {
           // 弱攻撃判定
@@ -508,12 +521,17 @@ namespace Gyro {
     bool Player::InputAttackCheck(const AppFrame::Application::XBoxState& input, const int key, bool flag) {
       // 入力が行われたかの判定
       if (input.GetButton(key, false)) {
-        // 攻撃状態1に遷移する
-        if (_playerState != PlayerState::Jump) {
-          SetStateParam(PlayerState::Attack1);
-        }
-        else {
+        // 現在の状態に応じて攻撃状態を切り替え
+        switch (_playerState) {
+        case PlayerState::Jump:
+        case PlayerState::Fall:
+          // 空中攻撃1に遷移
           SetStateParam(PlayerState::JumpAttack1);
+          break;
+        default:
+          // 攻撃1に遷移
+          SetStateParam(PlayerState::Attack1);
+          break;
         }
         // 攻撃判定で使用するフレーム番号の取得
         auto frames = attackMap.at(PlayerStateToNumber());
@@ -601,6 +619,8 @@ namespace Gyro {
       _gaugeHp.Init(GyroHP);
       _gaugeTrick.Init(TrickMax);
       _stageChange = true;
+
+      _forward = AppMath::Vector4(0.0f, 0.0f, 1.0f);
     }
 
     void Player::CameraUpdate(const AppFrame::Math::Vector4 stick) {
@@ -715,7 +735,7 @@ namespace Gyro {
         if (_jump->IsJump()) {
           _jump->Finish();
         }
-        if (_playerState == PlayerState::Jump || _playerState == PlayerState::JumpAttack1 || _playerState == PlayerState::JumpAttack2 || _playerState == PlayerState::JumpAttack3) {
+        if (_playerState == PlayerState::Jump || _playerState == PlayerState::Fall || _playerState == PlayerState::JumpAttack1 || _playerState == PlayerState::JumpAttack2 || _playerState == PlayerState::JumpAttack3) {
           _playerState = PlayerState::Idle;
         }
         break;
@@ -912,26 +932,29 @@ namespace Gyro {
       if (_dash->GetDashState() == Object::DashComponent::DashState::NoActive) {
         return;
       }
-      // ダッシュの更新
-      _dash->Process();
-      // ダッシュ状態ではない場合
-      if (!_dash->IsDash()) {
-        /**
-         * @brief  地形に立っているかに応じて待機・降下状態を返す
-         * @param  stand 立ちフラグ
-         * @return true:Idel状態 false:ジャンプ状態
-         */
-        auto NextState = [](bool stand) {
-          return (stand) ? Player::PlayerState::Idle : Player::PlayerState::Jump;
-        };
-        // 立ちフラグを返す
-        _playerState = NextState(_isStand);
-        // 無敵処理を終了する
-        _invincible->Finish();
+      // ダッシュの更新に成功したか
+      if (_dash->Process()) {
+        // 移動量を設定
+        move = _dash->GetMovePower();
+        // 待機状態に遷移した場合
+        if (_dash->IsInterval()) {
+          /**
+           * @brief  地形に立っているかに応じて待機・降下状態を返す
+           * @param  stand 立ちフラグ
+           * @return true:Idel状態 false:降下モーション
+           */
+          auto NextState = [](bool stand) {
+            return (stand) ? Player::PlayerState::Idle : Player::PlayerState::Fall;
+          };
+          // 立ちフラグを返す
+          _playerState = NextState(_isStand);
+          // インターバル時間の設定
+          _dash->SetIniterval(10.0f * 20.0f);
+          // 無敵処理を終了する
+          _invincible->Finish();
+        }
         return;
       }
-      // 移動量を返す
-      move = _dash->GetMovePower();
     }
 
     bool Player::IsChangeDash() {
@@ -944,6 +967,8 @@ namespace Gyro {
       case PlayerState::Idle:
       case PlayerState::Run:
       case PlayerState::Walk:
+      case PlayerState::Jump:
+      case PlayerState::Fall:
         return true; // 遷移可能
       default:
         return false; // 遷移不可
@@ -1071,6 +1096,9 @@ namespace Gyro {
         // ダッシュ
       case PlayerState::Dash:
         return StateNumberDash;
+        // 降下
+      case PlayerState::Fall:
+        return StateNumberFall;
       default:
         return -1;
       }

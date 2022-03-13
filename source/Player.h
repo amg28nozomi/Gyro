@@ -70,7 +70,8 @@ namespace Gyro {
         JumpAttack3, //!< 空中攻撃3
         ExciteTrick, //!< エキサイトトリック
         Dash,        //!< ダッシュ
-        Jump         //!< ジャンプ
+        Jump,        //!< ジャンプ
+        Fall         //!< 降下
       };
       /**
        * @brief コンストラクタ

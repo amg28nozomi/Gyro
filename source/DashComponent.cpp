@@ -69,6 +69,10 @@ namespace Gyro {
     }
 
     bool DashComponent::SetDash(const AppMath::Vector4& direction, float power, float totalTime) {
+      // インターバル時間中の場合は設定しない
+      if (IsInterval()) {
+        return false;
+      }
       // 再生中の場合はセットを行わない
       if (totalTime <= 0.0f) {
         return false;
@@ -99,7 +103,6 @@ namespace Gyro {
     void DashComponent::SetIniterval(const float interval) {
       // 時間を設定する
       _intervalTime = interval;
-      _dashState = DashState::Interval;
     }
   } // namespace Object
 } // namespace Gyro
