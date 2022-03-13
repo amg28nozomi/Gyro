@@ -83,7 +83,9 @@ namespace {
   constexpr auto StateNumberAirLight3 = 14;  //!< 空中弱攻撃3
   constexpr auto StateNumberAirHeavy1 = 11;  //!< 空中強攻撃1
   constexpr auto StateNumberAirHeavy2 = 13;  //!< 空中強攻撃2
-  constexpr auto StateNumberExcite = 15; //!< エキサイトトリック
+  constexpr auto StateNumberExciteActive = 15; //!< 必殺技構え
+  constexpr auto StateNumberExciteTrick1 = 16; //!< 必殺技中
+  constexpr auto StateNumberExciteTrick2 = 17; //!< 必殺技後
   constexpr auto StateNumberDash = 18;   //!< ダッシュ
   constexpr auto StateNumberFall = 19;   //!< 降下
 
@@ -105,8 +107,8 @@ namespace Gyro {
     const std::unordered_map<Player::PlayerState, std::pair<int, int>> chaneMap{
       {Player::PlayerState::Attack1, {60, 90}}, // 攻撃1
       {Player::PlayerState::Attack2, {60, 90}}, // 攻撃2
-      {Player::PlayerState::JumpAttack1, {60, 90}}, // 空中攻撃1
-      {Player::PlayerState::JumpAttack2, {60, 90}}, // 空中攻撃2
+      {Player::PlayerState::JumpAttack1, {0, 100}}, // 空中攻撃1
+      {Player::PlayerState::JumpAttack2, {0, 100}}, // 空中攻撃2
     };
 
     const std::unordered_map<Player::PlayerState, Player::PlayerState> stateMap{
@@ -117,6 +119,7 @@ namespace Gyro {
       {Player::PlayerState::JumpAttack1, Player::PlayerState::JumpAttack2},
       {Player::PlayerState::JumpAttack2, Player::PlayerState::JumpAttack3},
       {Player::PlayerState::JumpAttack3, Player::PlayerState::Idle},
+      {Player::PlayerState::Idle, Player::PlayerState::ExciteTrick},
     };
     /**
      * @brief コリジョンに使用するフレーム番号を管理する連想配列
@@ -137,6 +140,8 @@ namespace Gyro {
       // 空中強攻撃
       {StateNumberAirHeavy1 ,{15, 17, 20, 22}},
       {StateNumberAirHeavy2 ,{15, 17, 20, 22}},
+      // 必殺技攻撃
+      {StateNumberExciteTrick1 ,{15, 17, 20, 22}},
     };
 
     /**
@@ -173,6 +178,12 @@ namespace Gyro {
       {StateNumberAirHeavy1 ,{AirHeavyAttack1, 10.0f, 1.0f, false}},
       // 空中強攻撃2
       {StateNumberAirHeavy2 ,{AirHeavyAttack2, 10.0f, 1.0f, false}},
+      // 必殺技構え
+      {StateNumberExciteActive ,{ExciteTrickActive, 10.0f, 1.0f, false}},
+      // 必殺技中
+      {StateNumberExciteTrick1 ,{ExciteTrick1, 10.0f, 1.0f, false}},
+      // 必殺技後
+      {StateNumberExciteTrick2 ,{ExciteTrick2, 10.0f, 1.0f, false}},
       // ダッシュ
       {StateNumberDash, {Step, 10.0f, 1.0f, false}},
       // 降下モーション
@@ -489,6 +500,45 @@ namespace Gyro {
           }
         }
       }
+      // 必殺技準備に遷移するかの判定
+      if (_gaugeTrick.Getvalue() >= TrickMax) {
+        // 攻撃状態に遷移できるか
+        if (_attack->ToAttack()) {
+          auto exicite = InputExciteTrick(input, XINPUT_BUTTON_B);
+          if (exicite) {
+            return true;
+          }
+        }
+        if (_modelAnim.GetMainAnimEnd() && !_modelAnim.IsBlending()) {
+          if (_playerState == PlayerState::ExciteTrickReady) {
+            _playerState = PlayerState::ExciteTrick;
+            // 無敵時間を開始する
+            _invincible->Start();
+            // 攻撃判定をセットするか
+            if (!attackMap.contains(PlayerStateToNumber())) {
+              return true;
+            }
+            // 攻撃判定で使用するフレーム番号の取得
+            auto frames = attackMap.at(PlayerStateToNumber());
+            // フレームとコリジョン情報の設定
+            _attack->SetFrame(frames, AddSpheres(static_cast<int>(frames.size(), 5000.f)));
+          }
+          else if (_playerState == PlayerState::ExciteTrick) {
+            _playerState = PlayerState::ExciteTrickEnd;
+          }
+          else if (_playerState == PlayerState::ExciteTrickEnd) {
+            if (_modelAnim.GetMainAnimEnd() && !_modelAnim.IsBlending()) {
+              _playerState = PlayerState::Idle;
+              // ゲージの値をリセット
+              _trickValue = 0;
+              // 攻撃終了
+              _attack->Finish();
+              // インターバル時間の設定
+              _attack->SetInterval(150.0f);
+            }
+          }
+        }
+      }
       // ダッシュ状態に遷移可能な場合
       if (IsChangeDash()) {
         // ダッシュ状態に遷移するかの判定
@@ -499,6 +549,8 @@ namespace Gyro {
       }
       return false;
     }
+
+
 
     int Player::NextKey() const {
       // 攻撃フラグに応じて返すキーを切り替える
@@ -540,6 +592,17 @@ namespace Gyro {
         _stateComponent->Start();
         _attack->Start();
         _attackFlag = flag;
+        return true; // 遷移する
+      }
+      return false; // 入力無し
+    }
+
+    bool Player::InputExciteTrick(const AppFrame::Application::XBoxState& input, const int key) {
+      // 入力が行われたかの判定
+      if (input.GetButton(key, false)) {
+        // 必殺技に遷移する
+        _playerState = PlayerState::ExciteTrickReady;
+        _attack->Start();
         return true; // 遷移する
       }
       return false; // 入力無し
@@ -1090,9 +1153,15 @@ namespace Gyro {
       case PlayerState::JumpAttack3:
         number = StateNumberAirLight3;
         break;
-        // エキサイトトリック
+        // エキサイトトリック前
+      case PlayerState::ExciteTrickReady:
+        return StateNumberExciteActive;
+        // エキサイトトリック中
       case PlayerState::ExciteTrick:
-        return StateNumberExcite;
+        return StateNumberExciteTrick1;
+        // エキサイトトリック後
+      case PlayerState::ExciteTrickEnd:
+        return StateNumberExciteTrick2;
         // ダッシュ
       case PlayerState::Dash:
         return StateNumberDash;

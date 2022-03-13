@@ -26,7 +26,7 @@ namespace Gyro {
     bool GaugeHP::Init(float value) {
       _maxW = 645.f; // HPフレームの横幅
       _maxGauge = value; // HPの上限
-      _point = 600.f; // HPゲージの前面
+      _point = 640.f; // HPゲージの前面
       _hitPoint = 640.f; // HPゲージの背面
       _value = value;
 
@@ -35,14 +35,27 @@ namespace Gyro {
 
     bool GaugeHP::Process() {
       GaugeBase::Process();
+      // ゲージがフレームをはみ出ないようにする
+      // 最低値
       if (_point < GAUGE_X_POSITION_1) {
-          _point = GAUGE_X_POSITION_1;
+        _point = GAUGE_X_POSITION_1;
       }
-      if (_point != _hitPoint) {
-          _hitPoint--;
+      else if (_hitPoint < GAUGE_X_POSITION_1) {
+        _hitPoint = GAUGE_X_POSITION_1;
       }
-      if (_hitPoint < GAUGE_X_POSITION_1) {
-          _hitPoint = GAUGE_X_POSITION_1;
+      // 最大値
+      if (_point > GAUGE_X_POSITION_2) {
+        _point = GAUGE_X_POSITION_2;
+      }
+      else if (_hitPoint > GAUGE_X_POSITION_2) {
+        _hitPoint = GAUGE_X_POSITION_2;
+      }
+      // 背面のHPゲージを前面についていくようにする
+      if (_point <= _hitPoint) {
+        _hitPoint--;
+      }
+      else if (_hitPoint <= _point) {
+        _hitPoint = _point;
       }
 
       return true;
@@ -53,10 +66,10 @@ namespace Gyro {
       auto red = GetColor(255, 0, 0);
       auto gray = GetColor(204, 204, 204);
       auto green = GetColor(0, 255, 0);
-      DrawBox(GAUGE_X_POSITION_1 - 5, GAUGE_Y_POSITION_1 - 5, static_cast<int>(_maxW), GAUGE_Y_POSITION_2 + 5, black, TRUE);
-      DrawBox(GAUGE_X_POSITION_1, GAUGE_Y_POSITION_1, GAUGE_X_POSITION_2, GAUGE_Y_POSITION_2, gray, TRUE);
-      DrawBox(GAUGE_X_POSITION_1, GAUGE_Y_POSITION_1, static_cast<int>(_hitPoint), GAUGE_Y_POSITION_2, red, TRUE);
-      DrawBox(GAUGE_X_POSITION_1, GAUGE_Y_POSITION_1, static_cast<int>(_point), GAUGE_Y_POSITION_2, green, TRUE);
+      DrawBox(GAUGE_X_POSITION_1 - 5, GAUGE_Y_POSITION_1 - 5, static_cast<int>(_maxW), GAUGE_Y_POSITION_2 + 5, black, true);
+      DrawBox(GAUGE_X_POSITION_1, GAUGE_Y_POSITION_1, GAUGE_X_POSITION_2, GAUGE_Y_POSITION_2, gray, true);
+      DrawBox(GAUGE_X_POSITION_1, GAUGE_Y_POSITION_1, static_cast<int>(_hitPoint), GAUGE_Y_POSITION_2, red, true);  // 背面HPゲージ
+      DrawBox(GAUGE_X_POSITION_1, GAUGE_Y_POSITION_1, static_cast<int>(_point), GAUGE_Y_POSITION_2, green, true);   // 前面HPゲージ
 
       return true;
     }

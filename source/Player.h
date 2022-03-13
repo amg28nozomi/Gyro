@@ -68,7 +68,9 @@ namespace Gyro {
         JumpAttack1, //!< 空中攻撃1
         JumpAttack2, //!< 空中攻撃2
         JumpAttack3, //!< 空中攻撃3
-        ExciteTrick, //!< エキサイトトリック
+        ExciteTrickReady, //!< エキサイトトリック前
+        ExciteTrick,      //!< エキサイトトリック中
+        ExciteTrickEnd,   //!< エキサイトトリック後
         Dash,        //!< ダッシュ
         Jump,        //!< ジャンプ
         Fall         //!< 降下
@@ -328,6 +330,13 @@ namespace Gyro {
        * @return true:遷移開始 false:未遷移
        */
       bool InputAttackCheck(const AppFrame::Application::XBoxState& input, const int key, bool flag);
+      /**
+       * @brief  必殺技判定
+       * @param  input XBOXコントローラの入力状態クラスの参照
+       * @param  key   判定で使用するキー番号
+       * @return true:遷移開始 false:未遷移
+       */
+      bool InputExciteTrick(const AppFrame::Application::XBoxState& input, const int key);
       /**
        * @brief  状態の変更
        * @return true: false:

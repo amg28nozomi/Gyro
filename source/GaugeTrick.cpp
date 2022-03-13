@@ -26,7 +26,7 @@ namespace Gyro {
     bool GaugeTrick::Init(float value) {
       _maxW = 605.f;
       _maxGauge = value;
-      _point = 0.f;
+      _point = 40.f;
       _value = 0.f;
 
       return true;
