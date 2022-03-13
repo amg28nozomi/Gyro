@@ -785,8 +785,6 @@ namespace Gyro {
           v.Normalize();
           AppMath::Vector4 vv(v.GetX() * l7, 0.0f, v.GetZ());
           _position.Add(vv);
-          // カメラの座標に加算
-          _app.GetCamera().CamAddPos(vv);
           _capsule->SetPosition(_position);
           // 衝突した場合はワイヤーアクションを中断する
           if (_wire->IsAction()) {
@@ -897,9 +895,13 @@ namespace Gyro {
       // 入力方向の取得
       auto move = Vector4(x, 0.0f, z);
       // ダッシュを設定
-      _dash->SetDash(move, 600.0f, 18000.0f);
+      if (!_dash->SetDash(move, 600.0f, 18000.0f)) {
+        return false; // 設定に失敗
+      }
       // ダッシュを開始する
       _dash->Start();
+      // ダッシュ中は無敵状態にする
+      _invincible->InvincibleStart();
       // 状態の変更
       _playerState = PlayerState::Dash;
       return true;
@@ -924,8 +926,8 @@ namespace Gyro {
         };
         // 立ちフラグを返す
         _playerState = NextState(_isStand);
-        // ダッシュ処理を終了する
-        _dash->Finish();
+        // 無敵処理を終了する
+        _invincible->Finish();
         return;
       }
       // 移動量を返す

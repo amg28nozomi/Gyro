@@ -68,10 +68,10 @@ namespace Gyro {
       return true;
     }
 
-    void DashComponent::SetDash(const AppMath::Vector4& direction, float power, float totalTime) {
+    bool DashComponent::SetDash(const AppMath::Vector4& direction, float power, float totalTime) {
       // 再生中の場合はセットを行わない
       if (totalTime <= 0.0f) {
-        return;
+        return false;
       }
       // 移動速度の設定
       auto speed = 10.0f;
@@ -93,6 +93,7 @@ namespace Gyro {
       // 移動量を設定する
       // _move = Vector4::Scale(_direction, Vector4(speed, 0.0f, speed));
       _power = power;
+      return true;
     }
 
     void DashComponent::SetIniterval(const float interval) {

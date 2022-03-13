@@ -56,12 +56,13 @@ namespace Gyro {
        */
       bool Process();
       /**
-       * @brief ダッシュの設定
-       * @param direction 向き
-       * @param power 総移動量
-       * @param totalTime ダッシュ時間
+       * @brief  ダッシュの設定
+       * @param  direction 向き
+       * @param  power 総移動量
+       * @param  totalTime ダッシュ時間
+       * @return true:遷移完了 false:遷移失敗
        */
-      void SetDash(const AppMath::Vector4& direction, const float power, float totalTime);
+      bool SetDash(const AppMath::Vector4& direction, const float power, float totalTime);
       /**
        * @brief インターバルの設定
        */
