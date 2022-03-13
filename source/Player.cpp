@@ -206,6 +206,9 @@ namespace Gyro {
     bool Player::Process() {
       // 基底クラスの更新処理呼び出し
       ObjectBase::Process();
+      if (_gravity == false) {
+        _oldState = _playerState;
+      }
       // 名前空間の省略
       namespace App = AppFrame::Application;
       // 入力状態の取得
@@ -410,8 +413,17 @@ namespace Gyro {
           if (_modelAnim.IsSetMainAnim(JumpUp)) {
             return true;
           }
-          // 待機状態に遷移する
-          _playerState = PlayerState::Idle;
+          // 重力処理
+          _gravity = true;
+          // 現在の状態を見て空中攻撃
+          if (_playerState == PlayerState::JumpAttack1 || _playerState == PlayerState::JumpAttack2 || _playerState == PlayerState::JumpAttack3) {
+            // ジャンプ落ちるモーションにする
+            _playerState = PlayerState::Jump;
+          }
+          else {
+            // 待機状態に遷移する
+            _playerState = PlayerState::Idle;
+          }
           // 攻撃終了
           _attack->Finish();
           // インターバル時間の設定
@@ -450,6 +462,7 @@ namespace Gyro {
           auto heavy = InputAttackCheck(input, XINPUT_BUTTON_X, HeavyFlag);
           // どちらかの状態に遷移したか
           if (light || heavy) {
+            _gravity = false;
             return true;
           }
         }
