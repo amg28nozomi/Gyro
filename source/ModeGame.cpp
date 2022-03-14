@@ -82,6 +82,10 @@ namespace Gyro {
       ResetObjectNumber();
       // 生成したエフェクトを削除
       _appMain.GetEffectServer().Release();
+      // クリア判定が立っている場合
+      if (_appMain.GetGameClear()) {
+        _stageFlag = true;
+      }
       return true;
     }
 
