@@ -13,12 +13,11 @@
 
 namespace {
   constexpr int BgmVolume = 50;      //!< BGMの再生ボリューム
-  constexpr int SEVolume = 50;       //!< SEの再生ボリューム
   // 場面切り替え定数
   constexpr int PressAnyButtonNum = 0;  //!< プレスボタン
   constexpr int GameStartNum = 1;       //!< ゲーム開始
-  constexpr int CreditNum = 2;          //!< クレジット
-  constexpr int QuitGameNum = 3;        //!< ゲーム終了
+  //constexpr int CreditNum = 2;          //!< クレジット
+  constexpr int QuitGameNum = 2;        //!< ゲーム終了
 }
 
 namespace Gyro {
@@ -87,7 +86,7 @@ namespace Gyro {
           // 選択決定
           _decision = true;
           // スタートSE再生
-          _app.GetSoundComponent().PlayBackGround("start");
+          _app.GetSoundComponent().PlayBackGround("start", 50);
           // ジャイロアニメ変更
           _studio->GyroChangeAnim("Gyro_Title_Start");
         }
@@ -124,7 +123,7 @@ namespace Gyro {
       }
       else {
         DrawRotaGraph(650, 750, _gameStartExRate, 0, _gameStartHandle, true);
-        DrawRotaGraph(650, 850, _creditExRate, 0, _creditHandle, true);
+        //DrawRotaGraph(650, 850, _creditExRate, 0, _creditHandle, true);
         DrawRotaGraph(650, 950, _quitGameExRate, 0, _quitGameHandle, true);
       }
       return true;
@@ -177,7 +176,7 @@ namespace Gyro {
         // スティック上入力あり
         _isStick = true;
         // カーソルSE再生
-        _app.GetSoundComponent().PlayBackGround("cursor", SEVolume);
+        _app.GetSoundComponent().PlayBackGround("cursor");
         // 場面番号を1減らす
         _sceneNum--;
         if (_sceneNum < GameStartNum) {
@@ -189,7 +188,7 @@ namespace Gyro {
         // スティック下入力あり
         _isStick = true;
         // カーソルSE再生
-        _app.GetSoundComponent().PlayBackGround("cursor", SEVolume);
+        _app.GetSoundComponent().PlayBackGround("cursor");
         // 場面番号を1増やす
         _sceneNum++;
         if (QuitGameNum < _sceneNum) {
@@ -210,10 +209,10 @@ namespace Gyro {
         // ゲーム開始拡大
         _gameStartExRate = 1.25f;
         break;
-      case CreditNum:
-        // クレジット拡大
-        _creditExRate = 1.25f;
-        break;
+      //case CreditNum:
+      //  // クレジット拡大
+      //  _creditExRate = 1.25f;
+      //  break;
       case QuitGameNum:
         // ゲーム終了拡大
         _quitGameExRate = 1.25f;
@@ -230,10 +229,10 @@ namespace Gyro {
         // インゲーム遷移
         InGame();
       }
-      else if (_sceneNum == CreditNum) {
-        // クレジット遷移
-        Credit();
-      }
+      //else if (_sceneNum == CreditNum) {
+      //  // クレジット遷移
+      //  Credit();
+      //}
       // BGMの再生を停止する
       _appMain.GetSoundComponent().StopSound("title");
     }

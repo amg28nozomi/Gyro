@@ -402,7 +402,7 @@ namespace Gyro {
         _eyeLight->PlayEffect();
         _eyeLight->SetEffectParameter(ePos, eRad);
         if (!_app.GetSoundComponent().CheckSound("wMove")) {
-          _app.GetSoundComponent().PlayLoop("wMove");
+          _app.GetSoundComponent().PlayLoop("wMove", 200);
         }
         break;
       case EnemyState::Attack:  //!< UŒ‚

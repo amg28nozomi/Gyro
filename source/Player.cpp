@@ -697,7 +697,7 @@ namespace Gyro {
         if (IsRun(move)) {
           // 走り状態に遷移
           _playerState = PlayerState::Run;
-          if (_app.GetSoundComponent().PlayBackGround("dash")) {
+          if (!_app.GetSoundComponent().CheckSound("dash")) {
             _app.GetSoundComponent().PlayLoop("dash");
           }
           return;
@@ -706,7 +706,7 @@ namespace Gyro {
         // 後程移動量に応じて歩き・ダッシュモーション切り替え
         if (move.LengthSquared()) {
           _playerState = PlayerState::Walk;
-          if (_app.GetSoundComponent().PlayBackGround("walk")) {
+          if (!_app.GetSoundComponent().CheckSound("walk")) {
             _app.GetSoundComponent().PlayLoop("walk");
           }
           return;
