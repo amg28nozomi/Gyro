@@ -226,7 +226,18 @@ namespace Gyro {
       using SoundServer = AppFrame::Sound::SoundServer;
       // Sound情報の設定
       const SoundServer::SoundMap soundMap{
-        {"bgm", "res/Sound/Stage.mp3"}
+        {"bgm", "res/Sound/BGM/Stage.mp3"},
+        {"walk", "res/Sound/SE/Player/Walk.wav"},            // 歩きSE
+        {"dash", "res/Sound/SE/Player/Dash.wav"},            // 走りSE
+        {"jump", "res/Sound/SE/Player/Jump.wav"},            // ジャンプSE
+        {"landing", "res/Sound/SE/Player/Landing.wav"},      // 着地SE
+        {"avoidance", "res/Sound/SE/Player/Avoidance.wav"},  // 回避SE
+        {"wMove", "res/Sound/SE/Enemy/WheelMove.wav"},       // 地上移動SE
+        {"wAttack", "res/Sound/SE/Enemy/WheelAttack.wav"},   // 地上攻撃SE
+        {"dAttack", "res/Sound/SE/Enemy/DroneAttack.wav"},   // 空中攻撃SE
+        {"hitLow", "res/Sound/SE/Enemy/HitLow.wav"},         // ヒット弱SE
+        {"hitHigh", "res/Sound/SE/Enemy/HitHigh.wav"},       // ヒット強SE
+        {"destroy", "res/Sound/SE/Enemy/Destroy.wav"}        // 破壊SE
       };
       // サウンドサーバに登録
       _app.GetSoundServer().AddSounds(soundMap);

@@ -95,7 +95,7 @@ namespace Gyro {
       // サウンド情報の読み込み
       using SoundServer = AppFrame::Sound::SoundServer;
       const SoundServer::SoundMap soundMap{
-        {"result", "res/Sound/Result.mp3"}  // リザルト
+        {"result", "res/Sound/BGM/Result.mp3"}  // リザルト
       };
       // サウンドサーバに登録
       _appMain.GetSoundServer().AddSounds(soundMap);
@@ -111,5 +111,5 @@ namespace Gyro {
       // BGMの再生を停止する
       _appMain.GetSoundComponent().StopSound("result");
     }
-  }
-}
+  } // namespace Mode
+} // namespace Gyro

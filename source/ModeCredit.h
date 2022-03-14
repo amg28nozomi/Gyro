@@ -74,6 +74,8 @@ namespace Gyro {
        */
       void ChangeMode();
 
+      int _creditHandle{ -1 };  //!< クレジット画像
+      bool _backTitle{ false };  //!< タイトルバック
       //!< アプリケーションメインの参照
       Application::ApplicationMain& _appMain;
     };

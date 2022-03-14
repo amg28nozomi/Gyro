@@ -28,6 +28,8 @@ namespace Gyro {
       _continue = 0;
       _quitGame = 0;
       _decision = false;
+      // ポーズインSE再生
+      _app.GetSoundComponent().PlayBackGround("pauseIn");
       return true;
     }
 
@@ -41,16 +43,24 @@ namespace Gyro {
       auto [leftX, leftY] = device.GetStick(false);
       namespace App = AppFrame::Application;
       // 左スティック入力
-      if (leftY > 100) {
+      if (0 < leftY) {
+        // 上選択(コンテニュー)
         _continue = 1;
         _quitGame = 0;
       }
-      else if (leftY < -100) {
+      else if (leftY < 0) {
+        // 下選択(ゲーム終了)
         _continue = 0;
         _quitGame = 1;
       }
       // Aボタンが押された場合、選択決定
       if (device.GetButton(XINPUT_BUTTON_A, App::InputTrigger)) {
+        _decision = true;
+      }
+      // STARTボタンが押された場合、コンテニュー
+      if (device.GetButton(XINPUT_BUTTON_START, App::InputTrigger)) {
+        _continue = 1;
+        _quitGame = 0;
         _decision = true;
       }
       return true;
@@ -87,6 +97,14 @@ namespace Gyro {
       _continueHandle[1] = LoadGraph("res/Pause/continue1.png");
       _quitGameHandle[0] = LoadGraph("res/Pause/quitgame0.png");
       _quitGameHandle[1] = LoadGraph("res/Pause/quitgame1.png");
+      // サウンド情報の読み込み
+      using SoundServer = AppFrame::Sound::SoundServer;
+      const SoundServer::SoundMap soundMap{
+        {"pauseIn", "res/Sound/SE/System/PauseIn.wav"},    // ポーズインSE
+        {"pauseOut", "res/Sound/SE/System/PauseOut.wav"},  // ポーズアウトSE
+      };
+      // サウンドサーバに登録
+      _appMain.GetSoundServer().AddSounds(soundMap);
       // 読み込み完了
       _isLoad = true;
     }
@@ -96,11 +114,16 @@ namespace Gyro {
       _appMain.GetModeServer().PopBuck();
       // ポーズ終了
       _appMain.SetGamePause(false);
+      // コンティニュー選択時
+      if (_continue == 1) {
+        // ポーズアウトSE再生
+        _app.GetSoundComponent().PlayBackGround("pauseOut");
+      }
       // ゲーム終了選択時
       if (_quitGame == 1) {
         // アプリケーションの終了処理を呼び出し
         _appMain.RequestTerminate();
       }
     }
-  }
-}
+  } // namespace Mode
+} // namespace Gyro

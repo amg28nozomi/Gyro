@@ -72,5 +72,5 @@ namespace Gyro {
       // モードタイトル遷移
       _appMain.GetModeServer().TransionToMode("Title");
     }
-  }
-}
+  } // namespace Mode
+} // namespace Gyro

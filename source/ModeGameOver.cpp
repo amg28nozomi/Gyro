@@ -109,5 +109,5 @@ namespace Gyro {
         _appMain.GetModeServer().TransionToMode("Title");
       }
     }
-  }
-}
+  } // namespace Mode
+} // namespace Gyro

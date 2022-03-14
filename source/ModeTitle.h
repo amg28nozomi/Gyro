@@ -71,12 +71,38 @@ namespace Gyro {
        */
       void LoadResource();
       /**
+       * @brief  左スティック上下入力
+       * @param  leftY 左スティック上下入力値
+       */
+      void LeftStickYInput(const int leftY);
+      /**
+       * @brief  拡大率設定
+       */
+      void SetExRate();
+      /**
        * @brief  モード切り替え
        */
       void ChangeMode();
+      /**
+       * @brief  インゲーム遷移
+       */
+      void InGame();
+      /**
+       * @brief  クレジット遷移
+       */
+      void Credit();
 
-      int _titleHandle{ -1 };  //!< タイトル画像
-      bool _start{ false };    //!< ゲーム開始
+      int _titleHandle{ -1 };          //!< タイトル画像
+      int _pressButtonHandle{ -1 };    //!< プレスボタン画像
+      int _gameStartHandle{ -1 };      //!< ゲーム開始画像
+      int _creditHandle{ -1 };         //!< クレジット画像
+      int _quitGameHandle{ -1 };       //!< ゲーム終了画像
+      int _sceneNum{ 0 };              //!< 場面番号
+      float _gameStartExRate{ 1.0f };  //!< ゲーム開始拡大率
+      float _creditExRate{ 1.0f };     //!< クレジット拡大率
+      float _quitGameExRate{ 1.0f };   //!< ゲーム終了拡大率
+      bool _isStick{ false };          //!< 左スティック上下入力判定
+      bool _decision{ false };         //!< 選択決定
       //!< アプリケーションメインの参照
       Application::ApplicationMain& _appMain;
       //!< スタジオ

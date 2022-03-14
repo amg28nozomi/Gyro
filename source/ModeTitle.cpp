@@ -8,10 +8,17 @@
 #include "ModeTitle.h"
 #include "UtilityDX.h"
 #include "ModeGame.h"
+#include "ModeCredit.h"
 #include "ModeLoading.h"
 
 namespace {
-  constexpr int BgmVolume = 50;  //!< BGMの再生ボリューム
+  constexpr int BgmVolume = 50;      //!< BGMの再生ボリューム
+  constexpr int SEVolume = 50;       //!< SEの再生ボリューム
+  // 場面切り替え定数
+  constexpr int PressAnyButtonNum = 0;  //!< プレスボタン
+  constexpr int GameStartNum = 1;       //!< ゲーム開始
+  constexpr int CreditNum = 2;          //!< クレジット
+  constexpr int QuitGameNum = 3;        //!< ゲーム終了
 }
 
 namespace Gyro {
@@ -34,7 +41,9 @@ namespace Gyro {
       // リソース読み込み
       LoadResource();
       // 変数初期化
-      _start = false;
+      _sceneNum = PressAnyButtonNum;
+      _isStick = false;
+      _decision = false;
       // スタジオ初期化
       _studio->Init();
       // BGMの再生開始
@@ -53,17 +62,32 @@ namespace Gyro {
     bool ModeTitle::Input(AppFrame::Application::InputOperation& input) {
       // 入力状態の取得
       auto device = input.GetXBoxState();
-
-      device.InputAnyButton();
       namespace App = AppFrame::Application;
-      // STARTボタンが押された場合、アプリケーションを終了する(デバッグ用)
-      if (device.GetButton(XINPUT_BUTTON_START, App::InputTrigger)) {
-        _appMain.RequestTerminate(); // アプリケーションの終了処理を呼び出し
+      // 場面判定
+      if (_sceneNum == PressAnyButtonNum) {
+        // 何らかのボタンが押されたら画面切り替え
+        if (device.InputAnyButton()) {
+          _sceneNum = GameStartNum;
+        }
+        return true;
       }
-      // Aボタンが押された場合、ゲーム開始
-      if (device.GetButton(XINPUT_BUTTON_A, App::InputTrigger)) {
-        if (_start == false) {
-          _start = true;
+      // 選択未決定
+      if (!_decision) {
+        auto [leftX, leftY] = device.GetStick(false);
+        // 左スティック上下入力
+        LeftStickYInput(leftY);
+        // Aボタンが押された場合、選択決定
+        if (device.GetButton(XINPUT_BUTTON_A, App::InputTrigger)) {
+          if (_sceneNum == QuitGameNum) {
+            // 場面番号がゲーム終了
+            // アプリケーションの終了処理を呼び出し
+            _appMain.RequestTerminate();
+            return true;
+          }
+          // 選択決定
+          _decision = true;
+          // スタートSE再生
+          _app.GetSoundComponent().PlayBackGround("start");
           // ジャイロアニメ変更
           _studio->GyroChangeAnim("Gyro_Title_Start");
         }
@@ -74,10 +98,12 @@ namespace Gyro {
     bool ModeTitle::Process() {
       // 入力処理
       Input(_appMain.GetOperation());
+      // 拡大率設定
+      SetExRate();
       // スタジオ更新
       _studio->Process();
-      // ゲーム開始された
-      if (_start) {
+      // 選択決定された
+      if (_decision) {
         // ジャイロのアニメーションが終わったら
         if (_studio->IsGyroAnimEnd()) {
           // モード切り替え
@@ -91,7 +117,16 @@ namespace Gyro {
       // スタジオ描画
       _studio->Draw();
       // タイトル描画
-      DrawRotaGraph(720, 400, 0.75, 0, _titleHandle, true);
+      DrawRotaGraph(700, 400, 0.75, 0, _titleHandle, true);
+      // 場面による切り替え
+      if (_sceneNum == PressAnyButtonNum) {
+        DrawRotaGraph(650, 800, 1.0, 0, _pressButtonHandle, true);
+      }
+      else {
+        DrawRotaGraph(650, 750, _gameStartExRate, 0, _gameStartHandle, true);
+        DrawRotaGraph(650, 850, _creditExRate, 0, _creditHandle, true);
+        DrawRotaGraph(650, 950, _quitGameExRate, 0, _quitGameHandle, true);
+      }
       return true;
     }
 
@@ -100,8 +135,12 @@ namespace Gyro {
       if (_isLoad) {
         return; // 読み込み済み
       }
-      // タイトル読み込み
+      // 画像読み込み
       _titleHandle = LoadGraph("res/Title/GYROtitle.png");
+      _pressButtonHandle = LoadGraph("res/Title/pressbutton.png");
+      _gameStartHandle = LoadGraph("res/Title/gamestart.png");
+      _creditHandle = LoadGraph("res/Title/credit.png");
+      _quitGameHandle = LoadGraph("res/Title/quitgame.png");
       // 各種モデルハンドルの読み込み
       using ModelServer = AppFrame::Model::ModelServer;
       const ModelServer::ModelDatas mv1Models{
@@ -114,7 +153,9 @@ namespace Gyro {
       // サウンド情報の読み込み
       using SoundServer = AppFrame::Sound::SoundServer;
       const SoundServer::SoundMap soundMap{
-        {"title", "res/Sound/Title.mp3"}  // タイトル
+        {"title", "res/Sound/BGM/Title.mp3"},  // タイトルBGM
+        {"cursor", "res/Sound/SE/System/Cursor1.wav"},   // カーソルSE
+        {"start", "res/Sound/SE/System/TitleStart.wav"}  // スタートSE
       };
       // サウンドサーバに登録
       _appMain.GetSoundServer().AddSounds(soundMap);
@@ -122,16 +163,90 @@ namespace Gyro {
       _isLoad = true;
     }
 
+    void ModeTitle::LeftStickYInput(const int leftY) {
+      if (leftY == 0) {
+        // スティック入力なし
+        _isStick = false;
+        return;
+      }
+      // スティック入力されたままの場合中断
+      if (_isStick) {
+        return;
+      }
+      if (0 < leftY) {
+        // スティック上入力あり
+        _isStick = true;
+        // カーソルSE再生
+        _app.GetSoundComponent().PlayBackGround("cursor", SEVolume);
+        // 場面番号を1減らす
+        _sceneNum--;
+        if (_sceneNum < GameStartNum) {
+          // 下限調整
+          _sceneNum = GameStartNum;
+        }
+      }
+      else if (leftY < 0) {
+        // スティック下入力あり
+        _isStick = true;
+        // カーソルSE再生
+        _app.GetSoundComponent().PlayBackGround("cursor", SEVolume);
+        // 場面番号を1増やす
+        _sceneNum++;
+        if (QuitGameNum < _sceneNum) {
+          // 上限調整
+          _sceneNum = QuitGameNum;
+        }
+      }
+    }
+
+    void ModeTitle::SetExRate() {
+      // 拡大率初期化
+      _gameStartExRate = 1.0f;
+      _creditExRate = 1.0f;
+      _quitGameExRate = 1.0f;
+      // 場面による切り替え
+      switch (_sceneNum) {
+      case GameStartNum:
+        // ゲーム開始拡大
+        _gameStartExRate = 1.25f;
+        break;
+      case CreditNum:
+        // クレジット拡大
+        _creditExRate = 1.25f;
+        break;
+      case QuitGameNum:
+        // ゲーム終了拡大
+        _quitGameExRate = 1.25f;
+        break;
+      default:
+        break;
+      }
+    }
+
     void ModeTitle::ChangeMode() {
       // モードタイトルの削除
       _appMain.GetModeServer().PopBuck();
+      if (_sceneNum == GameStartNum) {
+        // インゲーム遷移
+        InGame();
+      }
+      else if (_sceneNum == CreditNum) {
+        // クレジット遷移
+        Credit();
+      }
+      // BGMの再生を停止する
+      _appMain.GetSoundComponent().StopSound("title");
+    }
+
+    void ModeTitle::InGame() {
       // キーが登録されているか
       bool key = _app.GetModeServer().Contains("Game");
       if (!key) {
         if (GetASyncLoadNum() > 0) {
           // モードローディングの登録
           _appMain.GetModeServer().AddMode("Loading", std::make_shared<Mode::ModeLoading>(_appMain));
-        }else {
+        }
+        else {
           // 非同期処理フラグfalse
           SetUseASyncLoadFlag(false);
           // モードゲームの登録
@@ -140,8 +255,17 @@ namespace Gyro {
       }
       // モードゲーム遷移
       _appMain.GetModeServer().TransionToMode("Game");
-      // BGMの再生を停止する
-      _appMain.GetSoundComponent().StopSound("title");
     }
-  }
-}
+
+    void ModeTitle::Credit() {
+      // キーが登録されているか
+      bool key = _app.GetModeServer().Contains("Credit");
+      if (!key) {
+        // モードクレジットの登録
+        _appMain.GetModeServer().AddMode("Credit", std::make_shared<Mode::ModeCredit>(_appMain));
+      }
+      // モードクレジット遷移
+      _appMain.GetModeServer().TransionToMode("Credit");
+    }
+  } // namespace Mode
+} // namespace Gyro
