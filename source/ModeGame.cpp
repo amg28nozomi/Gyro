@@ -62,10 +62,11 @@ namespace Gyro {
       _appMain.SetGameOver(false);
       _appMain.SetGameClear(false);
       _appMain.SetGamePause(false);
-      _wave1 = true;
-      _wave2 = true;
-      _wave3 = true;
-      _wave4 = true;
+      // ステージに応じてフラグ切り替え
+      _wave1 = (_stageFlag) ? true : false;
+      _wave2 = (_stageFlag) ? true : false;
+      _wave3 = (_stageFlag) ? true : false;
+      _wave4 = (_stageFlag) ? true : false;
       _bossStage = true;
       _waveNum = 0;
       return true;
@@ -197,11 +198,33 @@ namespace Gyro {
       return _appMain.GetStageTransition().ChangeReserve(key);
     }
 
+    std::string_view ModeGame::BossStageSpawn() {
+      // ボスステージ
+      const Object::SpawnTable bossP{
+        { Object::TypePlayer, {0.0f, 1000.f, -200.f}, {}, {1.0f, 1.0f, 1.0f} },
+        { Object::TypeSkySphere, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {3.0f, 3.0f, 3.0f}},
+      };
+      const Object::EnemyTable bossE{
+        { Object::EnemyWheelBoss, { -200.0f, 720.0f, -10000.0f}, {0.0f, -180.0f, 0.0f }, {5.0f, 5.0f, 5.0f}},
+        { Object::EnemyDroneBoss, { 300.0f, 720.0f, -10000.0f}, {0.0f, -180.0f, 0.0f }, {7.0f, 7.0f, 7.0f}},
+      };
+      // スポーン情報
+      Object::SpawnData bossTable{
+      {0, std::make_tuple(bossP, bossE)},
+      };
+      // ボスステージキー
+      std::string_view key = "bossTable";
+      // スポーンテーブルの登録
+      _appMain.GetSpawnServer().AddSpawnTable(key.data(), bossTable);
+      return key;
+    }
+
     bool ModeGame::ToGameClear() {
       // ボスカウントをインクリメント
       ++_bossCount;
       // ゲームクリアに遷移するかの判定を行う
       if (IsGameClear()) {
+        _stageFlag = true;
         return true; // 遷移する
       }
       return false; // クリアに遷移しない
@@ -287,82 +310,92 @@ namespace Gyro {
     }
 
     void ModeGame::SetSpawn() {
-      // スポーン情報の設定
-      const Object::SpawnTable normal {
-        // 自機の生成情報
-        // 引数1:オブジェクトタイプ(0:自機　1:敵)
-        // 引数2:ローカル座標
-        // 引数3:向き
-        // 引数4:スケール
-        { Object::TypePlayer, {0.0f, 675.0f, 1800.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}},
-        { Object::TypeSkySphere, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {3.0f, 3.0f, 3.0f}}
-      };
-      // 空のスポーン情報
-      const Object::SpawnTable none{
-      };
-      // エネミーテーブル
-      const Object::EnemyTable wave1{
-        // 陸上型エネミーの配置情報
-        { Object::EnemyWheel, { 100.0f, 705.0f, -200.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
-        { Object::EnemyWheel, { -200.0f, 705.0f, -200.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
-        { Object::EnemyWheel, { 300.0f, 705.0f, -200.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
-        { Object::EnemyWheel, { -400.0f, 705.0f, -200.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
-      };
-      const Object::EnemyTable wave2{
-        { Object::EnemyDrone, { 100.0f, 845.0f, -4500.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
-        { Object::EnemyDrone, { -200.0f, 845.0f, -4500.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
-        { Object::EnemyDrone, { 300.0f, 845.0f, -4500.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
-        { Object::EnemyDrone, { -400.0f, 845.0f, -4500.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
-      };
-      const Object::EnemyTable wave3{
-        { Object::EnemyWheel, { 4100.0f, 480.0f, -7500.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
-        { Object::EnemyWheel, { 4200.0f, 480.0f, -7500.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
-        { Object::EnemyDrone, { 4300.0f, 480.0f, -7500.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
-        { Object::EnemyDrone, { 4400.0f, 480.0f, -7500.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
-      };
-      const Object::EnemyTable wave4{
-        { Object::EnemyDrone, { 2100.0f, 765.0f, -11200.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
-        { Object::EnemyWheel, { 2200.0f, 765.0f, -11200.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
-        { Object::EnemyWheel, { 2300.0f, 765.0f, -11200.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
-        { Object::EnemyDrone, { 2400.0f, 765.0f, -11200.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
-      };
-      const Object::EnemyTable wave5{
-        { Object::EnemyWheel, { 1600.0f, 1200.0f, -15500.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
-        { Object::EnemyDrone, { 1700.0f, 1200.0f, -15500.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
-        { Object::EnemyDrone, { 1800.0f, 1200.0f, -15500.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
-        { Object::EnemyWheel, { 1900.0f, 1200.0f, -15500.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
-      };
-      // アイテムテーブル
-      const Object::ItemTable item{
-        { "player", 1, {0.0f, 200.0f, -100.0f}, {}, {1.0f, 1.0f, 1.0f}}
-      };
-      // 各種テーブルを基にスポーンテーブルを作成
-      Object::SpawnData3 table1{
-        {0, std::make_tuple(normal, wave1, item)},
-      };
-      Object::SpawnData table2{
-        {0, std::make_tuple(none, wave2)},
-      };
-      Object::SpawnData table3{
-        {0, std::make_tuple(none, wave3)},
-      };
-      Object::SpawnData table4{
-        {0, std::make_tuple(none, wave4)},
-      };
-      Object::SpawnData table5{
-        {0, std::make_tuple(none, wave5)},
-      };
-      // スポーンテーブルの登録
-      _appMain.GetSpawnServer().AddSpawnTable("wave1", table1);
-      _appMain.GetSpawnServer().AddSpawnTable("wave2", table2);
-      _appMain.GetSpawnServer().AddSpawnTable("wave3", table3);
-      _appMain.GetSpawnServer().AddSpawnTable("wave4", table4);
-      _appMain.GetSpawnServer().AddSpawnTable("wave5", table5);
+      // 生成キー
+      std::string stageKey;
+      // 初期ステージの場合
+      if (_stageFlag) {
+        // スポーン情報の設定
+        const Object::SpawnTable normal{
+          // 自機の生成情報
+          // 引数1:オブジェクトタイプ(0:自機　1:敵)
+          // 引数2:ローカル座標
+          // 引数3:向き
+          // 引数4:スケール
+          { Object::TypePlayer, {0.0f, 675.0f, 1800.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}},
+          { Object::TypeSkySphere, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {3.0f, 3.0f, 3.0f}},
+        };
+        // 空のスポーン情報
+        const Object::SpawnTable none{
+        };
+        // エネミーテーブル
+        const Object::EnemyTable wave1{
+          // 陸上型エネミーの配置情報
+          { Object::EnemyWheel, { 100.0f, 705.0f, -200.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
+          { Object::EnemyWheel, { -200.0f, 705.0f, -200.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
+          { Object::EnemyWheel, { 300.0f, 705.0f, -200.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
+          { Object::EnemyWheel, { -400.0f, 705.0f, -200.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
+        };
+        const Object::EnemyTable wave2{
+          { Object::EnemyDrone, { 100.0f, 845.0f, -4500.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
+          { Object::EnemyDrone, { -200.0f, 845.0f, -4500.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
+          { Object::EnemyDrone, { 300.0f, 845.0f, -4500.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
+          { Object::EnemyDrone, { -400.0f, 845.0f, -4500.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
+        };
+        const Object::EnemyTable wave3{
+          { Object::EnemyWheel, { 4100.0f, 480.0f, -7500.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
+          { Object::EnemyWheel, { 4200.0f, 480.0f, -7500.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
+          { Object::EnemyDrone, { 4300.0f, 480.0f, -7500.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
+          { Object::EnemyDrone, { 4400.0f, 480.0f, -7500.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
+        };
+        const Object::EnemyTable wave4{
+          { Object::EnemyDrone, { 2100.0f, 765.0f, -11200.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
+          { Object::EnemyWheel, { 2200.0f, 765.0f, -11200.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
+          { Object::EnemyWheel, { 2300.0f, 765.0f, -11200.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
+          { Object::EnemyDrone, { 2400.0f, 765.0f, -11200.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
+        };
+        const Object::EnemyTable wave5{
+          { Object::EnemyWheel, { 1600.0f, 1200.0f, -15500.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
+          { Object::EnemyDrone, { 1700.0f, 1200.0f, -15500.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
+          { Object::EnemyDrone, { 1800.0f, 1200.0f, -15500.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
+          { Object::EnemyWheel, { 1900.0f, 1200.0f, -15500.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
+        };
+        // アイテムテーブル
+        const Object::ItemTable item{
+          { "player", 1, {0.0f, 200.0f, -100.0f}, {}, {1.0f, 1.0f, 1.0f}}
+        };
+        // 各種テーブルを基にスポーンテーブルを作成
+        Object::SpawnData3 table1{
+          {0, std::make_tuple(normal, wave1, item)},
+        };
+        Object::SpawnData table2{
+          {0, std::make_tuple(none, wave2)},
+        };
+        Object::SpawnData table3{
+          {0, std::make_tuple(none, wave3)},
+        };
+        Object::SpawnData table4{
+          {0, std::make_tuple(none, wave4)},
+        };
+        Object::SpawnData table5{
+          {0, std::make_tuple(none, wave5)},
+        };
+        // スポーンテーブルの登録
+        _appMain.GetSpawnServer().AddSpawnTable("wave1", table1);
+        _appMain.GetSpawnServer().AddSpawnTable("wave2", table2);
+        _appMain.GetSpawnServer().AddSpawnTable("wave3", table3);
+        _appMain.GetSpawnServer().AddSpawnTable("wave4", table4);
+        _appMain.GetSpawnServer().AddSpawnTable("wave5", table5);
+        stageKey = "wave1";
+      }
+      // ボスステージの場合
+      else {
+        stageKey = BossStageSpawn().data();
+      }
 #ifndef _DEBUG
-      _appMain.GetSpawnServer().SetStage("wave1");
+      _appMain.GetSpawnServer().SetStage(stageKey);
 #else
       try {
-        _appMain.GetSpawnServer().SetStage("wave1");
+        _appMain.GetSpawnServer().SetStage(stageKey);
       } catch (std::logic_error error) {
         OutputDebugString(error.what());
       }
@@ -430,23 +463,10 @@ namespace Gyro {
         //StageChange("boss");
         // モードローディングへ遷移
         Loading();
-        // ボスステージ
-        const Object::SpawnTable bossP{
-          { Object::TypeSkySphere, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {3.0f, 3.0f, 3.0f}},
-        };
-        const Object::EnemyTable bossE{
-          { Object::EnemyWheelBoss, { -200.0f, 720.0f, -10000.0f}, {0.0f, -180.0f, 0.0f }, {5.0f, 5.0f, 5.0f}},
-          { Object::EnemyDroneBoss, { 300.0f, 720.0f, -10000.0f}, {0.0f, -180.0f, 0.0f }, {7.0f, 7.0f, 7.0f}},
-        };
-        // スポーン情報
-        Object::SpawnData bossTable{
-        {0, std::make_tuple(bossP, bossE)},
-        };
-        // スポーンテーブルの登録
-        _appMain.GetSpawnServer().AddSpawnTable("bossTable", bossTable);
-        _appMain.GetSpawnServer().SetStage("bossTable");
+        _appMain.GetSpawnServer().SetStage(BossStageSpawn().data());
         // 指定したスポーン情報を基にオブジェクトを生成する
         _appMain.GetSpawnServer().Spawn(0);
+        _stageFlag = false;
         _bossStage = false;
       }
     }

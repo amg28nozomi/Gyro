@@ -78,7 +78,7 @@ namespace Gyro {
         return false;
       }
       // 移動速度の設定
-      auto speed = 10.0f;
+      auto speed = 20.0f;
       using Vector4 = AppMath::Vector4;
       // 自機の向きベクトル
       auto forward = _owner.GetForward();

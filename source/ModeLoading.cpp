@@ -8,6 +8,13 @@
 #include "ModeLoading.h"
 #include "ModeGame.h"
 #include "ModeTitle.h"
+#include "ObjectServer.h"
+
+#include "EnemyWheel.h"
+#include "EnemyWheelBoss.h"
+#include "EnemyDrone.h"
+#include "EnemyDroneBoss.h"
+
 
 namespace Gyro {
   namespace Mode {
@@ -26,6 +33,18 @@ namespace Gyro {
     bool ModeLoading::Enter() {
       // リソース読み込み
       LoadResource();
+      // 自機以外を削除する
+      _appMain.GetObjectServer().ObjectClear(true);
+      // モデルカウントをリセット
+      Enemy::EnemyDrone::ModelNumberReset();
+      Enemy::EnemyDroneBoss::ModelNumberReset();
+      Enemy::EnemyWheel::ModelNumberReset();
+      Enemy::EnemyWheelBoss::ModelNumberReset();
+      // オブジェクトサーバから複製品を削除する
+      _appMain.GetModelServer().DeleteDuplicateModels("enemyWheel", false);
+      _appMain.GetModelServer().DeleteDuplicateModels("enemyWheelBoss", false);
+      _appMain.GetModelServer().DeleteDuplicateModels("enemyDrone", false);
+      _appMain.GetModelServer().DeleteDuplicateModels("enemyDroneBoss", false);
       // 非同期処理フラグtrue
       SetUseASyncLoadFlag(true);
       // ボスステージ情報読み込み

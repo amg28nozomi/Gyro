@@ -316,7 +316,7 @@ namespace Gyro {
         // 死亡状態に設定
         _state = ObjectState::Dead;
         // モードゲームの取得
-        auto mode = _app.GetModeServer().GetMode("Game");
+        auto mode = _app.GetModeServer().GetMode("Game", false);
         // クリア遷移判定
         if (std::dynamic_pointer_cast<Mode::ModeGame>(mode)->ToGameClear()) {
           // ゲームクリア処理

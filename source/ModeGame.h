@@ -135,11 +135,14 @@ namespace Gyro {
       bool _wave3{ true };
       bool _wave4{ true };
       bool _bossStage{ true };
+      //!< ステージの判定で使用するフラグ(true:初期ステージ false:ボスステージ)
+      bool _stageFlag{ true };
+
       int _waveNum{ 0 };
       //!< ボス討伐カウント
       int _bossCount{0};
       //!< ボス数
-      int _bossNum{0};
+      int _bossNum{2};
       /**
        * @brief リソースの読み取り
        */
@@ -189,6 +192,11 @@ namespace Gyro {
       inline void BossCountReset() {
         _bossCount = 0;
       }
+      /**
+       * @brief  ボスステージ用生成処理
+       * @return ボスステージのステージキー
+       */
+      std::string_view BossStageSpawn();
       /**
        * @brief  ゲームクリアに遷移するかの判定
        * @return true:遷移する false:遷移しない
