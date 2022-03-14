@@ -89,6 +89,7 @@ namespace Gyro {
       if (_appMain.GetGameClear()) {
         _stageFlag = true;
       }
+      BossCountReset();
       return true;
     }
 
