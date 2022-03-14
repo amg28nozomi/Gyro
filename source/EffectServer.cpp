@@ -26,8 +26,6 @@
 #include "EffectPlayerAirHeavyAttack2.h"
 #include "EffectPlayerUltActivate.h"
 #include "EffectPlayerUltSlash.h"
-#include "EffectPlayerJustActivate.h"
-#include "EffectPlayerJustEmit.h"
 #include "EffectEnemyEyeLight.h"
 #include "EffectEnemyGroundAttack1.h"
 #include "EffectEnemyGroundAttack2.h"
@@ -170,14 +168,7 @@ namespace Gyro {
       case EffectNum::PlayerUltSlash:
         // プレイヤー必殺攻撃
         AddEffect(PlayerUltSlash(position, radian));
-        break;
-      case EffectNum::PlayerJustActivate:
-        // プレイヤージャスト発動
-        AddEffect(PlayerJustActivate(position, radian));
-        break;
-      case EffectNum::PlayerJustEmit:
-        // プレイヤージャスト終了
-        AddEffect(PlayerJustEmit(position, radian));
+        SetUltSlashEnd(false);
         break;
       case EffectNum::EnemyEyeLight:
         // 敵眼光
@@ -428,24 +419,6 @@ namespace Gyro {
       playerUltSlash->SetEffectParameter(position, radian);
       // 生成したシェアードポインタを返す
       return std::move(playerUltSlash);
-    }
-
-    std::shared_ptr<EffectPlayerJustActivate> EffectServer::PlayerJustActivate(const AppMath::Vector4 position, const float radian) const {
-      // プレイヤージャスト発動の生成
-      auto playerJustActivate = std::make_shared<EffectPlayerJustActivate>(_app);
-      // 位置・向き設定
-      playerJustActivate->SetEffectParameter(position, radian);
-      // 生成したシェアードポインタを返す
-      return std::move(playerJustActivate);
-    }
-
-    std::shared_ptr<EffectPlayerJustEmit> EffectServer::PlayerJustEmit(const AppMath::Vector4 position, const float radian) const {
-      // プレイヤージャスト終了の生成
-      auto playerJustEmit = std::make_shared<EffectPlayerJustEmit>(_app);
-      // 位置・向き設定
-      playerJustEmit->SetEffectParameter(position, radian);
-      // 生成したシェアードポインタを返す
-      return std::move(playerJustEmit);
     }
 
     std::shared_ptr<EffectEnemyEyeLight> EffectServer::EnemyEyeLight(const AppMath::Vector4 position, const float radian) const {

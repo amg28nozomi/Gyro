@@ -153,7 +153,7 @@ namespace Gyro {
       // •à‚«
       {StateNumberWalk, {Walk, 10.0f, 1.0f, true}},
       // ‘–‚è
-      {StateNumberRun, {Run, 10.0f, 1.0f, true}},
+      {StateNumberRun, {Run, 10.0f, 1.0f, true, EffectNum::PlayerDash}},
       // ƒWƒƒƒ“ƒv
       {StateNumberJump, {JumpUp, 10.0f, 1.0f, false, EffectNum::PlayerJump}},
       // ãUŒ‚1
@@ -169,23 +169,23 @@ namespace Gyro {
       // ‹­UŒ‚3
       {StateNumberHeavy3 ,{GroundHeavyAttack3, 10.0f, 1.0f, false, EffectNum::PlayerHeavyAttack3}},
       // ‹ó’†ãUŒ‚1
-      {StateNumberAirLight1 ,{AirLightAttack1, 10.0f, 1.0f, false}},
+      {StateNumberAirLight1 ,{AirLightAttack1, 10.0f, 1.0f, false, EffectNum::PlayerAirWeakAttack1}},
       // ‹ó’†ãUŒ‚2
-      {StateNumberAirLight2 ,{AirLightAttack2, 10.0f, 1.0f, false}},
+      {StateNumberAirLight2 ,{AirLightAttack2, 10.0f, 1.0f, false, EffectNum::PlayerAirWeakAttack2}},
       // ‹ó’†ãUŒ‚3
-      {StateNumberAirLight3 ,{AirLightAttack3, 10.0f, 1.0f, false}},
+      {StateNumberAirLight3 ,{AirLightAttack3, 10.0f, 1.0f, false, EffectNum::PlayerAirWeakAttack3}},
       // ‹ó’†‹­UŒ‚1
-      {StateNumberAirHeavy1 ,{AirHeavyAttack1, 10.0f, 1.0f, false}},
+      {StateNumberAirHeavy1 ,{AirHeavyAttack1, 10.0f, 1.0f, false, EffectNum::PlayerAirHeavyAttack1}},
       // ‹ó’†‹­UŒ‚2
-      {StateNumberAirHeavy2 ,{AirHeavyAttack2, 10.0f, 1.0f, false}},
+      {StateNumberAirHeavy2 ,{AirHeavyAttack2, 10.0f, 1.0f, false, EffectNum::PlayerAirHeavyAttack2}},
       // •KE‹Z\‚¦
-      {StateNumberExciteActive ,{ExciteTrickActive, 10.0f, 1.0f, false}},
+      {StateNumberExciteActive ,{ExciteTrickActive, 10.0f, 1.0f, false, EffectNum::PlayerUltActivate}},
       // •KE‹Z’†
-      {StateNumberExciteTrick1 ,{ExciteTrick1, 10.0f, 1.0f, false}},
+      {StateNumberExciteTrick1 ,{ExciteTrick1, 10.0f, 1.0f, false, EffectNum::PlayerUltSlash}},
       // •KE‹ZŒã
       {StateNumberExciteTrick2 ,{ExciteTrick2, 10.0f, 1.0f, false}},
       // ƒ_ƒbƒVƒ…
-      {StateNumberDash, {Step, 10.0f, 1.0f, false}},
+      {StateNumberDash, {Step, 10.0f, 1.0f, false, EffectNum::PlayerAvoidance}},
       // ~‰ºƒ‚[ƒVƒ‡ƒ“
       {StateNumberFall, {JumpDown, 10.0f, 1.0f, false}},
     };

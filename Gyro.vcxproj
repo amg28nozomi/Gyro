@@ -47,8 +47,6 @@
     <ClCompile Include="source\EffectPlayerHeavyAttack3.cpp" />
     <ClCompile Include="source\EffectPlayerHit.cpp" />
     <ClCompile Include="source\EffectPlayerJump.cpp" />
-    <ClCompile Include="source\EffectPlayerJustActivate.cpp" />
-    <ClCompile Include="source\EffectPlayerJustEmit.cpp" />
     <ClCompile Include="source\EffectPlayerLanding.cpp" />
     <ClCompile Include="source\EffectPlayerUltActivate.cpp" />
     <ClCompile Include="source\EffectPlayerUltSlash.cpp" />
@@ -152,8 +150,6 @@
     <ClInclude Include="source\EffectPlayerHeavyAttack3.h" />
     <ClInclude Include="source\EffectPlayerHit.h" />
     <ClInclude Include="source\EffectPlayerJump.h" />
-    <ClInclude Include="source\EffectPlayerJustActivate.h" />
-    <ClInclude Include="source\EffectPlayerJustEmit.h" />
     <ClInclude Include="source\EffectPlayerLanding.h" />
     <ClInclude Include="source\EffectPlayerUltActivate.h" />
     <ClInclude Include="source\EffectPlayerUltSlash.h" />

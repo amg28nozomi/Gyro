@@ -35,6 +35,12 @@ namespace Gyro {
        * @brief  初期化
        */
       void Init() override;
+
+    private:
+      /**
+       * @brief  エフェクト消去
+       */
+      void DeadEffect() override;
     };
   } // namespace Effect
 } // namespace Gyro

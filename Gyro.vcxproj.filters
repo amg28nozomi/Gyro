@@ -195,12 +195,6 @@
     <Filter Include="ソース ファイル\Effect\Player\Ult">
       <UniqueIdentifier>{369add95-efa5-47df-baf0-2b82a27c0363}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\Effect\Player\Just">
-      <UniqueIdentifier>{4bce8685-9e91-4855-8805-e0bd32363771}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Effect\Player\Just">
-      <UniqueIdentifier>{05e66bef-03e2-4194-acf4-790e159c8b7b}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\ApplicationMain.cpp">
@@ -496,12 +490,6 @@
     </ClCompile>
     <ClCompile Include="source\SpawnItem.cpp">
       <Filter>ソース ファイル\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="source\EffectPlayerJustActivate.cpp">
-      <Filter>ソース ファイル\Effect\Player\Just</Filter>
-    </ClCompile>
-    <ClCompile Include="source\EffectPlayerJustEmit.cpp">
-      <Filter>ソース ファイル\Effect\Player\Just</Filter>
     </ClCompile>
     <ClCompile Include="source\EffectPlayerAvoidance.cpp">
       <Filter>ソース ファイル\Effect\Player</Filter>
@@ -816,12 +804,6 @@
     </ClInclude>
     <ClInclude Include="source\SpawnItem.h">
       <Filter>ソース ファイル\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="source\EffectPlayerJustActivate.h">
-      <Filter>ヘッダー ファイル\Effect\Player\Just</Filter>
-    </ClInclude>
-    <ClInclude Include="source\EffectPlayerJustEmit.h">
-      <Filter>ヘッダー ファイル\Effect\Player\Just</Filter>
     </ClInclude>
     <ClInclude Include="source\EffectPlayerAvoidance.h">
       <Filter>ヘッダー ファイル\Effect\Player</Filter>

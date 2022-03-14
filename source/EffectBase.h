@@ -7,6 +7,7 @@
  *********************************************************************/
 #pragma once
 #include "ApplicationMain.h"
+#include "Player.h"
 
  /**
   * @brief ゲームベース
@@ -75,6 +76,10 @@ namespace Gyro {
         Dead     //!< 死亡状態
       };
       /**
+       * @brief  プレイヤー状態の確認
+       */
+      virtual void CheckPlayerState();
+      /**
        * @brief  エフェクト読み込みハンドルの取得
        * @param  key エフェクトキー
        * @return 指定したエフェクトの読み込みハンドル
@@ -86,16 +91,19 @@ namespace Gyro {
 
       int _effectHandle{ -1 };  //!< エフェクト読み込みハンドル
       int _playHandle{ -1 };    //!< エフェクト再生ハンドル
+      AppMath::Vector4 _ePos;   //!< エフェクト位置
+      float _eRadY{ 0.0f };     //!< エフェクトy向き(ラジアン)
       int _playLag{ 0 };        //!< 生成から再生までのラグ
       int _lagCount{ 0 };       //!< ラグカウント
       bool _isPlay{ false };    //!< 再生判定
-      AppMath::Vector4 _ePos;   //!< エフェクト位置
-      float _eRadY{ 0.0f };     //!< エフェクトy向き(ラジアン)
+      bool _isCheck{ false };   //!< プレイヤー状態確認の有無
 
       //!< アプリケーションの参照
       Application::ApplicationMain& _app;
       //! エフェクトの状態保持変数
       EffectState _effectState{ EffectState::Paused };
+      //!< プレイヤー状態を比較する変数
+      Player::Player::PlayerState _checkState{ Player::Player::PlayerState::Idle };
     };
   } // namespace Effect
 } // namespace Gyro

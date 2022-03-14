@@ -10,6 +10,8 @@
 namespace {
   // 生成から再生までのラグ定数
   constexpr int PlayLag = 25;
+  // エフェクト生成時プレイヤーの状態
+  constexpr auto CheckState = Gyro::Player::Player::PlayerState::Attack1;
 }
 
 namespace Gyro {
@@ -28,6 +30,9 @@ namespace Gyro {
       _effectHandle = GetEffectHandle(EffectKey::PlayerHeavyAttack1);
       // ラグ設定
       _playLag = PlayLag;
+      // プレイヤー状態確認あり
+      _isCheck = true;
+      _checkState = CheckState;
     }
   } // namespace Effect
 } // namespace Gyro

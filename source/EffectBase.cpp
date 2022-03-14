@@ -6,6 +6,7 @@
  * @date    February 2022
  *********************************************************************/
 #include "EffectBase.h"
+#include "ObjectServer.h"
 
 namespace Gyro {
   namespace Effect {
@@ -33,6 +34,12 @@ namespace Gyro {
         if (IsEffekseer3DEffectPlaying(_playHandle)) {
           // エフェクト消去
           DeadEffect();
+          return;
+        }
+        // プレイヤー状態を確認するか
+        if (_isCheck) {
+          // プレイヤー状態の確認
+          CheckPlayerState();
         }
         return;
       }
@@ -62,6 +69,17 @@ namespace Gyro {
       _playHandle = -1;
       // エフェクト死亡状態
       _effectState = EffectState::Dead;
+    }
+
+    void EffectBase::CheckPlayerState() {
+      // プレイヤー状態の取得
+      auto player = _app.GetObjectServer().GetPlayer();
+      auto pState = player->GetPlayerState();
+      // プレイヤー状態が生成時の状態と違う
+      if (pState != _checkState) {
+        // エフェクト消去
+        DeadEffect();
+      }
     }
   } // namespace Effect
 } // namespace Gyro

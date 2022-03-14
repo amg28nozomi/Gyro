@@ -1,11 +1,16 @@
 /*****************************************************************//**
  * @file    EffectPlayerDash.cpp
- * @brief   プレイヤー被ダメエフェクトクラス
+ * @brief   プレイヤーダッシュエフェクトクラス
  *
  * @author  宮澤耀生
  * @date    March 2022
  *********************************************************************/
 #include "EffectPlayerDash.h"
+
+namespace {
+  // エフェクト生成時プレイヤーの状態
+  //constexpr auto CheckState = Gyro::Player::Player::PlayerState::Run;
+}
 
 namespace Gyro {
   namespace Effect {
@@ -21,6 +26,9 @@ namespace Gyro {
     void EffectPlayerDash::Init() {
       // エフェクトハンドルの取得
       _effectHandle = GetEffectHandle(EffectKey::PlayerDash);
+      // プレイヤー状態確認あり
+      //_isCheck = true;
+      //_checkState = CheckState;
     }
   } // namespace Effect
 } // namespace Gyro

@@ -38,8 +38,6 @@ namespace Gyro {
     class EffectPlayerAirHeavyAttack2;
     class EffectPlayerUltActivate;
     class EffectPlayerUltSlash;
-    class EffectPlayerJustActivate;
-    class EffectPlayerJustEmit;
     class EffectEnemyEyeLight;
     class EffectEnemyGroundAttack1;
     class EffectEnemyGroundAttack2;
@@ -92,6 +90,21 @@ namespace Gyro {
        * @param  radian エフェクト向き
        */
       void MakeEffect(const int num, const AppMath::Vector4 position, const float radian);
+      /**
+       * @brief  必殺攻撃エフェクト終了判定の設定
+       * @param  flag 終了フラグ
+       */
+      void SetUltSlashEnd(const bool flag) {
+        _ultSlashEnd = flag;
+      }
+      /**
+       * @brief  必殺攻撃エフェクト終了判定の取得
+       * @return true:終了
+       *         false:再生中(未再生)
+       */
+      bool GetUltSlashEnd() {
+        return _ultSlashEnd;
+      }
 
     private:
       /**
@@ -233,20 +246,6 @@ namespace Gyro {
        */
       std::shared_ptr<EffectPlayerUltSlash> PlayerUltSlash(const AppMath::Vector4 position, const float radian) const;
       /**
-       * @brief  プレイヤージャスト発動の生成
-       * @param  position エフェクト位置
-       * @param  radian エフェクト向き
-       * @return プレイヤージャスト発動のシェアードポインタ
-       */
-      std::shared_ptr<EffectPlayerJustActivate> PlayerJustActivate(const AppMath::Vector4 position, const float radian) const;
-      /**
-       * @brief  プレイヤージャスト終了の生成
-       * @param  position エフェクト位置
-       * @param  radian エフェクト向き
-       * @return プレイヤージャスト終了のシェアードポインタ
-       */
-      std::shared_ptr<EffectPlayerJustEmit> PlayerJustEmit(const AppMath::Vector4 position, const float radian) const;
-      /**
        * @brief  敵眼光の生成
        * @param  position エフェクト位置
        * @param  radian エフェクト向き
@@ -352,6 +351,7 @@ namespace Gyro {
        */
       std::shared_ptr<EffectStageHeal> StageHeal(const AppMath::Vector4 position, const float radian) const;
 
+      bool _ultSlashEnd{ false };  //!< 必殺攻撃エフェクト終了判定
       //!< アプリケーションの参照
       Application::ApplicationMain& _app;
     };
@@ -385,9 +385,6 @@ namespace Gyro {
     // 15*:必殺技
     constexpr int PlayerUltActivate = 150;  //!< プレイヤー必殺発動
     constexpr int PlayerUltSlash = 151;     //!< プレイヤー必殺攻撃
-    // 16*:ジャスト
-    constexpr int PlayerJustActivate = 160;  //!< プレイヤージャスト発動
-    constexpr int PlayerJustEmit = 161;      //!< プレイヤージャスト終了
   // 2**:敵
     // 20*:通常
     constexpr int EnemyEyeLight = 200;       //!< 敵眼光

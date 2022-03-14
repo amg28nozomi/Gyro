@@ -19,7 +19,6 @@
 #include "ModeResult.h"
 #include "ModePause.h"
 #include "ModeLoading.h"
-
 #include "EnemyDrone.h"
 #include "EnemyDroneBoss.h"
 #include "EnemyWheel.h"
@@ -253,17 +252,15 @@ namespace Gyro {
         {EffectKey::PlayerWeakAttack3, "res/Effect/Player/WeakAttack3/player_weakattack_3.efkefc", 5.0f},
         {EffectKey::PlayerWeakAttackEX, "res/Effect/Player/WeakAttackEX/player_weakattack_EX.efkefc", 5.0f},
         {EffectKey::PlayerHeavyAttack1, "res/Effect/Player/HeavyAttack1/HeavyAttack1.efkefc", 30.0f},
-        {EffectKey::PlayerHeavyAttack2, "res/Effect/Player/HeavyAttack2/Player_attack_heavy_02.efkefc", 15.0f},
+        {EffectKey::PlayerHeavyAttack2, "res/Effect/Player/HeavyAttack2/Player_attack_heavy_02.efkefc", 10.0f},
         {EffectKey::PlayerHeavyAttack3, "res/Effect/Player/HeavyAttack3/HeavyAttack3.efkefc", 20.0f},
-        {EffectKey::PlayerAirWeakAttack1, "res/Effect/Player/AirWeakAttack1/Player_attack_air_normal_01.efkefc", 5.0f},
-        {EffectKey::PlayerAirWeakAttack2, "res/Effect/Player/AirWeakAttack2/Player_attack_air_normal_02.efkefc", 5.0f},
-        {EffectKey::PlayerAirWeakAttack3, "res/Effect/Player/AirWeakAttack3/Player_attack_air_normal_03.efkefc", 5.0f},
-        {EffectKey::PlayerAirHeavyAttack1, "res/Effect/Player/AirHeavyAttack1/Player_attack_air_heavy_01.efkefc", 5.0f},
+        {EffectKey::PlayerAirWeakAttack1, "res/Effect/Player/AirWeakAttack1/Player_attack_air_normal_01.efkefc", 10.0f},
+        {EffectKey::PlayerAirWeakAttack2, "res/Effect/Player/AirWeakAttack2/Player_attack_air_normal_02.efkefc", 10.0f},
+        {EffectKey::PlayerAirWeakAttack3, "res/Effect/Player/AirWeakAttack3/Player_attack_air_normal_03.efkefc", 10.0f},
+        {EffectKey::PlayerAirHeavyAttack1, "res/Effect/Player/AirHeavyAttack1/Player_attack_air_heavy_01.efkefc", 10.0f},
         {EffectKey::PlayerAirHeavyAttack2, "res/Effect/Player/AirHeavyAttack2/Player_attack_air_heavy_02.efkefc", 5.0f},
         {EffectKey::PlayerUltActivate, "res/Effect/Player/UltActivate/Player_ult_activate.efkefc", 5.0f},
         {EffectKey::PlayerUltSlash, "res/Effect/Player/UltSlash/Player_ult_slash.efkefc", 5.0f},
-        {EffectKey::PlayerJustActivate, "res/Effect/Player/JustActivate/Player_justcursor_activate.efkefc", 5.0f},
-        {EffectKey::PlayerJustEmit, "res/Effect/Player/JustEmit/Player_justcursor_emit.efkefc", 5.0f},
         {EffectKey::EnemyEyeLight, "res/Effect/Enemy/EyeLight/Enemy_EyeLight.efkefc", 20.0f},
         {EffectKey::EnemyGroundAttack1, "res/Effect/Enemy/GroundAttack1/Enemy_ground_attack1.efkefc", 10.0f},
         {EffectKey::EnemyGroundAttack2, "res/Effect/Enemy/GroundAttack2/Enemy_ground_attack2.efkefc", 10.0f},
