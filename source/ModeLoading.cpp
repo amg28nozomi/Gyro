@@ -19,6 +19,7 @@
 namespace Gyro {
   namespace Mode {
     ModeLoading::ModeLoading(Application::ApplicationMain& app) : ModeBase(*app.GetInstance()), _appMain(app) {
+      _loadHandle.clear();
 
     }
 
@@ -88,8 +89,14 @@ namespace Gyro {
       if (_isLoad) {
         return; // 読み込み済み
       }
-      // ロード画像読み込み
-      auto a = LoadDivGraph("res/Loading/Loading2.png", 4, 2, 2, 500, 100, _loadHandle);
+      // 画像情報
+      const AppFrame::Data::DivGraph divGraph("res/Loading/Loading2.png", 4, 2, 2, 500, 100);
+      // キー
+      auto key = "loding";
+      // 素材の読み込み
+      _app.GetResourceServer().LoadDivGraph(key, divGraph);
+      // 画像の設定
+      _loadHandle = _app.GetResourceServer().GetHandles(key);
       // 読み込み完了
       _isLoad = true;
     }

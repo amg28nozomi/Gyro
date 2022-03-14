@@ -6,6 +6,7 @@
  * @date    February 2022
  *********************************************************************/
 #include "ModeGameOver.h"
+#include <appframe.h>
 #include "ModeGame.h"
 #include "ModeTitle.h"
 
@@ -85,12 +86,23 @@ namespace Gyro {
       if (_isLoad) {
         return; // ì«Ç›çûÇ›çœÇ›
       }
+      // ï ñºíËã`
+      using ResourceServer = AppFrame::Resource::ResourceServer;
+      const ResourceServer::DivGraphTable table = {
+        { "gameover", {"res/GameOver/gameover.png", 1, 1, 1, 1920, 1080}},
+        { "retry0", {"res/GameOver/retry0.png", 1, 1, 1, 1920, 1080}},
+        { "retry1", {"res/GameOver/retry1.png", 1, 1, 1, 1920, 1080}},
+        { "backtitle0", {"res/GameOver/backtitle0.png", 1, 1, 1, 1920, 1080}},
+        { "backtitle1", {"res/GameOver/backtitle1.png", 1, 1, 1, 1920, 1080}}
+      };
+      // ëfçﬁÇÃì«Ç›çûÇ›
+      _app.GetResourceServer().LoadDivGraph(table);
       // âÊëúì«Ç›çûÇ›
-      _gameOverHandle = LoadGraph("res/GameOver/gameover.png");
-      _retryHandle[0] = LoadGraph("res/GameOver/retry0.png");
-      _retryHandle[1] = LoadGraph("res/GameOver/retry1.png");
-      _backTitleHandle[0] = LoadGraph("res/GameOver/backtitle0.png");
-      _backTitleHandle[1] = LoadGraph("res/GameOver/backtitle1.png");
+      _gameOverHandle = _app.GetResourceServer().GetHandle("gameover");
+      _retryHandle[0] = _app.GetResourceServer().GetHandle("retry0");
+      _retryHandle[1] = _app.GetResourceServer().GetHandle("retry1");
+      _backTitleHandle[0] = _app.GetResourceServer().GetHandle("backtitle0");
+      _backTitleHandle[1] = _app.GetResourceServer().GetHandle("backtitle1");
       // ì«Ç›çûÇ›äÆóπ
       _isLoad = true;
     }

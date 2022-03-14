@@ -68,7 +68,7 @@ namespace Gyro {
        */
       void ChangeMode();
 
-      int _loadHandle[ 4 ]{ -1 };  //!< AMG画像
+      std::vector<int> _loadHandle;  //!< AMG画像
       int _cnt{ 0 };               //!< カウント
       //!< アプリケーションメインの参照
       Application::ApplicationMain& _appMain;

@@ -90,8 +90,11 @@ namespace Gyro {
       if (_isLoad) {
         return; // “Ç‚İ‚İÏ‚İ
       }
+      const AppFrame::Data::DivGraph divGraph("res/Result/result.png", 1, 1, 1, 1920, 1080);
+      // AMG“Ç‚İ‚İ
+      _app.GetResourceServer().LoadDivGraph("result", divGraph);
       // ‰æ‘œ“Ç‚İ‚İ
-      _resultHandle = LoadGraph("res/Result/result.png");
+      _resultHandle = _app.GetResourceServer().GetHandle("result");
       // ƒTƒEƒ“ƒhî•ñ‚Ì“Ç‚İ‚İ
       using SoundServer = AppFrame::Sound::SoundServer;
       const SoundServer::SoundMap soundMap{

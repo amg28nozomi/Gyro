@@ -67,10 +67,13 @@ namespace Gyro {
       if (_isLoad) {
         return; // 読み込み済み
       }
-      // クレジット画像読み込み
-      _creditHandle = LoadGraph("res/Credit/Credit.png");
-      // 読み込み完了
-      _isLoad = true;
+
+
+      //// クレジット画像読み込み
+      //_creditHandle = _app.GetResourceServer().LoadDivGraph()
+      //  LoadGraph("res/Credit/Credit.png");
+      //// 読み込み完了
+      //_isLoad = true;
     }
 
     void ModeCredit::ChangeMode() {

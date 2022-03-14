@@ -6,6 +6,7 @@
  * @date    February 2022
  *********************************************************************/
 #include "ModeAMG.h"
+#include <appframe.h>
 #include "ModeTitle.h"
 #include "StageComponent.h"
 #include "StageTransition.h"
@@ -70,8 +71,11 @@ namespace Gyro {
       if (_isLoad) {
         return; // 読み込み済み
       }
+      const AppFrame::Data::DivGraph divGraph("res/Logo/amglogo.png", 1, 1, 1, 1920, 1080);
       // AMG読み込み
-      _amgHandle = LoadGraph("res/Logo/amglogo.png");
+      _app.GetResourceServer().LoadDivGraph("amglogo", divGraph);
+      // ハンドルの設定
+      _amgHandle = _app.GetResourceServer().GetHandle("amglogo");
       // 読み込み完了
       _isLoad = true;
       // 非同期処理フラグtrue

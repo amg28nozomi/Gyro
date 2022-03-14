@@ -58,8 +58,12 @@ namespace Gyro {
       if (_isLoad) {
         return; // 読み込み済み
       }
-      // チーム読み込み
-      _teamHandle = LoadGraph("res/Logo/.png");
+      // 
+      const AppFrame::Data::DivGraph divGraph("res/Logo/amglogo.png", 1, 1, 1, 1920, 1080);
+      // AMG読み込み
+      _app.GetResourceServer().LoadDivGraph("teamlogo", divGraph);
+      // ハンドルの設定
+      _teamHandle = _app.GetResourceServer().GetHandle("teamlogo");
       // 読み込み完了
       _isLoad = true;
     }

@@ -92,11 +92,23 @@ namespace Gyro {
         return; // 読み込み済み
       }
       // 画像読み込み
-      _pauseHandle = LoadGraph("res/Pause/pause.png");
-      _continueHandle[0] = LoadGraph("res/Pause/continue0.png");
-      _continueHandle[1] = LoadGraph("res/Pause/continue1.png");
-      _quitGameHandle[0] = LoadGraph("res/Pause/quitgame0.png");
-      _quitGameHandle[1] = LoadGraph("res/Pause/quitgame1.png");
+            // 別名定義
+      using ResourceServer = AppFrame::Resource::ResourceServer;
+      const ResourceServer::DivGraphTable table = {
+        { "pause", {"res/Pause/pause.png", 1, 1, 1, 1920, 1080}},
+        { "continue0", {"res/Pause/continue0.png", 1, 1, 1, 1920, 1080}},
+        { "continue1", {"res/Pause/continue1.png", 1, 1, 1, 1920, 1080}},
+        { "quitgame0", {"res/Pause/quitgame0.png", 1, 1, 1, 1920, 1080}},
+        { "quitgame1", {"res/Pause/quitgame1.png", 1, 1, 1, 1920, 1080}}
+      };
+      // 素材の読み込み
+      _app.GetResourceServer().LoadDivGraph(table);
+
+      _pauseHandle = _app.GetResourceServer().GetHandle("pause");
+      _continueHandle[0] = _app.GetResourceServer().GetHandle("continue0");
+      _continueHandle[1] = _app.GetResourceServer().GetHandle("continue1");
+      _quitGameHandle[0] = _app.GetResourceServer().GetHandle("quitgame0");
+      _quitGameHandle[1] = _app.GetResourceServer().GetHandle("guitgame1");
       // サウンド情報の読み込み
       using SoundServer = AppFrame::Sound::SoundServer;
       const SoundServer::SoundMap soundMap{

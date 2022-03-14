@@ -135,12 +135,24 @@ namespace Gyro {
       if (_isLoad) {
         return; // 読み込み済み
       }
+      // 
+      using ResourceServer = AppFrame::Resource::ResourceServer;
+      const ResourceServer::DivGraphTable table = {
+        { "GYROtitle", {"res/Title/GYROtitle.png", 1, 1, 1, 1920, 1080}},
+        { "pressbutton", {"res/Title/pressbutton.png", 1, 1, 1, 1920, 1080}},
+        { "gamestart", {"res/Title/gamestart.png", 1, 1, 1, 1920, 1080}},
+        { "credit", {"res/Title/credit.png", 1, 1, 1, 1920, 1080}},
+        { "quitgame", {"res/Title/quitgame.png", 1, 1, 1, 1920, 1080}}
+      };
+      // 素材の読み込み
+      _app.GetResourceServer().LoadDivGraph(table);
+
       // 画像読み込み
-      _titleHandle = LoadGraph("res/Title/GYROtitle.png");
-      _pressButtonHandle = LoadGraph("res/Title/pressbutton.png");
-      _gameStartHandle = LoadGraph("res/Title/gamestart.png");
-      _creditHandle = LoadGraph("res/Title/credit.png");
-      _quitGameHandle = LoadGraph("res/Title/quitgame.png");
+      _titleHandle = _app.GetResourceServer().GetHandle("GYROtitle");
+      _pressButtonHandle = _app.GetResourceServer().GetHandle("pressbutton");
+      _gameStartHandle = _app.GetResourceServer().GetHandle("gamestart");
+      _creditHandle = _app.GetResourceServer().GetHandle("credit");
+      _quitGameHandle = _app.GetResourceServer().GetHandle("quitgame");
       // 各種モデルハンドルの読み込み
       using ModelServer = AppFrame::Model::ModelServer;
       const ModelServer::ModelDatas mv1Models{
