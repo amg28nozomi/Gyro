@@ -97,9 +97,21 @@ namespace Gyro {
        */
       void ChangeAnim() override;
       /**
-       * @brief  エフェクト再生
+       * @brief  エフェクト初期化(生成)
        */
-      void PlayEffect() override;
+      void EffectInit() override;
+      /**
+       * @brief  エフェクト更新呼び出し
+       */
+      void EffectProcess() override;
+      /**
+       * @brief  エフェクト再生呼び出し
+       */
+      void EffectPlay() override;
+      /**
+       * @brief  エフェクト消去呼び出し
+       */
+      void EffectDead() override;
       /**
        * @brief  ダメージを受けたかの判定
        * @return true:衝突
@@ -111,6 +123,15 @@ namespace Gyro {
       AppFrame::Math::Vector4 _oldPosition;   //!< 攻撃状態に移行したタイミングの座標
       static inline unsigned short _number{ 1 };  //!< 生成番号
       unsigned short _this{ 0 };  //!< 識別ID
+
+      //!< 眼光エフェクト
+      std::shared_ptr<Effect::EffectEnemyEyeLight> _eyeLight{ nullptr };
+      //!< 空中攻撃エフェクト
+      std::shared_ptr<Effect::EffectEnemyAirAttack> _airAttack{ nullptr };
+      //!< 被ダメエフェクト
+      std::shared_ptr<Effect::EffectEnemyHit> _hit{ nullptr };
+      //!< 爆発エフェクト
+      std::shared_ptr<Effect::EffectEnemyExprosion> _exprosion{ nullptr };
     };
   } // namespace Enemy
 } // namespace Gyro

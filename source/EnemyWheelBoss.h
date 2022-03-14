@@ -102,9 +102,21 @@ namespace Gyro {
        */
       void ChangeAnim() override;
       /**
-       * @brief  エフェクト再生
+       * @brief  エフェクト初期化(生成)
        */
-      void PlayEffect() override;
+      void EffectInit() override;
+      /**
+       * @brief  エフェクト更新呼び出し
+       */
+      void EffectProcess() override;
+      /**
+       * @brief  エフェクト再生呼び出し
+       */
+      void EffectPlay() override;
+      /**
+       * @brief  エフェクト消去呼び出し
+       */
+      void EffectDead() override;
       /**
        * @brief  回転攻撃エフェクト
        */
@@ -126,8 +138,17 @@ namespace Gyro {
       AppFrame::Math::Vector4 _move;          //!< 移動距離
       static inline unsigned short _number{ 1 };  //!< 生成番号
       unsigned short _this{ 0 };  //!< 識別ID
-      // 回転攻撃エフェクト
-      std::shared_ptr<Effect::EffectEnemyGroundAttack2> _groundAttack2{ nullptr };
+
+      //!< 眼光エフェクト
+      std::shared_ptr<Effect::EffectEnemyBossEyeLight> _eyeLight{ nullptr };
+      //!< 突進攻撃エフェクト
+      std::shared_ptr<Effect::EffectEnemyBossGroundAttack1> _groundAttack1{ nullptr };
+      //!< 回転攻撃エフェクト
+      std::shared_ptr<Effect::EffectEnemyBossGroundAttack2> _groundAttack2{ nullptr };
+      //!< 被ダメエフェクト
+      std::shared_ptr<Effect::EffectEnemyBossHit> _hit{ nullptr };
+      //!< 爆発エフェクト
+      std::shared_ptr<Effect::EffectEnemyBossExprosion> _exprosion{ nullptr };
     };
   } // namespace Enemy
 } // namespace Gyro

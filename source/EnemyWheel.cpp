@@ -9,7 +9,11 @@
 #include "UtilityDX.h"
 #include "ObjectServer.h"
 #include "Player.h"
+#include "EffectEnemyEyeLight.h"
+#include "EffectEnemyGroundAttack1.h"
 #include "EffectEnemyGroundAttack2.h"
+#include "EffectEnemyHit.h"
+#include "EffectEnemyExprosion.h"
 
 namespace {
   // 各種定数
@@ -47,8 +51,8 @@ namespace Gyro {
       SetParameter();
       // アニメーションアタッチ
       _modelAnim.SetMainAttach(_mHandle, IdleKey, 1.0f, true);
-      // 回転攻撃エフェクトの生成
-      _groundAttack2 = std::make_shared<Effect::EffectEnemyGroundAttack2>(_app);
+      // エフェクト初期化(生成)
+      EffectInit();
       return true;
     }
 
@@ -94,7 +98,7 @@ namespace Gyro {
           // アニメーション変更
           ChangeAnim();
           // エフェクト再生
-          PlayEffect();
+          EffectPlay();
         }
         // 壁押し出し
         Extrude();
@@ -107,7 +111,8 @@ namespace Gyro {
       MV1SetMatrix(_mHandle, UtilityDX::ToMATRIX(_world));
       // モデルアニメの更新
       _modelAnim.Process();
-
+      // エフェクト更新呼び出し
+      EffectProcess();
       return true;
     }
 
@@ -356,7 +361,31 @@ namespace Gyro {
       }
     }
 
-    void EnemyWheel::PlayEffect() {
+    void EnemyWheel::EffectInit() {
+      // 眼光エフェクトの生成
+      _eyeLight = std::make_shared<Effect::EffectEnemyEyeLight>(_app);
+      // 突進攻撃エフェクトの生成
+      _groundAttack1 = std::make_shared<Effect::EffectEnemyGroundAttack1>(_app);
+      // 回転攻撃エフェクトの生成
+      _groundAttack2 = std::make_shared<Effect::EffectEnemyGroundAttack2>(_app);
+      // 被ダメエフェクトの生成
+      _hit = std::make_shared<Effect::EffectEnemyHit>(_app);
+      // 爆発エフェクトの生成
+      _exprosion = std::make_shared<Effect::EffectEnemyExprosion>(_app);
+    }
+
+    void EnemyWheel::EffectProcess() {
+      // エフェクト更新呼び出し
+      _eyeLight->Process();
+      _groundAttack1->Process();
+      _groundAttack2->Process();
+      _hit->Process();
+      _exprosion->Process();
+    }
+
+    void EnemyWheel::EffectPlay() {
+      // エフェクト消去呼び出し
+      EffectDead();
       // パラメータ設定
       auto ePos = _position;
 #ifndef _DEBUG
@@ -370,22 +399,35 @@ namespace Gyro {
         break;
       case EnemyState::Move:    //!< 移動
         ePos.AddY(135.0f);
-        _app.GetEffectServer().MakeEffect(EffectNum::EnemyEyeLight, ePos, eRad);
+        _eyeLight->PlayEffect();
+        _eyeLight->SetEffectParameter(ePos, eRad);
         break;
       case EnemyState::Attack:  //!< 攻撃
-        _app.GetEffectServer().MakeEffect(EffectNum::EnemyGroundAttack1, ePos, eRad);
+        _groundAttack1->PlayEffect();
+        _groundAttack1->SetEffectParameter(ePos, eRad);
         break;
       case EnemyState::Damage:  //!< 被ダメ
         ePos.AddY(100.0f);
-        _app.GetEffectServer().MakeEffect(EffectNum::EnemyHit, ePos, eRad);
+        _hit->PlayEffect();
+        _hit->SetEffectParameter(ePos, eRad);
         break;
       case EnemyState::Dead:    //!< 死亡
         ePos.AddY(100.0f);
-        _app.GetEffectServer().MakeEffect(EffectNum::EnemyExprosion, ePos, eRad);
+        _exprosion->PlayEffect();
+        _exprosion->SetEffectParameter(ePos, eRad);
         break;
       default:
         break;
       }
+    }
+
+    void EnemyWheel::EffectDead() {
+      // エフェクト消去呼び出し
+      _eyeLight->DeadEffect();
+      _groundAttack1->DeadEffect();
+      _groundAttack2->DeadEffect();
+      _hit->DeadEffect();
+      _exprosion->DeadEffect();
     }
 
     void EnemyWheel::SlashEffect() {
@@ -413,9 +455,8 @@ namespace Gyro {
 #else
       auto eRad = -AppMath::Utility::DegreeToRadian(_rotation.GetY());
 #endif
-      // エフェクト更新
+      // エフェクト位置・向き設定
       _groundAttack2->SetEffectParameter(ePos, eRad);
-      _groundAttack2->Process();
     }
 
     bool EnemyWheel::IsDamege() {

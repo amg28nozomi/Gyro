@@ -35,6 +35,10 @@ namespace Gyro {
        * @brief  ‰Šú‰»
        */
       void Init() override;
+      /**
+       * @brief  XV
+       */
+      void Process() override;
     };
   } // namespace Effect
 } // namespace Gyro

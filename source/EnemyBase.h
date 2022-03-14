@@ -2,7 +2,7 @@
  * @file    EnemyBase.h
  * @brief   敵の基底クラス
  *
- * @author  宮澤耀生
+ * @author  土橋峡介
  * @date    January 2022
  *********************************************************************/
 #pragma once
@@ -154,9 +154,21 @@ namespace Gyro {
        */
       virtual void ChangeAnim();
       /**
-       * @brief  エフェクト再生
+       * @brief  エフェクト初期化(生成)
        */
-      virtual void PlayEffect();
+      virtual void EffectInit();
+      /**
+       * @brief  エフェクト更新呼び出し
+       */
+      virtual void EffectProcess();
+      /**
+       * @brief  エフェクト再生呼び出し
+       */
+      virtual void EffectPlay();
+      /**
+       * @brief  エフェクト消去呼び出し
+       */
+      virtual void EffectDead();
       /**
        * @brief  オブジェクトの死亡処理
        */

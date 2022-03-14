@@ -9,6 +9,10 @@
 #include "UtilityDX.h"
 #include "ObjectServer.h"
 #include "Player.h"
+#include "EffectEnemyEyeLight.h"
+#include "EffectEnemyAirAttack.h"
+#include "EffectEnemyHit.h"
+#include "EffectEnemyExprosion.h"
 
 namespace {
   // 各種定数
@@ -42,7 +46,8 @@ namespace Gyro {
       SetParameter();
       // アニメーションアタッチ
       _modelAnim.SetMainAttach(_mHandle, IdleKey, 1.0f, true);
-
+      // エフェクト初期化(生成)
+      EffectInit();
       return true;
     }
 
@@ -85,7 +90,7 @@ namespace Gyro {
           // アニメーション変更
           ChangeAnim();
           // エフェクト再生
-          PlayEffect();
+          EffectPlay();
         }
         // 体力ゲージの更新
         _gaugeHp->Process();
@@ -96,7 +101,8 @@ namespace Gyro {
       MV1SetMatrix(_mHandle, UtilityDX::ToMATRIX(_world));
       // モデルアニメの更新
       _modelAnim.Process();
-
+      // エフェクト更新呼び出し
+      EffectProcess();
       return true;
     }
 
@@ -267,7 +273,28 @@ namespace Gyro {
       }
     }
 
-    void EnemyDrone::PlayEffect() {
+    void EnemyDrone::EffectInit() {
+      // 眼光エフェクトの生成
+      _eyeLight = std::make_shared<Effect::EffectEnemyEyeLight>(_app);
+      // 回転攻撃エフェクトの生成
+      _airAttack = std::make_shared<Effect::EffectEnemyAirAttack>(_app);
+      // 被ダメエフェクトの生成
+      _hit = std::make_shared<Effect::EffectEnemyHit>(_app);
+      // 爆発エフェクトの生成
+      _exprosion = std::make_shared<Effect::EffectEnemyExprosion>(_app);
+    }
+
+    void EnemyDrone::EffectProcess() {
+      // エフェクト更新呼び出し
+      _eyeLight->Process();
+      _airAttack->Process();
+      _hit->Process();
+      _exprosion->Process();
+    }
+
+    void EnemyDrone::EffectPlay() {
+      // エフェクト消去呼び出し
+      EffectDead();
       // パラメータ設定
       auto ePos = _position;
 #ifndef _DEBUG
@@ -281,22 +308,34 @@ namespace Gyro {
         break;
       case EnemyState::Move:    //!< 移動
         ePos.AddY(300.0f);
-        _app.GetEffectServer().MakeEffect(EffectNum::EnemyEyeLight, ePos, eRad);
+        _eyeLight->PlayEffect();
+        _eyeLight->SetEffectParameter(ePos, eRad);
         break;
       case EnemyState::Attack:  //!< 攻撃
-        _app.GetEffectServer().MakeEffect(EffectNum::EnemyAirAttack, ePos, eRad);
+        _airAttack->PlayEffect();
+        _airAttack->SetEffectParameter(ePos, eRad);
         break;
       case EnemyState::Damage:  //!< 被ダメ
         ePos.AddY(100.0f);
-        _app.GetEffectServer().MakeEffect(EffectNum::EnemyHit, ePos, eRad);
+        _hit->PlayEffect();
+        _hit->SetEffectParameter(ePos, eRad);
         break;
       case EnemyState::Dead:    //!< 死亡
         ePos.AddY(100.0f);
-        _app.GetEffectServer().MakeEffect(EffectNum::EnemyExprosion, ePos, eRad);
+        _exprosion->PlayEffect();
+        _exprosion->SetEffectParameter(ePos, eRad);
         break;
       default:
         break;
       }
+    }
+
+    void EnemyDrone::EffectDead() {
+      // エフェクト消去呼び出し
+      _eyeLight->DeadEffect();
+      _airAttack->DeadEffect();
+      _hit->DeadEffect();
+      _exprosion->DeadEffect();
     }
 
     bool EnemyDrone::IsDamege() {

@@ -2,7 +2,7 @@
  * @file    EnemyBase.cpp
  * @brief   敵の基底クラス
  *
- * @author  宮澤耀生
+ * @author  土橋峡介
  * @date    January 2022
  *********************************************************************/
 #include "EnemyBase.h"
@@ -12,6 +12,7 @@
 #include "SpawnEnemy.h"
 #include "Player.h"
 #include "StageComponent.h"
+
 namespace {
   // 無敵時間(フレーム)
   constexpr auto InvincibleTime = 120;
@@ -191,7 +192,15 @@ namespace Gyro {
       }
     }
 
-    void EnemyBase::PlayEffect() {
+    void EnemyBase::EffectInit() {
+
+    }
+
+    void EnemyBase::EffectProcess() {
+
+    }
+
+    void EnemyBase::EffectPlay() {
       // 対応エフェクト再生
       switch (_enemyState) {
       case EnemyState::Idle:    //!< 待機
@@ -207,6 +216,10 @@ namespace Gyro {
       default:
         break;
       }
+    }
+
+    void EnemyBase::EffectDead() {
+
     }
 
     void EnemyBase::Dead() {

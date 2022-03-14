@@ -23,7 +23,7 @@ namespace Gyro {
     }
 
     void EffectBase::Process() {
-      // 再生したか判定
+      // 再生しているか判定
       if (_isPlay) {
         // エフェクトの位置を設定
         auto& [x, y, z] = _ePos.GetVector3();
@@ -58,7 +58,7 @@ namespace Gyro {
       _playHandle = PlayEffekseer3DEffect(_effectHandle);
       // エフェクト活動状態
       _effectState = EffectState::Active;
-      // エフェクト再生完了
+      // エフェクト再生開始
       _isPlay = true;
     }
 
@@ -69,6 +69,8 @@ namespace Gyro {
       _playHandle = -1;
       // エフェクト死亡状態
       _effectState = EffectState::Dead;
+      // エフェクト再生終了
+      _isPlay = false;
     }
 
     void EffectBase::CheckPlayerState() {
