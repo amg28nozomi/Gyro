@@ -176,7 +176,7 @@ namespace Gyro {
         // スティック上入力あり
         _isStick = true;
         // カーソルSE再生
-        _app.GetSoundComponent().PlayBackGround("cursor");
+        _app.GetSoundComponent().PlayBackGround("cursor", 50);
         // 場面番号を1減らす
         _sceneNum--;
         if (_sceneNum < GameStartNum) {
@@ -188,7 +188,7 @@ namespace Gyro {
         // スティック下入力あり
         _isStick = true;
         // カーソルSE再生
-        _app.GetSoundComponent().PlayBackGround("cursor");
+        _app.GetSoundComponent().PlayBackGround("cursor", 50);
         // 場面番号を1増やす
         _sceneNum++;
         if (QuitGameNum < _sceneNum) {
