@@ -697,16 +697,24 @@ namespace Gyro {
         if (IsRun(move)) {
           // 走り状態に遷移
           _playerState = PlayerState::Run;
+          if (_app.GetSoundComponent().PlayBackGround("dash")) {
+            _app.GetSoundComponent().PlayLoop("dash");
+          }
           return;
         }
         // 移動量がある場合は歩きモーションに遷移
         // 後程移動量に応じて歩き・ダッシュモーション切り替え
         if (move.LengthSquared()) {
           _playerState = PlayerState::Walk;
+          if (_app.GetSoundComponent().PlayBackGround("walk")) {
+            _app.GetSoundComponent().PlayLoop("walk");
+          }
           return;
         }
         // 待機状態に遷移する
         _playerState = PlayerState::Idle;
+        _app.GetSoundComponent().StopSound("dash");
+        _app.GetSoundComponent().StopSound("walk");
       }
     }
 
@@ -943,6 +951,7 @@ namespace Gyro {
       _jump->Start(); // ジャンプ開始
       _gravityScale = 0.0f;
       _playerState = PlayerState::Jump;
+      _app.GetSoundComponent().PlayBackGround("jump");
     }
 
     void Player::Wire(AppMath::Vector4& move) {
@@ -987,6 +996,8 @@ namespace Gyro {
       _invincible->InvincibleStart();
       // 状態の変更
       _playerState = PlayerState::Dash;
+      _app.GetSoundComponent().PlayBackGround("avoidance");
+
       return true;
     }
 

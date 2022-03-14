@@ -403,6 +403,9 @@ namespace Gyro {
         ePos.AddY(350.0f);
         _eyeLight->PlayEffect();
         _eyeLight->SetEffectParameter(ePos, eRad);
+        if (!_app.GetSoundComponent().CheckSound("wMove")) {
+          _app.GetSoundComponent().PlayLoop("wMove");
+        }
         break;
       case EnemyState::Attack:  //!< 攻撃
         _groundAttack1->PlayEffect();
@@ -412,11 +415,13 @@ namespace Gyro {
         ePos.AddY(100.0f);
         _hit->PlayEffect();
         _hit->SetEffectParameter(ePos, eRad);
+        _app.GetSoundComponent().PlayBackGround("hitHigh");
         break;
       case EnemyState::Dead:    //!< 死亡
         ePos.AddY(100.0f);
         _exprosion->PlayEffect();
         _exprosion->SetEffectParameter(ePos, eRad);
+        _app.GetSoundComponent().PlayBackGround("destroy");
         break;
       default:
         break;
@@ -430,6 +435,9 @@ namespace Gyro {
       _groundAttack2->DeadEffect();
       _hit->DeadEffect();
       _exprosion->DeadEffect();
+      if (_app.GetSoundComponent().CheckSound("wMove")) {
+        _app.GetSoundComponent().StopSound("wMove");
+      }
     }
 
     void EnemyWheelBoss::SlashEffect() {
@@ -447,6 +455,7 @@ namespace Gyro {
       if (!_slash) {
         // エフェクト再生
         _groundAttack2->PlayEffect();
+        _app.GetSoundComponent().PlayBackGround("wAttack");
         // エフェクト再生完了
         _slash = true;
       }

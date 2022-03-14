@@ -314,16 +314,19 @@ namespace Gyro {
       case EnemyState::Attack:  //!< UŒ‚
         _airAttack->PlayEffect();
         _airAttack->SetEffectParameter(ePos, eRad);
+        _app.GetSoundComponent().PlayBackGround("dAttack");
         break;
       case EnemyState::Damage:  //!< ”íƒ_ƒ
         ePos.AddY(100.0f);
         _hit->PlayEffect();
         _hit->SetEffectParameter(ePos, eRad);
+        _app.GetSoundComponent().PlayBackGround("hitLow");
         break;
       case EnemyState::Dead:    //!< Ž€–S
         ePos.AddY(100.0f);
         _exprosion->PlayEffect();
         _exprosion->SetEffectParameter(ePos, eRad);
+        _app.GetSoundComponent().PlayBackGround("destroy");
         break;
       default:
         break;

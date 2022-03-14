@@ -311,18 +311,25 @@ namespace Gyro {
         break;
       case EnemyState::Move:    //!< ˆÚ“®
         ePos.AddY(500.0f);
-        _app.GetEffectServer().MakeEffect(EffectNum::EnemyBossEyeLight, ePos, eRad);
+        _eyeLight->PlayEffect();
+        _eyeLight->SetEffectParameter(ePos, eRad);
         break;
       case EnemyState::Attack:  //!< UŒ‚
-        _app.GetEffectServer().MakeEffect(EffectNum::EnemyBossAirAttack, ePos, eRad);
+        _airAttack->PlayEffect();
+        _airAttack->SetEffectParameter(ePos, eRad);
+        _app.GetSoundComponent().PlayBackGround("dAttack");
         break;
       case EnemyState::Damage:  //!< ”íƒ_ƒ
         ePos.AddY(100.0f);
-        _app.GetEffectServer().MakeEffect(EffectNum::EnemyBossHit, ePos, eRad);
+        _hit->PlayEffect();
+        _hit->SetEffectParameter(ePos, eRad);
+        _app.GetSoundComponent().PlayBackGround("hitHigh");
         break;
       case EnemyState::Dead:    //!< Ž€–S
         ePos.AddY(100.0f);
-        _app.GetEffectServer().MakeEffect(EffectNum::EnemyBossExprosion, ePos, eRad);
+        _exprosion->PlayEffect();
+        _exprosion->SetEffectParameter(ePos, eRad);
+        _app.GetSoundComponent().PlayBackGround("destroy");
         break;
       default:
         break;

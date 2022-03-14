@@ -265,9 +265,9 @@ namespace Gyro {
         {"wMove", "res/Sound/SE/Enemy/WheelMove.wav"},       // 地上移動SE
         {"wAttack", "res/Sound/SE/Enemy/WheelAttack.wav"},   // 地上攻撃SE
         {"dAttack", "res/Sound/SE/Enemy/DroneAttack.wav"},   // 空中攻撃SE
-        {"hitLow", "res/Sound/SE/Enemy/HitLow.wav"},         // ヒット弱SE
-        {"hitHigh", "res/Sound/SE/Enemy/HitHigh.wav"},       // ヒット強SE
-        {"destroy", "res/Sound/SE/Enemy/Destroy.wav"}        // 破壊SE
+        {"hitLow", "res/Sound/SE/Enemy/EnemyHitLow.wav"},         // ヒット弱SE
+        {"hitHigh", "res/Sound/SE/Enemy/EnemyHitHigh.wav"},       // ヒット強SE
+        {"destroy", "res/Sound/SE/Enemy/EnemyDestroy.wav"}        // 破壊SE
       };
       // サウンドサーバに登録
       _app.GetSoundServer().AddSounds(soundMap);
