@@ -28,60 +28,61 @@ namespace Gyro {
     }
 
     bool StageComponent::Init(std::filesystem::path jsonName) {
-      // パスの生成
-      std::filesystem::path p = "res/Stage";
-      const auto jsonPath = (p / jsonName).generic_string() + ".json";
-      // jsonファイルを読み取り専用で開く
-      std::ifstream reading(jsonPath, std::ios::in);
+      // キーが未登録なら続行
+      if (!_stageModelMap.contains(jsonName.generic_string())) {
+        // パスの生成
+        std::filesystem::path p = "res/Stage";
+        const auto jsonPath = (p / jsonName).generic_string() + ".json";
+        // jsonファイルを読み取り専用で開く
+        std::ifstream reading(jsonPath, std::ios::in);
 #ifdef _DEBUG
-      try {
-        if (reading.fail()) {
+        try {
+          if (reading.fail()) {
             throw std::logic_error("-----------" + jsonPath + "ファイルが開けませんでした ----------\n");
+          }
         }
-      }
-      catch (const std::logic_error& e) {
-        OutputDebugString(e.what());
-        return false; // キーが不正
+        catch (const std::logic_error& e) {
+          OutputDebugString(e.what());
+          return false; // キーが不正
       }
 #endif
-      // ファイルが存在しない場合
-      if (reading.fail()) {
-        return false;
+        // ファイルが存在しない場合
+        if (reading.fail()) {
+          return false;
+        }
+        nlohmann::json value;
+        // ファイルの中身を取り出す
+        reading >> value;
+        // ファイルを閉じる
+        reading.close();
+
+        // ステージの配置情報を取り出す
+        for (auto&& stageData : value[jsonName.generic_string()]) {
+          const auto fileName = stageData["filename"];    // ファイル名
+          const auto TargetX = stageData["tx"];           // x座標
+          const auto TargetY = stageData["ty"];           // y座標
+          const auto TargetZ = stageData["tz"];           // z座標
+          const auto RotateX = stageData["rx"];           // x回転
+          const auto RotateY = stageData["ry"];           // y回転
+          const auto RotateZ = stageData["rz"];           // z回転
+          const auto ScaleX = stageData["sx"];            // x拡大値
+          const auto ScaleY = stageData["sy"];            // y拡大値
+          const auto ScaleZ = stageData["sz"];            // z拡大値
+
+          // filePathの作成
+          const auto filePath = (p / fileName).generic_string() + ".mv1";
+          namespace AppMath = AppFrame::Math;
+          // jsonファイルから取り出した情報を座標、回転、拡大率に入れる
+          auto position = AppMath::Vector4(TargetX, TargetY, TargetZ);
+          auto rotation = AppMath::Vector4(RotateX, RotateY, RotateZ);
+          auto scale = AppMath::Vector4(ScaleX, ScaleY, ScaleZ);
+          StageData stageData = StageData(filePath, position, rotation, scale);
+          std::filesystem::path keyName = (jsonName.generic_string());
+          LoadStage(keyName.generic_string(), stageData);
+        }
+        return true;
       }
-      nlohmann::json value;
-      // ファイルの中身を取り出す
-      reading >> value;
-      // ファイルを閉じる
-      reading.close();
-
-      // ステージの配置情報を取り出す
-      for (auto && stageData : value[jsonName.generic_string()]) {
-        const auto fileName = stageData["filename"];    // ファイル名
-        const auto TargetX = stageData["tx"];           // x座標
-        const auto TargetY = stageData["ty"];           // y座標
-        const auto TargetZ = stageData["tz"];           // z座標
-        const auto RotateX = stageData["rx"];           // x回転
-        const auto RotateY = stageData["ry"];           // y回転
-        const auto RotateZ = stageData["rz"];           // z回転
-        const auto ScaleX = stageData["sx"];            // x拡大値
-        const auto ScaleY = stageData["sy"];            // y拡大値
-        const auto ScaleZ = stageData["sz"];            // z拡大値
-
-        // filePathの作成
-        const auto filePath = (p / fileName).generic_string() + ".mv1";
-        namespace AppMath = AppFrame::Math;
-        // jsonファイルから取り出した情報を座標、回転、拡大率に入れる
-        auto position = AppMath::Vector4(TargetX, TargetY, TargetZ);
-        auto rotation = AppMath::Vector4(RotateX, RotateY, RotateZ);
-        auto scale = AppMath::Vector4(ScaleX, ScaleY, ScaleZ);
-        StageData stageData = StageData(filePath, position, rotation, scale);
-        std::filesystem::path keyName = (jsonName.generic_string());
-        LoadStage(keyName.generic_string(), stageData);
-      }
-      // 読み込んだ情報を元にステージの作成
-      //CreateStage(jsonName.generic_string());
-
-      return true;
+      return false;
     }
 
     void StageComponent::LoadStage(std::string_view key, StageData& stageData) {
