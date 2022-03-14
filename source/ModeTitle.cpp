@@ -12,12 +12,12 @@
 #include "ModeLoading.h"
 
 namespace {
-  constexpr int BgmVolume = 50;      //!< BGMの再生ボリューム
+  constexpr int BGMVolume = 50;  //!< BGMの再生ボリューム
   // 場面切り替え定数
   constexpr int PressAnyButtonNum = 0;  //!< プレスボタン
   constexpr int GameStartNum = 1;       //!< ゲーム開始
-  //constexpr int CreditNum = 2;          //!< クレジット
-  constexpr int QuitGameNum = 2;        //!< ゲーム終了
+  constexpr int CreditNum = 2;          //!< クレジット
+  constexpr int QuitGameNum = 3;        //!< ゲーム終了
 }
 
 namespace Gyro {
@@ -39,20 +39,18 @@ namespace Gyro {
     bool ModeTitle::Enter() {
       // リソース読み込み
       LoadResource();
-      // 変数初期化
-      _sceneNum = PressAnyButtonNum;
-      _isStick = false;
-      _decision = false;
+      // 場面番号初期化
+      _sceneNum = 0;
       // スタジオ初期化
       _studio->Init();
       // BGMの再生開始
-      _appMain.GetSoundComponent().PlayLoop("title");
-      // 再生音量の設定
-      _appMain.GetSoundComponent().SetVolume("title", BgmVolume);
+      _appMain.GetSoundComponent().PlayLoop("title", BGMVolume);
       return true;
     }
 
     bool ModeTitle::Exit() {
+      // 変数解放
+      Release();
       // スタジオ解放
       _studio->Release();
       return true;
@@ -62,7 +60,7 @@ namespace Gyro {
       // 入力状態の取得
       auto device = input.GetXBoxState();
       namespace App = AppFrame::Application;
-      // 場面判定
+      // 場面番号がプレスボタン
       if (_sceneNum == PressAnyButtonNum) {
         // 何らかのボタンが押されたら画面切り替え
         if (device.InputAnyButton()) {
@@ -77,8 +75,8 @@ namespace Gyro {
         LeftStickYInput(leftY);
         // Aボタンが押された場合、選択決定
         if (device.GetButton(XINPUT_BUTTON_A, App::InputTrigger)) {
-          if (_sceneNum == QuitGameNum) {
             // 場面番号がゲーム終了
+          if (_sceneNum == QuitGameNum) {
             // アプリケーションの終了処理を呼び出し
             _appMain.RequestTerminate();
             return true;
@@ -86,7 +84,7 @@ namespace Gyro {
           // 選択決定
           _decision = true;
           // スタートSE再生
-          _app.GetSoundComponent().PlayBackGround("start", 50);
+          _app.GetSoundComponent().PlayBackGround("bell", 75);
           // ジャイロアニメ変更
           _studio->GyroChangeAnim("Gyro_Title_Start");
         }
@@ -123,23 +121,37 @@ namespace Gyro {
       }
       else {
         DrawRotaGraph(650, 750, _gameStartExRate, 0, _gameStartHandle, true);
-        //DrawRotaGraph(650, 850, _creditExRate, 0, _creditHandle, true);
+        DrawRotaGraph(650, 850, _creditExRate, 0, _creditHandle, true);
         DrawRotaGraph(650, 950, _quitGameExRate, 0, _quitGameHandle, true);
       }
       return true;
     }
 
+    void ModeTitle::Release() {
+      // 変数解放
+      _titleHandle = -1;
+      _pressButtonHandle = -1;
+      _gameStartHandle = -1;
+      _creditHandle = -1;
+      _quitGameHandle = -1;
+      _gameStartExRate = 1.0f;
+      _creditExRate = 1.0f;
+      _quitGameExRate = 1.0f;
+      _isStick = false;
+      _decision = false;
+    }
+
     void ModeTitle::LoadResource() {
-      // リソースの読み込みは行われているか
-      if (_isLoad) {
-        return; // 読み込み済み
-      }
       // 画像読み込み
       _titleHandle = LoadGraph("res/Title/GYROtitle.png");
       _pressButtonHandle = LoadGraph("res/Title/pressbutton.png");
       _gameStartHandle = LoadGraph("res/Title/gamestart.png");
       _creditHandle = LoadGraph("res/Title/credit.png");
       _quitGameHandle = LoadGraph("res/Title/quitgame.png");
+      // リソースの読み込みは行われているか
+      if (_isLoad) {
+        return; // 読み込み済み
+      }
       // 各種モデルハンドルの読み込み
       using ModelServer = AppFrame::Model::ModelServer;
       const ModelServer::ModelDatas mv1Models{
@@ -153,8 +165,8 @@ namespace Gyro {
       using SoundServer = AppFrame::Sound::SoundServer;
       const SoundServer::SoundMap soundMap{
         {"title", "res/Sound/BGM/Title.mp3"},  // タイトルBGM
-        {"cursor", "res/Sound/SE/System/Cursor1.wav"},   // カーソルSE
-        {"start", "res/Sound/SE/System/TitleStart.wav"}  // スタートSE
+        {"cursor", "res/Sound/SE/System/Cursor1.wav"},  // カーソルSE
+        {"bell", "res/Sound/SE/System/TitleStart.wav"}  // 鐘の音SE
       };
       // サウンドサーバに登録
       _appMain.GetSoundServer().AddSounds(soundMap);
@@ -172,54 +184,36 @@ namespace Gyro {
       if (_isStick) {
         return;
       }
-      if (0 < leftY) {
-        // スティック上入力あり
-        _isStick = true;
-        // カーソルSE再生
-        _app.GetSoundComponent().PlayBackGround("cursor", 50);
-        // 場面番号を1減らす
-        _sceneNum--;
-        if (_sceneNum < GameStartNum) {
-          // 下限調整
-          _sceneNum = GameStartNum;
+      // 入力値の正負判定
+      bool flag = 0 <= leftY;
+      if (flag) {
+        // 下限判定
+        if (GameStartNum < _sceneNum) {
+          // 場面番号を1減らす
+          _sceneNum--;
+        }
+      } else {
+        // 上限判定
+        if (_sceneNum < QuitGameNum) {
+          // 場面番号を1増やす
+          _sceneNum++;
         }
       }
-      else if (leftY < 0) {
-        // スティック下入力あり
-        _isStick = true;
-        // カーソルSE再生
-        _app.GetSoundComponent().PlayBackGround("cursor", 50);
-        // 場面番号を1増やす
-        _sceneNum++;
-        if (QuitGameNum < _sceneNum) {
-          // 上限調整
-          _sceneNum = QuitGameNum;
-        }
-      }
+      // スティック入力あり
+      _isStick = true;
+      // カーソルSEの再生
+      _app.GetSoundComponent().PlayBackGround("cursor", 75);
     }
 
     void ModeTitle::SetExRate() {
-      // 拡大率初期化
-      _gameStartExRate = 1.0f;
-      _creditExRate = 1.0f;
-      _quitGameExRate = 1.0f;
-      // 場面による切り替え
-      switch (_sceneNum) {
-      case GameStartNum:
-        // ゲーム開始拡大
-        _gameStartExRate = 1.25f;
-        break;
-      //case CreditNum:
-      //  // クレジット拡大
-      //  _creditExRate = 1.25f;
-      //  break;
-      case QuitGameNum:
-        // ゲーム終了拡大
-        _quitGameExRate = 1.25f;
-        break;
-      default:
-        break;
-      }
+      // 場面番号の判定
+      bool num1 = _sceneNum == GameStartNum;
+      bool num2 = _sceneNum == CreditNum;
+      bool num3 = _sceneNum == QuitGameNum;
+      // 場面番号判定による拡大
+      _gameStartExRate = num1 ? 1.25f : 1.0f;
+      _creditExRate = num2 ? 1.25f : 1.0f;
+      _quitGameExRate = num3 ? 1.25f : 1.0f;
     }
 
     void ModeTitle::ChangeMode() {
@@ -229,10 +223,10 @@ namespace Gyro {
         // インゲーム遷移
         InGame();
       }
-      //else if (_sceneNum == CreditNum) {
-      //  // クレジット遷移
-      //  Credit();
-      //}
+      if (_sceneNum == CreditNum) {
+        // クレジット遷移
+        Credit();
+      }
       // BGMの再生を停止する
       _appMain.GetSoundComponent().StopSound("title");
     }

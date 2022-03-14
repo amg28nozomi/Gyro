@@ -66,9 +66,18 @@ namespace Gyro {
 
     private:
       /**
+       * @brief  変数解放
+       */
+      void Release();
+      /**
        * @brief  リソース読み込み
        */
       void LoadResource();
+      /**
+       * @brief  左スティック上下入力
+       * @param  leftY 左スティック上下入力値
+       */
+      void LeftStickYInput(const int leftY);
       /**
        * @brief  モード切り替え
        */
@@ -77,8 +86,9 @@ namespace Gyro {
       int _gameOverHandle{ -1 };          //!< ゲームオーバー画像
       int _retryHandle[2]{ -1, -1 };      //!< リトライ画像
       int _backTitleHandle[2]{ -1, -1 };  //!< タイトルバック画像
-      int _retry{ 0 };                    //!< リトライ
-      int _backTitle{ 0 };                //!< タイトルバック
+      int _retry{ 0 };                    //!< リトライ番号
+      int _backTitle{ 0 };                //!< タイトルバック番号
+      bool _isStick{ false };             //!< 左スティック上下入力有無
       bool _decision{ false };            //!< 選択決定
       //!< アプリケーションメインの参照
       Application::ApplicationMain& _appMain;

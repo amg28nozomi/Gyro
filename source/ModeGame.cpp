@@ -27,7 +27,7 @@
 namespace {
     constexpr auto TEXTURE = _T("res/Stage/water.png");
     constexpr auto GravityScale = -9.8f; //!< 重力スケール
-    constexpr auto BgmVolume = 50;       //!< BGMの再生ボリューム
+    constexpr auto BGMVolume = 50;       //!< BGMの再生ボリューム
 } // namespace
 
 namespace Gyro {
@@ -48,7 +48,7 @@ namespace Gyro {
       auto k = (_stageFlag) ? "stage" : "boss";
       _appMain.GetStageComponent().CreateStage(k);
       // BGMのループ再生開始
-      PlayBgm("bgm", BgmVolume);
+      PlayBgm("bgm", BGMVolume);
       // ゲーム状態の設定
       _gameState = GameState::Play;
       SetSpawn(); // オブジェクトを生成
@@ -135,7 +135,7 @@ namespace Gyro {
           // サウンド停止中
         case AppFrame::Sound::Stop:
           // BGMのループ再生開始
-          PlayBgm("bgm", BgmVolume);
+          PlayBgm("bgm", BGMVolume);
           break;
         }
       }

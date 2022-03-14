@@ -46,6 +46,8 @@ namespace Gyro {
     }
 
     bool ModeAMG::Exit() {
+      // 変数解放
+      Release();
       return true;
     }
 
@@ -65,13 +67,18 @@ namespace Gyro {
       return true;
     }
 
+    void ModeAMG::Release() {
+      // 変数解放
+      _amgHandle = 1;
+    }
+
     void ModeAMG::LoadResource() {
+      // AMG読み込み
+      _amgHandle = LoadGraph("res/Logo/amglogo.png");
       // リソースの読み込みは行われているか
       if (_isLoad) {
         return; // 読み込み済み
       }
-      // AMG読み込み
-      _amgHandle = LoadGraph("res/Logo/amglogo.png");
       // 読み込み完了
       _isLoad = true;
       // 非同期処理フラグtrue

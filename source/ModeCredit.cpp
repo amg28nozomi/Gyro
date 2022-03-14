@@ -25,12 +25,12 @@ namespace Gyro {
     bool ModeCredit::Enter() {
       // リソース読み込み
       LoadResource();
-      // 変数初期化
-      _backTitle = false;
       return true;
     }
 
     bool ModeCredit::Exit() {
+      // 変数解放
+      Release();
       return true;
     }
 
@@ -58,19 +58,19 @@ namespace Gyro {
 
     bool ModeCredit::Draw() const {
       // クレジット画像描画
-      DrawExtendGraph(0, 0, 1920, 1080, _creditHandle, false);
+      DrawGraph(0, 0, _creditHandle, false);
       return true;
     }
 
+    void ModeCredit::Release() {
+      // 変数解放
+      _creditHandle = -1;
+      _backTitle = false;
+    }
+
     void ModeCredit::LoadResource() {
-      // リソースの読み込みは行われているか
-      if (_isLoad) {
-        return; // 読み込み済み
-      }
       // クレジット画像読み込み
       _creditHandle = LoadGraph("res/Credit/Credit.png");
-      // 読み込み完了
-      _isLoad = true;
     }
 
     void ModeCredit::ChangeMode() {
@@ -78,6 +78,8 @@ namespace Gyro {
       _appMain.GetModeServer().PopBuck();
       // モードタイトル遷移
       _appMain.GetModeServer().TransionToMode("Title");
+      // 鐘の音SEの再生
+      _app.GetSoundComponent().PlayBackGround("bell");
     }
   } // namespace Mode
 } // namespace Gyro
