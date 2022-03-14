@@ -80,6 +80,11 @@ namespace Gyro {
        * @return true
        */
       bool ReleaseStageInfo();
+      /**
+       * @brief  ステージモデルだけ解放
+       * @return true
+       */
+      bool ReleaseModel();
       void AddSky(std::shared_ptr<Object::SkySphere> sky);
       /**
        * @brief  ステージ情報の取得

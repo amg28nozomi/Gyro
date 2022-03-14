@@ -28,8 +28,6 @@ namespace Gyro {
     }
 
     bool StageComponent::Init(std::filesystem::path jsonName) {
-      // ステージネーム
-      _stageName = jsonName;
       // パスの生成
       std::filesystem::path p = "res/Stage";
       const auto jsonPath = (p / jsonName).generic_string() + ".json";
@@ -81,7 +79,7 @@ namespace Gyro {
         LoadStage(keyName.generic_string(), stageData);
       }
       // 読み込んだ情報を元にステージの作成
-      CreateStage(jsonName.generic_string());
+      //CreateStage(jsonName.generic_string());
 
       return true;
     }
@@ -112,6 +110,8 @@ namespace Gyro {
     }
 
     bool StageComponent::CreateStage(std::string key) {
+      // ステージネーム
+      _stageName = key;
       auto stageModels = _stageModelMap[key.data()];
       for (auto stageModel : stageModels) {
         auto [handle, stageData] = stageModel;
@@ -156,6 +156,13 @@ namespace Gyro {
         stageModels.clear();
       }
       _stageModelMap.clear();
+
+      return true;
+    }
+
+    bool StageComponent::ReleaseModel() {
+      // モデルハンドル格納コンテナを回して描画する
+      _model.clear();
 
       return true;
     }

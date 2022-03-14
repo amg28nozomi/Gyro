@@ -44,8 +44,9 @@ namespace Gyro {
       LoadResource();
       // エフェクトリソースの読み取り
       LoadEffectResource();
-      // ステージの切り替え
-      //StageChange(Stage::StageTransition::StageType::Normal);
+      // ステージフラグに応じて使用するキー切り替え
+      auto k = (_stageFlag) ? "stage" : "boss";
+      _appMain.GetStageComponent().CreateStage(k);
       // BGMのループ再生開始
       PlayBgm("bgm", BgmVolume);
       // ゲーム状態の設定
@@ -82,6 +83,8 @@ namespace Gyro {
       ResetObjectNumber();
       // 生成したエフェクトを削除
       _appMain.GetEffectServer().Release();
+      // 生成したモデルを削除
+      _appMain.GetStageComponent().ReleaseModel();
       // クリア判定が立っている場合
       if (_appMain.GetGameClear()) {
         _stageFlag = true;
@@ -94,7 +97,7 @@ namespace Gyro {
       _plane.Initialize(40960.0f, 40);
       _plane.Load(TEXTURE);
       _plane.Create();
-      _appMain.GetStageComponent().CreateStage("stage");
+      //_appMain.GetStageComponent().CreateStage("stage");
       //// 別名定義
       //using StageType = Stage::StageTransition::StageType;
       //// ステージリストの生成

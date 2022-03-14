@@ -48,8 +48,9 @@ namespace Gyro {
       // 非同期処理フラグtrue
       SetUseASyncLoadFlag(true);
       // ボスステージ情報読み込み
-      _appMain.GetStageComponent().ReleaseStageInfo();
+      _appMain.GetStageComponent().ReleaseModel();
       _appMain.GetStageComponent().Init("boss");
+      _appMain.GetStageComponent().CreateStage("boss");
       return true;
     }
 
