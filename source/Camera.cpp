@@ -10,8 +10,8 @@
 #include "UtilityDX.h"
 
 namespace {
-  constexpr auto Near = 2.0f;             //!< 手前クリップ距離
-  constexpr auto Far = 20000.0f;          //!< 奥クリップ距離
+  constexpr auto Near = 100.0f;           //!< 手前クリップ距離
+  constexpr auto Far = 10000.0f;          //!< 奥クリップ距離
   constexpr auto InputMin = 2000.0f;      //!< 入力を受け付ける最低値
 }
 

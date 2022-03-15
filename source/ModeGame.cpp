@@ -89,6 +89,7 @@ namespace Gyro {
       if (_appMain.GetGameClear()) {
         _stageFlag = true;
       }
+      BossCountReset();
       return true;
     }
 
@@ -208,7 +209,7 @@ namespace Gyro {
       // ボスステージ
       const Object::SpawnTable bossP{
         { Object::TypePlayer, {0.0f, 1000.f, -200.f}, {}, {1.0f, 1.0f, 1.0f} },
-        { Object::TypeSkySphere, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {3.0f, 3.0f, 3.0f}},
+        { Object::TypeSkySphere, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.5f, 1.5f, 1.5f}},
       };
       const Object::EnemyTable bossE{
         { Object::EnemyWheelBoss, { -200.0f, 720.0f, -10000.0f}, {0.0f, -180.0f, 0.0f }, {5.0f, 5.0f, 5.0f}},
@@ -337,7 +338,7 @@ namespace Gyro {
           // 引数3:向き
           // 引数4:スケール
           { Object::TypePlayer, {0.0f, 675.0f, 1800.0f}, {0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}},
-          { Object::TypeSkySphere, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {3.0f, 3.0f, 3.0f}},
+          { Object::TypeSkySphere, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.5f, 1.5f, 1.5f}},
         };
         // 空のスポーン情報
         const Object::SpawnTable none{
