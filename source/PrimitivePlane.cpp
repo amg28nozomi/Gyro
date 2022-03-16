@@ -5,8 +5,8 @@
  * @author “y‹´‹¬‰î
  * @date   January 2022
  *********************************************************************/
-#include <array>
 #include "PrimitivePlane.h"
+#include <array>
 
 namespace {
   constexpr auto DEFAULT_SIZE = 100.0f;

@@ -17,6 +17,7 @@ namespace Gyro {
   namespace Shadow {
 
     Shadow::Shadow(Application::ApplicationMain& app) : _appMain(app) {
+      // ‰Šú‰»
       Init();
     }
 

@@ -10,10 +10,9 @@
 #include <appframe.h>
 #include <string>
 #include <unordered_map>
-#include "appframe.h"
-#include "SkySphere.h"
 #include "SpawnServer.h"
 #include "ObjectBase.h"
+#include "SkySphere.h"
 /**
  * @brief ゲームベース
  */

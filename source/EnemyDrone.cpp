@@ -32,6 +32,7 @@ namespace Gyro {
     EnemyDrone::EnemyDrone(Application::ApplicationMain& app) : EnemyBase(app) {
       // ‰Šú‰»
       Init();
+      // d—Íˆ—s‚¤
       _gravity = true;
     }
 

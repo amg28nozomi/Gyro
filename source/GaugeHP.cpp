@@ -24,6 +24,7 @@ namespace Gyro {
     }
 
     bool GaugeHP::Init(float value) {
+      // 各種初期化
       _maxW = 645.f; // HPフレームの横幅
       _maxGauge = value; // HPの上限
       _point = 640.f; // HPゲージの前面

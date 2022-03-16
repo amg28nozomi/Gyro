@@ -26,6 +26,7 @@ namespace Gyro {
       auto light_handle = CreateDirLightHandle(UtilityDX::ToVECTOR(light_dir));
       AppMath::Vector4 left_dir = AppMath::Vector4(1.0f, -1.0f, 1.0f);
       auto left_handle = CreateDirLightHandle(UtilityDX::ToVECTOR(left_dir));
+      // •W€ƒ‰ƒCƒg‚ğ–³Œø‰»
       SetLightEnable(false);
     }
 

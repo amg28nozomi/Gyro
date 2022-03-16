@@ -21,6 +21,7 @@ namespace Gyro {
     }
 
     PrimitiveBase::~PrimitiveBase() {
+      ReleaseGraph();
       _vertex->clear();
       _index->clear();
     }
@@ -84,6 +85,16 @@ namespace Gyro {
       }*/
 
       return true;
+    }
+
+    void PrimitiveBase::ReleaseGraph() {
+      // ‰æ‘œ‚Ì‰ð•ú
+      DeleteGraph(_handle);
+      DeleteGraph(_handle2);
+      DeleteGraph(_handle3);
+      DeleteGraph(_handle4);
+      DeleteGraph(_handle5);
+      DeleteGraph(_handle6);
     }
   } // namespace Primitive
 } // namespace Gyro

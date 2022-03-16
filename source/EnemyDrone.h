@@ -53,6 +53,10 @@ namespace Gyro {
       AppFrame::Math::Vector4 GetAttackPosition() {
         return _oldPosition;
       }
+      /**
+       * @brief  Ž¯•ÊID‚ÌŽæ“¾
+       * @return Ž¯•ÊID
+       */
       unsigned short GetThis() const override {
         return _this;
       }

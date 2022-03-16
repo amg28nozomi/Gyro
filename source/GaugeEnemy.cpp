@@ -29,6 +29,7 @@ namespace Gyro {
     }
 
     bool GaugeEnemy::Init(float value) {
+      // Šeí‰Šú‰»
       _maxW = 66.f;
       _maxGauge = value;
       _point = GAUGE_X_POSITION_2;

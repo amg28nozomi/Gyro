@@ -6,8 +6,8 @@
  * @date    January 2022
  *********************************************************************/
 #include "EnemyBase.h"
-#include "UtilityDX.h"
 #include "ApplicationMain.h"
+#include "UtilityDX.h"
 #include "ObjectServer.h"
 #include "SpawnEnemy.h"
 #include "Player.h"
@@ -127,15 +127,15 @@ namespace Gyro {
         auto c = sqrt(a * a + b * b);
         // ‹——£‚Æ”¼Œa‚ğ”äŠr‚µ‚Äó‘Ô•Ï‰»
         if (c < _attackRadius) {
-          _enemyState = EnemyState::Attack;
+          _enemyState = EnemyState::Attack; // UŒ‚‚Ö
           break;
         }
         else if (c < _serchRadius) {
-          _enemyState = EnemyState::Move;
+          _enemyState = EnemyState::Move; // ˆÚ“®‚Ö
           break;
         }
         else {
-          _enemyState = EnemyState::Idle;
+          _enemyState = EnemyState::Idle; // ‘Ò‹@‚Ö
           break;
         }
       }

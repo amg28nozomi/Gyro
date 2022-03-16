@@ -107,4 +107,3 @@ namespace Gyro {
     };
   }// namespace Gauge
 }// namespace Gyro
-

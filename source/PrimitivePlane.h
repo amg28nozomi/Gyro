@@ -52,4 +52,3 @@ namespace Gyro {
     };
   } // namespace Gyro
 } // namespace Gyro
-

@@ -6,12 +6,11 @@
  * @date    March 2022
  *********************************************************************/
 #include "EnemyDroneBoss.h"
+#include <algorithm>
 #include "UtilityDX.h"
 #include "ModeGame.h"
-#include "ApplicationMain.h"
 #include "ObjectServer.h"
 #include "Player.h"
-#include <algorithm>
 #include "EffectEnemyBossEyeLight.h"
 #include "EffectEnemyBossAirAttack.h"
 #include "EffectEnemyBossHit.h"

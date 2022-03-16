@@ -94,7 +94,10 @@ namespace Gyro {
       virtual Object::InvincibleComponent& GetInvincibleComponent() {
         return *_invincible;
       }
-
+      /**
+       * @brief  ¯•ÊID‚Ìæ“¾
+       * @return ¯•ÊID
+       */
       virtual unsigned short GetThis() const {
         return 0;
       }
@@ -142,7 +145,6 @@ namespace Gyro {
       virtual void NockBack();
       /**
        * @brief  ’Tõˆ—
-       * @author “y‹´‹¬‰î
        */
       virtual void Search();
       /**

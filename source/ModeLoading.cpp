@@ -9,15 +9,14 @@
 #include "ModeGame.h"
 #include "ModeTitle.h"
 #include "ObjectServer.h"
-
 #include "EnemyWheel.h"
 #include "EnemyWheelBoss.h"
 #include "EnemyDrone.h"
 #include "EnemyDroneBoss.h"
 
-
 namespace Gyro {
   namespace Mode {
+
     ModeLoading::ModeLoading(Application::ApplicationMain& app) : ModeBase(*app.GetInstance()), _appMain(app) {
 
     }
@@ -57,6 +56,8 @@ namespace Gyro {
     bool ModeLoading::Exit() {
       // 非同期処理フラグfalse
       SetUseASyncLoadFlag(false);
+      // 画像の破棄
+      DeleteGraph(_loadHandle[ 3 ]);
       return true;
     }
 
@@ -90,7 +91,7 @@ namespace Gyro {
         return; // 読み込み済み
       }
       // ロード画像読み込み
-      auto a = LoadDivGraph("res/Loading/Loading2.png", 4, 2, 2, 500, 100, _loadHandle);
+      LoadDivGraph("res/Loading/Loading2.png", 4, 2, 2, 500, 100, _loadHandle);
       // 読み込み完了
       _isLoad = true;
     }

@@ -6,12 +6,11 @@
  * @date   January 2022
  *********************************************************************/
 #include "StageComponent.h"
-#include "ApplicationMain.h"
-#include "UtilityDX.h"
-#include "appframe.h"
-#include <nlohmann/json.hpp>
 #include <fstream>
 #include <filesystem>
+#include <nlohmann/json.hpp>
+#include <appframe.h>
+#include "ApplicationMain.h"
 #include "UtilityDX.h"
 namespace Gyro {
   namespace Stage {
@@ -150,6 +149,7 @@ namespace Gyro {
     }
 
     bool StageComponent::ReleaseStageInfo() {
+      // ハンドルを取り出してモデル削除
       for (auto& [key, stageModels] : _stageModelMap) {
         for (auto& [handle, stageData] : stageModels) {
           MV1DeleteModel(handle);

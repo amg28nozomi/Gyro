@@ -7,7 +7,6 @@
  *********************************************************************/
 #pragma once
 #include "GaugeBase.h"
-#include "ObjectBase.h"
 /**
  * @brief ゲームベース
  */

@@ -212,8 +212,8 @@ namespace Gyro {
         { Object::TypeSkySphere, {0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f}, {1.5f, 1.5f, 1.5f}},
       };
       const Object::EnemyTable bossE{
-        { Object::EnemyWheelBoss, { -200.0f, 720.0f, -10000.0f}, {0.0f, -180.0f, 0.0f }, {5.0f, 5.0f, 5.0f}},
-        { Object::EnemyDroneBoss, { 300.0f, 720.0f, -10000.0f}, {0.0f, -180.0f, 0.0f }, {7.0f, 7.0f, 7.0f}},
+        { Object::EnemyWheelBoss, { -200.0f, 394.0f, -10000.0f}, {0.0f, -180.0f, 0.0f }, {5.0f, 5.0f, 5.0f}},
+        { Object::EnemyDroneBoss, { 300.0f, 394.0f, -10000.0f}, {0.0f, -180.0f, 0.0f }, {7.0f, 7.0f, 7.0f}},
       };
       // スポーン情報
       Object::SpawnData bossTable{
@@ -249,7 +249,7 @@ namespace Gyro {
         {"enemyWheel", "res/Enemy/Wheel/enemy1_set.mv1"},                 // 地上敵
         {"enemyWheelBoss", "res/Enemy/Wheel/enemy1_boss_set.mv1"},        // 地上敵ボス
         {"enemyDrone", "res/Enemy/Drone/enemy2 Multimotion fin.mv1"},     // 空中敵
-        {"enemyDroneBoss", "res/Enemy/Drone/enemy2 Bos Multimotion fin.mv1"},  // 空中敵ボス
+        {"enemyDroneBoss", "res/Enemy/Drone/enemy2 Bos Multimotion fin1.mv1"},  // 空中敵ボス
       };
       // モデルサーバで読み取りを行う
       _app.GetModelServer().AddMV1Model(mv1Models);

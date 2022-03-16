@@ -73,5 +73,5 @@ namespace Gyro {
       //!< アプリケーションメインの参照
       Application::ApplicationMain& _appMain;
     };
-  }
-}
+  } // namespace Mode
+} // namespace Gyro

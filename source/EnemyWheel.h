@@ -2,7 +2,7 @@
  * @file    EnemyWheel.h
  * @brief   ’nã“GƒNƒ‰ƒX
  *
- * @author  ‹{àV—s¶
+ * @author  “y‹´‹¬‰î
  * @date    January 2022
  *********************************************************************/
 #pragma once
@@ -49,6 +49,10 @@ namespace Gyro {
       AppFrame::Math::Vector4 GetAttackPosition() {
         return _oldPosition;
       }
+      /**
+       * @brief  ¯•ÊID‚Ìæ“¾
+       * @return ¯•ÊID
+       */
       unsigned short GetThis() const override {
         return _this;
       }

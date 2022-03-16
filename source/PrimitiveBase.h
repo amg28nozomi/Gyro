@@ -6,9 +6,9 @@
  * @date   January 2022
  *********************************************************************/
 #pragma once
-#include "appframe.h"
 #include <memory>
 #include <vector>
+#include <appframe.h>
 
 /**
  * @brief ゲームベース
@@ -52,6 +52,10 @@ namespace Gyro {
        * @brief 描画
        */
       virtual bool Draw() const;
+      /**
+       * @brief 画像の解放
+       */
+      void ReleaseGraph();
       /**
        * @brief 頂点情報の取得
        * @return 頂点情報を返す
