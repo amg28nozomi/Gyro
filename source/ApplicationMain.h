@@ -198,6 +198,11 @@ namespace Gyro {
        */
       bool Process() override;
       /**
+       * @brief  
+       * @return 
+       */
+      bool Release();
+      /**
        * @brief  Effekseerİ’è
        * @return true İ’è¬Œ÷
        *         false İ’è¸”s

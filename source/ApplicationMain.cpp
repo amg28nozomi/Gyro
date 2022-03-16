@@ -103,6 +103,14 @@ namespace Gyro {
           std::dynamic_pointer_cast<Mode::ModeGame>(game)->ToGameOver();
         }
 
+        bool ApplicationMain::Release() {
+          // リソースの解放処理
+          _resourceServer->Release();
+          _modelServer->Release();
+          _soundServer->Release();
+          _objectServer->Release();
+        }
+
         bool ApplicationMain::Effekseer() {
             //DirectX11を使用
             SetUseDirect3DVersion(DX_DIRECT3D_11);
