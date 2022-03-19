@@ -524,7 +524,9 @@ namespace Gyro {
             _attack->SetFrame(frames, AddSpheres(static_cast<int>(frames.size()), 2000.f));
           }
           else if (_playerState == PlayerState::ExciteTrick) {
-            _playerState = PlayerState::ExciteTrickEnd;
+            if (_app.GetEffectServer().GetUltSlashEnd()) {
+              _playerState = PlayerState::ExciteTrickEnd;
+            }
           }
           else if (_playerState == PlayerState::ExciteTrickEnd) {
             if (_modelAnim.GetMainAnimEnd() && !_modelAnim.IsBlending()) {

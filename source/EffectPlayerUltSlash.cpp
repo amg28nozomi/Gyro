@@ -10,6 +10,8 @@
 namespace {
   // エフェクト生成時プレイヤーの状態
   //constexpr auto CheckState = Gyro::Player::Player::PlayerState::Attack1;
+  // エフェクト終了フラグセットカウント値定数
+  constexpr int EndCount = 105;
 }
 
 namespace Gyro {
@@ -31,11 +33,14 @@ namespace Gyro {
       //_checkState = CheckState;
     }
 
-    void EffectPlayerUltSlash::DeadEffect() {
-      // エフェクト消去
-      EffectBase::DeadEffect();
-      // 必殺攻撃エフェクト終了
-      _app.GetEffectServer().SetUltSlashEnd(true);
+    void EffectPlayerUltSlash::Process() {
+      EffectBase::Process();
+      // 終了フラグカウントを1増やす
+      _endCount++;
+      if (EndCount <= _endCount) {
+        // 必殺攻撃エフェクト終了
+        _app.GetEffectServer().SetUltSlashEnd(true);
+      }
     }
   } // namespace Effect
 } // namespace Gyro
