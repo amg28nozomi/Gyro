@@ -9,7 +9,7 @@
 #include "ModeTitle.h"
 
 namespace {
-  constexpr int BgmVolume = 50;  //!< BGMの再生ボリューム
+  constexpr int BGMVolume = 50;  //!< BGMの再生ボリューム
 }
 
 namespace Gyro {
@@ -31,18 +31,16 @@ namespace Gyro {
     bool ModeResult::Enter() {
       // リソース読み込み
       LoadResource();
-      // 変数初期化
-      _backTitle = false;
       // スタジオ初期化
       _studio->Init();
       // BGMの再生開始
-      _appMain.GetSoundComponent().PlayLoop("result");
-      // 再生音量の設定
-      _appMain.GetSoundComponent().SetVolume("result", BgmVolume);
+      PlayBgm("result", BGMVolume);
       return true;
     }
 
     bool ModeResult::Exit() {
+      // 変数解放
+      Release();
       // スタジオ解放
       _studio->Release();
       return true;
@@ -85,13 +83,19 @@ namespace Gyro {
       return true;
     }
 
+    void ModeResult::Release() {
+      // 変数解放
+      _resultHandle = -1;
+      _backTitle = false;
+    }
+
     void ModeResult::LoadResource() {
+      // 画像読み込み
+      _resultHandle = LoadGraph("res/Result/result.png");
       // リソースの読み込みは行われているか
       if (_isLoad) {
         return; // 読み込み済み
       }
-      // 画像読み込み
-      _resultHandle = LoadGraph("res/Result/result.png");
       // サウンド情報の読み込み
       using SoundServer = AppFrame::Sound::SoundServer;
       const SoundServer::SoundMap soundMap{
@@ -106,9 +110,11 @@ namespace Gyro {
     void ModeResult::ChangeMode() {
       // モードリザルトの削除
       _appMain.GetModeServer().PopBuck();
+      // 鐘の音SEの再生
+      _appMain.GetSoundComponent().PlayBackGround("bell", 75);
       // モードタイトル遷移
       _appMain.GetModeServer().TransionToMode("Title");
-      // BGMの再生を停止する
+      // リザルトBGMの再生を停止する
       _appMain.GetSoundComponent().StopSound("result");
     }
   } // namespace Mode

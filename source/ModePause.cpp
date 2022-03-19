@@ -24,16 +24,17 @@ namespace Gyro {
     bool ModePause::Enter() {
       // リソース読み込み
       LoadResource();
-      // 変数初期化
+      // 画像切り替え番号の初期化
       _continue = 0;
       _quitGame = 0;
-      _decision = false;
       // ポーズインSE再生
       _app.GetSoundComponent().PlayBackGround("pauseIn");
       return true;
     }
 
     bool ModePause::Exit() {
+      // 変数解放
+      Release();
       return true;
     }
 
@@ -42,20 +43,12 @@ namespace Gyro {
       auto device = input.GetXBoxState();
       auto [leftX, leftY] = device.GetStick(false);
       namespace App = AppFrame::Application;
-      // 左スティック入力
-      if (0 < leftY) {
-        // 上選択(コンテニュー)
-        _continue = 1;
-        _quitGame = 0;
-      }
-      else if (leftY < 0) {
-        // 下選択(ゲーム終了)
-        _continue = 0;
-        _quitGame = 1;
-      }
+      // 左スティック上下入力
+      LeftStickYInput(leftY);
       // Aボタンが押された場合、選択決定
       if (device.GetButton(XINPUT_BUTTON_A, App::InputTrigger)) {
         _decision = true;
+        return true;
       }
       // STARTボタンが押された場合、コンテニュー
       if (device.GetButton(XINPUT_BUTTON_START, App::InputTrigger)) {
@@ -86,17 +79,28 @@ namespace Gyro {
       return true;
     }
 
+    void ModePause::Release() {
+      // 変数解放
+      _pauseHandle = -1;
+      _continueHandle[0] = -1;
+      _continueHandle[1] = -1;
+      _quitGameHandle[0] = -1;
+      _quitGameHandle[1] = -1;
+      _isStick = false;
+      _decision = false;
+    }
+
     void ModePause::LoadResource() {
-      // リソースの読み込みは行われているか
-      if (_isLoad) {
-        return; // 読み込み済み
-      }
       // 画像読み込み
       _pauseHandle = LoadGraph("res/Pause/pause.png");
       _continueHandle[0] = LoadGraph("res/Pause/continue0.png");
       _continueHandle[1] = LoadGraph("res/Pause/continue1.png");
       _quitGameHandle[0] = LoadGraph("res/Pause/quitgame0.png");
       _quitGameHandle[1] = LoadGraph("res/Pause/quitgame1.png");
+      // リソースの読み込みは行われているか
+      if (_isLoad) {
+        return; // 読み込み済み
+      }
       // サウンド情報の読み込み
       using SoundServer = AppFrame::Sound::SoundServer;
       const SoundServer::SoundMap soundMap{
@@ -109,16 +113,34 @@ namespace Gyro {
       _isLoad = true;
     }
 
+    void ModePause::LeftStickYInput(const int leftY) {
+      if (leftY == 0) {
+        // スティック入力なし
+        _isStick = false;
+        return;
+      }
+      // 入力され続けている場合中断
+      if (_isStick) {
+        return;
+      }
+      // 入力値の正負判定
+      bool flag = 0 <= leftY;
+      // 画像切り替え番号の設定
+      _continue = flag ? 1 : 0;
+      _quitGame = flag ? 0 : 1;
+      // スティック入力あり
+      _isStick = true;
+      // カーソルSEの再生
+      _app.GetSoundComponent().PlayBackGround("cursor", 75);
+    }
+
     void ModePause::ChangeMode() {
       // モードポーズの削除
       _appMain.GetModeServer().PopBuck();
       // ポーズ終了
       _appMain.SetGamePause(false);
-      // コンティニュー選択時
-      if (_continue == 1) {
-        // ポーズアウトSE再生
-        _app.GetSoundComponent().PlayBackGround("pauseOut");
-      }
+      // ポーズアウトSE再生
+      _app.GetSoundComponent().PlayBackGround("pauseOut");
       // ゲーム終了選択時
       if (_quitGame == 1) {
         // アプリケーションの終了処理を呼び出し

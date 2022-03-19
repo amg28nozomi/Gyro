@@ -24,18 +24,17 @@ namespace Gyro {
     }
 
     bool ModeGameOver::Enter() {
-
-
       // リソース読み込み
       LoadResource();
-      // 変数初期化
+      // 画像切り替え番号の初期化
       _retry = 0;
       _backTitle = 0;
-      _decision = false;
       return true;
     }
 
     bool ModeGameOver::Exit() {
+      // 変数解放
+      Release();
       return true;
     }
 
@@ -44,15 +43,8 @@ namespace Gyro {
       auto device = input.GetXBoxState();
       auto [leftX, leftY] = device.GetStick(false);
       namespace App = AppFrame::Application;
-      // 左スティック入力
-      if (leftY > 100) {
-        _retry = 1;
-        _backTitle = 0;
-      }
-      else if (leftY < -100) {
-        _retry = 0;
-        _backTitle = 1;
-      }
+      // 左スティック上下入力
+      LeftStickYInput(leftY);
       // Aボタンが押された場合、選択決定
       if (device.GetButton(XINPUT_BUTTON_A, App::InputTrigger)) {
         _decision = true;
@@ -72,7 +64,7 @@ namespace Gyro {
     }
 
     bool ModeGameOver::Draw() const {
-      // ポーズ描画
+      // ゲームオーバー描画描画
       DrawGraph(0, 0, _gameOverHandle, true);
       // 選択によって描画切り替え
       DrawGraph(0, 0, _retryHandle[_retry], true);
@@ -80,33 +72,63 @@ namespace Gyro {
       return true;
     }
 
+    void ModeGameOver::Release() {
+      // 変数解放
+      _gameOverHandle = -1;
+      _retryHandle[0] = -1;
+      _retryHandle[1] = -1;
+      _backTitleHandle[0] = -1;
+      _backTitleHandle[1] = -1;
+      _isStick = false;
+      _decision = false;
+    }
+
     void ModeGameOver::LoadResource() {
-      // リソースの読み込みは行われているか
-      if (_isLoad) {
-        return; // 読み込み済み
-      }
       // 画像読み込み
       _gameOverHandle = LoadGraph("res/GameOver/gameover.png");
       _retryHandle[0] = LoadGraph("res/GameOver/retry0.png");
       _retryHandle[1] = LoadGraph("res/GameOver/retry1.png");
       _backTitleHandle[0] = LoadGraph("res/GameOver/backtitle0.png");
       _backTitleHandle[1] = LoadGraph("res/GameOver/backtitle1.png");
-      // 読み込み完了
-      _isLoad = true;
+    }
+
+    void ModeGameOver::LeftStickYInput(const int leftY) {
+      if (leftY == 0) {
+        // スティック入力なし
+        _isStick = false;
+        return;
+      }
+      // 入力され続けている場合中断
+      if (_isStick) {
+        return;
+      }
+      // 入力値の正負判定
+      bool flag = 0 <= leftY;
+      // 画像切り替え番号の設定
+      _retry = flag ? 1 : 0;
+      _backTitle = flag ? 0 : 1;
+      // スティック入力あり
+      _isStick = true;
+      // カーソルSEの再生
+      _app.GetSoundComponent().PlayBackGround("cursor", 75);
     }
 
     void ModeGameOver::ChangeMode() {
       // モードゲームオーバーの削除
       _appMain.GetModeServer().PopBuck();
+      // 鐘の音SEの再生
+      _app.GetSoundComponent().PlayBackGround("bell", 75);
       // リトライ選択時
       if (_retry == 1) {
         // モードゲーム遷移
         _appMain.GetModeServer().TransionToMode("Game");
+        return;
       }
       // タイトルバック選択時
       if (_backTitle == 1) {
         // モードタイトル遷移
         _appMain.GetModeServer().TransionToMode("Title");
+        return;
       }
     }
   } // namespace Mode

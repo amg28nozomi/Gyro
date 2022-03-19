@@ -34,6 +34,8 @@ namespace Gyro {
     }
 
     bool ModeTeam::Exit() {
+      // 変数解放
+      Release();
       return true;
     }
 
@@ -53,15 +55,14 @@ namespace Gyro {
       return true;
     }
 
+    void ModeTeam::Release() {
+      // 変数解放
+      _teamHandle = -1;
+    }
+
     void ModeTeam::LoadResource() {
-      // リソースの読み込みは行われているか
-      if (_isLoad) {
-        return; // 読み込み済み
-      }
       // チーム読み込み
       _teamHandle = LoadGraph("res/Logo/.png");
-      // 読み込み完了
-      _isLoad = true;
     }
 
     void ModeTeam::ChangeMode() {
