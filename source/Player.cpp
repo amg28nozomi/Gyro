@@ -506,12 +506,14 @@ namespace Gyro {
         if (_attack->ToAttack()) {
           auto exicite = InputExciteTrick(input, XINPUT_BUTTON_B);
           if (exicite) {
+            _app.GetSoundComponent().PlayBackGround("ready", 200);
             return true;
           }
         }
         if (_modelAnim.GetMainAnimEnd() && !_modelAnim.IsBlending()) {
           if (_playerState == PlayerState::ExciteTrickReady) {
             _playerState = PlayerState::ExciteTrick;
+            _app.GetSoundComponent().PlayBackGround("barst", 200);
             // 無敵時間を開始する
             _invincible->Start();
             // 攻撃判定をセットするか

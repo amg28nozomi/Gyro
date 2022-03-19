@@ -263,6 +263,8 @@ namespace Gyro {
         {"jump", "res/Sound/SE/Player/Jump.wav"},            // ƒWƒƒƒ“ƒvSE
         {"landing", "res/Sound/SE/Player/Landing.wav"},      // ’…’nSE
         {"avoidance", "res/Sound/SE/Player/Avoidance.wav"},  // ‰ñ”ğSE
+        {"ready", "res/Sound/SE/Player/TrickReady.wav"},     // •KE”­“®SE
+        {"barst", "res/Sound/SE/Player/TrickBarst.wav"},     // •KEUŒ‚SE
         {"wMove", "res/Sound/SE/Enemy/WheelMove.wav"},       // ’nãˆÚ“®SE
         {"wAttack", "res/Sound/SE/Enemy/WheelAttack.wav"},   // ’nãUŒ‚SE
         {"dAttack", "res/Sound/SE/Enemy/DroneAttack.wav"},   // ‹ó’†UŒ‚SE
