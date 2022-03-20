@@ -182,6 +182,8 @@ namespace Gyro {
       bool _attackFlag{false};
       //!< •½–Ê
       std::unique_ptr<AppMath::Plane> _plane;
+      // •`‰æƒtƒ‰ƒO
+      bool _drawFlag{ true };
       int _handleMap;
       int _frameMapCollision;
       /**

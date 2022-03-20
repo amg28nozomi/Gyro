@@ -266,8 +266,10 @@ namespace Gyro {
       _gaugeHp.Process();      // HPゲージの更新
       _gaugeTrick.Process();   // トリックゲージの更新
       _gaugeTrick.SetValue(_trickValue); // トリックゲージに値を入れる
-      Animation(_oldState);    // アニメーションの設定
-      _modelAnim.Process();    // アニメーションの再生
+      if (_drawFlag != false) {
+        Animation(_oldState);    // アニメーションの設定
+        _modelAnim.Process();    // アニメーションの再生
+      }
       Attack();                // 攻撃処理
       _sphere->Process(move);  // 移動量の加算
 
@@ -301,7 +303,9 @@ namespace Gyro {
     }
 
     bool Player::Draw() const{
-      MV1DrawModel(_model); // 自機の描画
+      if (_drawFlag != false) {
+        MV1DrawModel(_model); // 自機の描画
+      }
       _gaugeHp.Draw();      // HPゲージの描画
       _gaugeTrick.Draw();   // トリックゲージの描画
 #ifdef _DEBUG
@@ -526,7 +530,11 @@ namespace Gyro {
             _attack->SetFrame(frames, AddSpheres(static_cast<int>(frames.size()), 2000.f));
           }
           else if (_playerState == PlayerState::ExciteTrick) {
+            if (_modelAnim.GetMainAnimEnd() && !_modelAnim.IsBlending()) {
+              _drawFlag = false;
+            }
             if (_app.GetEffectServer().GetUltSlashEnd()) {
+              _drawFlag = true;
               _playerState = PlayerState::ExciteTrickEnd;
             }
           }
