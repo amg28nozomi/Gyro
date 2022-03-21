@@ -220,11 +220,10 @@ namespace Gyro {
 
     bool Player::Init() {
       _animationKey = Idle; //!< アイドルモーションを設定
-      SetCamera(); // カメラの設定
       SetState();  // パラメータの設定
       // ジャンプコンポーネントの設定
       _jump = std::make_unique<JumpComponent>();
-      _jump->Set(300.0f, 120); // ジャンプの設定
+      _jump->Set(300.0f, 75); // ジャンプの設定
       // ノックバックコンポーネントの設定
       _knockBack = std::make_unique<Object::KnockBackComponent>(*this, _app);
       // ワイヤーコンポーネントの設定
@@ -554,7 +553,7 @@ namespace Gyro {
             _attack->SetFrame(frames, AddSpheres(static_cast<int>(frames.size()), 2000.f), occurrence);
           }
           else if (_playerState == PlayerState::ExciteTrick) {
-            if (_modelAnim.GetMainAnimEnd() && !_modelAnim.IsBlending()) {
+            if (_modelAnim.GetMainAnimEnd()) {
               _drawFlag = false;
             }
             if (_app.GetEffectServer().GetUltSlashEnd()) {

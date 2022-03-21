@@ -150,7 +150,7 @@ namespace Gyro {
       _enemyHP = WheelHP;
       _gaugeHp = std::make_shared<Gauge::GaugeEnemy>(_app);
       _gaugeHp->Init(WheelHP);
-      _serchRadius = 350.0f;
+      _serchRadius = 700.0f;
       _attackRadius = 200.0f;
       _sort = 0;
       _gravity = false;

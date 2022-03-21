@@ -16,7 +16,7 @@ namespace Gyro {
 
     MoveComponent::MoveComponent(ObjectBase& owner) : _owner(owner) {
       _move = AppMath::Vector4();
-      _speed = 10.0f;
+      _speed = 11.0f;
     }
 
     void MoveComponent::OldPosition() {

@@ -10,7 +10,7 @@
 #include "UtilityDX.h"
 
 namespace {
-  constexpr auto Near = 100.0f;           //!< 手前クリップ距離
+  constexpr auto Near = 75.0f;           //!< 手前クリップ距離
   constexpr auto Far = 10000.0f;          //!< 奥クリップ距離
   constexpr auto InputMin = 2000.0f;      //!< 入力を受け付ける最低値
 }
@@ -37,8 +37,7 @@ namespace Gyro {
       switch (_cameraState) {
       case CameraState::Normal:
         Normal(stick, target, move);
-      case CameraState::SpecialMove:
-        Special(target, move);
+        break;
       }
       
       return true;
@@ -113,10 +112,6 @@ namespace Gyro {
       AppFrame::Math::Vector4 tar = _target.AddVectorY(75.f);
       //カメラの位置更新
       SetCameraPositionAndTarget_UpVecY(UtilityDX::ToVECTOR(_position), UtilityDX::ToVECTOR(tar));
-    }
-
-    void Camera::Special(const AppFrame::Math::Vector4 target, const AppFrame::Math::Vector4 move) {
-        
     }
   }// namespace Camera
 }// namespace Gyro

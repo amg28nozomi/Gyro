@@ -143,8 +143,8 @@ namespace Gyro {
       _enemyHP = DroneHP;
       _gaugeHp = std::make_shared<Gauge::GaugeEnemy>(_app);
       _gaugeHp->Init(DroneHP);
-      _serchRadius = 300.0f;
-      _attackRadius = 100.0f;
+      _serchRadius = 700.0f;
+      _attackRadius = 200.0f;
       _sort = 0;
       _gravity = false;
     }
