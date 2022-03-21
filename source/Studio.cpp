@@ -41,9 +41,9 @@ namespace Gyro {
 
     void Studio::Release() {
       // 各種解放
-      _studioHandle = -1;
-      _gyroHandle = -1;
-      _skyHandle = -1;
+      _studioHandle = _app.GetModelServer().DeleteDuplicateModels("studio");
+      _gyroHandle = _app.GetModelServer().DeleteDuplicateModels("gyro");
+      _skyHandle = _app.GetModelServer().DeleteDuplicateModels("sky");
       // カメラ初期化
       _app.GetCamera().Init();
       // モデルアニメ解放

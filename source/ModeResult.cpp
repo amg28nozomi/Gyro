@@ -105,7 +105,7 @@ namespace Gyro {
       // サウンドサーバに登録
       _appMain.GetSoundServer().AddSounds(soundMap);
       // 画像読み込み
-      _resultHandle = LoadGraph("result");
+      _resultHandle = _appMain.GetResourceServer().GetHandle("result");
       // 読み込み完了
       _isLoad = true;
     }

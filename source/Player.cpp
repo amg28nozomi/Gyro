@@ -738,8 +738,6 @@ namespace Gyro {
         }
         // ‘Ò‹@ó‘Ô‚É‘JˆÚ‚·‚é
         _playerState = PlayerState::Idle;
-        _app.GetSoundComponent().StopSound("dash");
-        _app.GetSoundComponent().StopSound("walk");
       }
     }
 
