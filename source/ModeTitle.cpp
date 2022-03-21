@@ -172,7 +172,7 @@ namespace Gyro {
       _pressButtonHandle = _appMain.GetResourceServer().GetHandle("press");
       _gameStartHandle = _appMain.GetResourceServer().GetHandle("start");
       _creditHandle = _appMain.GetResourceServer().GetHandle("credit");
-      _quitGameHandle = _appMain.GetResourceServer().GetHandle("quit");
+      _quitGameHandle = _appMain.GetResourceServer().GetHandle("quitgame");
       // “Ç‚İ‚İŠ®—¹
       _isLoad = true;
     }
