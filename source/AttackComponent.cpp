@@ -19,6 +19,7 @@ namespace Gyro {
       _collision.emplace_back(std::move(collision));
       _collision.clear();
       _speed = 10.0f;
+      _cnt = 0;
     }
 
     AttackComponent::AttackComponent(ObjectBase& owner, std::vector<std::shared_ptr<CollisionBase>> collisions) : _owner(owner) {
@@ -60,21 +61,27 @@ namespace Gyro {
         }
         return false;
       }
-      // セットされたフレーム回分判定を行う
-      for (auto num = 0; auto frame : _indexs) {
-        // 当たり判定座標をセットする
-        _collision.at(num)->SetPosition(_owner.GetFramePosition(frame));
-        // コリジョンの更新
-        _collision.at(num)->Process();
+      // カウントが0以下になったら攻撃判定を出す
+      _cnt--;
+      if (_cnt <= 0) {
+        // セットされたフレーム回分判定を行う
+        for (auto num = 0; auto frame : _indexs) {
+          // 当たり判定座標をセットする
+          _collision.at(num)->SetPosition(_owner.GetFramePosition(frame));
+          // コリジョンの更新
+          _collision.at(num)->Process();
+        }
       }
       return true; // 正常終了
     }
 
-    void AttackComponent::SetFrame(std::vector<int> frames, std::vector<std::shared_ptr<CollisionBase>> collisions) {
+    void AttackComponent::SetFrame(std::vector<int> frames, std::vector<std::shared_ptr<CollisionBase>> collisions, int cnt) {
       // フレーム番号の切り替え
       _indexs = frames;
       // コリジョン情報の切り替え
       _collision = collisions;
+      // カウント情報の切り替え
+      _cnt = cnt;
     }
 
 #ifdef _DEBUG

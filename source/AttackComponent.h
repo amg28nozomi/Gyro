@@ -75,8 +75,9 @@ namespace Gyro {
        * @brief  当たり判定に使用するフレームの設定
        * @param  frames     フレーム番号
        * @param  collisions コリジョン情報
+       * @param  cnt        攻撃判定発生までのフレーム数
        */
-      void SetFrame(std::vector<int> frames, std::vector<std::shared_ptr<CollisionBase>> collisions);
+      void SetFrame(std::vector<int> frames, std::vector<std::shared_ptr<CollisionBase>> collisions, int cnt);
 #ifdef _DEBUG
       /**
        * @brief 当たり判定の描画処理(デバッグ専用)
@@ -146,6 +147,8 @@ namespace Gyro {
       float _time{0.0f};
       //!< 経過時間
       float _speed{0.0f};
+      //!< 攻撃判定発生までのカウント
+      int _cnt{0};
       /**
        * @brief ローカル座標をワールド座標に変換する
        */

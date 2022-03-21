@@ -122,6 +122,29 @@ namespace Gyro {
       {Player::PlayerState::Idle, Player::PlayerState::ExciteTrick},
     };
     /**
+     * @brief 攻撃判定が出てくるまでにかかるフレーム数を管理する連想配列
+     */
+    const std::unordered_map<int, int> occurrenceMap{
+      // 弱攻撃
+      {StateNumberLight1, 5},
+      {StateNumberLight2, 6},
+      {StateNumberLight3, 15},
+      // 強攻撃
+      {StateNumberHeavy1, 8},
+      {StateNumberHeavy2, 10},
+      {StateNumberHeavy3, 8},
+      // 空中弱攻撃
+      {StateNumberAirLight1, 4},
+      {StateNumberAirLight2, 8},
+      {StateNumberAirLight3, 26},
+      // 空中強攻撃
+      {StateNumberAirHeavy1, 10},
+      {StateNumberAirHeavy2, 30},
+      // 必殺技攻撃
+      {StateNumberExciteTrick1, 10},
+    };
+
+    /**
      * @brief コリジョンに使用するフレーム番号を管理する連想配列
      */
     const std::unordered_map<int, std::vector<int>> attackMap{
@@ -526,8 +549,10 @@ namespace Gyro {
             }
             // 攻撃判定で使用するフレーム番号の取得
             auto frames = attackMap.at(PlayerStateToNumber());
+            // 攻撃判定が出るまでのフレーム数の取得
+            auto occurrence = occurrenceMap.at(PlayerStateToNumber());
             // フレームとコリジョン情報の設定
-            _attack->SetFrame(frames, AddSpheres(static_cast<int>(frames.size()), 2000.f));
+            _attack->SetFrame(frames, AddSpheres(static_cast<int>(frames.size()), 2000.f), occurrence);
           }
           else if (_playerState == PlayerState::ExciteTrick) {
             if (_modelAnim.GetMainAnimEnd() && !_modelAnim.IsBlending()) {
@@ -599,8 +624,10 @@ namespace Gyro {
         }
         // 攻撃判定で使用するフレーム番号の取得
         auto frames = attackMap.at(PlayerStateToNumber());
+        // 攻撃判定が出るまでのフレーム数の取得
+        auto occurrence = occurrenceMap.at(PlayerStateToNumber());
         // フレームとコリジョン情報の設定
-        _attack->SetFrame(frames, AddSpheres(static_cast<int>(frames.size())));
+        _attack->SetFrame(frames, AddSpheres(static_cast<int>(frames.size())), occurrence);
         _stateComponent->Start();
         _attack->Start();
         _attackFlag = flag;
@@ -1131,8 +1158,10 @@ namespace Gyro {
       }
       // 攻撃判定で使用するフレーム番号の取得
       auto frames = attackMap.at(PlayerStateToNumber());
+      // 攻撃判定が出るまでのフレーム数の取得
+      auto occurrence = occurrenceMap.at(PlayerStateToNumber());
       // フレームとコリジョン情報の設定
-      _attack->SetFrame(frames, AddSpheres(static_cast<int>(frames.size())));
+      _attack->SetFrame(frames, AddSpheres(static_cast<int>(frames.size())), occurrence);
       return true; // 切り替えを完了
     }
 
