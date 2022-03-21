@@ -30,7 +30,7 @@ namespace Gyro {
 
     bool ModeCredit::Exit() {
       // 変数解放
-      Release();
+      _backTitle = false;
       return true;
     }
 
@@ -62,15 +62,23 @@ namespace Gyro {
       return true;
     }
 
-    void ModeCredit::Release() {
-      // 変数解放
-      _creditHandle = -1;
-      _backTitle = false;
-    }
-
     void ModeCredit::LoadResource() {
-      // クレジット画像読み込み
-      _creditHandle = LoadGraph("res/Credit/Credit.png");
+      // リソースの読み込みは行われているか
+      if (_isLoad) {
+        return; // 読み込み済み
+      }
+      // 別名定義
+      using ResourceServer = AppFrame::Resource::ResourceServer;
+      // 画像情報の設定
+      const ResourceServer::DivGraphTable divGraphMap{
+        {"Credit", {"res/Credit/Credit.png", 1, 1, 1, 1920, 1080}}  // クレジット
+      };
+      // リソースサーバに登録
+      _appMain.GetResourceServer().LoadDivGraph(divGraphMap);
+      // 画像読み込み
+      _creditHandle = _appMain.GetResourceServer().GetHandle("Credit");
+      // 読み込み完了
+      _isLoad = true;
     }
 
     void ModeCredit::ChangeMode() {

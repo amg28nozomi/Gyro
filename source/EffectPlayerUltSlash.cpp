@@ -8,8 +8,6 @@
 #include "EffectPlayerUltSlash.h"
 
 namespace {
-  // エフェクト生成時プレイヤーの状態
-  //constexpr auto CheckState = Gyro::Player::Player::PlayerState::Attack1;
   // エフェクト終了フラグセットカウント値定数
   constexpr int EndCount = 105;
 }
@@ -28,9 +26,6 @@ namespace Gyro {
     void EffectPlayerUltSlash::Init() {
       // エフェクトハンドルの取得
       _effectHandle = GetEffectHandle(EffectKey::PlayerUltSlash);
-      // プレイヤー状態確認あり
-      //_isCheck = true;
-      //_checkState = CheckState;
     }
 
     void EffectPlayerUltSlash::Process() {

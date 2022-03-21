@@ -63,10 +63,6 @@ namespace Gyro {
 
     private:
       /**
-       * @brief  •Ï”‰ğ•ú
-       */
-      void Release();
-      /**
        * @brief  ƒŠƒ\[ƒX“Ç‚İ‚İ
        */
       void LoadResource();

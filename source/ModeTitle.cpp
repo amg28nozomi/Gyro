@@ -11,7 +11,7 @@
 #include "ModeLoading.h"
 
 namespace {
-  constexpr int BGMVolume = 50;      //!< BGMの再生ボリューム
+  constexpr int BGMVolume = 50;  //!< BGMの再生ボリューム
   // 場面切り替え定数
   constexpr int PressAnyButtonNum = 0;  //!< プレスボタン
   constexpr int GameStartNum = 1;       //!< ゲーム開始
@@ -49,7 +49,11 @@ namespace Gyro {
 
     bool ModeTitle::Exit() {
       // 変数解放
-      Release();
+      _gameStartExRate = 1.0f;
+      _creditExRate = 1.0f;
+      _quitGameExRate = 1.0f;
+      _isStick = false;
+      _decision = false;
       // スタジオ解放
       _studio->Release();
       return true;
@@ -126,33 +130,26 @@ namespace Gyro {
       return true;
     }
 
-    void ModeTitle::Release() {
-      // 変数解放
-      _titleHandle = -1;
-      _pressButtonHandle = -1;
-      _gameStartHandle = -1;
-      _creditHandle = -1;
-      _quitGameHandle = -1;
-      _gameStartExRate = 1.0f;
-      _creditExRate = 1.0f;
-      _quitGameExRate = 1.0f;
-      _isStick = false;
-      _decision = false;
-    }
-
     void ModeTitle::LoadResource() {
-      // 画像読み込み
-      _titleHandle = LoadGraph("res/Title/GYROtitle.png");
-      _pressButtonHandle = LoadGraph("res/Title/pressbutton.png");
-      _gameStartHandle = LoadGraph("res/Title/gamestart.png");
-      _creditHandle = LoadGraph("res/Title/credit.png");
-      _quitGameHandle = LoadGraph("res/Title/quitgame.png");
       // リソースの読み込みは行われているか
       if (_isLoad) {
         return; // 読み込み済み
       }
-      // 各種モデルハンドルの読み込み
+      // 別名定義
+      using ResourceServer = AppFrame::Resource::ResourceServer;
+      // 画像情報の設定
+      const ResourceServer::DivGraphTable divGraphMap{
+        {"title", {"res/Title/GYROtitle.png", 1, 1, 1, 1920, 1080}},  // タイトル
+        {"press", {"res/Title/pressbutton.png", 1, 1, 1, 721, 86}},   // プレスボタン
+        {"start", {"res/Title/gamestart.png", 1, 1, 1, 379, 73}},     // ゲーム開始
+        {"credit", {"res/Title/credit.png", 1, 1, 1, 219, 73}},       // クレジット
+        {"quitgame", {"res/Title/quitgame.png", 1, 1, 1, 336, 85}}    // ゲーム終了
+      };
+      // リソースサーバに登録
+      _appMain.GetResourceServer().LoadDivGraph(divGraphMap);
+      // 別名定義
       using ModelServer = AppFrame::Model::ModelServer;
+      // 各種モデルハンドルの読み込み
       const ModelServer::ModelDatas mv1Models{
         {"studio", "res/Stage/Studio_GEO.mv1"},           // スタジオ
         {"player", "res/Player/Gyro Multimotion10.mv1"},  // 自機(ジャイロ)
@@ -160,8 +157,9 @@ namespace Gyro {
       };
       // モデルサーバで読み取りを行う
       _appMain.GetModelServer().AddMV1Model(mv1Models);
-      // サウンド情報の読み込み
+      // 別名定義
       using SoundServer = AppFrame::Sound::SoundServer;
+      // サウンド情報の読み込み
       const SoundServer::SoundMap soundMap{
         {"title", "res/Sound/BGM/Title.mp3"},  // タイトルBGM
         {"cursor", "res/Sound/SE/System/Cursor1.wav"},  // カーソルSE
@@ -169,6 +167,12 @@ namespace Gyro {
       };
       // サウンドサーバに登録
       _appMain.GetSoundServer().AddSounds(soundMap);
+      // 画像読み込み
+      _titleHandle = _appMain.GetResourceServer().GetHandle("title");
+      _pressButtonHandle = _appMain.GetResourceServer().GetHandle("press");
+      _gameStartHandle = _appMain.GetResourceServer().GetHandle("start");
+      _creditHandle = _appMain.GetResourceServer().GetHandle("credit");
+      _quitGameHandle = _appMain.GetResourceServer().GetHandle("quit");
       // 読み込み完了
       _isLoad = true;
     }

@@ -40,7 +40,7 @@ namespace Gyro {
 
     bool ModeResult::Exit() {
       // 変数解放
-      Release();
+      _backTitle = false;
       // スタジオ解放
       _studio->Release();
       return true;
@@ -83,26 +83,29 @@ namespace Gyro {
       return true;
     }
 
-    void ModeResult::Release() {
-      // 変数解放
-      _resultHandle = -1;
-      _backTitle = false;
-    }
-
     void ModeResult::LoadResource() {
-      // 画像読み込み
-      _resultHandle = LoadGraph("res/Result/result.png");
       // リソースの読み込みは行われているか
       if (_isLoad) {
         return; // 読み込み済み
       }
-      // サウンド情報の読み込み
+      // 別名定義
+      using ResourceServer = AppFrame::Resource::ResourceServer;
+      // 画像情報の設定
+      const ResourceServer::DivGraphTable divGraphMap{
+        {"result", {"res/Result/result.png", 1, 1, 1, 1920, 1080}}  // ポーズ
+      };
+      // リソースサーバに登録
+      _appMain.GetResourceServer().LoadDivGraph(divGraphMap);
+      // 別名定義
       using SoundServer = AppFrame::Sound::SoundServer;
+      // サウンド情報の設定
       const SoundServer::SoundMap soundMap{
         {"result", "res/Sound/BGM/Result.mp3"}  // リザルト
       };
       // サウンドサーバに登録
       _appMain.GetSoundServer().AddSounds(soundMap);
+      // 画像読み込み
+      _resultHandle = LoadGraph("result");
       // 読み込み完了
       _isLoad = true;
     }

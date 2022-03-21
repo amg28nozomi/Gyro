@@ -93,7 +93,6 @@
     <ClCompile Include="source\ModeLoading.cpp" />
     <ClCompile Include="source\ModePause.cpp" />
     <ClCompile Include="source\ModeResult.cpp" />
-    <ClCompile Include="source\ModeTeam.cpp" />
     <ClCompile Include="source\ModeTitle.cpp" />
     <ClCompile Include="source\MoveComponent.cpp" />
     <ClCompile Include="source\ObjectBase.cpp" />
@@ -197,7 +196,6 @@
     <ClInclude Include="source\ModeLoading.h" />
     <ClInclude Include="source\ModePause.h" />
     <ClInclude Include="source\ModeResult.h" />
-    <ClInclude Include="source\ModeTeam.h" />
     <ClInclude Include="source\ModeTitle.h" />
     <ClInclude Include="source\MoveComponent.h" />
     <ClInclude Include="source\ObjectBase.h" />

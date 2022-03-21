@@ -34,7 +34,8 @@ namespace Gyro {
 
     bool ModePause::Exit() {
       // 変数解放
-      Release();
+      _isStick = false;
+      _decision = false;
       return true;
     }
 
@@ -79,36 +80,38 @@ namespace Gyro {
       return true;
     }
 
-    void ModePause::Release() {
-      // 変数解放
-      _pauseHandle = -1;
-      _continueHandle[0] = -1;
-      _continueHandle[1] = -1;
-      _quitGameHandle[0] = -1;
-      _quitGameHandle[1] = -1;
-      _isStick = false;
-      _decision = false;
-    }
-
     void ModePause::LoadResource() {
-      // 画像読み込み
-      _pauseHandle = LoadGraph("res/Pause/pause.png");
-      _continueHandle[0] = LoadGraph("res/Pause/continue0.png");
-      _continueHandle[1] = LoadGraph("res/Pause/continue1.png");
-      _quitGameHandle[0] = LoadGraph("res/Pause/quitgame0.png");
-      _quitGameHandle[1] = LoadGraph("res/Pause/quitgame1.png");
       // リソースの読み込みは行われているか
       if (_isLoad) {
         return; // 読み込み済み
       }
-      // サウンド情報の読み込み
+      // 別名定義
+      using ResourceServer = AppFrame::Resource::ResourceServer;
+      // 画像情報の設定
+      const ResourceServer::DivGraphTable divGraphMap{
+        {"pause", {"res/Pause/pause.png", 1, 1, 1, 1920, 1080}},          // ポーズ
+        {"continue0", {"res/Pause/continue0.png", 1, 1, 1, 1920, 1080}},  // コンテニュー0
+        {"continue1", {"res/Pause/continue1.png", 1, 1, 1, 1920, 1080}},  // コンテニュー1
+        {"quitgame0", {"res/Pause/quitgame0.png", 1, 1, 1, 1920, 1080}},  // ゲーム終了0
+        {"quitgame1", {"res/Pause/quitgame1.png", 1, 1, 1, 1920, 1080}}   // ゲーム終了1
+      };
+      // リソースサーバに登録
+      _appMain.GetResourceServer().LoadDivGraph(divGraphMap);
+      // 別名定義
       using SoundServer = AppFrame::Sound::SoundServer;
+      // サウンド情報の設定
       const SoundServer::SoundMap soundMap{
         {"pauseIn", "res/Sound/SE/System/PauseIn.wav"},    // ポーズインSE
         {"pauseOut", "res/Sound/SE/System/PauseOut.wav"},  // ポーズアウトSE
       };
       // サウンドサーバに登録
       _appMain.GetSoundServer().AddSounds(soundMap);
+      // 画像読み込み
+      _pauseHandle = _appMain.GetResourceServer().GetHandle("pause");
+      _continueHandle[0] = _appMain.GetResourceServer().GetHandle("continue0");
+      _continueHandle[1] = _appMain.GetResourceServer().GetHandle("continue1");
+      _quitGameHandle[0] = _appMain.GetResourceServer().GetHandle("quitgame0");
+      _quitGameHandle[1] = _appMain.GetResourceServer().GetHandle("quitgame1");
       // 読み込み完了
       _isLoad = true;
     }

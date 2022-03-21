@@ -7,11 +7,6 @@
  *********************************************************************/
 #include "EffectPlayerHit.h"
 
-namespace {
-  // エフェクト生成時プレイヤーの状態
-  //constexpr auto CheckState = Gyro::Player::Player::PlayerState::;
-}
-
 namespace Gyro {
   namespace Effect {
     EffectPlayerHit::EffectPlayerHit(Application::ApplicationMain& app) : EffectBase(app) {
@@ -26,9 +21,6 @@ namespace Gyro {
     void EffectPlayerHit::Init() {
       // エフェクトハンドルの取得
       _effectHandle = GetEffectHandle(EffectKey::PlayerHit);
-      // プレイヤー状態確認あり
-      //_isCheck = true;
-      //_checkState = CheckState;
     }
   } // namespace Effect
 } // namespace Gyro

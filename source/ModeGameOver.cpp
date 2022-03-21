@@ -34,7 +34,8 @@ namespace Gyro {
 
     bool ModeGameOver::Exit() {
       // 変数解放
-      Release();
+      _isStick = false;
+      _decision = false;
       return true;
     }
 
@@ -72,24 +73,31 @@ namespace Gyro {
       return true;
     }
 
-    void ModeGameOver::Release() {
-      // 変数解放
-      _gameOverHandle = -1;
-      _retryHandle[0] = -1;
-      _retryHandle[1] = -1;
-      _backTitleHandle[0] = -1;
-      _backTitleHandle[1] = -1;
-      _isStick = false;
-      _decision = false;
-    }
-
     void ModeGameOver::LoadResource() {
+      // リソースの読み込みは行われているか
+      if (_isLoad) {
+        return; // 読み込み済み
+      }
+      // 別名定義
+      using ResourceServer = AppFrame::Resource::ResourceServer;
+      // 画像情報の設定
+      const ResourceServer::DivGraphTable divGraphMap{
+        {"gameover", {"res/GameOver/gameover.png", 1, 1, 1, 1920, 1080}},      // ゲームオーバー
+        {"retry0", {"res/GameOver/retry0.png", 1, 1, 1, 1920, 1080}},          // リトライ0
+        {"retry1", {"res/GameOver/retry1.png", 1, 1, 1, 1920, 1080}},          // リトライ1
+        {"backtitle0", {"res/GameOver/backtitle0.png", 1, 1, 1, 1920, 1080}},  // タイトルバック0
+        {"backtitle1", {"res/GameOver/backtitle1.png", 1, 1, 1, 1920, 1080}}   // タイトルバック1
+      };
+      // リソースサーバに登録
+      _appMain.GetResourceServer().LoadDivGraph(divGraphMap);
       // 画像読み込み
-      _gameOverHandle = LoadGraph("res/GameOver/gameover.png");
-      _retryHandle[0] = LoadGraph("res/GameOver/retry0.png");
-      _retryHandle[1] = LoadGraph("res/GameOver/retry1.png");
-      _backTitleHandle[0] = LoadGraph("res/GameOver/backtitle0.png");
-      _backTitleHandle[1] = LoadGraph("res/GameOver/backtitle1.png");
+      _gameOverHandle = _appMain.GetResourceServer().GetHandle("gameover");
+      _retryHandle[0] = _appMain.GetResourceServer().GetHandle("retry0");
+      _retryHandle[1] = _appMain.GetResourceServer().GetHandle("retry1");
+      _backTitleHandle[0] = _appMain.GetResourceServer().GetHandle("backtitle0");
+      _backTitleHandle[1] = _appMain.GetResourceServer().GetHandle("backtitle1");
+      // 読み込み完了
+      _isLoad = true;
     }
 
     void ModeGameOver::LeftStickYInput(const int leftY) {

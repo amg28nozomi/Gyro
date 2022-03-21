@@ -46,8 +46,7 @@ namespace Gyro {
     }
 
     bool ModeAMG::Exit() {
-      // 変数解放
-      Release();
+      _appMain.GetResourceServer().Release();
       return true;
     }
 
@@ -67,22 +66,25 @@ namespace Gyro {
       return true;
     }
 
-    void ModeAMG::Release() {
-      // 変数解放
-      _amgHandle = -1;
-    }
-
     void ModeAMG::LoadResource() {
-      // AMG読み込み
-      _amgHandle = LoadGraph("res/Logo/amglogo.png");
       // リソースの読み込みは行われているか
       if (_isLoad) {
         return; // 読み込み済み
       }
+      // 別名定義
+      using ResourceServer = AppFrame::Resource::ResourceServer;
+      // 画像情報の設定
+      const ResourceServer::DivGraphTable divGraphMap{
+        {"amg", {"res/Logo/amglogo.png", 1, 1, 1, 1920, 1080}}  // AMG
+      };
+      // リソースサーバに登録
+      _appMain.GetResourceServer().LoadDivGraph(divGraphMap);
       // 非同期処理フラグtrue
       SetUseASyncLoadFlag(true);
       // 通常ステージの読み込み開始
       _appMain.GetStageTransition().IsTransition();
+      // 画像読み込み
+      _amgHandle = _appMain.GetResourceServer().GetHandle("amg");
       // 読み込み完了
       _isLoad = true;
     }
@@ -90,9 +92,9 @@ namespace Gyro {
     void ModeAMG::ChangeMode() {
       // モードAMGの削除
       _appMain.GetModeServer().PopBuck();
-      // 未登録のためモードチームの登録
+      // 未登録のためモードタイトルの登録
       _appMain.GetModeServer().AddMode("Title", std::make_shared<Mode::ModeTitle>(_appMain));
-      // モードチーム遷移
+      // モードタイトル遷移
       _appMain.GetModeServer().TransionToMode("Title");
     }
   } // namespace Mode
