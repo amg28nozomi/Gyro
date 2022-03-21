@@ -82,6 +82,8 @@ namespace Gyro {
           if (_sceneNum == QuitGameNum) {
             // アプリケーションの終了処理を呼び出し
             _appMain.RequestTerminate();
+            // 選択決定
+            _decision = true;
             return true;
           }
           // 選択決定
