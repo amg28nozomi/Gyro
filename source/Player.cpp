@@ -315,6 +315,8 @@ namespace Gyro {
         move = _position - oldPos;
         _stageChange = false;
       }
+      // SE停止
+      StopSE();
       // カメラの更新
       _app.GetCamera().Process(AppMath::Vector4(rightX, rightY), _position, _move->GetOldPosition().Direction(_position));
       // ワールド座標の設定
@@ -738,8 +740,6 @@ namespace Gyro {
         }
         // 待機状態に遷移する
         _playerState = PlayerState::Idle;
-        _app.GetSoundComponent().StopSound("dash");
-        _app.GetSoundComponent().StopSound("walk");
       }
     }
 
@@ -788,6 +788,21 @@ namespace Gyro {
       // エフェクトが登録されている場合は再生する
       if (!modelAnim.Effect() == 0) {
         PlayEffect();
+      }
+    }
+
+    void Player::StopSE() {
+      // 走りSE停止
+      if (_playerState != PlayerState::Run) {
+        if (_app.GetSoundComponent().CheckSound("dash")) {
+          _app.GetSoundComponent().StopSound("dash");
+        }
+      }
+      // 歩きSE停止
+      if (_playerState != PlayerState::Walk) {
+        if (_app.GetSoundComponent().CheckSound("walk")) {
+          _app.GetSoundComponent().StopSound("walk");
+        }
       }
     }
 

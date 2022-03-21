@@ -224,6 +224,10 @@ namespace Gyro {
        */
       void Animation(PlayerState old);
       /**
+       * @brief  SE停止
+       */
+      void StopSE();
+      /**
        * @brief  状態の切り替え処理(βプレゼン専用)
        * @param  input XBOXコントローラの入力状態クラスの参照
        * @return true:チェンジ false:変更なし
