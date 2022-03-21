@@ -187,10 +187,6 @@ namespace Gyro {
       int _handleMap;
       int _frameMapCollision;
       /**
-       * @brief 入力処理
-       */
-      void Input();
-      /**
        * @brief リソースの読み取り処理
        */
       void LoadResource();
@@ -198,10 +194,6 @@ namespace Gyro {
        * @brief 状態の設定
        */
       void SetState();
-      /**
-       * @brief カメラの設定
-       */
-      void SetCamera();
       /**
        * @brief アナログスティックの入力情報を変換
        * @param XBoxコントローラの入力情報
@@ -213,11 +205,6 @@ namespace Gyro {
        * @param  leftY 左スティックの入力情報(y軸)
        */
       AppMath::Vector4 Move(const float leftX, const float leftY);
-      /**
-       * @brief カメラの更新
-       * @param stick 
-       */
-      void CameraUpdate(const AppFrame::Math::Vector4 stick);
       /**
        * @brief 向きの設定
        * @param move 移動量

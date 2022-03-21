@@ -312,7 +312,7 @@ namespace Gyro {
       auto stage = "boss";
       if (_app.GetStageComponent().GetStageName().generic_string() == stage && _stageChange == true) {
         auto oldPos = _position;
-        _position.Set(0.0f, 1000.f, -200.f);
+        _position.Set(0.0f, 845.f, -200.f);
         move = _position - oldPos;
         _stageChange = false;
       }
@@ -379,7 +379,6 @@ namespace Gyro {
       auto l = cameraPosition.Direction(cameraTarget);
       l.SetY(0.0f);
       // 
-
       auto direction = cameraPosition.Direction(cameraTarget);
       // カメラ向きの算出
       auto cameraForward = Vector4::Normalize(direction);
@@ -647,10 +646,6 @@ namespace Gyro {
       return false; // 入力無し
     }
 
-    void Player::Input() {
-
-    }
-
     AppMath::Vector4 Player::Move(const float leftX, const float leftY) {
       // 移動ベクトル
       auto move = AppMath::Vector4();
@@ -677,10 +672,6 @@ namespace Gyro {
       auto [model, key1] = _app.GetModelServer().GetModel(_modelKey, 1);
       // 取得したモデルハンドルを設定
       _model = model;
-    }
-
-    void Player::SetCamera() {
-
     }
 
     void Player::InputValue(const AppFrame::Application::XBoxState& input) {
@@ -723,10 +714,6 @@ namespace Gyro {
       _stageChange = true;
 
       _forward = AppMath::Vector4(0.0f, 0.0f, 1.0f);
-    }
-
-    void Player::CameraUpdate(const AppFrame::Math::Vector4 stick) {
-      
     }
 
     void Player::SetRotation(const AppFrame::Math::Vector4 move) {

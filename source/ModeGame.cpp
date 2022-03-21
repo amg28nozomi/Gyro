@@ -98,15 +98,6 @@ namespace Gyro {
       _plane.Initialize(40960.0f, 40);
       _plane.Load(TEXTURE);
       _plane.Create();
-      //_appMain.GetStageComponent().CreateStage("stage");
-      //// 別名定義
-      //using StageType = Stage::StageTransition::StageType;
-      //// ステージリストの生成
-      //const std::unordered_map<StageType, std::string_view> stageMap = {
-      //  {StageType::Normal, "stage"}
-      //};
-      //// 生成したリストを登録する
-      //_appMain.GetStageTransition().Register(stageMap);
       // 重力加速度をセットする
       AppMath::GravityBase::SetScale(GravityScale);
       return true;
@@ -145,17 +136,6 @@ namespace Gyro {
     }
 
     bool ModeGame::Process() {
-      // フェードアウトが終了した場合のみ、処理を実行する
-      //if (_appMain.GetStageTransition().IsTransition()) {
-      //  SetSpawn(); // オブジェクトを生成
-      //  _appMain.GetModeServer().FadeOutReset();
-      //  return false;
-      //}
-      //if (_appMain.GetStageComponent().CreateStage("stage")) {
-      //  SetSpawn(); // オブジェクトを生成
-      //  //_appMain.GetModeServer().FadeOutReset();
-      //  return false;
-      //}
       // モードゲームの入力処理
       Input(_app.GetOperation());
       // ゲームオーバー判定
@@ -350,19 +330,13 @@ namespace Gyro {
           // 陸上型エネミーの配置情報
           { Object::EnemyWheel, { 100.0f, 705.0f, -200.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
           { Object::EnemyWheel, { -200.0f, 705.0f, -200.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
-          { Object::EnemyWheel, { 300.0f, 705.0f, -200.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
-          { Object::EnemyWheel, { -400.0f, 705.0f, -200.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
         };
         const Object::EnemyTable wave2{
           { Object::EnemyDrone, { 100.0f, 845.0f, -4500.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
-          { Object::EnemyDrone, { -200.0f, 845.0f, -4500.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
-          { Object::EnemyDrone, { 300.0f, 845.0f, -4500.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
-          { Object::EnemyDrone, { -400.0f, 845.0f, -4500.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
         };
         const Object::EnemyTable wave3{
           { Object::EnemyWheel, { 4100.0f, 480.0f, -7500.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
           { Object::EnemyWheel, { 4200.0f, 480.0f, -7500.0f}, {0.0f, -180.0f, 0.0f }, {2.0f, 2.0f, 2.0f}},
-          { Object::EnemyDrone, { 4300.0f, 480.0f, -7500.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
           { Object::EnemyDrone, { 4400.0f, 480.0f, -7500.0f}, {0.0f, -180.0f, 0.0f }, {4.0f, 4.0f, 4.0f}},
         };
         const Object::EnemyTable wave4{
