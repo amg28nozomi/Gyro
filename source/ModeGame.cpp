@@ -34,6 +34,10 @@ namespace Gyro {
   namespace Mode {
 
     ModeGame::ModeGame(Application::ApplicationMain& app) : ModeBase(*app.GetInstance()), _appMain(app) {
+      // ÉtÉHÉOÇÃê›íË
+      SetFogEnable(true);
+      SetFogColor(204, 255, 255);
+      SetFogStartEnd(5000.f, 15000.f);
     }
 
     ModeGame::~ModeGame() {
