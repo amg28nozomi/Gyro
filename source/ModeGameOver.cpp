@@ -27,7 +27,7 @@ namespace Gyro {
       // ƒŠƒ\[ƒX“Ç‚İ‚İ
       LoadResource();
       // ‰æ‘œØ‚è‘Ö‚¦”Ô†‚Ì‰Šú‰»
-      _retry = 0;
+      _retry = 1;
       _backTitle = 0;
       return true;
     }

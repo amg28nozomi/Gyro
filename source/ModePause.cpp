@@ -25,7 +25,7 @@ namespace Gyro {
       // リソース読み込み
       LoadResource();
       // 画像切り替え番号の初期化
-      _continue = 0;
+      _continue = 1;
       _quitGame = 0;
       // ポーズインSE再生
       _app.GetSoundComponent().PlayBackGround("pauseIn");
