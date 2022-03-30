@@ -88,6 +88,7 @@ namespace {
   constexpr auto StateNumberExciteTrick2 = 17; //!< 必殺技後
   constexpr auto StateNumberDash = 18;   //!< ダッシュ
   constexpr auto StateNumberFall = 19;   //!< 降下
+  constexpr auto StateNumberDamage = 20; //!< ダメージ
 
 
 
@@ -121,6 +122,38 @@ namespace Gyro {
       {Player::PlayerState::JumpAttack3, Player::PlayerState::Idle},
       {Player::PlayerState::Idle, Player::PlayerState::ExciteTrick},
     };
+
+    /**
+     * @brief プレイヤーのボイスを管理する連想配列
+     */
+    const std::unordered_map<int, std::string> voiceMap{
+      // 待機
+      {StateNumberIdle, "idle"},
+      // ジャンプ
+      {StateNumberJump, "jump"},
+      // ダメージ
+      //{StateNumber}
+      // 弱攻撃
+      {StateNumberLight1, "low1"},
+      {StateNumberLight2, "low2"},
+      {StateNumberLight3, "low3"},
+      // 強攻撃
+      {StateNumberHeavy1, "high1"},
+      {StateNumberHeavy2, "high2"},
+      {StateNumberHeavy3, "high3"},
+      // 空中弱攻撃
+      {StateNumberAirLight1, "jlow1"},
+      {StateNumberAirLight2, "jlow2"},
+      {StateNumberAirLight3, "jlow3"},
+      // 空中強攻撃
+      {StateNumberAirHeavy1, "jhigh1"},
+      {StateNumberAirHeavy2, "jhigh2"},
+      // 必殺技攻撃
+      {StateNumberExciteActive, "excite1"},
+      {StateNumberExciteTrick1, "excite2"},
+      {StateNumberExciteTrick2, "excite3"},
+    };
+
     /**
      * @brief 攻撃判定が出てくるまでにかかるフレーム数を管理する連想配列
      */
@@ -540,6 +573,9 @@ namespace Gyro {
         if (_modelAnim.GetMainAnimEnd() && !_modelAnim.IsBlending()) {
           if (_playerState == PlayerState::ExciteTrickReady) {
             _playerState = PlayerState::ExciteTrick;
+            // 流す音声の文字列の取得
+            auto voice = voiceMap.at(PlayerStateToNumber());
+            _app.GetSoundComponent().PlayBackGround(voice, 200);
             _app.GetSoundComponent().PlayBackGround("barst", 200);
             // 無敵時間を開始する
             _invincible->Start();
@@ -561,6 +597,9 @@ namespace Gyro {
             if (_app.GetEffectServer().GetUltSlashEnd()) {
               _drawFlag = true;
               _playerState = PlayerState::ExciteTrickEnd;
+              // 流す音声の文字列の取得
+              auto voice = voiceMap.at(PlayerStateToNumber());
+              _app.GetSoundComponent().PlayBackGround(voice, 200);
             }
           }
           else if (_playerState == PlayerState::ExciteTrickEnd) {
@@ -626,6 +665,9 @@ namespace Gyro {
         auto frames = attackMap.at(PlayerStateToNumber());
         // 攻撃判定が出るまでのフレーム数の取得
         auto occurrence = occurrenceMap.at(PlayerStateToNumber());
+        // 流す音声の文字列の取得
+        auto voice = voiceMap.at(PlayerStateToNumber());
+        _app.GetSoundComponent().PlayBackGround(voice, 200);
         // フレームとコリジョン情報の設定
         _attack->SetFrame(frames, AddSpheres(static_cast<int>(frames.size())), occurrence);
         _stateComponent->Start();
@@ -641,6 +683,9 @@ namespace Gyro {
       if (input.GetButton(key, false)) {
         // 必殺技に遷移する
         _playerState = PlayerState::ExciteTrickReady;
+        // 流す音声の文字列の取得
+        auto voice = voiceMap.at(PlayerStateToNumber());
+        _app.GetSoundComponent().PlayBackGround(voice, 200);
         _attack->Start();
         return true; // 遷移する
       }
@@ -1157,6 +1202,9 @@ namespace Gyro {
       if (!attackMap.contains(PlayerStateToNumber())) {
         return true;
       }
+      // 流す音声の文字列の取得
+      auto voice = voiceMap.at(PlayerStateToNumber());
+      _app.GetSoundComponent().PlayBackGround(voice, 200);
       // 攻撃判定で使用するフレーム番号の取得
       auto frames = attackMap.at(PlayerStateToNumber());
       // 攻撃判定が出るまでのフレーム数の取得

@@ -248,9 +248,28 @@ namespace Gyro {
         {"wMove", "res/Sound/SE/Enemy/WheelMove.wav"},       // ’nãˆÚ“®SE
         {"wAttack", "res/Sound/SE/Enemy/WheelAttack.wav"},   // ’nãUŒ‚SE
         {"dAttack", "res/Sound/SE/Enemy/DroneAttack.wav"},   // ‹ó’†UŒ‚SE
-        {"hitLow", "res/Sound/SE/Enemy/EnemyHitLow.wav"},         // ƒqƒbƒgãSE
-        {"hitHigh", "res/Sound/SE/Enemy/EnemyHitHigh.wav"},       // ƒqƒbƒg‹­SE
-        {"destroy", "res/Sound/SE/Enemy/EnemyDestroy.wav"}        // ”j‰óSE
+        {"hitLow", "res/Sound/SE/Enemy/EnemyHitLow.wav"},       // ƒqƒbƒgãSE
+        {"hitHigh", "res/Sound/SE/Enemy/EnemyHitHigh.wav"},     // ƒqƒbƒg‹­SE
+        {"destroy", "res/Sound/SE/Enemy/EnemyDestroy.wav"},     // ”j‰óSE
+        // ƒvƒŒƒCƒ„[º
+        {"idle", "res/Sound/SE/Player/Voice/idle.wav"},         // ‘Ò‹@
+        {"jump", "res/Sound/SE/Player/Voice/jump.wav"},         // ƒWƒƒƒ“ƒv
+        {"damage", "res/Sound/SE/Player/Voice/damage.wav"},     // ƒ_ƒ[ƒW
+        {"excite1", "res/Sound/SE/Player/Voice/excite1.wav"},   // •KE‹Z\‚¦
+        {"excite2", "res/Sound/SE/Player/Voice/excite2.wav"},   // •KE‹Z’†
+        {"excite3", "res/Sound/SE/Player/Voice/excite3.wav"},   // •KE‹ZŒã
+        {"low1", "res/Sound/SE/Player/Voice/low1.wav"},         // ãUŒ‚1
+        {"low2", "res/Sound/SE/Player/Voice/low2.wav"},         // ãUŒ‚2
+        {"low3", "res/Sound/SE/Player/Voice/low3.wav"},         // ãUŒ‚3
+        {"lowex", "res/Sound/SE/Player/Voice/lowex.wav"},       // ãUŒ‚EX
+        {"high1", "res/Sound/SE/Player/Voice/high1.wav"},       // ‹­UŒ‚1
+        {"high2", "res/Sound/SE/Player/Voice/high2.wav"},       // ‹­UŒ‚2
+        {"high3", "res/Sound/SE/Player/Voice/high3.wav"},       // ‹­UŒ‚3
+        {"jlow1", "res/Sound/SE/Player/Voice/jweak1.wav"},      // ‹ó’†ãUŒ‚1
+        {"jlow2", "res/Sound/SE/Player/Voice/jlow2.wav"},       // ‹ó’†ãUŒ‚2
+        {"jlow3", "res/Sound/SE/Player/Voice/jlow3.wav"},       // ‹ó’†ãUŒ‚3
+        {"jhigh1", "res/Sound/SE/Player/Voice/jhigh.wav"},      // ‹ó’†‹­UŒ‚1
+        {"jhigh2", "res/Sound/SE/Player/Voice/jhigh2.wav"},     // ‹ó’†‹­UŒ‚2
       };
       // ƒTƒEƒ“ƒhƒT[ƒo‚É“o˜^
       _app.GetSoundServer().AddSounds(soundMap);
