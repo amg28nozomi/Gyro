@@ -87,25 +87,35 @@ namespace Gyro {
       _position.SetX(x);
       auto z = target.GetZ() + _move.GetZ() + sin(radian) * length;
       _position.SetZ(z);
-      // y位置
+      // スティックの傾きでy座標変更
       if (stick.GetY() > InputMin) {
-        auto py = _position.GetY() - 4.0f;
-        _position.SetY(py);
+        auto cameraLowerLimit = target.GetY() + 40.f;
+        // y座標がPlayerから離れすぎないようにする
+        if (_position.GetY() > cameraLowerLimit) {
+          auto plusY = _position.GetY() - 4.0f;
+          _position.SetY(plusY);
+        }
       }
       if (stick.GetY() < -InputMin) {
-        auto my = _position.GetY() + 4.0f;
-        _position.SetY(my);
+        auto cameraHighLimit = target.GetY() + 300.f;
+        // y座標がPlayerから離れすぎないようにする
+        if (_position.GetY() < cameraHighLimit) {
+          auto minusY = _position.GetY() + 4.0f;
+          _position.SetY(minusY);
+        }
       }
+      // プレイヤーのy座標に追従
       if (_target.GetY() > target.GetY()) {
-        auto a = _target.GetY() - target.GetY();
-        auto py = _position.GetY() - a;
-        _position.SetY(py);
+        auto derectionTarget = _target.GetY() - target.GetY();
+        auto plusY = _position.GetY() - derectionTarget;
+        _position.SetY(plusY);
       }
       if (_target.GetY() < target.GetY()) {
-        auto a = target.GetY() - _target.GetY();
-        auto my = _position.GetY() + a;
-        _position.SetY(my);
+        auto derectionTarget = target.GetY() - _target.GetY();
+        auto minusY = _position.GetY() + derectionTarget;
+        _position.SetY(minusY);
       }
+
       // 座標の設定
       _target.Set(target);
       // 若干注視点を上にする
