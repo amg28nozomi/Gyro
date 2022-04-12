@@ -33,12 +33,6 @@
     <Filter Include="ヘッダー ファイル\Object">
       <UniqueIdentifier>{9cc7ae8e-3db1-4639-b930-e78ef0cdf180}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Utility">
-      <UniqueIdentifier>{2da0621c-a024-47dc-8938-66430bc456c1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\Utility">
-      <UniqueIdentifier>{51563eb1-c42b-46a5-91e9-415ae64f90f7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ヘッダー ファイル\ModelAnim">
       <UniqueIdentifier>{31d9f7da-f792-4fc4-a84a-d28fccf2674c}</UniqueIdentifier>
     </Filter>
@@ -98,12 +92,6 @@
     </Filter>
     <Filter Include="ソース ファイル\Stage">
       <UniqueIdentifier>{888bbbb8-cb65-463c-8181-2e8c4e394ec3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\System">
-      <UniqueIdentifier>{7ba65220-ebc4-4178-9151-e229911fb050}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\System">
-      <UniqueIdentifier>{c5cd4ae7-9e13-4642-b3f1-94dffe8bc18d}</UniqueIdentifier>
     </Filter>
     <Filter Include="ソース ファイル\Primitive">
       <UniqueIdentifier>{beaf3f7c-56d7-4077-94ee-19bb8bd0130d}</UniqueIdentifier>
@@ -220,9 +208,6 @@
     </ClCompile>
     <ClCompile Include="source\UtilityDX.cpp">
       <Filter>ソース ファイル\Application</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Player.cpp">
-      <Filter>ソース ファイル\Object</Filter>
     </ClCompile>
     <ClCompile Include="source\ObjectServer.cpp">
       <Filter>ソース ファイル\Object</Filter>
@@ -470,9 +455,6 @@
     <ClCompile Include="source\HealBox.cpp">
       <Filter>ソース ファイル\Object</Filter>
     </ClCompile>
-    <ClCompile Include="source\SpawnItem.cpp">
-      <Filter>ソース ファイル\Utility</Filter>
-    </ClCompile>
     <ClCompile Include="source\EffectPlayerAvoidance.cpp">
       <Filter>ソース ファイル\Effect\Player</Filter>
     </ClCompile>
@@ -490,6 +472,12 @@
     </ClCompile>
     <ClCompile Include="source\WirePoint.cpp">
       <Filter>ソース ファイル\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Player.cpp">
+      <Filter>ヘッダー ファイル\Effect\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SpawnItem.cpp">
+      <Filter>ソース ファイル\Object\Spawn</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -649,9 +637,6 @@
     <ClInclude Include="source\WireComponent.h">
       <Filter>ヘッダー ファイル\Object\Player\Component</Filter>
     </ClInclude>
-    <ClInclude Include="source\WirePoint.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="source\Light.h">
       <Filter>ヘッダー ファイル\Light</Filter>
     </ClInclude>
@@ -772,12 +757,6 @@
     <ClInclude Include="source\ModeLoading.h">
       <Filter>ヘッダー ファイル\Mode</Filter>
     </ClInclude>
-    <ClInclude Include="source\HealBox.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Box.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="source\EffectPlayerAvoidance.h">
       <Filter>ヘッダー ファイル\Effect\Player</Filter>
     </ClInclude>
@@ -792,6 +771,15 @@
     </ClInclude>
     <ClInclude Include="source\SpawnItem.h">
       <Filter>ヘッダー ファイル\Object\Spawn</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Box.h">
+      <Filter>ヘッダー ファイル\Object\Wire</Filter>
+    </ClInclude>
+    <ClInclude Include="source\HealBox.h">
+      <Filter>ヘッダー ファイル\Object\Wire</Filter>
+    </ClInclude>
+    <ClInclude Include="source\WirePoint.h">
+      <Filter>ヘッダー ファイル\Object\Wire</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

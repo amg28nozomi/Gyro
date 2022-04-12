@@ -19,38 +19,38 @@
 #include "EnemyBase.h"
 
 namespace {
-  constexpr auto NoAnimation = -1;    //!< アニメーションはアタッチされていない
-  constexpr auto InputMin = 2000.0f;  //!< 入力を受け付ける最低値
-  constexpr auto InputMax = 32767.0f; //!< 入力上限
-  constexpr auto MoveSpeed = 5.0f;    //!< デフォルトの移動量
-  constexpr auto MoveZero = 0.0f;     //!< 移動量0
-  constexpr auto RunValue = 36.0f;    //!< 走り状態
-  constexpr auto WireSpeed = 10.0f;   //!< ワイヤー移動速度
+  constexpr auto NoAnimation = -1;    // アニメーションはアタッチされていない
+  constexpr auto InputMin = 2000.0f;  // 入力を受け付ける最低値
+  constexpr auto InputMax = 32767.0f; // 入力上限
+  constexpr auto MoveSpeed = 5.0f;    // デフォルトの移動量
+  constexpr auto MoveZero = 0.0f;     // 移動量0
+  constexpr auto RunValue = 36.0f;    // 走り状態
+  constexpr auto WireSpeed = 10.0f;   // ワイヤー移動速度
   // プレイヤーのアニメーションキー
-  constexpr auto Idle = "GyroIdle";                            //!< アイドル
-  constexpr auto Walk = "GyroWalk";                            //!< 歩き
-  constexpr auto Run = "GyroDash";                             //!< 走り
-  constexpr auto Step = "GyroStep";                            //!< ステップ
-  constexpr auto JumpUp = "GyroJUp";                           //!< ジャンプアップ
-  constexpr auto JumpDown = "GyroJDown";                       //!< ジャンプダウン(落下中)
-  constexpr auto JumpLanding = "GyroJLand";                    //!< ジャンプランド(着地)
-  constexpr auto GroundLightAttack1 = "GyroLaw1";              //!< 地上弱攻撃1
-  constexpr auto GroundLightAttack2 = "GyroLaw2";              //!< 地上弱攻撃2
-  constexpr auto GroundLightAttack3 = "GyroLaw3";              //!< 地上弱攻撃3
-  constexpr auto GroundLightAttackEX = "GyroLawEx";            //!< 地上EX攻撃(弱の〆)
-  constexpr auto GroundHeavyAttack1 = "Gyrohigh1";             //!< 地上強攻撃1
-  constexpr auto GroundHeavyAttack2 = "Gyrohigh2";             //!< 地上強攻撃2
-  constexpr auto GroundHeavyAttack3 = "Gyrohigh3";             //!< 地上強攻撃3
-  constexpr auto AirLightAttack1 = "GyroJLaw1";                //!< 空中弱攻撃1
-  constexpr auto AirLightAttack2 = "GyroJLaw2";                //!< 空中弱攻撃2
-  constexpr auto AirLightAttack3 = "GyroJLaw3";                //!< 空中弱攻撃3
-  constexpr auto AirHeavyAttack1 = "GyroJHigh1";               //!< 空中強攻撃1
-  constexpr auto AirHeavyAttack2 = "GyroJHigh2";               //!< 空中強攻撃2
-  constexpr auto ExciteTrickActive = "GyroExciteTrickActive";  //!< 必殺技
-  constexpr auto ExciteTrick1 = "GyroExciteTrickDirect1";      //!< 必殺技
-  constexpr auto ExciteTrick2 = "GyroExciteTrickDirect2";      //!< 必殺技
-  constexpr auto Damage1 = "GyroDamage1";                      //!< 小ダメージ
-  constexpr auto Damage2 = "GyroDamage2";                      //!< 大ダメージ
+  constexpr auto Idle = "GyroIdle";                            // アイドル
+  constexpr auto Walk = "GyroWalk";                            // 歩き
+  constexpr auto Run = "GyroDash";                             // 走り
+  constexpr auto Step = "GyroStep";                            // ステップ
+  constexpr auto JumpUp = "GyroJUp";                           // ジャンプアップ
+  constexpr auto JumpDown = "GyroJDown";                       // ジャンプダウン(落下中)
+  constexpr auto JumpLanding = "GyroJLand";                    // ジャンプランド(着地)
+  constexpr auto GroundLightAttack1 = "GyroLaw1";              // 地上弱攻撃1
+  constexpr auto GroundLightAttack2 = "GyroLaw2";              // 地上弱攻撃2
+  constexpr auto GroundLightAttack3 = "GyroLaw3";              // 地上弱攻撃3
+  constexpr auto GroundLightAttackEX = "GyroLawEx";            // 地上EX攻撃(弱の〆)
+  constexpr auto GroundHeavyAttack1 = "Gyrohigh1";             // 地上強攻撃1
+  constexpr auto GroundHeavyAttack2 = "Gyrohigh2";             // 地上強攻撃2
+  constexpr auto GroundHeavyAttack3 = "Gyrohigh3";             // 地上強攻撃3
+  constexpr auto AirLightAttack1 = "GyroJLaw1";                // 空中弱攻撃1
+  constexpr auto AirLightAttack2 = "GyroJLaw2";                // 空中弱攻撃2
+  constexpr auto AirLightAttack3 = "GyroJLaw3";                // 空中弱攻撃3
+  constexpr auto AirHeavyAttack1 = "GyroJHigh1";               // 空中強攻撃1
+  constexpr auto AirHeavyAttack2 = "GyroJHigh2";               // 空中強攻撃2
+  constexpr auto ExciteTrickActive = "GyroExciteTrickActive";  // 必殺技
+  constexpr auto ExciteTrick1 = "GyroExciteTrickDirect1";      // 必殺技
+  constexpr auto ExciteTrick2 = "GyroExciteTrickDirect2";      // 必殺技
+  constexpr auto Damage1 = "GyroDamage1";                      // 小ダメージ
+  constexpr auto Damage2 = "GyroDamage2";                      // 大ダメージ
   // プレイヤーのHP
   constexpr int GyroHP = 1000;
   // トリックゲージの設定
@@ -59,34 +59,34 @@ namespace {
   constexpr auto JumpPowe = 3.0f;
   constexpr auto JumpMax = 300.0f;
   constexpr auto RunPower = 3.8f;
-  constexpr auto LightFlag = true;  //!< 弱攻撃フラグ
-  constexpr auto HeavyFlag = false; //!< 強攻撃フラグ
+  constexpr auto LightFlag = true;  // 弱攻撃フラグ
+  constexpr auto HeavyFlag = false; // 強攻撃フラグ
   // 状態を表すキー
-  constexpr auto StateNumberIdle = 0;          //!< 待機
-  constexpr auto StateNumberWalk = 1;          //!< 歩き
-  constexpr auto StateNumberRun = 2;           //!< 走り
-  constexpr auto StateNumberJump = 3;          //!< ジャンプ
-  constexpr auto StateNumberLight1 = 4;        //!< 弱攻撃1
-  constexpr auto StateNumberLight2 = 6;        //!< 弱攻撃2
-  constexpr auto StateNumberLight3 = 8;        //!< 弱攻撃3
-  constexpr auto StateNumberHeavy1 = 5;        //!< 強攻撃1
-  constexpr auto StateNumberHeavy2 = 7;        //!< 強攻撃2
-  constexpr auto StateNumberHeavy3 = 9;        //!< 強攻撃3
-  constexpr auto StateNumberAirLight1 = 10;    //!< 空中弱攻撃1
-  constexpr auto StateNumberAirLight2 = 12;    //!< 空中弱攻撃2
-  constexpr auto StateNumberAirLight3 = 14;    //!< 空中弱攻撃3
-  constexpr auto StateNumberAirHeavy1 = 11;    //!< 空中強攻撃1
-  constexpr auto StateNumberAirHeavy2 = 13;    //!< 空中強攻撃2
-  constexpr auto StateNumberExciteActive = 15; //!< 必殺技構え
-  constexpr auto StateNumberExciteTrick1 = 16; //!< 必殺技中
-  constexpr auto StateNumberExciteTrick2 = 17; //!< 必殺技後
-  constexpr auto StateNumberDash = 18;         //!< ダッシュ
-  constexpr auto StateNumberFall = 19;         //!< 降下
-  constexpr auto StateNumberDamage = 20;       //!< ダメージ
+  constexpr auto StateNumberIdle = 0;          // 待機
+  constexpr auto StateNumberWalk = 1;          // 歩き
+  constexpr auto StateNumberRun = 2;           // 走り
+  constexpr auto StateNumberJump = 3;          // ジャンプ
+  constexpr auto StateNumberLight1 = 4;        // 弱攻撃1
+  constexpr auto StateNumberLight2 = 6;        // 弱攻撃2
+  constexpr auto StateNumberLight3 = 8;        // 弱攻撃3
+  constexpr auto StateNumberHeavy1 = 5;        // 強攻撃1
+  constexpr auto StateNumberHeavy2 = 7;        // 強攻撃2
+  constexpr auto StateNumberHeavy3 = 9;        // 強攻撃3
+  constexpr auto StateNumberAirLight1 = 10;    // 空中弱攻撃1
+  constexpr auto StateNumberAirLight2 = 12;    // 空中弱攻撃2
+  constexpr auto StateNumberAirLight3 = 14;    // 空中弱攻撃3
+  constexpr auto StateNumberAirHeavy1 = 11;    // 空中強攻撃1
+  constexpr auto StateNumberAirHeavy2 = 13;    // 空中強攻撃2
+  constexpr auto StateNumberExciteActive = 15; // 必殺技構え
+  constexpr auto StateNumberExciteTrick1 = 16; // 必殺技中
+  constexpr auto StateNumberExciteTrick2 = 17; // 必殺技後
+  constexpr auto StateNumberDash = 18;         // ダッシュ
+  constexpr auto StateNumberFall = 19;         // 降下
+  constexpr auto StateNumberDamage = 20;       // ダメージ
 
-  constexpr auto AttackInterval = 150.0f; //!< 攻撃用インターバル
-  constexpr auto DashTime = 600.0f;       //!< ダッシュ時間
-  constexpr auto DashPower = 300.0f;      //!< ダッシュの移動量
+  constexpr auto AttackInterval = 150.0f; // 攻撃用インターバル
+  constexpr auto DashTime = 600.0f;       // ダッシュ時間
+  constexpr auto DashPower = 300.0f;      // ダッシュの移動量
 }
 
 namespace Gyro {
