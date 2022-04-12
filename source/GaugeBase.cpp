@@ -20,7 +20,6 @@ namespace Gyro {
     bool GaugeBase::Process() {
       // 描画用に使う値の計算処理
       _point = ((_maxW - 5) / _maxGauge) * _value;
-
       return true;
     }
 

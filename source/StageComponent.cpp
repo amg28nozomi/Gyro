@@ -126,7 +126,6 @@ namespace Gyro {
         MV1SetScale(handle, UtilityDX::ToVECTOR(scale));
         _model.emplace_back(handle);
       }
-
       return true;
     }
 
@@ -157,14 +156,12 @@ namespace Gyro {
         stageModels.clear();
       }
       _stageModelMap.clear();
-
       return true;
     }
 
     bool StageComponent::ReleaseModel() {
       // ƒ‚ƒfƒ‹ƒnƒ“ƒhƒ‹Ši”[ƒRƒ“ƒeƒi‚ð‰ñ‚µ‚Ä•`‰æ‚·‚é
       _model.clear();
-
       return true;
     }
 

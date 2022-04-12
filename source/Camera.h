@@ -30,7 +30,7 @@ namespace Gyro {
        */
       enum class CameraState {
         Normal,         //!< 通常
-        SpecialMove,    //!< 必殺技
+        Special,        //!< 必殺技
       };
       /**
        * @brief コンストラクタ
@@ -115,9 +115,8 @@ namespace Gyro {
     private:
       AppFrame::Math::Vector4 _position{};    //!< カメラの座標
       AppFrame::Math::Vector4 _move{};        //!< 移動量
-      AppFrame::Math::Vector4 _target{};  //!< カメラの注視点(見ている座標)
-      CameraState _cameraState{ CameraState::Normal }; //!< カメラ状態
-
+      AppFrame::Math::Vector4 _target{};      //!< カメラの注視点(見ている座標)
+      CameraState _cameraState{ CameraState::Normal }; //!< カメラの状態
       /**
        * @brief  Normal状態の処理
        * @param  stick     右スティックの大きさ

@@ -30,7 +30,6 @@ namespace Gyro {
       _point = 640.f; // HPÉQÅ[ÉWÇÃëOñ 
       _hitPoint = 640.f; // HPÉQÅ[ÉWÇÃîwñ 
       _value = value;
-
       return true;
     }
 
@@ -58,7 +57,6 @@ namespace Gyro {
       else if (_hitPoint <= _point) {
         _hitPoint = _point;
       }
-
       return true;
     }
 
@@ -71,7 +69,6 @@ namespace Gyro {
       DrawBox(GAUGE_X_POSITION_1, GAUGE_Y_POSITION_1, GAUGE_X_POSITION_2, GAUGE_Y_POSITION_2, gray, true);
       DrawBox(GAUGE_X_POSITION_1, GAUGE_Y_POSITION_1, static_cast<int>(_hitPoint), GAUGE_Y_POSITION_2, red, true);  // îwñ HPÉQÅ[ÉW
       DrawBox(GAUGE_X_POSITION_1, GAUGE_Y_POSITION_1, static_cast<int>(_point), GAUGE_Y_POSITION_2, green, true);   // ëOñ HPÉQÅ[ÉW
-
       return true;
     }
 

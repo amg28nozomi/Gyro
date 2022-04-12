@@ -36,7 +36,6 @@ namespace Gyro {
       //_handle4 = LoadGraph("res/Primitive/コンポ 1 (00030).png");
       //_handle5 = LoadGraph("res/Primitive/コンポ 1 (00040).png");
       //_handle6 = LoadGraph("res/Primitive/コンポ 1 (00050).png");
-
       return (-1 != _handle);
     }
 
@@ -44,7 +43,6 @@ namespace Gyro {
       if (-1 == _handle) {
           return false;
       }
-
       return (-1 != DeleteGraph(_handle));
     }
 
@@ -83,7 +81,6 @@ namespace Gyro {
       }else if (_cnt <= _interval * 6) {
         DrawPolygonIndexed3D(_vertex->data(), _vertexNum, _index->data(), _polygonNum, _handle6, FALSE);
       }*/
-
       return true;
     }
 

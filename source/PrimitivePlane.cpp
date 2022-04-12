@@ -35,7 +35,6 @@ namespace Gyro {
     bool Plane::Initialize(float size, int divisionNum) {
       _size = size;
       _divisionNum = divisionNum;
-
       return true;
     }
 
@@ -102,7 +101,6 @@ namespace Gyro {
 
         offsetZ += polygonSize;
       }
-
       return true;
     }
   } // namespace Primitive

@@ -36,7 +36,6 @@ namespace Gyro {
       _invincible = std::make_unique<Object::InvincibleComponent>(_app);
       // –³“GŽžŠÔ‚ÌÝ’è
       _invincible->Set(InvincibleTime);
-
       return true;
     }
 
@@ -62,7 +61,6 @@ namespace Gyro {
       if (_enemyHP <= 0) {
         _enemyState = EnemyState::Dead;
       }
-
       return true;
     }
 
@@ -101,19 +99,15 @@ namespace Gyro {
     }
 
     void EnemyBase::SetCollision() {
-
     }
 
     void EnemyBase::Move() {
-
     }
 
     void EnemyBase::Attack() {
-
     }
 
     void EnemyBase::NockBack() {
-
     }
 
     void EnemyBase::Search() {
@@ -193,11 +187,9 @@ namespace Gyro {
     }
 
     void EnemyBase::EffectInit() {
-
     }
 
     void EnemyBase::EffectProcess() {
-
     }
 
     void EnemyBase::EffectPlay() {
@@ -219,7 +211,6 @@ namespace Gyro {
     }
 
     void EnemyBase::EffectDead() {
-
     }
 
     void EnemyBase::Dead() {

@@ -10,7 +10,7 @@
 #include "UtilityDX.h"
 
 namespace {
-  constexpr auto Near = 75.0f;           //!< 手前クリップ距離
+  constexpr auto Near = 75.0f;            //!< 手前クリップ距離
   constexpr auto Far = 10000.0f;          //!< 奥クリップ距離
   constexpr auto InputMin = 2000.0f;      //!< 入力を受け付ける最低値
 }
@@ -28,7 +28,6 @@ namespace Gyro {
 
     bool Camera::Init() {
       SetState(); // 初期設定
-
       return true;
     }
 
@@ -39,7 +38,6 @@ namespace Gyro {
         Normal(stick, target, move);
         break;
       }
-      
       return true;
     }
 
@@ -56,7 +54,6 @@ namespace Gyro {
       float length = sqrt(sz * sz + sx * sx);
       float degree = AppFrame::Math::Utility::RadianToDegree(radian);
       DrawFormatString(x, y, GetColor(255, 0, 0), " length = %5.2f, radian = %5.2f, degree = %5.2f", length, radian, degree); y += size;
-
       return true;
     }
 #endif // _DEBUG
