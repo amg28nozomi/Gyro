@@ -35,7 +35,6 @@ namespace Gyro {
       _point = GAUGE_X_POSITION_2;
       _hitPoint = GAUGE_X_POSITION_2;
       _value = value;
-
       return true;
     }
 
@@ -51,7 +50,6 @@ namespace Gyro {
       if (_hitPoint < GAUGE_X_POSITION_1) {
         _hitPoint = GAUGE_X_POSITION_1; // ÔƒQ[ƒW‚ªÅ’á’l‚æ‚è‰º‚ª‚ç‚È‚¢‚æ‚¤‚É‚·‚é
       }
-
       return true;
     }
 
@@ -63,7 +61,6 @@ namespace Gyro {
       DrawBillboard3D(UtilityDX::ToVECTOR(DrawPosition), 0.5f, 0.5f, 68.0f, 0.0f, _hpFrame, true); // ŠO˜g
       DrawModiBillboard3D(UtilityDX::ToVECTOR(DrawPosition), GAUGE_X_POSITION_1, 2.5f, _hitPoint, 2.5f, _hitPoint, -2.5f, -33.f, -2.5f, _gaugeBackHandle, true); // ”w–ÊHPƒQ[ƒW
       DrawModiBillboard3D(UtilityDX::ToVECTOR(DrawPosition), GAUGE_X_POSITION_1, 2.5f, _point, 2.5f, _point, -2.5f, -33.f, -2.5f, _gaugeFrontHandle, true); // ‘O–ÊHPƒQ[ƒW
-
       return true;
     }
 

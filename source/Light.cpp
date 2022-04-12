@@ -16,7 +16,6 @@ namespace Gyro {
     }
 
     Light::~Light() {
-      
     }
 
     void Light::Init() {

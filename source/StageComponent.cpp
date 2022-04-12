@@ -54,7 +54,6 @@ namespace Gyro {
         reading >> value;
         // ファイルを閉じる
         reading.close();
-
         // ステージの配置情報を取り出す
         for (auto&& stageData : value[jsonName.generic_string()]) {
           const auto fileName = stageData["filename"];    // ファイル名
@@ -67,7 +66,6 @@ namespace Gyro {
           const auto ScaleX = stageData["sx"];            // x拡大値
           const auto ScaleY = stageData["sy"];            // y拡大値
           const auto ScaleZ = stageData["sz"];            // z拡大値
-
           // filePathの作成
           const auto filePath = (p / fileName).generic_string() + ".mv1";
           namespace AppMath = AppFrame::Math;
@@ -100,7 +98,8 @@ namespace Gyro {
           _stageModelMap[key.data()].emplace_back(handle, stageData);
           return;
         }
-      }else {
+      }
+      else {
         auto filename = stageData.FileName().data();
         auto handle = MV1LoadModel(filename);
         std::vector<std::pair<int, StageData>> stageDatas;
@@ -126,7 +125,6 @@ namespace Gyro {
         MV1SetScale(handle, UtilityDX::ToVECTOR(scale));
         _model.emplace_back(handle);
       }
-
       return true;
     }
 
@@ -157,14 +155,12 @@ namespace Gyro {
         stageModels.clear();
       }
       _stageModelMap.clear();
-
       return true;
     }
 
     bool StageComponent::ReleaseModel() {
       // モデルハンドル格納コンテナを回して描画する
       _model.clear();
-
       return true;
     }
 

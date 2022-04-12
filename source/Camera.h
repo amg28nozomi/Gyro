@@ -115,7 +115,7 @@ namespace Gyro {
     private:
       AppFrame::Math::Vector4 _position{};    //!< カメラの座標
       AppFrame::Math::Vector4 _move{};        //!< 移動量
-      AppFrame::Math::Vector4 _target{};  //!< カメラの注視点(見ている座標)
+      AppFrame::Math::Vector4 _target{};      //!< カメラの注視点(見ている座標)
       CameraState _cameraState{ CameraState::Normal }; //!< カメラ状態
 
       /**

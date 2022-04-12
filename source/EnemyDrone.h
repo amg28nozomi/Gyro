@@ -123,8 +123,8 @@ namespace Gyro {
        */
       bool IsDamege() override;
 
-      bool _iMove{ false };  //!< 移動フラグ
-      AppFrame::Math::Vector4 _oldPosition;   //!< 攻撃状態に移行したタイミングの座標
+      bool _iMove{ false };                       //!< 移動フラグ
+      AppFrame::Math::Vector4 _oldPosition;       //!< 攻撃状態に移行したタイミングの座標
       static inline unsigned short _number{ 1 };  //!< 生成番号
       unsigned short _this{ 0 };  //!< 識別ID
 

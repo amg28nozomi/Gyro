@@ -2,7 +2,7 @@
  * @file    EnemyWheel.cpp
  * @brief   地上敵クラス
  *
- * @author  宮澤耀生
+ * @author  土橋峡介
  * @date    January 2022
  *********************************************************************/
 #include "EnemyWheel.h"
@@ -41,7 +41,6 @@ namespace Gyro {
     }
 
     EnemyWheel::~EnemyWheel() {
-
     }
 
     bool EnemyWheel::Init() {
@@ -469,7 +468,6 @@ namespace Gyro {
 
     bool EnemyWheel::IsDamege() {
       // 無敵状態かの判定
-
       // 自機の取得
       const auto player = _app.GetObjectServer().GetPlayer();
       // 攻撃コンポーネントの取得

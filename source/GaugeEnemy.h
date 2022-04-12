@@ -56,8 +56,8 @@ namespace Gyro {
     private:
       AppFrame::Math::Vector4 _position;  //!< 座標
       int _gaugeFrontHandle{ 0 }; //!< HPゲージ画像(上)
-      int _gaugeBackHandle{ 0 }; //!< HPゲージ画像(下)
-      int _hpFrame{ 0 }; //!< HPフレーム画像(外枠)
+      int _gaugeBackHandle{ 0 };  //!< HPゲージ画像(下)
+      int _hpFrame{ 0 };          //!< HPフレーム画像(外枠)
     };
   } // namesapce Gauge
 } // namespace Gyro

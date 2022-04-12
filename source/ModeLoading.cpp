@@ -18,11 +18,9 @@ namespace Gyro {
   namespace Mode {
 
     ModeLoading::ModeLoading(Application::ApplicationMain& app) : ModeBase(*app.GetInstance()), _appMain(app) {
-
     }
 
     ModeLoading::~ModeLoading() {
-
     }
 
     bool ModeLoading::Init() {
