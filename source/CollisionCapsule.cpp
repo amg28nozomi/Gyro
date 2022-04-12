@@ -43,7 +43,6 @@ namespace Gyro {
 
     bool CollisionCapsule::IntersectLine(const AppMath::LineSegment& line) {
       // ƒJƒvƒZƒ‹‚Æü•ª‚ÌÕ“Ë”»’è
-
       return true;
     }
 
@@ -53,7 +52,6 @@ namespace Gyro {
       auto spherePos = sphere.GetPosition();
       // ‹…‚Ì‚‚³‚ğü•ª‚É•ÏŠ·
       AppMath::LineSegment lengthSphere(spherePos.AddVectorY(-sphereRadius), spherePos.AddVectorY(sphereRadius));
-      // 
       float dist = LineSegment().MinDist(lengthSphere);
       // ”¼Œa
       auto sumRadius = _radius + sphereRadius;
@@ -68,10 +66,6 @@ namespace Gyro {
       auto sumRadius = _radius + capsule._radius;
       auto sr = sumRadius * sumRadius;
       return dist <= sr;
-      // return false;
-      //float distSq = LineSegment().MinDistSq(capsule.LineSegment());
-      //auto sumRadius = _radius + capsule._radius;
-      //return distSq <= (sumRadius * sumRadius);
     }
 
     bool CollisionCapsule::IntersectPlane(const AppFrame::Math::Plane& plane) {

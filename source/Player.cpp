@@ -19,16 +19,13 @@
 #include "EnemyBase.h"
 
 namespace {
-  constexpr auto NoAnimation = -1; //!< アニメーションはアタッチされていない
+  constexpr auto NoAnimation = -1;    //!< アニメーションはアタッチされていない
   constexpr auto InputMin = 2000.0f;  //!< 入力を受け付ける最低値
-  constexpr auto InputMax = 32767.0f;
-
-  constexpr auto MoveSpeed = 5.0f; //!< デフォルトの移動量
-  constexpr auto MoveZero = 0.0f;
-  // 走り状態
-  constexpr auto RunValue = 36.0f;
-
-  constexpr auto WireSpeed = 10.0f; //!< ワイヤー移動速度
+  constexpr auto InputMax = 32767.0f; //!< 入力上限
+  constexpr auto MoveSpeed = 5.0f;    //!< デフォルトの移動量
+  constexpr auto MoveZero = 0.0f;     //!< 移動量0
+  constexpr auto RunValue = 36.0f;    //!< 走り状態
+  constexpr auto WireSpeed = 10.0f;   //!< ワイヤー移動速度
   // プレイヤーのアニメーションキー
   constexpr auto Idle = "GyroIdle";                            //!< アイドル
   constexpr auto Walk = "GyroWalk";                            //!< 歩き
@@ -61,49 +58,41 @@ namespace {
   // ジャンプフラグ
   constexpr auto JumpPowe = 3.0f;
   constexpr auto JumpMax = 300.0f;
-
   constexpr auto RunPower = 3.8f;
-
   constexpr auto LightFlag = true;  //!< 弱攻撃フラグ
   constexpr auto HeavyFlag = false; //!< 強攻撃フラグ
-
   // 状態を表すキー
-  constexpr auto StateNumberIdle = 0;    //!< 待機
-  constexpr auto StateNumberWalk = 1;    //!< 歩き
-  constexpr auto StateNumberRun = 2;     //!< 走り
-  constexpr auto StateNumberJump = 3;    //!< ジャンプ
-  constexpr auto StateNumberLight1 = 4;  //!< 弱攻撃1
-  constexpr auto StateNumberLight2 = 6;  //!< 弱攻撃2
-  constexpr auto StateNumberLight3 = 8;  //!< 弱攻撃3
-  constexpr auto StateNumberHeavy1 = 5;  //!< 強攻撃1
-  constexpr auto StateNumberHeavy2 = 7;  //!< 強攻撃2
-  constexpr auto StateNumberHeavy3 = 9;  //!< 強攻撃3
-  constexpr auto StateNumberAirLight1 = 10;  //!< 空中弱攻撃1
-  constexpr auto StateNumberAirLight2 = 12;  //!< 空中弱攻撃2
-  constexpr auto StateNumberAirLight3 = 14;  //!< 空中弱攻撃3
-  constexpr auto StateNumberAirHeavy1 = 11;  //!< 空中強攻撃1
-  constexpr auto StateNumberAirHeavy2 = 13;  //!< 空中強攻撃2
+  constexpr auto StateNumberIdle = 0;          //!< 待機
+  constexpr auto StateNumberWalk = 1;          //!< 歩き
+  constexpr auto StateNumberRun = 2;           //!< 走り
+  constexpr auto StateNumberJump = 3;          //!< ジャンプ
+  constexpr auto StateNumberLight1 = 4;        //!< 弱攻撃1
+  constexpr auto StateNumberLight2 = 6;        //!< 弱攻撃2
+  constexpr auto StateNumberLight3 = 8;        //!< 弱攻撃3
+  constexpr auto StateNumberHeavy1 = 5;        //!< 強攻撃1
+  constexpr auto StateNumberHeavy2 = 7;        //!< 強攻撃2
+  constexpr auto StateNumberHeavy3 = 9;        //!< 強攻撃3
+  constexpr auto StateNumberAirLight1 = 10;    //!< 空中弱攻撃1
+  constexpr auto StateNumberAirLight2 = 12;    //!< 空中弱攻撃2
+  constexpr auto StateNumberAirLight3 = 14;    //!< 空中弱攻撃3
+  constexpr auto StateNumberAirHeavy1 = 11;    //!< 空中強攻撃1
+  constexpr auto StateNumberAirHeavy2 = 13;    //!< 空中強攻撃2
   constexpr auto StateNumberExciteActive = 15; //!< 必殺技構え
   constexpr auto StateNumberExciteTrick1 = 16; //!< 必殺技中
   constexpr auto StateNumberExciteTrick2 = 17; //!< 必殺技後
-  constexpr auto StateNumberDash = 18;   //!< ダッシュ
-  constexpr auto StateNumberFall = 19;   //!< 降下
-  constexpr auto StateNumberDamage = 20; //!< ダメージ
-
-
-
+  constexpr auto StateNumberDash = 18;         //!< ダッシュ
+  constexpr auto StateNumberFall = 19;         //!< 降下
+  constexpr auto StateNumberDamage = 20;       //!< ダメージ
 
   constexpr auto AttackInterval = 150.0f; //!< 攻撃用インターバル
-
-  constexpr auto DashTime = 600.0f;   //!< ダッシュ時間
-  constexpr auto DashPower = 300.0f;  //!< ダッシュの移動量
+  constexpr auto DashTime = 600.0f;       //!< ダッシュ時間
+  constexpr auto DashPower = 300.0f;      //!< ダッシュの移動量
 }
 
 namespace Gyro {
   namespace Player {
-
     /**
-     * @brief 自機の状態をキーとして状態を管理する連想配列クラス
+     * @brief 自機の状態をキーとして状態を管理する連想配列
      */
     const std::unordered_map<Player::PlayerState, std::pair<int, int>> chaneMap{
       {Player::PlayerState::Attack1, {60, 90}}, // 攻撃1
@@ -111,7 +100,9 @@ namespace Gyro {
       {Player::PlayerState::JumpAttack1, {0, 100}}, // 空中攻撃1
       {Player::PlayerState::JumpAttack2, {0, 100}}, // 空中攻撃2
     };
-
+    /**
+     * @brief 自機の現在の状態をキーとして次に遷移する状態を管理する連想配列
+     */
     const std::unordered_map<Player::PlayerState, Player::PlayerState> stateMap{
       {Player::PlayerState::Attack1, Player::PlayerState::Attack2},
       {Player::PlayerState::Attack2, Player::PlayerState::Attack3},
@@ -122,7 +113,6 @@ namespace Gyro {
       {Player::PlayerState::JumpAttack3, Player::PlayerState::Idle},
       {Player::PlayerState::Idle, Player::PlayerState::ExciteTrick},
     };
-
     /**
      * @brief プレイヤーのボイスを管理する連想配列
      */
@@ -131,8 +121,6 @@ namespace Gyro {
       {StateNumberIdle, "idle"},
       // ジャンプ
       {StateNumberJump, "jump"},
-      // ダメージ
-      //{StateNumber}
       // 弱攻撃
       {StateNumberLight1, "low1"},
       {StateNumberLight2, "low2"},
@@ -153,7 +141,6 @@ namespace Gyro {
       {StateNumberExciteTrick1, "excite2"},
       {StateNumberExciteTrick2, "excite3"},
     };
-
     /**
      * @brief 攻撃判定が出てくるまでにかかるフレーム数を管理する連想配列
      */
@@ -176,7 +163,6 @@ namespace Gyro {
       // 必殺技攻撃
       {StateNumberExciteTrick1, 10},
     };
-
     /**
      * @brief コリジョンに使用するフレーム番号を管理する連想配列
      */
@@ -186,7 +172,7 @@ namespace Gyro {
       {StateNumberLight2, {15, 17}},
       {StateNumberLight3, {15, 17, 20, 22}},
       // 強攻撃
-      {StateNumberHeavy1 ,{15/*, 17, 20, 22*/}},
+      {StateNumberHeavy1 ,{15}},
       {StateNumberHeavy2 ,{15, 17, 20, 22}},
       {StateNumberHeavy3 ,{15, 17, 20, 22, 50, 75}},
       // 空中弱攻撃
@@ -199,7 +185,6 @@ namespace Gyro {
       // 必殺技攻撃
       {StateNumberExciteTrick1 ,{15, 17, 20, 22}},
     };
-
     /**
      * @brief 状態番号をキーとして、モーションブレンド情報を保持する連想配列
      */
@@ -626,8 +611,6 @@ namespace Gyro {
       return false;
     }
 
-
-
     int Player::NextKey() const {
       // 攻撃フラグに応じて返すキーを切り替える
       auto key = (_attackFlag) ? XINPUT_BUTTON_Y : XINPUT_BUTTON_X;
@@ -996,13 +979,6 @@ namespace Gyro {
         }
         // 更新フラグ
         if (!flag) flag = true;
-        // ヒットしたポリゴン分押し出す
-        //for (auto i = 0; i < hit.HitNum; ++i) {
-        //  // 法線ベクトルをベクトルクラス化
-        //  auto v = Vector4(hit.Dim[i].Normal.x, hit.Dim[i].Normal.y, hit.Dim[i].Normal.z);
-        //  // 法線ベクトルを
-        //  newPosition.Add(v);
-        //}
         // 別名定義
         using Vector4 = AppMath::Vector4;
         // ヒットしたポリゴン回分押し出す
@@ -1082,7 +1058,6 @@ namespace Gyro {
       // 状態の変更
       _playerState = PlayerState::Dash;
       _app.GetSoundComponent().PlayBackGround("avoidance");
-
       return true;
     }
 

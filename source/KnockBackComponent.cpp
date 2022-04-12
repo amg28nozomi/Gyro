@@ -17,7 +17,6 @@ namespace Gyro {
 
     KnockBackComponent::KnockBackComponent(ObjectBase& owner, Application::ApplicationMain& app) : _owner(owner), _app(app) {
       _state = KnockBackState::NonActive;
-      //_enemy = std::make_shared<EnemyBase>(app);
     }
 
     void KnockBackComponent::Start() {

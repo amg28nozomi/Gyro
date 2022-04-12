@@ -1,3 +1,10 @@
+/*****************************************************************//**
+ * @file   WireComponent.cpp
+ * @brief  ワイヤーアクション機能クラスの定義
+ * 
+ * @author 鈴木希海
+ * @date   April 2022
+ *********************************************************************/
 #include "WireComponent.h"
 #include "ObjectBase.h"
 
@@ -42,7 +49,6 @@ namespace Gyro {
         return Vector4(); // 向きを返す
       }
       // 向き情報を角度に変換
-      // auto rotation = std::atan2(_forward.GetX(), _forward.GetY(), _forward.GetZ());
       return _forward * _speed; // 移動量を返す
     }
   } // namespace Player

@@ -35,7 +35,6 @@ namespace Gyro {
         collision->SetPosition(_owner.GetPosition());
       }
       _indexs.clear();    // フレーム情報の削除
-      // _collision.clear(); // 既存のコリジョンを削除する
     }
 
     bool AttackComponent::Process(const AppFrame::Math::Vector4& localPosition) {

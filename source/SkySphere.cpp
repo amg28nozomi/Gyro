@@ -63,6 +63,5 @@ namespace Gyro {
       _handle = handle;
       return true;
     }
-
   } // namespace Object
 } // namespace Gyro

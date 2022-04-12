@@ -76,4 +76,4 @@ namespace Gyro {
       return true;
     }
   } // namespace Object
-} // 
+} // namespace Gyro

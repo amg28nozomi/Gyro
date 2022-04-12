@@ -1,3 +1,10 @@
+/*****************************************************************//**
+ * @file   StateComponent.cpp
+ * @brief  状態遷移判定用のコンポーネントクラスの定義
+ * 
+ * @author 鈴木希海
+ * @date   April 2022
+ *********************************************************************/
 #include "StateComponent.h"
 #include <appframe.h>
 
@@ -5,7 +12,7 @@ namespace {
   // 割合
   constexpr auto Max = 100;
   constexpr auto Min = 0;
-}
+} // namespace
 
 namespace Gyro {
   namespace Object {

@@ -54,7 +54,6 @@ namespace Gyro {
     }
 
     void MoveComponent::Start() {
-
     }
     
     void MoveComponent::Finish() {

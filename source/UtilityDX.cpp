@@ -26,6 +26,6 @@ namespace Gyro {
         matrixDX.m[row][column] = matrix.GetValue(row, column);
       }
     }
-    return std::move(matrixDX);
+    return matrixDX;
   }
 } // namespace Gyro

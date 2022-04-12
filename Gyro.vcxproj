@@ -86,7 +86,6 @@
     <ClCompile Include="source\GaugeTrick.cpp" />
     <ClCompile Include="source\InvincibleComponent.cpp" />
     <ClCompile Include="source\JumpComponent.cpp" />
-    <ClCompile Include="source\LightAttack1.cpp" />
     <ClCompile Include="source\ModeGame.cpp" />
     <ClCompile Include="source\ModelAnimComponent.cpp" />
     <ClCompile Include="source\ModelAnimInfo.cpp" />
@@ -99,8 +98,6 @@
     <ClCompile Include="source\ObjectServer.cpp" />
     <ClCompile Include="source\Player.cpp" />
     <ClCompile Include="source\ObjectComponent.cpp" />
-    <ClCompile Include="source\PlayerAttack.cpp" />
-    <ClCompile Include="source\PlayerAttackData.cpp" />
     <ClCompile Include="source\PrimitiveBase.cpp" />
     <ClCompile Include="source\PrimitivePlane.cpp" />
     <ClCompile Include="source\ScoreBase.cpp" />
@@ -189,7 +186,6 @@
     <ClInclude Include="source\GaugeTrick.h" />
     <ClInclude Include="source\InvincibleComponent.h" />
     <ClInclude Include="source\JumpComponent.h" />
-    <ClInclude Include="source\LightAttack1.h" />
     <ClInclude Include="source\ModeGame.h" />
     <ClInclude Include="source\ModelAnimComponent.h" />
     <ClInclude Include="source\ModelAnimInfo.h" />
@@ -202,8 +198,6 @@
     <ClInclude Include="source\ObjectServer.h" />
     <ClInclude Include="source\Player.h" />
     <ClInclude Include="source\ObjectComponent.h" />
-    <ClInclude Include="source\PlayerAttack.h" />
-    <ClInclude Include="source\PlayerAttackData.h" />
     <ClInclude Include="source\PrimitiveBase.h" />
     <ClInclude Include="source\PrimitivePlane.h" />
     <ClInclude Include="source\ScoreBase.h" />

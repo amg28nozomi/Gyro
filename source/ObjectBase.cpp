@@ -14,7 +14,7 @@
 
 namespace {
   constexpr auto MaxGravity = -50.0f;
-}
+} // namespace
 
 namespace Gyro {
   namespace Object {

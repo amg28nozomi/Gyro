@@ -95,7 +95,6 @@ namespace Gyro {
       _owner.SetRotation(AppMath::Vector4(0.0f, AppMath::Utility::RadianToDegree(radian), 0.0f));
 #endif
       // ˆÚ“®—Ê‚ğİ’è‚·‚é
-      // _move = Vector4::Scale(_direction, Vector4(speed, 0.0f, speed));
       _power = power;
       return true;
     }

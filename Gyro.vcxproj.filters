@@ -266,12 +266,6 @@
     <ClCompile Include="source\AttackComponent.cpp">
       <Filter>ソース ファイル\Object\Player\Attack</Filter>
     </ClCompile>
-    <ClCompile Include="source\PlayerAttack.cpp">
-      <Filter>ソース ファイル\Object\Player\Attack</Filter>
-    </ClCompile>
-    <ClCompile Include="source\LightAttack1.cpp">
-      <Filter>ソース ファイル\Object\Player\Attack</Filter>
-    </ClCompile>
     <ClCompile Include="source\StageComponent.cpp">
       <Filter>ソース ファイル\Stage</Filter>
     </ClCompile>
@@ -345,9 +339,6 @@
       <Filter>ソース ファイル\Object\Player\Component</Filter>
     </ClCompile>
     <ClCompile Include="source\MoveComponent.cpp">
-      <Filter>ソース ファイル\Object\Player\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="source\PlayerAttackData.cpp">
       <Filter>ソース ファイル\Object\Player\Component</Filter>
     </ClCompile>
     <ClCompile Include="source\ObjectComponent.cpp">
@@ -566,15 +557,6 @@
       <Filter>ヘッダー ファイル\Object\Collision</Filter>
     </ClInclude>
     <ClInclude Include="source\AttackComponent.h">
-      <Filter>ヘッダー ファイル\Object\Player\Attack</Filter>
-    </ClInclude>
-    <ClInclude Include="source\PlayerAttack.h">
-      <Filter>ヘッダー ファイル\Object\Player\Attack</Filter>
-    </ClInclude>
-    <ClInclude Include="source\PlayerAttackData.h">
-      <Filter>ヘッダー ファイル\Object\Player\Attack</Filter>
-    </ClInclude>
-    <ClInclude Include="source\LightAttack1.h">
       <Filter>ヘッダー ファイル\Object\Player\Attack</Filter>
     </ClInclude>
     <ClInclude Include="source\StageComponent.h">
@@ -796,9 +778,6 @@
     <ClInclude Include="source\Box.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="source\SpawnItem.h">
-      <Filter>ソース ファイル\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="source\EffectPlayerAvoidance.h">
       <Filter>ヘッダー ファイル\Effect\Player</Filter>
     </ClInclude>
@@ -810,6 +789,9 @@
     </ClInclude>
     <ClInclude Include="source\EffectStageHeal.h">
       <Filter>ヘッダー ファイル\Effect\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SpawnItem.h">
+      <Filter>ヘッダー ファイル\Object\Spawn</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

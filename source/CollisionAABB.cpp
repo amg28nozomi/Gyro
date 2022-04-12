@@ -51,9 +51,6 @@ namespace Gyro {
       if (Vector4::NearZero(v)) {
         return false;
       }
-
-
-
       return false;
     }
 
@@ -72,7 +69,6 @@ namespace Gyro {
       directionZ = Utility::Max(directionZ, z - _max.GetZ());
       // ‹——£‚Ì“ñæ‚ğZo
       auto distSq = Vector4::LengthSquared(Vector4(directionX, directionY, directionZ));
-      // 
       return distSq <= sphere.RadiusSquared();
     }
   } // namespace Object
