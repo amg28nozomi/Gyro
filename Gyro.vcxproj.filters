@@ -263,9 +263,6 @@
     <ClCompile Include="source\CollisionComponent.cpp">
       <Filter>ソース ファイル\Object\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="source\WirePoint.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="source\AttackComponent.cpp">
       <Filter>ソース ファイル\Object\Player\Attack</Filter>
     </ClCompile>
@@ -482,9 +479,6 @@
     <ClCompile Include="source\HealBox.cpp">
       <Filter>ソース ファイル\Object</Filter>
     </ClCompile>
-    <ClCompile Include="source\Box.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="source\SpawnItem.cpp">
       <Filter>ソース ファイル\Utility</Filter>
     </ClCompile>
@@ -499,6 +493,12 @@
     </ClCompile>
     <ClCompile Include="source\EffectStageHeal.cpp">
       <Filter>ソース ファイル\Effect\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Box.cpp">
+      <Filter>ソース ファイル\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="source\WirePoint.cpp">
+      <Filter>ソース ファイル\Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

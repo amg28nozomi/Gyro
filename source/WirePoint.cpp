@@ -12,8 +12,6 @@ namespace Gyro {
     
     WirePoint::WirePoint(const AppMath::Vector4& point, WirePoint& target) : _target(target) {
       _position = point;
-      // AABB”»’èî•ñ‚Ìì¬
-
     }
   } // namespace Object
 } // namespace Gyro

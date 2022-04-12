@@ -203,6 +203,10 @@ namespace Gyro {
        *         false ê›íËé∏îs
        */
       bool Effekseer();
+      /**
+       * @brief  èIóπîªíË
+       */
+      void IsQuit() override;
     };
   } // namespace Application
 } // namespace Gyro
