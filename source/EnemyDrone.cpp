@@ -45,7 +45,7 @@ namespace Gyro {
       // パラメータの設定
       SetParameter();
       // アニメーションアタッチ
-      _modelAnim.SetMainAttach(_mHandle, IdleKey, 1.0f, true);
+      _modelAnim.SetMainAttach(_modelHandle, IdleKey, 1.0f, true);
       // エフェクト初期化(生成)
       EffectInit();
       return true;
@@ -98,7 +98,7 @@ namespace Gyro {
       // ワールド座標の更新
       WorldMatrix();
       // ワールド座標の設定
-      MV1SetMatrix(_mHandle, UtilityDX::ToMATRIX(_world));
+      MV1SetMatrix(_modelHandle, UtilityDX::ToMATRIX(_world));
       // モデルアニメの更新
       _modelAnim.Process();
       // エフェクト更新呼び出し
@@ -132,7 +132,7 @@ namespace Gyro {
       auto [handle, key] = _app.GetModelServer().GetModel("enemyDrone", _number);
       // モデルデータ設定
       ++_number;
-      _mHandle = handle;
+      _modelHandle = handle;
       _this = key;
     }
 
@@ -186,7 +186,7 @@ namespace Gyro {
     void EnemyDrone::Attack() {
       // アニメーションから指定したボーンのローカル座標を取得
       auto attachIndex = _modelAnim.GetMainAttachIndex();
-      auto rPos = MV1GetFramePosition(_mHandle, 4);
+      auto rPos = MV1GetFramePosition(_modelHandle, 4);
       _sphere->SetPosition(UtilityDX::ToVector(rPos));
       _sphere->Process();
       _oldPosition = _position;
@@ -224,7 +224,7 @@ namespace Gyro {
         // 敵の場合のみ処理を行う
         if (obj->GetId() != ObjectId::Enemy) continue;
         // 一致している場合は除外
-        if (std::dynamic_pointer_cast<Enemy::EnemyBase>(obj)->Equals(_mHandle)) {
+        if (std::dynamic_pointer_cast<Enemy::EnemyBase>(obj)->Equals(_modelHandle)) {
           continue; // 同一オブジェクトのため除外
         }
         // 球と球の衝突判定

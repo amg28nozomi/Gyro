@@ -108,7 +108,7 @@ namespace Gyro {
        *         false:不一致
        */
       inline bool Equals(const int handle) const {
-        return _mHandle == handle;
+        return _modelHandle == handle;
       }
       /**
        * @brief  状態の取得
@@ -205,13 +205,13 @@ namespace Gyro {
         return old != _enemyState;
       }
 
-      int _cnt{ 0 };        //!< カウント
-      int _mHandle{ -1 };   //!< モデルハンドル
-      int _enemyHP{ 0 };    //!< 敵体力
+      int _cnt{ 0 };               //!< カウント
+      int _modelHandle{ -1 };      //!< モデルハンドル
+      int _enemyHP{ 0 };           //!< 敵体力
       float _serchRadius{ 0.0f };  //!< 索敵範囲(円)の半径
       float _attackRadius{ 0.0f }; //!< 攻撃範囲(円)の半径
       float _flagRadius{ 700.0f }; //!< Processを行うかどうか
-       //!< 球の当たり判定
+      //!< 球の当たり判定
       std::unique_ptr<Object::CollisionSphere> _sphere{ nullptr };
       //!< カプセル当たり判定
       std::unique_ptr<Object::CollisionCapsule> _capsule{ nullptr };

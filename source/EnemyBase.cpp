@@ -67,7 +67,7 @@ namespace Gyro {
       // 死亡状態の場合は描画を行わない
       if (_state != ObjectState::Dead) {
         // 描画
-        MV1DrawModel(_mHandle);
+        MV1DrawModel(_modelHandle);
       }
 #ifdef _DEBUG
       if (_app.GetDebugFlag()) {
@@ -140,7 +140,7 @@ namespace Gyro {
         // 敵の場合のみ処理を行う
         if (obj->GetId() != ObjectId::Enemy) continue;
         // 一致している場合は除外
-        if (std::dynamic_pointer_cast<Enemy::EnemyBase>(obj)->Equals(_mHandle)) {
+        if (std::dynamic_pointer_cast<Enemy::EnemyBase>(obj)->Equals(_modelHandle)) {
           continue; // 同一オブジェクトのため除外
         }
         // 球と球の衝突判定
