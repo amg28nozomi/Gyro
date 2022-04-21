@@ -37,6 +37,8 @@ namespace Gyro {
       case CameraState::Normal:
         Normal(stick, target, move);
         break;
+      default:
+        break;
       }
       return true;
     }
