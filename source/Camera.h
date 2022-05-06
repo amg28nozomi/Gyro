@@ -116,6 +116,8 @@ namespace Gyro {
       AppFrame::Math::Vector4 _position{};    //!< カメラの座標
       AppFrame::Math::Vector4 _move{};        //!< 移動量
       AppFrame::Math::Vector4 _target{};      //!< カメラの注視点(見ている座標)
+      AppFrame::Math::Matrix44 _rotateMatrix{};        //!< プレイヤーから位置へのベクトルと注視点へのベクトルを回転させるマトリクス
+      AppFrame::Math::Matrix44 _anyAxisMatrix{};       //!< ベクトルを90度回転させるためのマトリクス
       CameraState _cameraState{ CameraState::Normal }; //!< カメラ状態
 
       /**
