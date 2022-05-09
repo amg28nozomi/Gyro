@@ -60,6 +60,8 @@ namespace Gyro {
     }
 
     bool ModeResult::Process() {
+      // モード削除予約判定
+      PopBack();
       // 入力処理
       Input(_appMain.GetOperation());
       // スタジオ更新
@@ -111,14 +113,14 @@ namespace Gyro {
     }
 
     void ModeResult::ChangeMode() {
-      // モードリザルトの削除
-      _appMain.GetModeServer().PopBuck();
       // 鐘の音SEの再生
       _appMain.GetSoundComponent().PlayBackGround("bell", 75);
       // モードタイトル遷移
       _appMain.GetModeServer().TransionToMode("Title");
       // リザルトBGMの再生を停止する
       _appMain.GetSoundComponent().StopSound("result");
+      // 消去予約
+      _popBack = true;
     }
   } // namespace Mode
 } // namespace Gyro

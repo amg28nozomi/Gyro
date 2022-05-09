@@ -96,7 +96,7 @@ namespace Gyro {
 
     void ModeLoading::ChangeMode() {
       // モードローディングの削除
-      _appMain.GetModeServer().PopBuck();
+      _appMain.GetModeServer().PopBack();
       // キーが登録されているか
       bool key = _app.GetModeServer().Contains("Game");
       if (!key) {

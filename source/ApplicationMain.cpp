@@ -56,7 +56,7 @@ namespace Gyro {
         _stageTransition->Init();
         // ƒ‚[ƒhƒQ[ƒ€‚Ì“o˜^
         _modeServer->AddMode("AMG", std::make_shared<Mode::ModeAMG>(*this));
-        _modeServer->TransionToMode("AMG");
+        _modeServer->PushBack("AMG");
         return true;
       }
 

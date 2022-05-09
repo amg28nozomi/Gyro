@@ -46,6 +46,8 @@ namespace Gyro {
     }
 
     bool ModeCredit::Process() {
+      // モード削除予約判定
+      PopBack();
       // 入力処理
       Input(_appMain.GetOperation());
       // タイトルバックされた
@@ -82,8 +84,6 @@ namespace Gyro {
     }
 
     void ModeCredit::ChangeMode() {
-      // モードクレジットの削除
-      _appMain.GetModeServer().PopBuck();
       // モードタイトル遷移
       _appMain.GetModeServer().TransionToMode("Title");
       // 鐘の音SEの再生

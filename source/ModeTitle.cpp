@@ -98,6 +98,8 @@ namespace Gyro {
     }
 
     bool ModeTitle::Process() {
+      // モード削除予約判定
+      PopBack();
       // 入力処理
       Input(_appMain.GetOperation());
       // 拡大率設定
@@ -226,8 +228,6 @@ namespace Gyro {
     }
 
     void ModeTitle::ChangeMode() {
-      // モードタイトルの削除
-      _appMain.GetModeServer().PopBuck();
       if (_sceneNum == GameStartNum) {
         // インゲーム遷移
         InGame();
@@ -257,6 +257,8 @@ namespace Gyro {
       }
       // モードゲーム遷移
       _appMain.GetModeServer().TransionToMode("Game");
+      // 消去予約
+      _popBack = true;
     }
 
     void ModeTitle::Credit() {
@@ -268,6 +270,8 @@ namespace Gyro {
       }
       // モードクレジット遷移
       _appMain.GetModeServer().TransionToMode("Credit");
+      // 消去予約
+      _popBack = true;
     }
   } // namespace Mode
 } // namespace Gyro

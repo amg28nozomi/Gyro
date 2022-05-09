@@ -51,6 +51,8 @@ namespace Gyro {
     }
 
     bool ModeAMG::Process() {
+      // モード削除予約判定
+      PopBack();
       _count++;  // カウントを増やす
       // モード最大カウントを過ぎたら
       if (MaxCount < _count) {
@@ -90,12 +92,12 @@ namespace Gyro {
     }
 
     void ModeAMG::ChangeMode() {
-      // モードAMGの削除
-      _appMain.GetModeServer().PopBuck();
       // 未登録のためモードタイトルの登録
       _appMain.GetModeServer().AddMode("Title", std::make_shared<Mode::ModeTitle>(_appMain));
       // モードタイトル遷移
       _appMain.GetModeServer().TransionToMode("Title");
+      // 消去予約
+      _popBack = true;
     }
   } // namespace Mode
 } // namespace Gyro

@@ -54,6 +54,8 @@ namespace Gyro {
     }
 
     bool ModeGameOver::Process() {
+      // モード削除予約判定
+      PopBack();
       // 入力処理
       Input(_appMain.GetOperation());
       // 選択決定された
@@ -122,20 +124,22 @@ namespace Gyro {
     }
 
     void ModeGameOver::ChangeMode() {
-      // モードゲームオーバーの削除
-      _appMain.GetModeServer().PopBuck();
       // 鐘の音SEの再生
       _app.GetSoundComponent().PlayBackGround("bell", 75);
       // リトライ選択時
       if (_retry == 1) {
         // モードゲーム遷移
         _appMain.GetModeServer().TransionToMode("Game");
+        // 消去予約
+        _popBack = true;
         return;
       }
       // タイトルバック選択時
       if (_backTitle == 1) {
         // モードタイトル遷移
         _appMain.GetModeServer().TransionToMode("Title");
+        // 消去予約
+        _popBack = true;
         return;
       }
     }

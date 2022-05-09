@@ -136,6 +136,8 @@ namespace Gyro {
     }
 
     bool ModeGame::Process() {
+      // モード削除予約判定
+      PopBack();
       // モードゲームの入力処理
       Input(_app.GetOperation());
       // ゲームオーバー判定
@@ -487,8 +489,6 @@ namespace Gyro {
       if (_gameState != GameState::GameOver) {
         return false; // ゲームオーバーではないため処理を行わない
       }
-      // モードゲームの削除
-      _appMain.GetModeServer().PopBuck();
       // キーが登録されているか
       bool key = _app.GetModeServer().Contains("GameOver");
       if (!key) {
@@ -499,12 +499,12 @@ namespace Gyro {
       _appMain.GetModeServer().TransionToMode("GameOver");
       // BGMの再生を停止する
       _appMain.GetSoundComponent().StopSound("bgm");
+      // 消去予約
+      _popBack = true;
       return true;
     }
 
     void ModeGame::Result() {
-      // モードゲームの削除
-      _appMain.GetModeServer().PopBuck();
       // キーが登録されているか
       bool key = _app.GetModeServer().Contains("Result");
       if (!key) {
@@ -515,6 +515,8 @@ namespace Gyro {
       _appMain.GetModeServer().TransionToMode("Result");
       // BGMの再生を停止する
       _appMain.GetSoundComponent().StopSound("bgm");
+      // 消去予約
+      _popBack = true;
     }
 
     void ModeGame::ToGameOver() {
