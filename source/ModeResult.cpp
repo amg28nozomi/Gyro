@@ -31,6 +31,8 @@ namespace Gyro {
     bool ModeResult::Enter() {
       // リソース読み込み
       LoadResource();
+      // 削除予約初期化
+      _popBack = false;
       // スタジオ初期化
       _studio->Init();
       // BGMの再生開始
@@ -60,8 +62,6 @@ namespace Gyro {
     }
 
     bool ModeResult::Process() {
-      // モード削除予約判定
-      PopBack();
       // 入力処理
       Input(_appMain.GetOperation());
       // スタジオ更新
@@ -117,10 +117,10 @@ namespace Gyro {
       _appMain.GetSoundComponent().PlayBackGround("bell", 75);
       // モードタイトル遷移
       _appMain.GetModeServer().TransionToMode("Title");
-      // リザルトBGMの再生を停止する
-      _appMain.GetSoundComponent().StopSound("result");
       // 消去予約
       _popBack = true;
+      // リザルトBGMの再生を停止する
+      _appMain.GetSoundComponent().StopSound("result");
     }
   } // namespace Mode
 } // namespace Gyro

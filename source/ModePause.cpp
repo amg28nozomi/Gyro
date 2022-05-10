@@ -144,8 +144,6 @@ namespace Gyro {
       _appMain.SetGamePause(false);
       // ポーズアウトSE再生
       _app.GetSoundComponent().PlayBackGround("pauseOut");
-      // 消去予約
-      _popBack = true;
       // ゲーム終了選択時
       if (_quitGame == 1) {
         // アプリケーションの終了処理を呼び出し

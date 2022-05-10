@@ -6,6 +6,7 @@
  * @date    February 2022
  *********************************************************************/
 #include "ModeTitle.h"
+#include "UtilityDX.h"
 #include "ModeGame.h"
 #include "ModeCredit.h"
 #include "ModeLoading.h"
@@ -17,6 +18,9 @@ namespace {
   constexpr int GameStartNum = 1;       //!< ゲーム開始
   constexpr int CreditNum = 2;          //!< クレジット
   constexpr int QuitGameNum = 3;        //!< ゲーム終了
+  namespace AppMath = AppFrame::Math;
+  const AppMath::Vector4 CamPos{ 0.0f, 740.0f, 2300.0f };     //!< ゲーム遷移時カメラ位置
+  const AppMath::Vector4 CamTarget{ 0.0f, 700.0f, 1800.0f };  //!< ゲーム遷移時カメラ注視点
 }
 
 namespace Gyro {
@@ -40,6 +44,8 @@ namespace Gyro {
       LoadResource();
       // 場面番号初期化
       _sceneNum = 0;
+      // 削除予約初期化
+      _popBack = false;
       // スタジオ初期化
       _studio->Init();
       // タイトルBGMの再生開始
@@ -56,6 +62,8 @@ namespace Gyro {
       _decision = false;
       // スタジオ解放
       _studio->Release();
+      // カメラ初期化
+      SetCameraPositionAndTarget_UpVecY(UtilityDX::ToVECTOR(CamPos), UtilityDX::ToVECTOR(CamTarget));
       return true;
     }
 
@@ -98,8 +106,6 @@ namespace Gyro {
     }
 
     bool ModeTitle::Process() {
-      // モード削除予約判定
-      PopBack();
       // 入力処理
       Input(_appMain.GetOperation());
       // 拡大率設定
@@ -232,7 +238,7 @@ namespace Gyro {
         // インゲーム遷移
         InGame();
       }
-      if (_sceneNum == CreditNum) {
+      else if (_sceneNum == CreditNum) {
         // クレジット遷移
         Credit();
       }

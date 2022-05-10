@@ -69,6 +69,8 @@ namespace Gyro {
       _wave4 = (_stageFlag) ? true : false;
       _bossStage = true;
       _waveNum = 0;
+      // 削除予約初期化
+      _popBack = false;
       return true;
     }
 
@@ -136,8 +138,6 @@ namespace Gyro {
     }
 
     bool ModeGame::Process() {
-      // モード削除予約判定
-      PopBack();
       // モードゲームの入力処理
       Input(_app.GetOperation());
       // ゲームオーバー判定
@@ -497,10 +497,10 @@ namespace Gyro {
       }
       // モードゲームオーバー遷移
       _appMain.GetModeServer().TransionToMode("GameOver");
-      // BGMの再生を停止する
-      _appMain.GetSoundComponent().StopSound("bgm");
       // 消去予約
       _popBack = true;
+      // BGMの再生を停止する
+      _appMain.GetSoundComponent().StopSound("bgm");
       return true;
     }
 
@@ -513,10 +513,10 @@ namespace Gyro {
       }
       // モードリザルト遷移
       _appMain.GetModeServer().TransionToMode("Result");
-      // BGMの再生を停止する
-      _appMain.GetSoundComponent().StopSound("bgm");
       // 消去予約
       _popBack = true;
+      // BGMの再生を停止する
+      _appMain.GetSoundComponent().StopSound("bgm");
     }
 
     void ModeGame::ToGameOver() {
@@ -554,7 +554,10 @@ namespace Gyro {
       Enemy::EnemyWheel::ModelNumberReset();
       Enemy::EnemyWheelBoss::ModelNumberReset();
       // オブジェクトサーバから複製品を削除する
-      _appMain.GetModelServer().DeleteDuplicateModels("", true);
+      _appMain.GetModelServer().DeleteDuplicateModels("enemyWheel", false);
+      _appMain.GetModelServer().DeleteDuplicateModels("enemyWheelBoss", false);
+      _appMain.GetModelServer().DeleteDuplicateModels("enemyDrone", false);
+      _appMain.GetModelServer().DeleteDuplicateModels("enemyDroneBoss", false);
     }
   } // namespace Mode
 } // namespace Gyro

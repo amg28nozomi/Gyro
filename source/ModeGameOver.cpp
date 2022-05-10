@@ -29,6 +29,8 @@ namespace Gyro {
       // ‰æ‘œØ‚è‘Ö‚¦”Ô†‚Ì‰Šú‰»
       _retry = 1;
       _backTitle = 0;
+      // íœ—\–ñ‰Šú‰»
+      _popBack = false;
       return true;
     }
 
@@ -54,8 +56,6 @@ namespace Gyro {
     }
 
     bool ModeGameOver::Process() {
-      // ƒ‚[ƒhíœ—\–ñ”»’è
-      PopBack();
       // “ü—Íˆ—
       Input(_appMain.GetOperation());
       // ‘I‘ğŒˆ’è‚³‚ê‚½

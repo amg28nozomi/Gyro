@@ -12,7 +12,7 @@
 
 namespace {
   // 各種定数
-  constexpr int MaxCount = 30;  //!< モード最大カウント
+  constexpr int MaxCount = 5;  //!< モード最大カウント
 }
 
 namespace Gyro {
@@ -46,13 +46,10 @@ namespace Gyro {
     }
 
     bool ModeAMG::Exit() {
-      _appMain.GetResourceServer().Release();
       return true;
     }
 
     bool ModeAMG::Process() {
-      // モード削除予約判定
-      PopBack();
       _count++;  // カウントを増やす
       // モード最大カウントを過ぎたら
       if (MaxCount < _count) {
