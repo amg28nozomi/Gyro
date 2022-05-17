@@ -473,11 +473,11 @@
     <ClCompile Include="source\WirePoint.cpp">
       <Filter>ソース ファイル\Object</Filter>
     </ClCompile>
-    <ClCompile Include="source\Player.cpp">
-      <Filter>ヘッダー ファイル\Effect\Player</Filter>
-    </ClCompile>
     <ClCompile Include="source\SpawnItem.cpp">
       <Filter>ソース ファイル\Object\Spawn</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Player.cpp">
+      <Filter>ソース ファイル\Object\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
